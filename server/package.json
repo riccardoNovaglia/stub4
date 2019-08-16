@@ -1,0 +1,20 @@
+{
+  "name": "superstub-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --watch",
+    "test:ci": "jest",
+    "start": "node index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "jest": "^24.8.0"
+  },
+  "devDependencies": {
+    "supertest": "^3.4.2"
+  }
+}
