@@ -2,7 +2,7 @@ const request = require('supertest');
 const app = require('./app');
 
 describe('Something', () => {
-    it('creates new stubs', async () => {
+    it('creates a new stub with url only, defaulting to GET, returns ok and no body', async () => {
         const stubCreationResponse = await request(app)
             .post('/new-stub')
             .send({ requestMatchers: { url: '/john' } });
@@ -10,6 +10,7 @@ describe('Something', () => {
 
         const stubbedResponse = await request(app).get('/john');
         expect(stubbedResponse.status).toEqual(200);
+        expect(stubbedResponse.body).toEqual({});
     });
 
     it('responds from the new stub with the given body', async () => {
