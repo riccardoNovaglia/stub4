@@ -1,14 +1,12 @@
 {
-  "name": "superstub",
-  "version": "1.0.0",
-  "description": "We'll see",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "body-parser": "^1.19.0"
-  }
+    "name": "superstub",
+    "version": "1.0.0",
+    "description": "We'll see",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {}
 }
