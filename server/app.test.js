@@ -1,11 +1,11 @@
 const request = require('supertest');
 const app = require('./app');
 
-describe('Something', () => {
+describe('Setting up stubs', () => {
     it('creates a new stub with url only, defaulting to GET, returns ok and no body', async () => {
         const stubCreationResponse = await request(app)
             .post('/new-stub')
-            .send({ requestMatchers: { url: '/john' } });
+            .send({ requestMatcher: { url: '/john' } });
         expect(stubCreationResponse.status).toEqual(200);
 
         const stubbedResponse = await request(app).get('/john');
@@ -17,7 +17,7 @@ describe('Something', () => {
         await request(app)
             .post('/new-stub')
             .send({
-                requestMatchers: { url: '/whateva' },
+                requestMatcher: { url: '/whateva' },
                 response: { body: { hey: 'you!' } }
             });
 
@@ -30,7 +30,7 @@ describe('Something', () => {
         await request(app)
             .post('/new-stub')
             .send({
-                requestMatchers: { method: 'POST', url: '/another-one' },
+                requestMatcher: { method: 'POST', url: '/another-one' },
                 response: { body: { just: 'posted' } }
             });
 
@@ -43,7 +43,7 @@ describe('Something', () => {
         await request(app)
             .post('/new-stub')
             .send({
-                requestMatchers: { url: '/a-new-one' },
+                requestMatcher: { url: '/a-new-one' },
                 response: { body: `hello, how's it going`, type: 'text' }
             });
 
@@ -53,6 +53,16 @@ describe('Something', () => {
         expect(response.text).toEqual("hello, how's it going");
         expect(response.headers).toMatchObject({
             'content-type': 'text/plain; charset=utf-8'
+        });
+    });
+
+    it('returns an error if the url is not specified', async () => {
+        const stubCreationResponse = await request(app)
+            .post('/new-stub')
+            .send({ requestMatcher: {} });
+        expect(stubCreationResponse.status).toEqual(500);
+        expect(stubCreationResponse.body).toEqual({
+            error: 'A request matcher url must be provided!'
         });
     });
 });
