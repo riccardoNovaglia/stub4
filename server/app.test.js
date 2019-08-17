@@ -38,4 +38,21 @@ describe('Something', () => {
         expect(response.status).toEqual(200);
         expect(response.body).toEqual({ just: 'posted' });
     });
+
+    it('responds with the correct body format and header given a response type', async () => {
+        await request(app)
+            .post('/new-stub')
+            .send({
+                requestMatchers: { url: '/a-new-one' },
+                response: { body: `hello, how's it going`, type: 'text' }
+            });
+
+        const response = await request(app).get('/a-new-one');
+        expect(response.status).toEqual(200);
+        expect(response.body).toEqual({});
+        expect(response.text).toEqual("hello, how's it going");
+        expect(response.headers).toMatchObject({
+            'content-type': 'text/plain; charset=utf-8'
+        });
+    });
 });
