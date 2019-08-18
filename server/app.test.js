@@ -77,7 +77,7 @@ describe('Setting up stubs', () => {
       .post('/new-stub')
       .send({
         requestMatcher: { url: '/to-be-overridden' },
-        reponse: { type: 'text', body: 'the new text!' }
+        response: { body: 'the new text!', type: 'text' }
       });
 
     const response = await request(app).get('/to-be-overridden');
