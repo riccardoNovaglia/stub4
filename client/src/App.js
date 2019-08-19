@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 import './App.css';
@@ -6,6 +6,15 @@ import './App.css';
 function App() {
   const [response, setResponse] = useState('');
   const [count, setCount] = useState(0);
+  const [stubs, setStubs] = useState({});
+
+  useEffect(() => {
+    const fetchStubs = async () => {
+      const res = await axios.get('/stubs');
+      setStubs(res.data);
+    };
+    fetchStubs();
+  });
 
   const setup = async () => {
     setCount(count + 1);
@@ -29,6 +38,7 @@ function App() {
       <button onClick={setup}>Setup</button>
       <button onClick={tryOut}>Try it out</button>
       <p>The response will go here: {response}</p>
+      <p>Here's the current stubs: {JSON.stringify(stubs)}</p>
     </div>
   );
 }
