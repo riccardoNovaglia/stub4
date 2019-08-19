@@ -2,6 +2,10 @@ const request = require('supertest');
 const app = require('./app');
 
 describe('Setting up stubs', () => {
+  afterEach(async () => {
+    await request(app).post('/clear-stubs');
+  });
+
   it('creates a new stub with url only, defaulting to GET, returns ok and no body', async () => {
     const stubCreationResponse = await request(app)
       .post('/new-stub')

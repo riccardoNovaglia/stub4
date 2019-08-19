@@ -1,14 +1,27 @@
-const stubs = {};
+let stubs = {};
 
-function addStub(request, response) {
-  stubs[request.url] = response;
+function add(request, response) {
+  stubs[request.url] = {
+    request,
+    response
+  };
 }
 
-function getStub(req) {
+function get(req) {
   return stubs[req.originalUrl];
 }
 
+function all() {
+  return stubs;
+}
+
+function clearAll() {
+  stubs = {};
+}
+
 module.exports = {
-  addStub,
-  getStub
+  add,
+  all,
+  clearAll,
+  get
 };
