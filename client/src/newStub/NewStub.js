@@ -1,21 +1,18 @@
-import axios from 'axios';
 import React, { useState } from 'react';
 
 import './NewStub.scss';
+import { stub, request } from './StubClient';
 
-function NewStub({ onCreation }) {
-  const [url, setUrl] = useState('/');
+function NewStub({ afterSuccessfulCreation }) {
+  const [url, setUrl] = useState('');
   const [method, setMethod] = useState('GET');
 
   const [body, setBody] = useState('');
   const [type, setType] = useState('text');
 
   const setup = async () => {
-    await axios.post('/new-stub', {
-      requestMatcher: { url, method },
-      response: { type, body }
-    });
-    onCreation();
+    await stub(request(method, `/${url}`).returns(type, body));
+    afterSuccessfulCreation();
   };
 
   const handle = setFn => event => setFn(event.target.value);
@@ -23,21 +20,33 @@ function NewStub({ onCreation }) {
   return (
     <div className="newStub">
       <button onClick={setup}>Save</button>
-      <br />
-      <label htmlFor="method">METHOD</label>
-      <input id="method" type="text" onChange={handle(setMethod)} value={method} />
-      <br />
 
-      <label htmlFor="url">URL</label>
-      <input id="url" type="text" onChange={handle(setUrl)} value={url} />
-      <br />
+      <div>
+        <label htmlFor="method">METHOD</label>
+        <select value={method} onChange={handle(setMethod)}>
+          <option value="GET">GET</option>
+          <option value="POST">POST</option>
+        </select>
+      </div>
 
-      <label htmlFor="type">TYPE</label>
-      <input id="type" type="text" onChange={handle(setType)} value={type} />
-      <br />
+      <div>
+        <label htmlFor="url">URL</label>
+        <span className="leadingSlash">/</span>
+        <input id="url" type="text" onChange={handle(setUrl)} value={url} />
+      </div>
 
-      <label htmlFor="body">BODY</label>
-      <input id="body" type="text" onChange={handle(setBody)} value={body} />
+      <div>
+        <label htmlFor="type">TYPE</label>
+        <select value={type} onChange={handle(setType)}>
+          <option value="text">text/plain</option>
+          <option value="json">application/json</option>
+        </select>
+      </div>
+
+      <div>
+        <label htmlFor="body">BODY</label>
+        <input id="body" type="text" onChange={handle(setBody)} value={body} />
+      </div>
     </div>
   );
 }

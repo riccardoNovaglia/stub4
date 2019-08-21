@@ -23,7 +23,7 @@ function App() {
       <button className="newStubBtn" onClick={() => setCreating(true)}>
         New
       </button>
-      {creating && <NewStub onCreation={onStubCreated} />}
+      {creating && <NewStub afterSuccessfulCreation={onStubCreated} />}
       <Stubs stubs={stubs} />
     </div>
   );

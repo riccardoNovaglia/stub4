@@ -11,10 +11,20 @@
   }
 
   label {
+    display: inline-block;
     margin: 5px;
+    width: 200px;
   }
 
   input {
     margin: 5px;
+  }
+
+  select {
+    margin: 5px;
+  }
+
+  .leadingSlash {
+    color: white;
   }
 }
