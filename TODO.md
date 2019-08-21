@@ -1,0 +1,10 @@
+- DB-like for app?
+- - Load initial data from some json
+- Pact?
+- Files for defaults/statics
+- Named app abstraction?
+- Better matching?
+- - Starts with
+- - Ends with
+- - Contains?
+- Proxy?
