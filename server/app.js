@@ -2,9 +2,10 @@ const _ = require('lodash');
 const bodyParser = require('body-parser');
 const express = require('express');
 
-const getRequestMatcher = require('./request');
-const extractResponse = require('./response');
-const stubs = require('./stubbing');
+const getRequestMatcher = require('./stubs/request');
+const extractResponse = require('./stubs/response');
+const stubs = require('./stubs/stubbing');
+const dbs = require('./dbs/stubbing');
 
 const app = express();
 app.use(bodyParser.json());
@@ -22,6 +23,12 @@ app.post('/new-stub', function(req, res) {
   }
 });
 
+app.post('/new-db', function(req, res) {
+  const url = _.get(req.body, 'url');
+  dbs.addDb(url);
+  return res.end();
+});
+
 app.get('/stubs', (_, res) => {
   res.json(stubs.all());
 });
@@ -31,11 +38,6 @@ app.post('/clear-stubs', (_, res) => {
   res.end();
 });
 
-app.all('*', (req, res) => {
-  const matchedStub = stubs.get(req);
-  return res
-    .set('Content-Type', matchedStub.response.contentType)
-    .send(matchedStub.response.body);
-});
+app.all('*', stubs.middleware, dbs.middleware);
 
 module.exports = app;

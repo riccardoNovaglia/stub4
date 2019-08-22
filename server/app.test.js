@@ -6,6 +6,11 @@ describe('Setting up stubs', () => {
     await request(app).post('/clear-stubs');
   });
 
+  it('returns 404 for not-yet-existing stubs', async () => {
+    const stubbedResponse = await request(app).get('/this-dont-exist');
+    expect(stubbedResponse.status).toEqual(404);
+  });
+
   it('creates a new stub with url only, defaulting to GET, returns ok and no body', async () => {
     const stubCreationResponse = await request(app)
       .post('/new-stub')

@@ -19,9 +19,21 @@ function clearAll() {
   stubs = {};
 }
 
+function middleware(req, res, next) {
+  try {
+    const matchedStub = get(req);
+    return res
+      .set('Content-Type', matchedStub.response.contentType)
+      .send(matchedStub.response.body);
+  } catch (e) {
+    next();
+  }
+}
+
 module.exports = {
   add,
   all,
   clearAll,
-  get
+  get,
+  middleware
 };
