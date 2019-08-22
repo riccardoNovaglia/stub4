@@ -23,12 +23,6 @@ app.post('/new-stub', function(req, res) {
   }
 });
 
-app.post('/new-db', function(req, res) {
-  const url = _.get(req.body, 'url');
-  dbs.addDb(url);
-  return res.end();
-});
-
 app.get('/stubs', (_, res) => {
   res.json(stubs.all());
 });
@@ -36,6 +30,17 @@ app.get('/stubs', (_, res) => {
 app.post('/clear-stubs', (_, res) => {
   stubs.clearAll();
   res.end();
+});
+
+app.post('/new-db', function(req, res) {
+  const url = _.get(req.body, 'url');
+  dbs.addDb(url);
+  return res.end();
+});
+
+app.post('/clear-dbs', function(req, res) {
+  dbs.clearAll();
+  return res.end();
 });
 
 app.all('*', stubs.middleware, dbs.middleware);
