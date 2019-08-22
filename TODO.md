@@ -1,4 +1,5 @@
 - DB-like for app?
+- - Custom ID
 - - Load initial data from some json
 - Pact?
 - Files for defaults/statics
