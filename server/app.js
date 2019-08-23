@@ -34,7 +34,8 @@ app.post('/clear-stubs', (_, res) => {
 
 app.post('/new-db', function(req, res) {
   const url = _.get(req.body, 'url');
-  dbs.addDb(url);
+  const idAlias = _.get(req.body, 'idAlias', 'id');
+  dbs.addDb(url, idAlias);
   return res.end();
 });
 

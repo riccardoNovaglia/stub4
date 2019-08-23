@@ -1,16 +1,19 @@
-let dbs = {};
+let dbs = { idAliases: {} };
 
-function addDb(url) {
+function addDb(url, idAlias) {
   dbs[url] = {};
+  dbs.idAliases[url] = { idAlias };
 }
 
 function clearAll() {
-  dbs = {};
+  dbs = { idAliases: {} };
 }
 
 function push(req, res) {
-  const itemId = req.body.id;
-  dbs[req.originalUrl][itemId] = req.body;
+  const dbUrl = req.originalUrl;
+  const idAlias = dbs.idAliases[dbUrl].idAlias;
+  const itemId = req.body[idAlias];
+  dbs[dbUrl][itemId] = req.body;
   return res.status(200).end();
 }
 
@@ -25,7 +28,7 @@ function getAll(req, res, next) {
   }
 }
 
-function get(req, res, next) {
+function get(req, res) {
   const { dbUrl, itemId } = dbAndItem(req);
   const matchedDb = dbs[dbUrl];
   const item = matchedDb[itemId];
@@ -46,7 +49,7 @@ function middleware(req, res, next) {
   try {
     if (req.method === 'GET') {
       return getAll(req, res, () => {
-        return get(req, res, next);
+        return get(req, res);
       });
     } else if (req.method === 'POST') {
       return push(req, res);
