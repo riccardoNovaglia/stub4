@@ -4,13 +4,13 @@ const app = require('./app');
 describe('Clearing and listing stubs', () => {
   it('clears setup stubs on demand', async () => {
     await request(app)
-      .post('/new-stub')
+      .post('/stubs/new')
       .send({
         requestMatcher: { url: '/stuff' },
         response: { body: `bods`, type: 'text' }
       });
 
-    const clearResponse = await request(app).post('/clear-stubs');
+    const clearResponse = await request(app).post('/stubs/clear');
     expect(clearResponse.status).toEqual(200);
 
     const stubsResponse = await request(app).get('/stubs');
@@ -20,7 +20,7 @@ describe('Clearing and listing stubs', () => {
 
   it('returns the list of all setup stubs', async () => {
     await request(app)
-      .post('/new-stub')
+      .post('/stubs/new')
       .send({
         requestMatcher: { url: '/tubs' },
         response: { body: `bods`, type: 'text' }

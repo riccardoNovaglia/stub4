@@ -3,7 +3,7 @@ const app = require('./app');
 
 describe('Setting up stubs', () => {
   afterEach(async () => {
-    await request(app).post('/clear-stubs');
+    await request(app).post('/stubs/clear');
   });
 
   it('returns 404 for not-yet-existing stubs', async () => {
@@ -13,7 +13,7 @@ describe('Setting up stubs', () => {
 
   it('creates a new stub with url only, defaulting to GET, returns ok and no body', async () => {
     const stubCreationResponse = await request(app)
-      .post('/new-stub')
+      .post('/stubs/new')
       .send({ requestMatcher: { url: '/john' } });
     expect(stubCreationResponse.status).toEqual(200);
 
@@ -24,7 +24,7 @@ describe('Setting up stubs', () => {
 
   it('responds from the new stub with the given body', async () => {
     await request(app)
-      .post('/new-stub')
+      .post('/stubs/new')
       .send({
         requestMatcher: { url: '/whateva' },
         response: { body: { hey: 'you!' } }
@@ -37,7 +37,7 @@ describe('Setting up stubs', () => {
 
   it('sets up the stub with the required method', async () => {
     await request(app)
-      .post('/new-stub')
+      .post('/stubs/new')
       .send({
         requestMatcher: { method: 'POST', url: '/another-one' },
         response: { body: { just: 'posted' } }
@@ -50,7 +50,7 @@ describe('Setting up stubs', () => {
 
   it('responds with the correct body format and header given a response type', async () => {
     await request(app)
-      .post('/new-stub')
+      .post('/stubs/new')
       .send({
         requestMatcher: { url: '/a-new-one' },
         response: { body: `hello, how's it going`, type: 'text' }
@@ -67,7 +67,7 @@ describe('Setting up stubs', () => {
 
   it('returns an error if the url is not specified', async () => {
     const stubCreationResponse = await request(app)
-      .post('/new-stub')
+      .post('/stubs/new')
       .send({ requestMatcher: {} });
     expect(stubCreationResponse.status).toEqual(500);
     expect(stubCreationResponse.body).toEqual({
@@ -77,13 +77,13 @@ describe('Setting up stubs', () => {
 
   it('can override an existing stub with a new one', async () => {
     await request(app)
-      .post('/new-stub')
+      .post('/stubs/new')
       .send({
         requestMatcher: { url: '/to-be-overridden' },
         response: { body: `this is the first one`, type: 'text' }
       });
     await request(app)
-      .post('/new-stub')
+      .post('/stubs/new')
       .send({
         requestMatcher: { url: '/to-be-overridden' },
         response: { body: 'the new text!', type: 'text' }

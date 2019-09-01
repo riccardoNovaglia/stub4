@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export async function stub(stubDefinition) {
-  await axios.post('/new-stub', {
+  await axios.post('/stubs/new', {
     requestMatcher: { url: stubDefinition.url, method: stubDefinition.method },
     response: { type: stubDefinition.type, body: stubDefinition.body }
   });

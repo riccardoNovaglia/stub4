@@ -4,19 +4,19 @@ const app = require('./app');
 describe('Create db-like endpoints', () => {
   it('exists', async () => {
     const response = await request(app)
-      .post('/new-db')
+      .post('/dbs/new')
       .send({ url: '/some-url' });
     expect(response.status).toEqual(200);
   });
 
   it('deletes all databases on demand', async () => {
     await request(app)
-      .post('/new-db')
+      .post('/dbs/new')
       .send({ url: '/some-url' });
     await request(app)
       .post('/some-url')
       .send({ id: '1', name: 'stuff' });
-    await request(app).post('/clear-dbs');
+    await request(app).post('/dbs/clear');
     const response = await request(app).get('/some-url/1');
     expect(response.status).toEqual(404);
   });
@@ -26,7 +26,7 @@ describe('Once the db is created', () => {
   const url = '/some-database';
   beforeEach(async () => {
     await request(app)
-      .post('/new-db')
+      .post('/dbs/new')
       .send({ url });
   });
   afterEach(async () => await request(app).post('/clear-dbs'));
@@ -98,7 +98,7 @@ describe('Custom IDs', () => {
   afterEach(async () => await request(app).post('/clear-dbs'));
   it('accepts an id alias on creation and uses that going forward', async () => {
     await request(app)
-      .post('/new-db')
+      .post('/dbs/new')
       .send({ url: '/custom-id-db', idAlias: 'customerId' });
 
     await request(app)
@@ -112,7 +112,7 @@ describe('Custom IDs', () => {
 
   it('deletes using a custom id', async () => {
     await request(app)
-      .post('/new-db')
+      .post('/dbs/new')
       .send({ url, idAlias: 'customerId' });
     await request(app)
       .post(url)
