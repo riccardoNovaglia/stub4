@@ -2,17 +2,15 @@ const _ = require('lodash');
 const bodyParser = require('body-parser');
 const express = require('express');
 
-const stubs = require('./stubs/stubbing');
-const stubsRouter = require('./stubs/router');
-const dbs = require('./dbs/stubbing');
-const dbsRouter = require('./dbs/router');
+const stubs = require('./stubs');
+const dbs = require('./dbs');
 
 const app = express();
 app.use(bodyParser.json());
 
-app.use('/stubs', stubsRouter);
+app.use('/stubs', stubs.router);
 
-app.use('/dbs', dbsRouter);
+app.use('/dbs', dbs.router);
 
 app.all('*', stubs.middleware, dbs.middleware);
 

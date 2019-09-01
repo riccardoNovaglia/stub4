@@ -3,7 +3,7 @@ const router = express.Router();
 
 const getRequestMatcher = require('./request');
 const extractResponse = require('./response');
-const stubs = require('./stubbing');
+const stubs = require('../stubbing');
 
 router.post('/new', function(req, res) {
   try {

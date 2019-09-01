@@ -3,7 +3,7 @@ const router = express.Router();
 
 const _ = require('lodash');
 
-const dbs = require('./stubbing');
+const dbs = require('../stubbing');
 
 router.post('/new', function(req, res) {
   const url = _.get(req.body, 'url');

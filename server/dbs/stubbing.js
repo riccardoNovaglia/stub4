@@ -45,23 +45,6 @@ function deletes(req, res) {
   return res.status(200).end();
 }
 
-function middleware(req, res, next) {
-  try {
-    if (req.method === 'GET') {
-      return getAll(req, res, () => {
-        return get(req, res);
-      });
-    } else if (req.method === 'POST') {
-      return push(req, res);
-    } else if (req.method === 'DELETE') {
-      return deletes(req, res);
-    }
-  } catch (e) {
-  } finally {
-    next();
-  }
-}
-
 function dbAndItem(req) {
   const urlParts = req.originalUrl.split('/');
   const itemId = urlParts.pop();
@@ -72,5 +55,8 @@ function dbAndItem(req) {
 module.exports = {
   addDb,
   clearAll,
-  middleware
+  deletes,
+  get,
+  getAll,
+  push
 };
