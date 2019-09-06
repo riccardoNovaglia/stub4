@@ -32,7 +32,7 @@ function getAll(dbUrl) {
   if (matchedDb) {
     return Object.keys(matchedDb).map(id => matchedDb[id]);
   } else {
-    throw new Error('db not found');
+    throw new Error('DB not found');
   }
 }
 

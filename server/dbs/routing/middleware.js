@@ -22,8 +22,7 @@ function middleware(req, res, next) {
 
 function getItem(req, res) {
   try {
-    const url = urlFrom(req);
-    const items = getAll(url);
+    const items = getAll(req.originalUrl);
     return res.json(items);
   } catch (e) {
     try {
@@ -59,11 +58,6 @@ function urlIdFrom(req) {
   const id = urlParts.pop();
   const url = urlParts.join('/');
   return { url, id };
-}
-
-function urlFrom(req) {
-  const urlParts = req.originalUrl.split('/');
-  return `/${urlParts.pop()}`;
 }
 
 module.exports = middleware;

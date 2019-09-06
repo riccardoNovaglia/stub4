@@ -124,3 +124,45 @@ describe('Custom IDs', () => {
     expect(response.status).toBe(404);
   });
 });
+
+describe('Complex urls', () => {
+  it('can create db-likes with complex urls', async () => {
+    const response = await request(app)
+      .post('/dbs/new')
+      .send({ url: '/some-url/with/version123' });
+    expect(response.status).toEqual(200);
+  });
+
+  it('can get stuff out of complex urls', async () => {
+    const url = '/some-url/with/version123';
+    await request(app)
+      .post('/dbs/new')
+      .send({ url });
+
+    await request(app)
+      .post(url)
+      .send({ id: '2', name: 'leonardo' });
+
+    const response = await request(app).get(`${url}/2`);
+    expect(response.status).toEqual(200);
+    expect(response.body).toEqual({ id: '2', name: 'leonardo' });
+  });
+
+  it('can get everything out of complex urls', async () => {
+    const url = '/some-url/with/version123';
+    await request(app)
+      .post('/dbs/new')
+      .send({ url });
+
+    await request(app)
+      .post(url)
+      .send({ id: '2', name: 'leonardo' });
+    await request(app)
+      .post(url)
+      .send({ id: '3', name: 'raffaello' });
+
+    const response = await request(app).get(`${url}`);
+    expect(response.status).toEqual(200);
+    expect(response.body).toEqual([{ id: '2', name: 'leonardo' }, { id: '3', name: 'raffaello' }]);
+  });
+});
