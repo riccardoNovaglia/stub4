@@ -1,3 +1,5 @@
+const log = require('../logger');
+
 let dbs = {};
 
 const meta = {
@@ -14,6 +16,8 @@ const meta = {
 };
 
 function addDb(url, idAlias) {
+  log(`Added db for ${url} with idAlias ${idAlias}`);
+
   dbs[url] = {};
   meta.pushAlias(url, idAlias);
 }

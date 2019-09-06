@@ -1,0 +1,8 @@
+{
+  "dbs": [
+    {
+      "meta": { "url": "/some-url" },
+      "data": [{ "id": 1, "some": "content" }]
+    }
+  ]
+}
