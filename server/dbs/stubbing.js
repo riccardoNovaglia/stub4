@@ -1,62 +1,61 @@
-let dbs = { idAliases: {} };
+let dbs = {};
+
+const meta = {
+  idAliases: {},
+  getAlias(url) {
+    return this.idAliases[url].idAlias || 'id';
+  },
+  pushAlias(url, idAlias) {
+    this.idAliases[url] = { idAlias };
+  },
+  reset() {
+    this.idAliases = {};
+  }
+};
 
 function addDb(url, idAlias) {
   dbs[url] = {};
-  dbs.idAliases[url] = { idAlias };
+  meta.pushAlias(url, idAlias);
 }
 
 function clearAll() {
-  dbs = { idAliases: {} };
+  dbs = {};
+  meta.reset();
 }
 
-function push(req, res) {
-  const dbUrl = req.originalUrl;
-  const idAlias = dbs.idAliases[dbUrl].idAlias;
-  const itemId = req.body[idAlias];
-  dbs[dbUrl][itemId] = req.body;
-  return res.status(200).end();
+function push(url, id, item) {
+  dbs[url][id] = item;
 }
 
-function getAll(req, res, next) {
-  const urlParts = req.originalUrl.split('/');
-  const dbUrl = `/${urlParts.pop()}`;
-  if (Object.keys(dbs).some(url => url === dbUrl)) {
-    const matchedDb = dbs[dbUrl];
-    return res.json(Object.keys(matchedDb).map(id => matchedDb[id]));
-  } else {
-    return next();
-  }
-}
-
-function get(req, res) {
-  const { dbUrl, itemId } = dbAndItem(req);
+function getAll(dbUrl) {
   const matchedDb = dbs[dbUrl];
-  const item = matchedDb[itemId];
-  if (item) {
-    return res.json(item);
+  if (matchedDb) {
+    return Object.keys(matchedDb).map(id => matchedDb[id]);
   } else {
-    return res.status(404).end();
+    throw new Error('db not found');
   }
 }
 
-function deletes(req, res) {
-  const { dbUrl, itemId } = dbAndItem(req);
-  delete dbs[dbUrl][itemId];
-  return res.status(200).end();
+function get(url, id) {
+  const matchedDb = dbs[url];
+  const item = matchedDb[id];
+  if (item) {
+    return item;
+  } else {
+    throw new Error('Item not found');
+  }
 }
 
-function dbAndItem(req) {
-  const urlParts = req.originalUrl.split('/');
-  const itemId = urlParts.pop();
-  const dbUrl = urlParts.join('/');
-  return { dbUrl, itemId };
+function remove(url, id) {
+  delete dbs[url][id];
 }
 
 module.exports = {
   addDb,
   clearAll,
-  deletes,
+  remove,
   get,
   getAll,
-  push
+  push,
+  meta
 };
