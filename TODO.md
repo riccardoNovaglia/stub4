@@ -1,6 +1,6 @@
 - DB-like for app?
 - - ~~Custom ID~~
-- - Load initial data from some json
+- - ~~Load initial data from some json~~
 - - UI
 - Pact?
 - Files for defaults/statics
