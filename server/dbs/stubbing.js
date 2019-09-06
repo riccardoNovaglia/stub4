@@ -23,6 +23,17 @@ function clearAll() {
   meta.reset();
 }
 
+function load(dbs) {
+  dbs.forEach(db => {
+    const { meta, data } = db;
+    const idAlias = meta.idAlias || 'id';
+
+    addDb(meta.url, idAlias);
+
+    data.forEach(item => push(meta.url, item[idAlias], item));
+  });
+}
+
 function push(url, id, item) {
   dbs[url][id] = item;
 }
@@ -53,6 +64,8 @@ function remove(url, id) {
 module.exports = {
   addDb,
   clearAll,
+  load,
+
   remove,
   get,
   getAll,
