@@ -1,30 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
-import { Stubs, fetchStubs } from './stubs/Stubs';
-import NewStub from './newStub/NewStub';
+import { Stubs } from './stubs/Stubs';
+import { DBs } from './dbs/DBs';
 
 import './App.scss';
 
 function App() {
-  const [stubs, setStubs] = useState({});
-  const [creating, setCreating] = useState(false);
-
-  useEffect(() => {
-    fetchStubs(setStubs);
-  }, [setStubs]);
-
-  const onStubCreated = async () => {
-    await fetchStubs(setStubs);
-    setCreating(false);
-  };
+  const [tab, setCurrentTab] = useState('stubs');
 
   return (
     <div className="App">
-      <button className="newStubBtn" onClick={() => setCreating(true)}>
-        New
-      </button>
-      {creating && <NewStub afterSuccessfulCreation={onStubCreated} />}
-      <Stubs stubs={stubs} />
+      <button onClick={() => setCurrentTab('stubs')}>Stubs</button>
+      <button onClick={() => setCurrentTab('dbs')}>DBs</button>
+      {tab === 'stubs' && <Stubs />}
+      {tab === 'dbs' && <DBs />}
     </div>
   );
 }

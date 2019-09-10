@@ -20,6 +20,22 @@ describe('Create db-like endpoints', () => {
     const response = await request(app).get('/some-url/1');
     expect(response.status).toEqual(404);
   });
+
+  it('can list all existing ones, their urls and id aliases', async () => {
+    await request(app)
+      .post('/dbs/new')
+      .send({ url: '/some-url' });
+    await request(app)
+      .post('/dbs/new')
+      .send({ url: '/some-other-one', idAlias: 'thingId' });
+
+    const response = await request(app).get('/dbs');
+    expect(response.status).toEqual(200);
+    expect(response.body).toEqual([
+      { url: '/some-url', idAlias: 'id' },
+      { url: '/some-other-one', idAlias: 'thingId' }
+    ]);
+  });
 });
 
 describe('Once the db is created', () => {

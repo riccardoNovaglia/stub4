@@ -5,6 +5,15 @@ const _ = require('lodash');
 
 const dbs = require('../stubbing');
 
+router.get('/', (req, res) => {
+  const data = Object.keys(dbs.meta.idAliases).map(dbUrl => ({
+    url: dbUrl,
+    idAlias: dbs.meta.getAlias(dbUrl)
+  }));
+
+  res.json(data);
+});
+
 router.post('/new', function(req, res) {
   const url = _.get(req.body, 'url');
   const idAlias = _.get(req.body, 'idAlias', 'id');

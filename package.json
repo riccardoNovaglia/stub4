@@ -1,12 +1,16 @@
 {
-    "name": "superstub",
-    "version": "1.0.0",
-    "description": "We'll see",
-    "main": "index.js",
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
-    },
-    "author": "",
-    "license": "ISC",
-    "dependencies": {}
+  "name": "superstub",
+  "version": "1.0.0",
+  "description": "We'll see",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start-client": "cd client && npm run start",
+    "sc": "npm run start-client",
+    "start-server": "cd server && npm run start",
+    "ss": "npm run start-server"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {}
 }

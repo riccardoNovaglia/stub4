@@ -1,42 +1,38 @@
-import _ from 'lodash';
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+
+import NewStub from './newStub/NewStub';
+import { StubsList } from './list/StubsList';
+import { SelectedStub } from './selected/SelectedStub';
 
 import './Stub.scss';
 
-export function Stubs({ stubs }) {
+export function Stubs() {
+  const [stubs, setStubs] = useState({});
+  const [creating, setCreating] = useState(false);
   const [selected, setSelected] = useState();
 
+  useEffect(() => {
+    fetchStubs(setStubs);
+  }, [setStubs]);
+
+  const onStubCreated = async () => {
+    await fetchStubs(setStubs);
+    setCreating(false);
+  };
+
   return (
-    <div className="stubs">
-      <div className="stubsList">
-        {_.isEmpty(stubs) && <p className="noStubsMsg">No stubs have been created yet</p>}
-        {Object.keys(stubs).map(stubUrl => (
-          <div key={`${stubUrl}-item`} className="stub" onClick={() => setSelected(stubs[stubUrl])}>
-            <p
-              className={
-                selected && selected.request.url === stubUrl ? 'selectedStubDef' : 'stubDef'
-              }
-            >
-              <span className="method">{stubs[stubUrl].request.method}</span>{' '}
-              <span className="url">{stubs[stubUrl].request.url}</span>
-              <span>→</span>
-              <span className="contentType">{stubs[stubUrl].response.contentType}</span>
-            </p>
-          </div>
-        ))}
+    <>
+      <h1>Stubs</h1>
+      <button className="newStubBtn" onClick={() => setCreating(true)}>
+        New
+      </button>
+      {creating && <NewStub afterSuccessfulCreation={onStubCreated} />}
+      <div className="stubs">
+        <StubsList stubs={stubs} selected={selected} setSelected={setSelected} />
+        {selected && <SelectedStub selectedStub={selected} />}
       </div>
-      {selected && (
-        <div className="selectedStub">
-          <div>
-            {selected.request.method} {selected.request.url}
-          </div>
-          <div>↓</div>
-          <div>{selected.response.contentType}</div>
-          <div>{selected.response.body}</div>
-        </div>
-      )}
-    </div>
+    </>
   );
 }
 

@@ -1,0 +1,30 @@
+.newDb {
+  width: 400px;
+  background-color: #4c5465;
+  color: rgb(108, 140, 167);
+  display: block;
+  padding: 30px 20px;
+  margin: 5px;
+
+  button {
+    margin-bottom: 10px;
+  }
+
+  label {
+    display: inline-block;
+    margin: 5px;
+    width: 200px;
+  }
+
+  input {
+    margin: 5px;
+  }
+
+  select {
+    margin: 5px;
+  }
+
+  .leadingSlash {
+    color: white;
+  }
+}
