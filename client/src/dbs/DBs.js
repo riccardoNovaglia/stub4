@@ -22,8 +22,8 @@ export function DBs() {
   };
 
   return (
-    <>
-      <h1>DBs</h1>
+    <div>
+      <h1 className="dbTitle">DBs</h1>
       <button className="newDbBtn" onClick={() => setCreating(true)}>
         New
       </button>
@@ -32,7 +32,7 @@ export function DBs() {
         <DBsList dbs={dbs} selected={selected} setSelected={setSelected} />
         {selected && <SelectedDb selectedDb={selected} />}
       </div>
-    </>
+    </div>
   );
 }
 

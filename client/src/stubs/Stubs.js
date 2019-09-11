@@ -22,8 +22,8 @@ export function Stubs() {
   };
 
   return (
-    <>
-      <h1>Stubs</h1>
+    <div>
+      <h1 className="stubTitle">Stubs</h1>
       <button className="newStubBtn" onClick={() => setCreating(true)}>
         New
       </button>
@@ -32,7 +32,7 @@ export function Stubs() {
         <StubsList stubs={stubs} selected={selected} setSelected={setSelected} />
         {selected && <SelectedStub selectedStub={selected} />}
       </div>
-    </>
+    </div>
   );
 }
 

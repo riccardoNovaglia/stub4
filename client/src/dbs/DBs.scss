@@ -2,11 +2,16 @@
   display: flex;
 }
 
+.dbTitle {
+  display: inline-block;
+}
+
 .newDbBtn {
   background-color: #4caf50; /* Green */
   border: none;
   color: white;
   padding: 15px 32px;
   margin-bottom: 15px;
+  margin-left: 50px;
   text-align: center;
 }
