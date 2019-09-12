@@ -10,8 +10,22 @@
   font-weight: bold;
 }
 
+.contentsLabel {
+  display: inline-block;
+}
+
+.editButton {
+  padding: 10px;
+  margin-left: 20px;
+  display: inline;
+}
+
 .dbContents {
   background-color: lightgray;
+}
+
+.dbContentsEdit {
+  height: auto;
 }
 
 .dbItem {

@@ -10,7 +10,7 @@ export function DBsList({ dbs, selected, setSelected }) {
         <p className="noDbsMsg">No dbs have been created yet</p>
       ) : (
         dbs.map(db => (
-          <div key={`${db}-item`} className="db" onClick={() => setSelected(db)}>
+          <div key={`${db.url}-item`} className="db" onClick={() => setSelected(db)}>
             <p className={selected && selected.url === db.url ? 'selectedDbDef' : 'dbDef'}>
               <span className="url">{db.url}</span>
               <span>→</span>
