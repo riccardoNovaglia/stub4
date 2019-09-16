@@ -18,18 +18,23 @@ export function SelectedDb({ selectedDb }) {
         <span className="length">{data.length}</span> items found in{' '}
         <span className="selectedUrl">{selectedDb.url}</span>
       </p>
-      <Contents dbUrl={selectedDb.url} data={data} />
+      <Contents
+        dbUrl={selectedDb.url}
+        data={data}
+        onUpdate={() => fetchDbData(selectedDb.url, setData)}
+      />
     </div>
   );
 }
 
-function Contents({ dbUrl, data }) {
+function Contents({ dbUrl, data, onUpdate }) {
   const [editing, setEditing] = useState(false);
   const [dbContents, setDbContents] = useState(() => JSON.stringify(data, null, 2));
 
   async function saveData() {
     await JSON.parse(dbContents).map(item => saveDbData(dbUrl, item));
     setEditing(false);
+    onUpdate();
   }
 
   return (
@@ -39,14 +44,19 @@ function Contents({ dbUrl, data }) {
         Edit
       </button>
       {editing ? (
-        <>
-          <button onClick={() => saveData()}>Save</button>
+        <div>
+          <button className="saveNewDbContents" onClick={() => saveData()}>
+            Save
+          </button>
           <textarea
+            wrap="off"
+            cols="90"
+            rows="30"
             value={dbContents}
             onChange={e => setDbContents(e.target.value)}
             className="dbContentsEdit"
           />
-        </>
+        </div>
       ) : (
         <div className="dbContents">
           [
