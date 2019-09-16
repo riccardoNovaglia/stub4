@@ -1,7 +1,7 @@
 - DB-like for app?
 - - ~~Custom ID~~
 - - ~~Load initial data from some json~~
-- - UI
+- - ~~UI~~
 - Pact?
 - Files for defaults/statics
 - Named app abstraction?
