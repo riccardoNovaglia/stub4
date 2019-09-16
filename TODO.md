@@ -3,6 +3,7 @@
 - - ~~Load initial data from some json~~
 - - ~~UI~~
 - Pact?
+- Help create definition/stub by pointing at openapi def
 - Files for defaults/statics
 - Named app abstraction?
 - Better matching?
