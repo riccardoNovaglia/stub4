@@ -19,9 +19,21 @@ function clearAll() {
   stubs = {};
 }
 
+function forEach(fn) {
+  Object.keys(stubs)
+    .map(url => stubs[url])
+    .forEach(stub => fn(stub));
+}
+
+function items() {
+  return Object.keys(stubs).map(url => stubs[url]);
+}
+
 module.exports = {
   add,
   all,
   clearAll,
-  get
+  get,
+  forEach,
+  items
 };
