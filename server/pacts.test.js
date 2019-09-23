@@ -3,7 +3,7 @@ const request = require('supertest');
 const { app } = require('./app');
 
 describe('Pact contracts generation for stubs', () => {
-  const generatedPactFilepath = './generatedTestPacts/consumer-provider.json';
+  const generatedPactFilepath = './generatedTestPacts/some-consumer-provider.json';
 
   beforeAll(() => {
     try {
@@ -16,7 +16,9 @@ describe('Pact contracts generation for stubs', () => {
       .post('/stubs/new')
       .send({ requestMatcher: { url: '/john' } });
 
-    const response = await request(app).post('/generate-pact');
+    const response = await request(app)
+      .post('/generate-pact')
+      .send({ consumer: 'some-consumer' });
     expect(response.statusCode).toEqual(200);
 
     const pact = JSON.parse(
@@ -30,7 +32,7 @@ describe('Pact contracts generation for stubs', () => {
 function aPact() {
   return {
     consumer: {
-      name: 'consumer'
+      name: 'some-consumer'
     },
     provider: {
       name: 'provider'

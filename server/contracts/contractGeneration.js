@@ -7,9 +7,9 @@ const stubs = require('../stubs/stubbing');
 
 const pactServerPort = 9093;
 
-async function generateContracts() {
+async function generateContracts({ consumer }) {
   const pact = new Pact({
-    consumer: 'consumer', // your own app?
+    consumer,
     provider: 'provider', // their app
     port: pactServerPort, // should at least try again
     log: path.resolve(process.cwd(), 'logs', 'pact.log'), //should move or turn off?

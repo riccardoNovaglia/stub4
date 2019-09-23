@@ -21,10 +21,10 @@ app.use('/stubs', stubs.router);
 
 app.use('/cruds', cruds.router);
 
-app.post('/generate-pact', async (_, res) => {
+app.post('/generate-pact', async (req, res) => {
   try {
     // should this publish too? or return them?
-    await generateContracts();
+    await generateContracts({ consumer: req.body.consumer });
   } catch (e) {
     log('whops', e);
   }
