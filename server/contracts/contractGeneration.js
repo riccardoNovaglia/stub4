@@ -28,7 +28,7 @@ async function generateContracts() {
         path: stub.request.url
       },
       willRespondWith: {
-        status: 200,
+        status: stub.response.statusCode,
         headers: { 'Content-Type': stub.response.contentType },
         body: stub.response.body
       }

@@ -65,6 +65,18 @@ describe('Setting up stubs', () => {
     });
   });
 
+  it('responds with the correct status code', async () => {
+    await request(app)
+      .post('/stubs/new')
+      .send({
+        requestMatcher: { url: '/failure' },
+        response: { statusCode: 543 }
+      });
+
+    const response = await request(app).get('/failure');
+    expect(response.statusCode).toEqual(543);
+  });
+
   it('returns an error if the url is not specified', async () => {
     const stubCreationResponse = await request(app)
       .post('/stubs/new')
