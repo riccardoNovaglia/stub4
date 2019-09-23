@@ -1,9 +1,9 @@
 const { clearAll, get, getAll, load } = require('./stubbing');
 
-describe('Loading dbs from an initialiser file', () => {
+describe('Loading cruds from an initialiser file', () => {
   afterEach(clearAll);
 
-  it('creates a db with some data', () => {
+  it('creates a crud with some data', () => {
     const someItem = { id: '1', some: 'content' };
 
     load([
@@ -17,7 +17,7 @@ describe('Loading dbs from an initialiser file', () => {
     expect(item).toEqual(someItem);
   });
 
-  it('creates a db with some data and custom id alias', () => {
+  it('creates a crud with some data and custom id alias', () => {
     const someItem = { bananaId: '1', status: 'ripe' };
 
     load([
@@ -31,7 +31,7 @@ describe('Loading dbs from an initialiser file', () => {
     expect(item).toEqual(someItem);
   });
 
-  it('loads multiple dbs', () => {
+  it('loads multiple cruds', () => {
     const aBanana = { bananaId: '1', status: 'ripe' };
     const things = [{ id: '1', status: 'ripe' }, { id: '2', status: 'not ripe' }];
     load([

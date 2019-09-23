@@ -1,35 +1,35 @@
 const request = require('supertest');
 const { app } = require('../app');
 
-describe('Create db-like endpoints', () => {
+describe('Create crud-like endpoints', () => {
   it('exists', async () => {
     const response = await request(app)
-      .post('/dbs/new')
+      .post('/cruds/new')
       .send({ url: '/some-url' });
     expect(response.status).toEqual(200);
   });
 
-  it('deletes all databases on demand', async () => {
+  it('deletes all cruds on demand', async () => {
     await request(app)
-      .post('/dbs/new')
+      .post('/cruds/new')
       .send({ url: '/some-url' });
     await request(app)
       .post('/some-url')
       .send({ id: '1', name: 'stuff' });
-    await request(app).post('/dbs/clear');
+    await request(app).post('/cruds/clear');
     const response = await request(app).get('/some-url/1');
     expect(response.status).toEqual(404);
   });
 
   it('can list all existing ones, their urls and id aliases', async () => {
     await request(app)
-      .post('/dbs/new')
+      .post('/cruds/new')
       .send({ url: '/some-url' });
     await request(app)
-      .post('/dbs/new')
+      .post('/cruds/new')
       .send({ url: '/some-other-one', idAlias: 'thingId' });
 
-    const response = await request(app).get('/dbs');
+    const response = await request(app).get('/cruds');
     expect(response.status).toEqual(200);
     expect(response.body).toEqual([
       { url: '/some-url', idAlias: 'id' },
@@ -38,14 +38,14 @@ describe('Create db-like endpoints', () => {
   });
 });
 
-describe('Once the db is created', () => {
-  const url = '/some-database';
+describe('Once the crud is created', () => {
+  const url = '/some-crud';
   beforeEach(async () => {
     await request(app)
-      .post('/dbs/new')
+      .post('/cruds/new')
       .send({ url });
   });
-  afterEach(async () => await request(app).post('/clear-dbs'));
+  afterEach(async () => await request(app).post('/clear-cruds'));
 
   it('can add things', async () => {
     const response = await request(app)
@@ -87,7 +87,7 @@ describe('Once the db is created', () => {
     expect(response.status).toEqual(404);
   });
 
-  it('dumps everything out of the database', async () => {
+  it('dumps everything out of the crud', async () => {
     await request(app)
       .post(url)
       .send({ id: '1', name: 'jimmy' });
@@ -101,7 +101,7 @@ describe('Once the db is created', () => {
     expect(response.body).toEqual([{ id: '1', name: 'jimmy' }, { id: '2', name: 'giorgy' }]);
   });
 
-  it('returns an empty list for an empty db', async () => {
+  it('returns an empty list for an empty crud', async () => {
     const response = await request(app).get(url);
 
     expect(response.status).toEqual(200);
@@ -110,25 +110,25 @@ describe('Once the db is created', () => {
 });
 
 describe('Custom IDs', () => {
-  const url = '/custom-id-db';
-  afterEach(async () => await request(app).post('/clear-dbs'));
+  const url = '/custom-id-crud';
+  afterEach(async () => await request(app).post('/clear-cruds'));
   it('accepts an id alias on creation and uses that going forward', async () => {
     await request(app)
-      .post('/dbs/new')
-      .send({ url: '/custom-id-db', idAlias: 'customerId' });
+      .post('/cruds/new')
+      .send({ url: '/custom-id-crud', idAlias: 'customerId' });
 
     await request(app)
-      .post('/custom-id-db')
+      .post('/custom-id-crud')
       .send({ customerId: '1', name: 'michelangelo' });
 
-    const response = await request(app).get('/custom-id-db/1');
+    const response = await request(app).get('/custom-id-crud/1');
     expect(response.status).toBe(200);
     expect(response.body).toEqual({ customerId: '1', name: 'michelangelo' });
   });
 
   it('deletes using a custom id', async () => {
     await request(app)
-      .post('/dbs/new')
+      .post('/cruds/new')
       .send({ url, idAlias: 'customerId' });
     await request(app)
       .post(url)
@@ -142,9 +142,9 @@ describe('Custom IDs', () => {
 });
 
 describe('Complex urls', () => {
-  it('can create db-likes with complex urls', async () => {
+  it('can create crud-likes with complex urls', async () => {
     const response = await request(app)
-      .post('/dbs/new')
+      .post('/cruds/new')
       .send({ url: '/some-url/with/version123' });
     expect(response.status).toEqual(200);
   });
@@ -152,7 +152,7 @@ describe('Complex urls', () => {
   it('can get stuff out of complex urls', async () => {
     const url = '/some-url/with/version123';
     await request(app)
-      .post('/dbs/new')
+      .post('/cruds/new')
       .send({ url });
 
     await request(app)
@@ -167,7 +167,7 @@ describe('Complex urls', () => {
   it('can get everything out of complex urls', async () => {
     const url = '/some-url/with/version123';
     await request(app)
-      .post('/dbs/new')
+      .post('/cruds/new')
       .send({ url });
 
     await request(app)

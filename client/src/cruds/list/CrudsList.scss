@@ -1,4 +1,4 @@
-.dbsList {
+.crudsList {
   width: 600px;
   height: 800px;
   color: lightblue;
@@ -7,7 +7,7 @@
   padding-top: 10px;
 }
 
-.noDbsMsg {
+.noCrudsMsg {
   text-align: center;
 }
 
@@ -16,22 +16,22 @@
   color: black;
 }
 
-.db {
+.crud {
   width: 100%;
   :hover {
     @extend .selected;
   }
 }
 
-.dbDef {
+.crudDef {
   padding: 10px 10px;
   margin: 0 5%;
   border-bottom: 1px solid grey;
   display: flex;
 }
 
-.selectedDbDef {
-  @extend .dbDef;
+.selectedCrudDef {
+  @extend .crudDef;
   @extend .selected;
   border: inset 1px dotted grey;
 }

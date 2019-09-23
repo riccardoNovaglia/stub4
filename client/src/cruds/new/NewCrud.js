@@ -1,22 +1,22 @@
 import React, { useState } from 'react';
 
-import * as dbClient from './DbClient';
+import * as crudClient from './CrudClient';
 
-import './NewDb.scss';
+import './NewCrud.scss';
 
-export function NewDb({ afterSuccessfulCreation }) {
+export function NewCrud({ afterSuccessfulCreation }) {
   const [url, setUrl] = useState('');
   const [idAlias, setIdAlias] = useState(undefined);
 
   const setup = async () => {
-    dbClient.createDb(`/${url}`, idAlias);
+    crudClient.createCrud(`/${url}`, idAlias);
     afterSuccessfulCreation();
   };
 
   const handle = setFn => event => setFn(event.target.value);
 
   return (
-    <div className="newDb">
+    <div className="newCrud">
       <button onClick={setup}>Save</button>
 
       <div>

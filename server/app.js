@@ -3,7 +3,7 @@ const express = require('express');
 const fs = require('fs');
 
 const stubs = require('./stubs');
-const dbs = require('./dbs');
+const cruds = require('./cruds');
 const { generateContracts } = require('./contracts/contractGeneration');
 
 const log = require('./logger');
@@ -14,12 +14,12 @@ app.use(bodyParser.json());
 function load(loadFile) {
   const contents = JSON.parse(fs.readFileSync(loadFile, { encoding: 'utf8' }).toString());
 
-  dbs.load(contents.dbs);
+  cruds.load(contents.cruds);
 }
 
 app.use('/stubs', stubs.router);
 
-app.use('/dbs', dbs.router);
+app.use('/cruds', cruds.router);
 
 app.post('/generate-pact', async (_, res) => {
   try {
@@ -31,7 +31,7 @@ app.post('/generate-pact', async (_, res) => {
   res.end();
 });
 
-app.all('*', stubs.middleware, dbs.middleware);
+app.all('*', stubs.middleware, cruds.middleware);
 
 module.exports = {
   app,

@@ -1,4 +1,4 @@
-.selectedDb {
+.selectedCrud {
   margin-left: 20px;
 }
 
@@ -20,20 +20,20 @@
   display: inline;
 }
 
-.dbContents {
+.crudContents {
   background-color: lightgray;
 }
 
-.dbContentsEdit {
+.crudContentsEdit {
   font-size: 16px;
 }
 
-.saveNewDbContents {
+.saveNewCrudContents {
   padding: 10px;
   margin-bottom: 20px;
   display: block;
 }
 
-.dbItem {
+.crudItem {
   padding-left: 5px;
 }

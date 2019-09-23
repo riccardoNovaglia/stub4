@@ -1,6 +1,6 @@
 const log = require('../logger');
 
-let dbs = {};
+let cruds = {};
 
 const meta = {
   idAliases: {},
@@ -15,45 +15,45 @@ const meta = {
   }
 };
 
-function addDb(url, idAlias) {
-  log(`Added db for ${url} with idAlias ${idAlias}`);
+function addCrud(url, idAlias) {
+  log(`Added crud for ${url} with idAlias ${idAlias}`);
 
-  dbs[url] = {};
+  cruds[url] = {};
   meta.pushAlias(url, idAlias);
 }
 
 function clearAll() {
-  dbs = {};
+  cruds = {};
   meta.reset();
 }
 
-function load(dbs) {
-  dbs.forEach(db => {
-    const { meta, data } = db;
+function load(cruds) {
+  cruds.forEach(crud => {
+    const { meta, data } = crud;
     const idAlias = meta.idAlias || 'id';
 
-    addDb(meta.url, idAlias);
+    addCrud(meta.url, idAlias);
 
     data.forEach(item => push(meta.url, item[idAlias], item));
   });
 }
 
 function push(url, id, item) {
-  dbs[url][id] = item;
+  cruds[url][id] = item;
 }
 
-function getAll(dbUrl) {
-  const matchedDb = dbs[dbUrl];
-  if (matchedDb) {
-    return Object.keys(matchedDb).map(id => matchedDb[id]);
+function getAll(crudUrl) {
+  const matchedCrud = cruds[crudUrl];
+  if (matchedCrud) {
+    return Object.keys(matchedCrud).map(id => matchedCrud[id]);
   } else {
-    throw new Error('DB not found');
+    throw new Error('CRUD not found');
   }
 }
 
 function get(url, id) {
-  const matchedDb = dbs[url];
-  const item = matchedDb[id];
+  const matchedCrud = cruds[url];
+  const item = matchedCrud[id];
   if (item) {
     return item;
   } else {
@@ -62,11 +62,11 @@ function get(url, id) {
 }
 
 function remove(url, id) {
-  delete dbs[url][id];
+  delete cruds[url][id];
 }
 
 module.exports = {
-  addDb,
+  addCrud,
   clearAll,
   load,
 

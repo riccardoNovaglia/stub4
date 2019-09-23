@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import { Stubs } from './stubs/Stubs';
-import { DBs } from './dbs/DBs';
+import { Cruds } from './cruds/Cruds';
 
 import './App.scss';
 
@@ -11,9 +11,9 @@ function App() {
   return (
     <div className="App">
       <button onClick={() => setCurrentTab('stubs')}>Stubs</button>
-      <button onClick={() => setCurrentTab('dbs')}>DBs</button>
+      <button onClick={() => setCurrentTab('cruds')}>Cruds</button>
       {tab === 'stubs' && <Stubs />}
-      {tab === 'dbs' && <DBs />}
+      {tab === 'cruds' && <Cruds />}
     </div>
   );
 }

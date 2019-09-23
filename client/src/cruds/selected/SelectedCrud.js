@@ -1,38 +1,38 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 
-import './SelectedDb.scss';
+import './SelectedCrud.scss';
 
-export function SelectedDb({ selectedDb }) {
+export function SelectedCrud({ selectedCrud }) {
   const [data, setData] = useState();
 
   useEffect(() => {
-    fetchDbData(selectedDb.url, setData);
-  }, [selectedDb.url, setData]);
+    fetchCrudData(selectedCrud.url, setData);
+  }, [selectedCrud.url, setData]);
 
   if (!data) return null;
 
   return (
-    <div className="selectedDb">
+    <div className="selectedCrud">
       <p>
         <span className="length">{data.length}</span> items found in{' '}
-        <span className="selectedUrl">{selectedDb.url}</span>
+        <span className="selectedUrl">{selectedCrud.url}</span>
       </p>
       <Contents
-        dbUrl={selectedDb.url}
+        crudUrl={selectedCrud.url}
         data={data}
-        onUpdate={() => fetchDbData(selectedDb.url, setData)}
+        onUpdate={() => fetchCrudData(selectedCrud.url, setData)}
       />
     </div>
   );
 }
 
-function Contents({ dbUrl, data, onUpdate }) {
+function Contents({ crudUrl, data, onUpdate }) {
   const [editing, setEditing] = useState(false);
-  const [dbContents, setDbContents] = useState(() => JSON.stringify(data, null, 2));
+  const [crudContents, setCrudContents] = useState(() => JSON.stringify(data, null, 2));
 
   async function saveData() {
-    await JSON.parse(dbContents).map(item => saveDbData(dbUrl, item));
+    await JSON.parse(crudContents).map(item => saveCrudData(crudUrl, item));
     setEditing(false);
     onUpdate();
   }
@@ -45,23 +45,23 @@ function Contents({ dbUrl, data, onUpdate }) {
       </button>
       {editing ? (
         <div>
-          <button className="saveNewDbContents" onClick={() => saveData()}>
+          <button className="saveNewCrudContents" onClick={() => saveData()}>
             Save
           </button>
           <textarea
             wrap="off"
             cols="90"
             rows="30"
-            value={dbContents}
-            onChange={e => setDbContents(e.target.value)}
-            className="dbContentsEdit"
+            value={crudContents}
+            onChange={e => setCrudContents(e.target.value)}
+            className="crudContentsEdit"
           />
         </div>
       ) : (
-        <div className="dbContents">
+        <div className="crudContents">
           [
           {data.map((item, index) => (
-            <pre key={`${index}-item`} className="dbItem">
+            <pre key={`${index}-item`} className="crudItem">
               {JSON.stringify(item, null, 2)},
             </pre>
           ))}
@@ -72,11 +72,11 @@ function Contents({ dbUrl, data, onUpdate }) {
   );
 }
 
-export const fetchDbData = async (url, set) => {
+export const fetchCrudData = async (url, set) => {
   const res = await axios.get(url);
   set(res.data);
 };
 
-export const saveDbData = async (url, data) => {
+export const saveCrudData = async (url, data) => {
   await axios.post(url, data);
 };
