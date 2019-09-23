@@ -7,6 +7,7 @@
 - - Where do we get info about the name of the app/consumer?
 - - Random port? Retry?
 - - State/Upon receiving?
+- - What do if the pact verification fails?
 - Record interactions and allow verification
 - - Use recorded interactions - replay against Pact provider to generate contract?
 - Help create definition/stub by pointing at openapi def
