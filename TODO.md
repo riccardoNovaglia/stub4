@@ -2,7 +2,13 @@
 - - ~~Custom ID~~
 - - ~~Load initial data from some json~~
 - - ~~UI~~
+- - Should they be called CRUDs?
 - Pact?
+- - Where do we get info about the name of the app/consumer?
+- - Random port? Retry?
+- - State/Upon receiving?
+- Record interactions and allow verification
+- - Use recorded interactions - replay against Pact provider to generate contract?
 - Help create definition/stub by pointing at openapi def
 - Files for defaults/statics
 - Named app abstraction?
