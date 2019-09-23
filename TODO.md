@@ -1,15 +1,20 @@
-- DB-like for app?
-- - ~~Custom ID~~
-- - ~~Load initial data from some json~~
-- - ~~UI~~
-- - Should they be called CRUDs?
 - Pact?
 - - Where do we get info about the name of the app/consumer?
 - - Random port? Retry?
 - - State/Upon receiving?
 - - What do if the pact verification fails?
-- Record interactions and allow verification
 - - Use recorded interactions - replay against Pact provider to generate contract?
+- Record interactions and allow verification
+- - Display on the page
+- - Allow verification via call in client?
+- Record and display all, even non matched
+- - Offer to setup stub for just-called?
+- DB-like for app?
+- - ~~Custom ID~~
+- - ~~Load initial data from some json~~
+- - ~~UI~~
+- - ~~Should they be called CRUDs?~~
+- - Defects. Editing doesn't quite refresh, maybe should enforce format? Later
 - Help create definition/stub by pointing at openapi def
 - Files for defaults/statics
 - Named app abstraction?
