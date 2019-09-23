@@ -34,7 +34,7 @@ async function generateContracts() {
       }
     });
 
-    return callStubXXX(pactServerPort, stub.request.url);
+    return callStub(pactServerPort, stub.request.url);
   });
 
   await Promise.all(interactions);
@@ -49,7 +49,7 @@ async function generateContracts() {
   await provider.finalize();
 }
 
-async function callStubXXX(port, url) {
+async function callStub(port, url) {
   return axios.get(`http://localhost:${port}${url}`);
 }
 
