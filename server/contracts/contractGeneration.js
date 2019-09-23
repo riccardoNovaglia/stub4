@@ -8,7 +8,7 @@ const stubs = require('../stubs/stubbing');
 const pactServerPort = 9093;
 
 async function generateContracts() {
-  const provider = new Pact({
+  const pact = new Pact({
     consumer: 'consumer', // your own app?
     provider: 'provider', // their app
     port: pactServerPort, // should at least try again
@@ -17,10 +17,10 @@ async function generateContracts() {
     logLevel: 'WARN' // make configurable
   });
 
-  await provider.setup();
+  await pact.setup();
 
   const interactions = stubs.items().map(stub => {
-    provider.addInteraction({
+    pact.addInteraction({
       state: `${stub.request.url} - state`,
       uponReceiving: `${stub.request.url} - uponReceiving`,
       withRequest: {
@@ -40,13 +40,13 @@ async function generateContracts() {
   await Promise.all(interactions);
 
   try {
-    await provider.verify();
+    await pact.verify();
   } catch (e) {
     // and then what?
     log('Pact provider Verification failed', e);
   }
 
-  await provider.finalize();
+  await pact.finalize();
 }
 
 async function callStub(port, url) {
