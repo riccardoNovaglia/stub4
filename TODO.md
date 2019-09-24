@@ -1,5 +1,5 @@
 - Record interactions and allow verification
-- - Display on the page
+- - ~~Display on the page~~
 - - Allow verification via call in client?
 - - Display unmatched interactions?
 - Pact?
