@@ -1,3 +1,6 @@
+- Record interactions and allow verification
+- - Display on the page
+- - Allow verification via call in client?
 - Pact?
 - - ~~Where do we get info about the name of the app/consumer?~~
 - - How do we match each interactions to the correct provider? And created different providers when creating contracts? Does it need to be setup with each stub? Is this where I need the App/Downstream abstraction once to set this up?
@@ -5,9 +8,6 @@
 - - State/Upon receiving?
 - - What do if the pact verification fails?
 - - Use recorded interactions - replay against Pact provider to generate contract?
-- Record interactions and allow verification
-- - Display on the page
-- - Allow verification via call in client?
 - Record and display all, even non matched
 - - Offer to setup stub for just-called?
 - DB-like for app?
