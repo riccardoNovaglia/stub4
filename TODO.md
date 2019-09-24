@@ -1,5 +1,6 @@
 - Pact?
-- - Where do we get info about the name of the app/consumer?
+- - ~~Where do we get info about the name of the app/consumer?~~
+- - How do we match each interactions to the correct provider? And created different providers when creating contracts? Does it need to be setup with each stub? Is this where I need the App/Downstream abstraction once to set this up?
 - - Random port? Retry?
 - - State/Upon receiving?
 - - What do if the pact verification fails?
