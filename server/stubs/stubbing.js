@@ -1,4 +1,7 @@
+const _ = require('lodash');
+
 let stubs = {};
+let interactions = {};
 
 function add(request, response) {
   stubs[request.url] = {
@@ -7,8 +10,8 @@ function add(request, response) {
   };
 }
 
-function get(req) {
-  return stubs[req.originalUrl];
+function get(url) {
+  return stubs[url];
 }
 
 function all() {
@@ -17,6 +20,7 @@ function all() {
 
 function clearAll() {
   stubs = {};
+  interactions = {};
 }
 
 function forEach(fn) {
@@ -29,11 +33,23 @@ function items() {
   return Object.keys(stubs).map(url => stubs[url]);
 }
 
+function count(url) {
+  return _.get(interactions[url], 'count', 0);
+}
+
+function countUp(url) {
+  interactions[url] = {
+    count: count(url) + 1
+  };
+}
+
 module.exports = {
   add,
   all,
   clearAll,
   get,
   forEach,
-  items
+  items,
+  countUp,
+  count
 };

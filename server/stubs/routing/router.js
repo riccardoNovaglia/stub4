@@ -27,4 +27,11 @@ router.post('/clear', (_, res) => {
   res.end();
 });
 
+router.post('/count', (req, res) => {
+  const url = req.body.url;
+
+  const count = stubs.count(url);
+  res.send({ count });
+});
+
 module.exports = router;
