@@ -1,6 +1,7 @@
 - Record interactions and allow verification
 - - Display on the page
 - - Allow verification via call in client?
+- - Display unmatched interactions?
 - Pact?
 - - ~~Where do we get info about the name of the app/consumer?~~
 - - How do we match each interactions to the correct provider? And created different providers when creating contracts? Does it need to be setup with each stub? Is this where I need the App/Downstream abstraction once to set this up?
