@@ -4,15 +4,19 @@ import React, { useEffect, useState } from 'react';
 import './SelectedStub.scss';
 
 export function SelectedStub({ selectedStub }) {
-  const [interactions, setInteractions] = useState(0);
+  const [interactions, setInteractions] = useState(undefined);
+  const [countClass, setCountClass] = useState('flashing');
 
   useEffect(() => {
     fetchInteractions(selectedStub.request.url, setInteractions);
-    const interval = setInterval(() => {
-      fetchInteractions(selectedStub.request.url, setInteractions);
-    }, 1000);
+    const interval = setInterval(
+      () => fetchInteractions(selectedStub.request.url, setInteractions),
+      1000
+    );
     return () => clearInterval(interval);
-  }, [selectedStub.request.url, setInteractions]);
+  }, [selectedStub.request.url, interactions]);
+
+  useEffect(() => flashItem(setCountClass), [interactions]);
 
   return (
     <>
@@ -24,12 +28,19 @@ export function SelectedStub({ selectedStub }) {
         <div>{selectedStub.response.contentType}</div>
         <div>{selectedStub.response.body}</div>
       </div>
-      <div className="interactions">Called {interactions.count} times</div>
+      {interactions && <div className={countClass}>Called {interactions} times</div>}
     </>
   );
 }
 
-export const fetchInteractions = async (url, set) => {
+async function fetchInteractions(url, set) {
   const res = await axios.post('/stubs/count', { url });
-  set(res.data);
-};
+  set(res.data.count);
+}
+
+function flashItem(setCountClass) {
+  setCountClass('flash');
+  setTimeout(() => {
+    setCountClass('');
+  }, 500);
+}
