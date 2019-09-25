@@ -21,11 +21,19 @@ export function Stubs() {
     setCreating(false);
   };
 
+  const clear = async () => {
+    await clearStubs();
+    await fetchStubs(setStubs);
+  };
+
   return (
     <div>
       <h1 className="stubTitle">Stubs</h1>
       <button className="newStubBtn" onClick={() => setCreating(true)}>
         New
+      </button>
+      <button className="clearStubBtn" onClick={() => clear()}>
+        CLEAR
       </button>
       {creating && <NewStub afterSuccessfulCreation={onStubCreated} />}
       <div className="stubs">
@@ -36,7 +44,11 @@ export function Stubs() {
   );
 }
 
-export const fetchStubs = async set => {
+const fetchStubs = async set => {
   const res = await axios.get('/stubs');
   set(res.data);
+};
+
+const clearStubs = async () => {
+  await axios.post('/stubs/clear');
 };
