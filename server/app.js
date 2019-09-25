@@ -4,6 +4,7 @@ const fs = require('fs');
 
 const stubs = require('./stubs');
 const cruds = require('./cruds');
+const unmatched = require('./unmatched');
 const { generateContracts } = require('./contracts/contractGeneration');
 
 const log = require('./logger');
@@ -21,6 +22,8 @@ app.use('/stubs', stubs.router);
 
 app.use('/cruds', cruds.router);
 
+app.use(unmatched.router);
+
 app.post('/generate-pact', async (req, res) => {
   try {
     // should this publish too? or return them?
@@ -31,7 +34,7 @@ app.post('/generate-pact', async (req, res) => {
   res.end();
 });
 
-app.all('*', stubs.middleware, cruds.middleware);
+app.all('*', stubs.middleware, cruds.middleware, unmatched.middleware);
 
 module.exports = {
   app,

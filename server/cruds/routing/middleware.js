@@ -5,7 +5,7 @@ function middleware(req, res, next) {
   try {
     switch (req.method) {
       case 'GET':
-        return getItem(req, res);
+        return getItem(req, res, next);
       case 'POST':
         return pushItem(req, res);
       case 'DELETE':
@@ -14,13 +14,13 @@ function middleware(req, res, next) {
         return next();
     }
   } catch (e) {
-    log(e);
+    // TODO: what
   } finally {
     next();
   }
 }
 
-function getItem(req, res) {
+function getItem(req, res, next) {
   try {
     const items = getAll(req.originalUrl);
     return res.json(items);
@@ -30,7 +30,7 @@ function getItem(req, res) {
       const item = get(url, id);
       return res.json(item);
     } catch (e) {
-      log(e);
+      next();
     }
   }
 }
