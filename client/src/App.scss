@@ -2,11 +2,11 @@ body {
   padding: 50px;
 }
 
-.stubsAndCruds {
-  display: inline-block;
+.App {
+  display: flex;
+  justify-content: space-between;
 }
 
 .unmatchedBody {
   margin-left: 50px;
-  display: inline-block;
 }

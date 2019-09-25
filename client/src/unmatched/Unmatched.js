@@ -10,6 +10,8 @@ export function Unmatched() {
 
   useEffect(() => {
     fetchUnmatched(setUnmatched);
+    const interval = setInterval(() => fetchUnmatched(setUnmatched), 1000);
+    return () => clearInterval(interval);
   }, [setUnmatched]);
 
   const clear = async () => {
@@ -19,7 +21,7 @@ export function Unmatched() {
 
   return (
     <div>
-      <h1 className="UnmatchedTitle">Unmatched</h1>
+      <h1 className="unmatchedTitle">Unmatched</h1>
       <button className="clearUnmatchedBtn" onClick={() => clear()}>
         CLEAR
       </button>

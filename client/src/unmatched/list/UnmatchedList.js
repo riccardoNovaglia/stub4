@@ -5,10 +5,10 @@ import './UnmatchedList.scss';
 
 export function UnmatchedList({ unmatched }) {
   return (
-    <div className="UnmatchedList">
+    <div className="unmatchedList">
       {_.isEmpty(unmatched) && <p className="noUnmatchedMsg">No Unmatched yet</p>}
-      {unmatched.map(unmatch => (
-        <div key={`${unmatch.url}-item`} className="unmatch">
+      {unmatched.map((unmatch, index) => (
+        <div key={`${index}-unmatch`} className="unmatch">
           <p className="unmatchedDef">
             <span className="method">{unmatch.method}</span>{' '}
             <span className="url">{unmatch.url}</span>
