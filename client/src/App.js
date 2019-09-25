@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 
 import { Stubs } from './stubs/Stubs';
 import { Cruds } from './cruds/Cruds';
+import { Unmatched } from './unmatched/Unmatched';
 
 import './App.scss';
 
@@ -17,11 +18,16 @@ function App() {
 
   return (
     <div className="App">
-      <button onClick={() => setCurrentTab('stubs')}>Stubs</button>
-      <button onClick={() => setCurrentTab('cruds')}>Cruds</button>
-      <button onClick={() => contracts()}>Generate Contracts</button> {pactsCreated && <p>Ok</p>}
-      {tab === 'stubs' && <Stubs />}
-      {tab === 'cruds' && <Cruds />}
+      <div className="stubsAndCruds">
+        <button onClick={() => setCurrentTab('stubs')}>Stubs</button>
+        <button onClick={() => setCurrentTab('cruds')}>Cruds</button>
+        <button onClick={() => contracts()}>Generate Contracts</button> {pactsCreated && <p>Ok</p>}
+        {tab === 'stubs' && <Stubs />}
+        {tab === 'cruds' && <Cruds />}
+      </div>
+      <div className="unmatchedBody">
+        <Unmatched />
+      </div>
     </div>
   );
 }

@@ -1,0 +1,17 @@
+.unmatcheds {
+  display: flex;
+}
+
+.unmatchedTitle {
+  display: inline-block;
+}
+
+.clearUnmatchedBtn {
+  background-color: #d52e2e; /* Red */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  margin-bottom: 15px;
+  margin-left: 50px;
+  text-align: center;
+}

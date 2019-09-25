@@ -1,0 +1,33 @@
+.unmatchedsList {
+  width: 400px;
+  height: 800px;
+  color: rgb(30, 36, 38);
+  background-color: #5c5e61;
+  border-bottom: 1px solid rgb(30, 36, 38);
+  padding-top: 10px;
+}
+
+.noUnmatchedsMsg {
+  text-align: center;
+}
+
+.unmatch {
+  width: 100%;
+}
+
+.unmatchedDef {
+  padding: 10px 10px;
+  margin: 0 5%;
+  border-bottom: 1px solid grey;
+  display: flex;
+}
+
+.method {
+  width: 20%;
+}
+
+.url {
+  width: 35%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
