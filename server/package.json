@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest --watch /*.test.js",
+    "test": "jest --watch ./src/**/*.test.js",
     "test:ci": "jest",
-    "start": "nodemon index.js --ignore generatedTestPacts --ignore logs",
+    "start": "nodemon src/index.js --ignore generatedTestPacts --ignore logs",
     "pretty": "prettier --write ./src/**/*.js"
   },
   "author": "",

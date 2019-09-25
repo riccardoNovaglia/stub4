@@ -1,3 +1,4 @@
+const log = require('../../logger');
 const stubs = require('../stubbing');
 
 function middleware(req, res, next) {
@@ -11,7 +12,7 @@ function middleware(req, res, next) {
       .status(matchedStub.response.statusCode)
       .send(matchedStub.response.body);
   } catch (e) {
-    console.log('Not a stub', e);
+    log('Not a stub', e);
     return next();
   }
 }

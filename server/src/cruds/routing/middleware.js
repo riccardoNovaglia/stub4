@@ -14,7 +14,7 @@ function middleware(req, res, next) {
         return next();
     }
   } catch (e) {
-    console.log('Not a crud', e);
+    log('Not a crud', e);
     return next();
   }
 }
@@ -29,7 +29,7 @@ function getItem(req, res, next) {
       const item = get(url, id);
       return res.json(item);
     } catch (e) {
-      console.log('Not a get crud', e);
+      log('Not a get crud', e);
       return next();
     }
   }
