@@ -1,8 +1,10 @@
+- What happens when we set the same stub twice?
 - Record interactions and allow verification
 - - ~~Display on the page~~
 - - Display unmatched interactions?
 - - Create stub from unmatched
-- - Allow verification via call in client?
+- - Allow verification via call in client
+- Proxyish
 - Pact?
 - - ~~Where do we get info about the name of the app/consumer?~~
 - - Make files desination configurable
