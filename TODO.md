@@ -1,4 +1,4 @@
-- What happens when we set the same stub twice?
+- ~~What happens when we set the same stub twice? Overwrites - fine for now~~
 - Record interactions and allow verification
 - - ~~Display on the page~~
 - - Display unmatched interactions?
@@ -28,4 +28,3 @@
 - - Starts with
 - - Ends with
 - - Contains?
-- Proxy?
