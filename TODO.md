@@ -1,7 +1,7 @@
 - ~~What happens when we set the same stub twice? Overwrites - fine for now~~
 - Record interactions and allow verification
 - - ~~Display on the page~~
-- - Display unmatched interactions?
+- - ~~Display unmatched interactions?~~
 - - Create stub from unmatched
 - - Allow verification via call in client
 - Proxyish
