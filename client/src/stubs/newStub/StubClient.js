@@ -3,28 +3,34 @@ import axios from 'axios';
 export async function stub(stubDefinition) {
   await axios.post('/stubs/new', {
     requestMatcher: { url: stubDefinition.url, method: stubDefinition.method },
-    response: { type: stubDefinition.type, body: stubDefinition.body }
+    response: {
+      type: stubDefinition.type,
+      body: stubDefinition.body,
+      statusCode: stubDefinition.statusCode
+    }
   });
 }
 
 export function get(url) {
   return {
-    returns: (type, body) => ({
+    returns: (type, body, status) => ({
       url,
       method: 'GET',
       type,
-      body
+      body,
+      statusCode: status
     })
   };
 }
 
 export function post(url) {
   return {
-    returns: (type, body) => ({
+    returns: (type, body, status) => ({
       url,
       method: 'POST',
       type,
-      body
+      body,
+      statusCode: status
     })
   };
 }

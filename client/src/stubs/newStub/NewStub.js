@@ -7,11 +7,12 @@ function NewStub({ afterSuccessfulCreation }) {
   const [url, setUrl] = useState('');
   const [method, setMethod] = useState('GET');
 
+  const [status, setStatus] = useState(200);
   const [body, setBody] = useState('');
   const [type, setType] = useState('text');
 
   const setup = async () => {
-    await stub(request(method, `/${url}`).returns(type, body));
+    await stub(request(method, `/${url}`).returns(type, body, status));
     afterSuccessfulCreation();
   };
 
@@ -33,6 +34,11 @@ function NewStub({ afterSuccessfulCreation }) {
         <label htmlFor="url">URL</label>
         <span className="leadingSlash">/</span>
         <input id="url" type="text" onChange={handle(setUrl)} value={url} />
+      </div>
+
+      <div>
+        <label htmlFor="status">STATUS</label>
+        <input id="status" type="text" onChange={handle(setStatus)} value={status} />
       </div>
 
       <div>
