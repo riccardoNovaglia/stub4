@@ -6,12 +6,12 @@ const unmatched = require('../unmatched');
 
 router.get('/unmatched', (_, res) => {
   const allUnmatched = unmatched.all();
-  res.json(allUnmatched);
+  return res.json(allUnmatched);
 });
 
 router.delete('/unmatched', (_, res) => {
   unmatched.clear();
-  res.end();
+  return res.end();
 });
 
 module.exports = router;

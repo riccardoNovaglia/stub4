@@ -11,7 +11,8 @@ function middleware(req, res, next) {
       .status(matchedStub.response.statusCode)
       .send(matchedStub.response.body);
   } catch (e) {
-    next();
+    console.log('Not a stub', e);
+    return next();
   }
 }
 

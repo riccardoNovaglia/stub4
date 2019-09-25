@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest --watch /*.test.js",
     "test:ci": "jest",
-    "start": "nodemon index.js",
+    "start": "nodemon index.js --ignore generatedTestPacts --ignore logs",
     "pretty": "prettier --write ./src/**/*.js"
   },
   "author": "",

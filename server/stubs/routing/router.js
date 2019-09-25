@@ -19,19 +19,19 @@ router.post('/new', function(req, res) {
 });
 
 router.get('/', (_, res) => {
-  res.json(stubs.all());
+  return res.json(stubs.all());
 });
 
 router.post('/clear', (_, res) => {
   stubs.clearAll();
-  res.end();
+  return res.end();
 });
 
 router.post('/count', (req, res) => {
   const url = req.body.url;
 
   const count = stubs.count(url);
-  res.send({ count });
+  return res.send({ count });
 });
 
 module.exports = router;

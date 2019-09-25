@@ -11,7 +11,7 @@ router.get('/', (req, res) => {
     idAlias: cruds.meta.getAlias(crudUrl)
   }));
 
-  res.json(data);
+  return res.json(data);
 });
 
 router.post('/new', function(req, res) {

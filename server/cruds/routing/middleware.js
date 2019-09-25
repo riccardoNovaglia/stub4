@@ -14,9 +14,8 @@ function middleware(req, res, next) {
         return next();
     }
   } catch (e) {
-    // TODO: what
-  } finally {
-    next();
+    console.log('Not a crud', e);
+    return next();
   }
 }
 
@@ -30,7 +29,8 @@ function getItem(req, res, next) {
       const item = get(url, id);
       return res.json(item);
     } catch (e) {
-      next();
+      console.log('Not a get crud', e);
+      return next();
     }
   }
 }

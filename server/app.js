@@ -31,7 +31,7 @@ app.post('/generate-pact', async (req, res) => {
   } catch (e) {
     log('whops', e);
   }
-  res.end();
+  return res.end();
 });
 
 app.all('*', stubs.middleware, cruds.middleware, unmatched.middleware);
