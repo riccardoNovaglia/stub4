@@ -1,0 +1,57 @@
+.new {
+  @extend .modal;
+
+  background-color: #4c5465;
+  color: white;
+  padding: 30px;
+
+  button {
+    margin-right: 10px;
+    margin-bottom: 10px;
+  }
+
+  label {
+    display: inline-block;
+    margin: 5px;
+    width: 200px;
+  }
+
+  input {
+    margin: 5px;
+  }
+
+  select {
+    margin: 5px;
+  }
+
+  .leadingSlash {
+    color: white;
+  }
+}
+
+.overlay {
+  z-index: 1000;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  opacity: 0.7;
+  background-color: rgb(65, 65, 65);
+}
+
+.modal {
+  z-index: 10001;
+
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  width: 600px;
+  max-width: 100%;
+  height: 400px;
+  max-height: 100%;
+}

@@ -1,39 +1,84 @@
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { Stubs } from './stubs/Stubs';
 import { Cruds } from './cruds/Cruds';
+import { Contracts } from './contracts/Contracts';
 import { Unmatched } from './unmatched/Unmatched';
+import { New, useHooky } from './new/New';
 
 import './App.scss';
 
-function App() {
+export default function App() {
   const [tab, setCurrentTab] = useState('stubs');
-  const [pactsCreated, setPactsCreated] = useState(false);
 
-  async function contracts() {
-    await generateContracts();
-    setPactsCreated(true);
-  }
+  const [building, setBuilding] = useState(false);
+  const [starter, setStarter] = useState(undefined);
+
+  const [stubs, setStubs] = useState({});
+  useEffect(() => {
+    fetchStubs(setStubs);
+  }, [setStubs]);
+
+  const [cruds, setCruds] = useState({});
+  useEffect(() => {
+    fetchCruds(setCruds);
+  }, [setCruds]);
+
+  const hooky = useHooky();
+
+  const build = starter => {
+    setBuilding(true);
+    setStarter(starter);
+    hooky.update(starter);
+  };
+  const doneBuilding = () => {
+    fetchStubs(setStubs);
+    fetchCruds(setCruds);
+    setBuilding(false);
+    setStarter(undefined);
+    hooky.clear();
+  };
 
   return (
-    <div className="App">
-      <div className="stubsAndCruds">
-        <button onClick={() => setCurrentTab('stubs')}>Stubs</button>
-        <button onClick={() => setCurrentTab('cruds')}>Cruds</button>
-        <button onClick={() => contracts()}>Generate Contracts</button> {pactsCreated && <p>Ok</p>}
-        {tab === 'stubs' && <Stubs />}
-        {tab === 'cruds' && <Cruds />}
+    <>
+      <New
+        starter={starter}
+        hooky={hooky}
+        building={building}
+        onBuilding={() => {
+          setStarter(undefined);
+          setBuilding(true);
+        }}
+        afterSuccessfulCreation={doneBuilding}
+        onEscape={doneBuilding}
+      />
+      <Contracts />
+      <div className="App">
+        <div className="stubsAndCruds">
+          <button onClick={() => setCurrentTab('stubs')}>Stubs</button>
+          <button onClick={() => setCurrentTab('cruds')}>Cruds</button>
+          {tab === 'stubs' && (
+            <Stubs stubs={stubs} setStarter={build} onClear={() => setStubs({})} />
+          )}
+          {tab === 'cruds' && (
+            <Cruds cruds={cruds} setStarter={build} onClear={() => setCruds({})} />
+          )}
+        </div>
+        <div className="unmatchedBody">
+          <Unmatched />
+        </div>
       </div>
-      <div className="unmatchedBody">
-        <Unmatched />
-      </div>
-    </div>
+    </>
   );
 }
 
-const generateContracts = async () => {
-  await axios.post('/generate-pact', { consumer: 'SomeApp' });
+const fetchStubs = async set => {
+  const res = await axios.get('/stubs');
+  set(res.data);
 };
 
-export default App;
+const fetchCruds = async set => {
+  const res = await axios.get('/cruds');
+  set(res.data);
+};

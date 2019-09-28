@@ -3,17 +3,17 @@ import React, { useState } from 'react';
 import './NewStub.scss';
 import { stub, request } from './StubClient';
 
-function NewStub({ afterSuccessfulCreation }) {
-  const [url, setUrl] = useState('');
-  const [method, setMethod] = useState('GET');
+function NewStub(props) {
+  const [url, setUrl] = useState(props.url);
+  const [method, setMethod] = useState(props.method);
 
   const [status, setStatus] = useState(200);
   const [body, setBody] = useState('');
   const [type, setType] = useState('text');
 
   const setup = async () => {
-    await stub(request(method, `/${url}`).returns(type, body, status));
-    afterSuccessfulCreation();
+    await stub(request(method, `${url}`).returns(type, body, status));
+    props.afterSuccessfulCreation();
   };
 
   const handle = setFn => event => setFn(event.target.value);
@@ -24,7 +24,7 @@ function NewStub({ afterSuccessfulCreation }) {
 
       <div>
         <label htmlFor="method">METHOD</label>
-        <select value={method} onChange={handle(setMethod)}>
+        <select value={method} onChange={handle(setMethod)} disabled>
           <option value="GET">GET</option>
           <option value="POST">POST</option>
         </select>
@@ -32,8 +32,7 @@ function NewStub({ afterSuccessfulCreation }) {
 
       <div>
         <label htmlFor="url">URL</label>
-        <span className="leadingSlash">/</span>
-        <input id="url" type="text" onChange={handle(setUrl)} value={url} />
+        <input id="url" type="text" onChange={handle(setUrl)} value={url} disabled />
       </div>
 
       <div>

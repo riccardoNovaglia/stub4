@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 
 import './SelectedStub.scss';
 
-export function SelectedStub({ selectedStub }) {
+export function SelectedStub({ selectedStub, setStarter }) {
   const [interactions, setInteractions] = useState(undefined);
   const [countClass, setCountClass] = useState('flashing');
 
@@ -27,6 +27,12 @@ export function SelectedStub({ selectedStub }) {
         <div>↓</div>
         <div>{selectedStub.response.contentType}</div>
         <div>{selectedStub.response.body}</div>
+        <button
+          className="newButton"
+          onClick={() => setStarter({ type: 'stub', stub: selectedStub })}
+        >
+          Edit
+        </button>
       </div>
       {interactions && <div className={countClass}>Called {interactions} times</div>}
     </>
