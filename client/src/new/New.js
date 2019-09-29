@@ -61,33 +61,36 @@ export function New({ afterSuccessfulCreation, building, onBuilding, onEscape, h
 
 export function defaults(starter) {
   const starterType = _.get(starter, 'type', 'none');
-
-  if (starterType === 'none') {
-    return {
-      starterType: 'stub',
-      initialUrl: '',
-      initialIdAlias: '',
-      initialMethod: 'GET',
-      initialStatus: 200,
-      initialBody: '{}',
-      initialType: 'json'
-    };
-  }
-
-  const initialUrl = _.get(starter, 'stub.request.url', '');
-  const initialMethod = _.get(starter, 'stub.request.method', 'GET');
-  const initialStatus = _.get(starter, 'stub.response.statusCode', 200);
-  const initialBody = _.get(starter, 'stub.response.body', '{}');
-  const initialType = _.get(starter, 'stub.response.type', 'json');
-  return {
-    starterType,
-    initialIdAlias: undefined,
-    initialUrl,
-    initialMethod,
-    initialStatus,
-    initialBody,
-    initialType
+  const defaultValues = {
+    starterType: 'stub',
+    initialUrl: '',
+    initialIdAlias: '',
+    initialMethod: 'GET',
+    initialStatus: 200,
+    initialBody: '{}',
+    initialType: 'json'
   };
+  switch (starterType) {
+    case 'none':
+      return defaultValues;
+    case 'unmatched':
+      return {
+        ...defaultValues,
+        initialUrl: _.get(starter, 'request.url', ''),
+        initialMethod: _.get(starter, 'request.method', 'GET')
+      };
+    case 'stub':
+      return {
+        ...defaultValues,
+        initialUrl: _.get(starter, 'stub.request.url', ''),
+        initialMethod: _.get(starter, 'stub.request.method', 'GET'),
+        initialStatus: _.get(starter, 'stub.response.statusCode', 200),
+        initialBody: _.get(starter, 'stub.response.body', '{}'),
+        initialType: _.get(starter, 'stub.response.type', 'json')
+      };
+    default:
+      return defaultValues;
+  }
 }
 
 export function useHooky() {
@@ -117,6 +120,7 @@ export function useHooky() {
     },
     update(starter) {
       const defaultValues = defaults(starter);
+
       stub.url.set(defaultValues.initialUrl);
       stub.status.set(defaultValues.initialStatus);
       stub.body.set(defaultValues.initialBody);

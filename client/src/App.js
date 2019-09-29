@@ -66,7 +66,7 @@ export default function App() {
           )}
         </div>
         <div className="unmatchedBody">
-          <Unmatched />
+          <Unmatched setStarter={build} />
         </div>
       </div>
     </>

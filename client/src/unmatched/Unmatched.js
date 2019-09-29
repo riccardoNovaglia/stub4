@@ -4,11 +4,9 @@ import React, { useEffect, useState } from 'react';
 import { UnmatchedList } from './list/UnmatchedList';
 
 import './Unmatched.scss';
-import NewStub from './newStub/NewStub';
 
-export function Unmatched() {
+export function Unmatched({ setStarter }) {
   const [unmatched, setUnmatched] = useState([]);
-  const [unmatchedSelected, setUnmatchedSelected] = useState(undefined);
 
   useEffect(() => {
     fetchUnmatched(setUnmatched);
@@ -27,19 +25,8 @@ export function Unmatched() {
       <button className="clearUnmatchedBtn" onClick={() => clear()}>
         CLEAR
       </button>
-      {unmatchedSelected && (
-        <NewStub
-          url={unmatchedSelected.url}
-          method={unmatchedSelected.method}
-          afterSuccessfulCreation={() => {}}
-        />
-      )}
       <div className="unmatched">
-        <UnmatchedList
-          unmatched={unmatched}
-          selected={unmatchedSelected}
-          onUnmatchedSelected={selected => setUnmatchedSelected(selected)}
-        />
+        <UnmatchedList unmatched={unmatched} setStarter={setStarter} />
       </div>
     </div>
   );

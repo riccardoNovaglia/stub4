@@ -1,8 +1,8 @@
 .unmatchedList {
   width: 400px;
   height: 800px;
-  color: rgb(30, 36, 38);
-  background-color: #5c5e61;
+  color: lightblue;
+  background-color: #282c34;
   border-bottom: 1px solid rgb(30, 36, 38);
   padding-top: 10px;
 }
@@ -18,8 +18,14 @@
 
 .unmatch {
   width: 100%;
+  .stubUnmatchedBtn {
+    display: none;
+  }
   :hover {
     @extend .selected;
+    .stubUnmatchedBtn {
+      display: block;
+    }
   }
 }
 
