@@ -1,6 +1,8 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 
+import './Contracts.scss';
+
 export function Contracts() {
   const [pactsCreated, setPactsCreated] = useState(false);
 
@@ -11,7 +13,9 @@ export function Contracts() {
 
   return (
     <>
-      <button onClick={() => contracts()}>Generate Contracts</button>
+      <button onClick={() => contracts()} className="contractsButton">
+        Generate Contracts
+      </button>
       {pactsCreated && <p>Ok</p>}
     </>
   );

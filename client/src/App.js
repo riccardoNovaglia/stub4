@@ -56,8 +56,20 @@ export default function App() {
       <Contracts />
       <div className="App">
         <div className="stubsAndCruds">
-          <button onClick={() => setCurrentTab('stubs')}>Stubs</button>
-          <button onClick={() => setCurrentTab('cruds')}>Cruds</button>
+          <ul className="tabrow">
+            <li
+              onClick={() => setCurrentTab('stubs')}
+              className={tab === 'stubs' ? 'selectedTab' : 'tab'}
+            >
+              Stubs
+            </li>
+            <li
+              onClick={() => setCurrentTab('cruds')}
+              className={tab === 'cruds' ? 'selectedTab' : 'tab'}
+            >
+              Cruds
+            </li>
+          </ul>
           {tab === 'stubs' && (
             <Stubs stubs={stubs} setStarter={build} onClear={() => setStubs({})} />
           )}
