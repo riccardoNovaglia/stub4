@@ -1,3 +1,4 @@
+const _ = require('lodash');
 const axios = require('axios');
 const path = require('path');
 const { Pact } = require('@pact-foundation/pact');
@@ -20,21 +21,23 @@ async function generateContracts({ consumer }) {
   await pact.setup();
 
   const interactions = stubs.items().map(stub => {
-    pact.addInteraction({
-      state: `${stub.request.url} - state`,
-      uponReceiving: `${stub.request.url} - uponReceiving`,
-      withRequest: {
-        method: stub.request.method,
-        path: stub.request.url
-      },
-      willRespondWith: {
-        status: stub.response.statusCode,
-        headers: { 'Content-Type': stub.response.contentType },
-        body: stub.response.body
-      }
-    });
+    if (!_.isEmpty(stub.request.contract)) {
+      pact.addInteraction({
+        state: stub.request.contract.state,
+        uponReceiving: stub.request.contract.uponReceiving,
+        withRequest: {
+          method: stub.request.method,
+          path: stub.request.url
+        },
+        willRespondWith: {
+          status: stub.response.statusCode,
+          headers: { 'Content-Type': stub.response.contentType },
+          body: stub.response.body
+        }
+      });
 
-    return callStub(pactServerPort, stub.request.url);
+      return callStub(pactServerPort, stub.request.url);
+    }
   });
 
   await Promise.all(interactions);
