@@ -1,10 +1,15 @@
+https://trello.com/b/BSfIfp9d/smact
+
 - ~~What happens when we set the same stub twice? Overwrites - fine for now~~
+
 - Record interactions and allow verification
 - - ~~Display on the page~~
 - - ~~Display unmatched interactions?~~
-- - Create stub from unmatched
+- - ~~Create stub from unmatched~~
 - - Allow verification via call in client
+
 - Proxyish
+
 - Pact?
 - - ~~Where do we get info about the name of the app/consumer?~~
 - - Make files desination configurable
@@ -13,17 +18,23 @@
 - - State/Upon receiving?
 - - What do if the pact verification fails?
 - - Use recorded interactions - replay against Pact provider to generate contract?
+
 - Record and display all, even non matched
 - - Offer to setup stub for just-called?
+
 - DB-like for app?
 - - ~~Custom ID~~
 - - ~~Load initial data from some json~~
 - - ~~UI~~
 - - ~~Should they be called CRUDs?~~
 - - Defects. Editing doesn't quite refresh, maybe should enforce format? Later
+
 - Help create definition/stub by pointing at openapi def
+
 - Files for defaults/statics
+
 - Named app abstraction?
+
 - Better matching?
 - - Starts with
 - - Ends with
