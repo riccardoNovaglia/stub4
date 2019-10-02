@@ -39,3 +39,7 @@ https://trello.com/b/BSfIfp9d/smact
 - - Starts with
 - - Ends with
 - - Contains?
+
+DEFECTS:
+
+- Request matching doesn't actually use the method...
