@@ -4,6 +4,7 @@ const fs = require('fs');
 
 const stubs = require('./stubs');
 const cruds = require('./cruds');
+const proxy = require('./proxy');
 const unmatched = require('./unmatched');
 const { generateContracts } = require('./contracts/contractGeneration');
 
@@ -22,6 +23,8 @@ app.use('/stubs', stubs.router);
 
 app.use('/cruds', cruds.router);
 
+app.use('/proxy', proxy.router);
+
 app.use(unmatched.router);
 
 app.post('/generate-pact', async (req, res) => {
@@ -34,7 +37,7 @@ app.post('/generate-pact', async (req, res) => {
   return res.end();
 });
 
-app.all('*', stubs.middleware, cruds.middleware, unmatched.middleware);
+app.all('*', stubs.middleware, cruds.middleware, proxy.middleware, unmatched.middleware);
 
 module.exports = {
   app,
