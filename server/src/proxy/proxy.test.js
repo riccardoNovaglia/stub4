@@ -2,12 +2,17 @@ const axios = require('axios');
 const { app } = require('../app');
 
 describe('Setting up stubs', () => {
+  let server;
   beforeAll(done => {
-    app.listen(9009, done);
+    server = app.listen(9009, done);
   });
 
   afterAll(() => {
-    app.close();
+    server.close();
+  });
+
+  afterEach(async () => {
+    await axios.delete('http://localhost:9009/proxy');
   });
 
   it('proxies requests to other endpoints, within the same app', async () => {
@@ -25,5 +30,21 @@ describe('Setting up stubs', () => {
     const proxiedResponse = await axios.get('http://localhost:9009/john');
     expect(proxiedResponse.status).toEqual(200);
     expect(proxiedResponse.data).toEqual('it worked!');
+  });
+
+  it('returns all created proxies', async () => {
+    await axios.post('http://localhost:9009/proxy/new', {
+      requestMatcher: { url: '/john' },
+      proxy: { destination: { url: 'http://localhost:9009/bananas' } }
+    });
+
+    const proxiedResponse = await axios.get('http://localhost:9009/proxy');
+    expect(proxiedResponse.status).toEqual(200);
+    expect(proxiedResponse.data).toEqual([
+      {
+        request: { url: '/john', method: 'GET' },
+        proxyUrl: 'http://localhost:9009/bananas'
+      }
+    ]);
   });
 });

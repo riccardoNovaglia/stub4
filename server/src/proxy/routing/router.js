@@ -16,4 +16,13 @@ router.post('/new', function(req, res) {
   }
 });
 
+router.get('/', function(_, res) {
+  res.json(proxy.all());
+});
+
+router.delete('/', function(_, res) {
+  proxy.clear();
+  res.end();
+});
+
 module.exports = router;
