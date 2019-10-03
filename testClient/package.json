@@ -1,5 +1,5 @@
 {
-  "name": "@mact/stubClient",
+  "name": "@stub4/stubClient",
   "version": "0.0.1",
   "description": "Client to programmatically setup stubs and more",
   "main": "index.js",
