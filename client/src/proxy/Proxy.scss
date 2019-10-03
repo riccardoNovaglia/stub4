@@ -1,0 +1,27 @@
+.proxyBody {
+  display: flex;
+}
+
+.proxyTitle {
+  display: inline-block;
+}
+
+.newProxyBtn {
+  background-color: #4caf50; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  margin-bottom: 15px;
+  margin-left: 50px;
+  text-align: center;
+}
+
+.clearProxyBtn {
+  background-color: #d52e2e; /* Red */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  margin-bottom: 15px;
+  margin-left: 50px;
+  text-align: center;
+}

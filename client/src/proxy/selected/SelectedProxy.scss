@@ -1,0 +1,31 @@
+@import '../Proxy.scss';
+
+.selectedProxy {
+  margin: 0 20px;
+  display: inline-block;
+}
+
+.flash {
+  animation-name: flash-update;
+  animation-duration: 0.3s;
+  -webkit-animation-name: flash-update;
+  -webkit-animation-duration: 0.3s;
+}
+
+@-webkit-keyframes flash-update {
+  from {
+    background: grey;
+  }
+  to {
+    background: default;
+  }
+}
+
+@keyframes flash-update {
+  from {
+    background: grey;
+  }
+  to {
+    background: default;
+  }
+}

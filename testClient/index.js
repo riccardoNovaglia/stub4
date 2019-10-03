@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export async function stub(stubDefinition) {
+async function stub(stubDefinition) {
   await axios.post('/stubs/new', {
     requestMatcher: { url: stubDefinition.url, method: stubDefinition.method },
     response: {
@@ -11,7 +11,7 @@ export async function stub(stubDefinition) {
   });
 }
 
-export function get(url) {
+function get(url) {
   return {
     returns: (type, body, status) => ({
       url,
@@ -23,7 +23,7 @@ export function get(url) {
   };
 }
 
-export function post(url) {
+function post(url) {
   return {
     returns: (type, body, status) => ({
       url,
@@ -35,7 +35,7 @@ export function post(url) {
   };
 }
 
-export function request(method, url) {
+function request(method, url) {
   switch (method) {
     case 'GET':
       return get(url);
@@ -46,8 +46,15 @@ export function request(method, url) {
   }
 }
 
-export async function createCrud(url, idAlias) {
+async function createCrud(url, idAlias) {
   await axios.post('/cruds/new', { url, idAlias });
+}
+
+async function proxyRequests(url, proxyUrl) {
+  await axios.post('/proxy/new', {
+    requestMatcher: { url },
+    proxy: { destination: { url: proxyUrl } }
+  });
 }
 
 export default {
@@ -55,5 +62,6 @@ export default {
   get,
   post,
   request,
-  createCrud
+  createCrud,
+  proxyRequests
 };

@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 
 import { Stubs } from './stubs/Stubs';
 import { Cruds } from './cruds/Cruds';
+import { Proxy } from './proxy/Proxy';
 import { Contracts } from './contracts/Contracts';
 import { Unmatched } from './unmatched/Unmatched';
 import { New, useHooky } from './new/New';
@@ -24,6 +25,11 @@ export default function App() {
   useEffect(() => {
     fetchCruds(setCruds);
   }, [setCruds]);
+
+  const [proxy, setProxy] = useState([]);
+  useEffect(() => {
+    fetchProxy(setProxy);
+  }, [setProxy]);
 
   const hooky = useHooky();
 
@@ -69,12 +75,21 @@ export default function App() {
             >
               Cruds
             </li>
+            <li
+              onClick={() => setCurrentTab('proxy')}
+              className={tab === 'proxy' ? 'selectedTab' : 'tab'}
+            >
+              Proxy
+            </li>
           </ul>
           {tab === 'stubs' && (
             <Stubs stubs={stubs} setStarter={build} onClear={() => setStubs({})} />
           )}
           {tab === 'cruds' && (
             <Cruds cruds={cruds} setStarter={build} onClear={() => setCruds({})} />
+          )}
+          {tab === 'proxy' && (
+            <Proxy proxy={proxy} setStarter={build} onClear={() => setProxy({})} />
           )}
         </div>
         <div className="unmatchedBody">
@@ -92,5 +107,10 @@ const fetchStubs = async set => {
 
 const fetchCruds = async set => {
   const res = await axios.get('/cruds');
+  set(res.data);
+};
+
+const fetchProxy = async set => {
+  const res = await axios.get('/proxy');
   set(res.data);
 };
