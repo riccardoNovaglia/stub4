@@ -45,3 +45,15 @@ export function request(method, url) {
       throw new Error('Not yet');
   }
 }
+
+export async function createCrud(url, idAlias) {
+  await axios.post('/cruds/new', { url, idAlias });
+}
+
+export default {
+  stub,
+  get,
+  post,
+  request,
+  createCrud
+};

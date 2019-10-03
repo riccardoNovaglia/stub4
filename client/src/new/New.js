@@ -1,11 +1,10 @@
 import _ from 'lodash';
 import React, { useState } from 'react';
 
-import { stub, request } from './StubClient';
-import { createCrud } from './CrudClient';
-
 import { Stub } from './Stub';
 import { Crud } from './Crud';
+
+import { stub, request, createCrud } from '@mact/mactTestClient';
 
 import './New.scss';
 
