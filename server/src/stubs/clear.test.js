@@ -15,7 +15,7 @@ describe('Clearing and listing stubs', () => {
 
     const stubsResponse = await request(app).get('/stubs');
     expect(stubsResponse.status).toEqual(200);
-    expect(stubsResponse.body).toEqual({});
+    expect(stubsResponse.body).toEqual([]);
   });
 
   it('returns the list of all setup stubs', async () => {
@@ -28,11 +28,11 @@ describe('Clearing and listing stubs', () => {
 
     const response = await request(app).get('/stubs');
     expect(response.status).toEqual(200);
-    expect(response.body).toMatchObject({
-      '/tubs': {
+    expect(response.body).toMatchObject([
+      {
         request: { method: 'GET', url: '/tubs' },
         response: { body: 'bods', contentType: 'text/plain' }
       }
-    });
+    ]);
   });
 });

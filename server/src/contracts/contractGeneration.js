@@ -20,7 +20,7 @@ async function generateContracts({ consumer }) {
 
   await pact.setup();
 
-  const interactions = stubs.items().map(stub => {
+  const interactions = stubs.all().map(stub => {
     if (!_.isEmpty(stub.request.contract)) {
       pact.addInteraction({
         state: stub.request.contract.state,

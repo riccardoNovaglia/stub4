@@ -16,7 +16,7 @@ export default function App() {
   const [building, setBuilding] = useState(false);
   const [starter, setStarter] = useState(undefined);
 
-  const [stubs, setStubs] = useState({});
+  const [stubs, setStubs] = useState([]);
   useEffect(() => {
     fetchStubs(setStubs);
   }, [setStubs]);

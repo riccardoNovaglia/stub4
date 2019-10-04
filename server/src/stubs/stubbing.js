@@ -1,17 +1,26 @@
 const _ = require('lodash');
 
-let stubs = {};
-let interactions = {};
+const stubs = [];
+const interactions = [];
 
 function add(request, response) {
-  stubs[request.url] = {
-    request,
-    response
-  };
+  const newStub = { request, response };
+  const stub = get(request.url);
+  if (stub) {
+    stub.request = newStub.request;
+    stub.response = newStub.response;
+  } else {
+    stubs.push(newStub);
+  }
 }
 
+// TODO: match method, headers
 function get(url) {
-  return stubs[url];
+  return stubs.find(stub => stub.request.url === url);
+}
+
+function getInteraction(url) {
+  return interactions.find(interaction => interaction.url === url);
 }
 
 function all() {
@@ -19,28 +28,22 @@ function all() {
 }
 
 function clearAll() {
-  stubs = {};
-  interactions = {};
+  stubs.length = 0;
+  interactions.length = 0;
 }
 
 function forEach(fn) {
-  Object.keys(stubs)
-    .map(url => stubs[url])
-    .forEach(stub => fn(stub));
-}
-
-function items() {
-  return Object.keys(stubs).map(url => stubs[url]);
+  stubs.forEach(stub => fn(stub));
 }
 
 function count(url) {
-  return _.get(interactions[url], 'count', 0);
+  const interaction = getInteraction(url);
+  return _.get(interaction, 'count', 0);
 }
 
 function countUp(url) {
-  interactions[url] = {
-    count: count(url) + 1
-  };
+  const interaction = getInteraction(url);
+  interaction ? (interaction.count += 1) : interactions.push({ url, count: 1 });
 }
 
 module.exports = {
@@ -49,7 +52,6 @@ module.exports = {
   clearAll,
   get,
   forEach,
-  items,
   countUp,
   count
 };
