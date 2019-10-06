@@ -35,15 +35,3 @@
   @extend .selected;
   border: inset 1px dotted grey;
 }
-
-.method {
-  width: 20%;
-}
-.url {
-  width: 35%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.contentType {
-  margin-left: auto;
-}

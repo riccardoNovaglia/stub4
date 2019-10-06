@@ -20,9 +20,9 @@ export function Unmatched({ setStarter }) {
   };
 
   return (
-    <div>
-      <h1 className="unmatchedTitle">Unmatched</h1>
-      <button className="clearUnmatchedBtn" onClick={() => clear()}>
+    <div className="panel unmatched">
+      <h1>Unmatched requests</h1>
+      <button className="clearBtn" onClick={() => clear()}>
         CLEAR
       </button>
       <div className="unmatched">

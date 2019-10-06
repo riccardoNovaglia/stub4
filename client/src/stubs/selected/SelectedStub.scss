@@ -1,23 +1,16 @@
 @import '../Stub.scss';
 
 .selectedStub {
-  margin: 0 20px;
+  margin: 0;
   display: inline-block;
-}
+  width: 50%;
+  background: #000;
+  text-align: center;
+  padding: 20px;
 
-.flash {
-  animation-name: flash-update;
-  animation-duration: 0.3s;
-  -webkit-animation-name: flash-update;
-  -webkit-animation-duration: 0.3s;
-}
-
-@-webkit-keyframes flash-update {
-  from {
-    background: grey;
-  }
-  to {
-    background: default;
+  .callCount {
+    animation-name: flash-update;
+    animation-duration: 0.3s;
   }
 }
 

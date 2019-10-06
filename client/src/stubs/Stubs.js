@@ -15,9 +15,9 @@ export function Stubs({ stubs, onClear, setStarter }) {
   };
 
   return (
-    <div>
-      <h1 className="stubTitle">Stubs</h1>
-      <button className="clearStubBtn" onClick={clear}>
+    <div className="panel">
+      <h1>Stubs</h1>
+      <button className="clearBtn" onClick={clear}>
         CLEAR
       </button>
       <div className="stubs">

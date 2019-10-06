@@ -1,10 +1,6 @@
 .unmatchedList {
-  width: 400px;
-  height: 800px;
   color: lightblue;
   background-color: #282c34;
-  border-bottom: 1px solid rgb(30, 36, 38);
-  padding-top: 10px;
 }
 
 .noUnmatchedMsg {
@@ -40,14 +36,4 @@
   @extend .unmatchDef;
   @extend .selected;
   border: inset 1px dotted grey;
-}
-
-.method {
-  width: 15%;
-}
-
-.url {
-  width: 85%;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
