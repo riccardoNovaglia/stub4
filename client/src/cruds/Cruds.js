@@ -1,16 +1,17 @@
-import axios from 'axios';
 import React, { useState } from 'react';
 
 import { CrudsList } from './list/CrudsList';
 import { SelectedCrud } from './selected/SelectedCrud';
-
+import Stub4 from '@stub4/stubClient';
 import './Cruds.scss';
+
+const crudClient = new Stub4.CrudClient();
 
 export function Cruds({ cruds, onClear }) {
   const [selected, setSelected] = useState();
 
   const clear = async () => {
-    await clearCruds();
+    await crudClient.clearCruds();
     onClear();
   };
 
@@ -27,7 +28,3 @@ export function Cruds({ cruds, onClear }) {
     </div>
   );
 }
-
-const clearCruds = async () => {
-  await axios.post('/cruds/clear');
-};

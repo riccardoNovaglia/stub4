@@ -1,15 +1,17 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import Stub4 from '@stub4/stubClient';
 
 import './SelectedStub.scss';
+
+const stubClient = new Stub4.StubClient();
 
 export function SelectedStub({ selectedStub, setStarter }) {
   const [interactions, setInteractions] = useState(undefined);
 
   useEffect(() => {
-    fetchInteractions(selectedStub.request.url, setInteractions);
+    stubClient.fetchInteractions(selectedStub.request.url, setInteractions);
     const interval = setInterval(
-      () => fetchInteractions(selectedStub.request.url, setInteractions),
+      () => stubClient.fetchInteractions(selectedStub.request.url, setInteractions),
       1000
     );
     return () => clearInterval(interval);
@@ -33,9 +35,4 @@ export function SelectedStub({ selectedStub, setStarter }) {
       </div>
     </>
   );
-}
-
-async function fetchInteractions(url, set) {
-  const res = await axios.post('/stubs/count', { url });
-  set(res.data.count);
 }

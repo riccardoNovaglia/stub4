@@ -1,13 +1,16 @@
-import axios from 'axios';
 import React, { useState } from 'react';
 
+import Stub4 from '@stub4/stubClient';
+
 import './Contracts.scss';
+
+const contractsClient = new Stub4.ContractsClient();
 
 export function Contracts() {
   const [pactsCreated, setPactsCreated] = useState(false);
 
   async function contracts() {
-    await generateContracts();
+    await contractsClient.generateContracts();
     setPactsCreated(true);
   }
 
@@ -20,7 +23,3 @@ export function Contracts() {
     </>
   );
 }
-
-const generateContracts = async () => {
-  await axios.post('/generate-pact', { consumer: 'SomeApp' });
-};

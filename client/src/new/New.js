@@ -5,9 +5,13 @@ import { Stub } from './Stub';
 import { Crud } from './Crud';
 import { Proxy } from './Proxy';
 
-import stubClient from '@stub4/stubClient';
+import Stub4 from '@stub4/stubClient';
 
 import './New.scss';
+
+const stubClient = new Stub4.StubClient();
+const crudClient = new Stub4.CrudClient();
+const proxyClient = new Stub4.ProxyClient();
 
 export function New({ afterSuccessfulCreation, building, onBuilding, onEscape, hooky }) {
   const setup = async () => {
@@ -18,8 +22,8 @@ export function New({ afterSuccessfulCreation, building, onBuilding, onEscape, h
             .returns(hooky.stub.type.value, hooky.stub.body.value, hooky.stub.status.value)
         )
       : hooky.starterType.starterType.value === 'crud'
-      ? await stubClient.createCrud(hooky.crud.url.value, hooky.crud.idAlias.value)
-      : await stubClient.proxyRequests(hooky.proxy.url.value, hooky.proxy.proxyUrl.value);
+      ? await crudClient.createCrud(hooky.crud.url.value, hooky.crud.idAlias.value)
+      : await proxyClient.proxyRequests(hooky.proxy.url.value, hooky.proxy.proxyUrl.value);
 
     afterSuccessfulCreation();
   };

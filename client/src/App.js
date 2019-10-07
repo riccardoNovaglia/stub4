@@ -1,4 +1,3 @@
-import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 
 import { Stubs } from './stubs/Stubs';
@@ -7,8 +6,13 @@ import { Proxy } from './proxy/Proxy';
 import { Contracts } from './contracts/Contracts';
 import { Unmatched } from './unmatched/Unmatched';
 import { New, useHooky } from './new/New';
+import Stub4 from '@stub4/stubClient';
 
 import './App.scss';
+
+const stubClient = new Stub4.StubClient();
+const crudClient = new Stub4.CrudClient();
+const proxyClient = new Stub4.ProxyClient();
 
 export default function App() {
   const [tab, setCurrentTab] = useState('stubs');
@@ -18,17 +22,17 @@ export default function App() {
 
   const [stubs, setStubs] = useState([]);
   useEffect(() => {
-    fetchStubs(setStubs);
+    stubClient.fetchStubs(setStubs);
   }, [setStubs]);
 
   const [cruds, setCruds] = useState({});
   useEffect(() => {
-    fetchCruds(setCruds);
+    crudClient.fetchCruds(setCruds);
   }, [setCruds]);
 
   const [proxy, setProxy] = useState([]);
   useEffect(() => {
-    fetchProxy(setProxy);
+    proxyClient.fetchProxy(setProxy);
   }, [setProxy]);
 
   const hooky = useHooky();
@@ -39,8 +43,8 @@ export default function App() {
     hooky.update(starter);
   };
   const doneBuilding = () => {
-    fetchStubs(setStubs);
-    fetchCruds(setCruds);
+    stubClient.fetchStubs(setStubs);
+    crudClient.fetchCruds(setCruds);
     setBuilding(false);
     setStarter(undefined);
     hooky.clear();
@@ -99,18 +103,3 @@ export default function App() {
     </>
   );
 }
-
-const fetchStubs = async set => {
-  const res = await axios.get('/stubs');
-  set(res.data);
-};
-
-const fetchCruds = async set => {
-  const res = await axios.get('/cruds');
-  set(res.data);
-};
-
-const fetchProxy = async set => {
-  const res = await axios.get('/proxy');
-  set(res.data);
-};

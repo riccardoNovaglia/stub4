@@ -1,13 +1,15 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 
+import Stub4 from '@stub4/stubClient';
+
 import './SelectedCrud.scss';
+const crudClient = new Stub4.CrudClient();
 
 export function SelectedCrud({ selectedCrud }) {
   const [data, setData] = useState();
 
   useEffect(() => {
-    fetchCrudData(selectedCrud.url, setData);
+    crudClient.fetchCrudData(selectedCrud.url, setData);
   }, [selectedCrud.url, setData]);
 
   if (!data) return null;
@@ -21,7 +23,7 @@ export function SelectedCrud({ selectedCrud }) {
       <Contents
         crudUrl={selectedCrud.url}
         data={data}
-        onUpdate={() => fetchCrudData(selectedCrud.url, setData)}
+        onUpdate={() => crudClient.fetchCrudData(selectedCrud.url, setData)}
       />
     </div>
   );
@@ -32,7 +34,7 @@ function Contents({ crudUrl, data, onUpdate }) {
   const [crudContents, setCrudContents] = useState(() => JSON.stringify(data, null, 2));
 
   async function saveData() {
-    await JSON.parse(crudContents).map(item => saveCrudData(crudUrl, item));
+    await JSON.parse(crudContents).map(item => crudClient.saveCrudData(crudUrl, item));
     setEditing(false);
     onUpdate();
   }
@@ -71,12 +73,3 @@ function Contents({ crudUrl, data, onUpdate }) {
     </>
   );
 }
-
-export const fetchCrudData = async (url, set) => {
-  const res = await axios.get(url);
-  set(res.data);
-};
-
-export const saveCrudData = async (url, data) => {
-  await axios.post(url, data);
-};

@@ -1,22 +1,25 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+
+import Stub4 from '@stub4/stubClient';
 
 import { UnmatchedList } from './list/UnmatchedList';
 
 import './Unmatched.scss';
 
+const unmatchedClient = new Stub4.UnmatchedClient();
+
 export function Unmatched({ setStarter }) {
   const [unmatched, setUnmatched] = useState([]);
 
   useEffect(() => {
-    fetchUnmatched(setUnmatched);
-    const interval = setInterval(() => fetchUnmatched(setUnmatched), 1000);
+    unmatchedClient.fetchUnmatched(setUnmatched);
+    const interval = setInterval(() => unmatchedClient.fetchUnmatched(setUnmatched), 1000);
     return () => clearInterval(interval);
   }, [setUnmatched]);
 
   const clear = async () => {
-    await clearUnmatched();
-    await fetchUnmatched(setUnmatched);
+    await unmatchedClient.clearUnmatched();
+    await unmatchedClient.fetchUnmatched(setUnmatched);
   };
 
   return (
@@ -31,12 +34,3 @@ export function Unmatched({ setStarter }) {
     </div>
   );
 }
-
-const fetchUnmatched = async set => {
-  const res = await axios.get('/Unmatched');
-  set(res.data);
-};
-
-const clearUnmatched = async () => {
-  await axios.delete('/unmatched');
-};

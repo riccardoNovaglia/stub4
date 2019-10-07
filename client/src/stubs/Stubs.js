@@ -1,16 +1,18 @@
-import axios from 'axios';
 import React, { useState } from 'react';
 
 import { StubsList } from './list/StubsList';
 import { SelectedStub } from './selected/SelectedStub';
+import Stub4 from '@stub4/stubClient';
 
 import './Stub.scss';
+
+const stubClient = new Stub4.StubClient();
 
 export function Stubs({ stubs, onClear, setStarter }) {
   const [selected, setSelected] = useState();
 
   const clear = async () => {
-    await clearStubs();
+    await stubClient.clearStubs();
     onClear();
   };
 
@@ -27,7 +29,3 @@ export function Stubs({ stubs, onClear, setStarter }) {
     </div>
   );
 }
-
-const clearStubs = async () => {
-  await axios.post('/stubs/clear');
-};

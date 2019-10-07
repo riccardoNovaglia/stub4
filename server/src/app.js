@@ -1,5 +1,6 @@
 const bodyParser = require('body-parser');
 const express = require('express');
+const cors = require('cors');
 const fs = require('fs');
 
 const stubs = require('./stubs');
@@ -12,6 +13,7 @@ const log = require('./logger');
 
 const app = express();
 app.use(bodyParser.json());
+app.use(cors());
 
 function load(loadFile) {
   const contents = JSON.parse(fs.readFileSync(loadFile, { encoding: 'utf8' }).toString());
