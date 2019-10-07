@@ -1,13 +1,11 @@
 import _ from 'lodash';
 import React from 'react';
 
-import './ProxyList.scss';
-
 export function ProxyList({ proxy, selected, setSelected }) {
   return (
     <div className="proxyList">
       {_.isEmpty(proxy) ? (
-        <p className="noProxyMsg">No proxy have been created yet</p>
+        <p className="noResultsMsg">No proxy have been created yet</p>
       ) : (
         proxy.map(proxy => (
           <div
@@ -18,7 +16,7 @@ export function ProxyList({ proxy, selected, setSelected }) {
             <p
               className={
                 selected && selected.request.url === proxy.request.url
-                  ? 'selectedProxyDef'
+                  ? 'proxyDef selected'
                   : 'proxyDef'
               }
             >

@@ -20,17 +20,18 @@ export function SelectedStub({ selectedStub, setStarter }) {
   return (
     <>
       <div className="selectedStub">
-        <div className={`method ${selectedStub.request.method}`}>{selectedStub.request.method}</div>
-        <div>{selectedStub.request.url}</div>
-        <div>↓</div>
-        <div>{selectedStub.response.contentType}</div>
-        <div>{selectedStub.response.body}</div>
-        <button
-          className="newButton"
-          onClick={() => setStarter({ type: 'stub', stub: selectedStub })}
-        >
-          Edit
-        </button>
+        <div className={`method ${selectedStub.request.method.toLowerCase()}`}>
+          {selectedStub.request.method}
+        </div>
+        <div className="url">{selectedStub.request.url}</div>
+        <div className="contentType">{selectedStub.response.contentType}</div>
+        <div className="responseBody">
+          <strong>Response body:</strong>
+          <pre>{selectedStub.response.body}</pre>
+          <button onClick={() => setStarter({ type: 'stub', stub: selectedStub })}>
+            <i className="material-icons">code</i>Edit
+          </button>
+        </div>
         {interactions && <div className="callCount">Called {interactions} times</div>}
       </div>
     </>

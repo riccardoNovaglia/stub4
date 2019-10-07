@@ -1,8 +1,6 @@
 import _ from 'lodash';
 import React from 'react';
 
-import './UnmatchedList.scss';
-
 export function UnmatchedList({ unmatched, setStarter }) {
   const setUnmatchedStarter = unmatch => () =>
     setStarter({
@@ -12,14 +10,14 @@ export function UnmatchedList({ unmatched, setStarter }) {
 
   return (
     <div className="unmatchedList">
-      {_.isEmpty(unmatched) && <p className="noUnmatchedMsg">No Unmatched yet</p>}
+      {_.isEmpty(unmatched) && <p className="noResultsMsg">No Unmatched yet</p>}
       {unmatched.map((unmatch, index) => (
         <div key={`${index}-unmatch`} className="unmatch">
-          <p className={'unmatchDef'}>
-            <span className="method">{unmatch.method}</span>{' '}
+          <p>
+            <span className={`method ${unmatch.method.toLowerCase()}`}>{unmatch.method}</span>{' '}
             <span className="url">{unmatch.url}</span>
             <button className="stubUnmatchedBtn" onClick={setUnmatchedStarter(unmatch)}>
-              Stub
+              <i className="material-icons">playlist_add</i>Create Stub
             </button>
           </p>
         </div>

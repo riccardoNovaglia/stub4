@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css?family=Maven+Pro&display=swap');
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons&display=swap');
+
 html {
   box-sizing: border-box;
 }
@@ -5,11 +8,33 @@ html {
 *:before,
 *:after {
   box-sizing: inherit;
+  font-family: 'Maven Pro', sans-serif;
 }
 
 body {
   padding: 30px;
   background-color: #1e1e1e;
+}
+
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 16px;
+  display: inline-block;
+  line-height: 16px;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+  vertical-align: middle;
+
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: 'liga';
+  padding-right: 5px;
 }
 
 .App {
@@ -35,6 +60,11 @@ body {
   padding: 0;
   line-height: 24px;
   max-width: 400px;
+
+  .material-icons {
+    padding-left: 5px;
+    padding-right: 0;
+  }
 }
 
 .tab {
@@ -65,14 +95,13 @@ body {
   font-weight: bold;
   top: 10px;
   right: 20px;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
 }
 
 .panel {
   width: 100%;
   position: relative;
   height: 800px;
-  color: lightblue;
+  color: #fff;
   background-color: #282c34;
   border-bottom: 1px solid grey;
 
@@ -83,39 +112,15 @@ body {
     width: 100%;
     line-height: 38px;
     background-color: #111;
+
+    .material-icons {
+      font-size: inherit;
+      padding-left: 10px;
+      padding-right: 0;
+    }
   }
 }
 
 .panel.unmatched {
   margin-top: 44px;
-}
-
-.method {
-  width: 75px;
-  text-align: center;
-  background-color: #111;
-  border-radius: 10px;
-  padding: 5px 9px;
-  margin-top: -5px;
-  margin-right: 40px;
-  font-weight: bold;
-}
-
-.method.GET {
-  background-color: #4caf50;
-}
-.method.DELETE {
-  background-color: #111;
-  color: #0c7e9d;
-}
-.method.POST {
-  background-color: #e37d1e;
-}
-
-.url {
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.contentType {
-  margin-left: auto;
 }

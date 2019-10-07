@@ -17,7 +17,9 @@ export function Contracts() {
   return (
     <>
       <button onClick={() => contracts()} className="contractsButton">
-        Generate Contracts
+        <span>
+          <i className="material-icons">dynamic_feed</i>Generate Contracts
+        </span>
       </button>
       {pactsCreated && <p>Ok</p>}
     </>

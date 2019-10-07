@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { CrudsList } from './list/CrudsList';
 import { SelectedCrud } from './selected/SelectedCrud';
 import Stub4 from '@stub4/stubClient';
-import './Cruds.scss';
 
 const crudClient = new Stub4.CrudClient();
 
@@ -16,10 +15,12 @@ export function Cruds({ cruds, onClear }) {
   };
 
   return (
-    <div>
-      <h1 className="crudTitle">Cruds</h1>
-      <button className="clearCrudBtn" onClick={clear}>
-        CLEAR
+    <div className="panel">
+      <h1>
+        Cruds<i className="material-icons">swap_horiz</i>
+      </h1>
+      <button className="clearBtn" onClick={clear}>
+        <i className="material-icons">clear_all</i>Clear
       </button>
       <div className="cruds">
         <CrudsList cruds={cruds} selected={selected} setSelected={setSelected} />

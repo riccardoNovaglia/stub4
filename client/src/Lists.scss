@@ -1,0 +1,106 @@
+.stubsList,
+.unmatchedList,
+.proxyList,
+.crudsList {
+  width: 100%;
+
+  .noResultsMsg {
+    text-align: center;
+  }
+
+  .stub,
+  .unmatch,
+  .proxyDef,
+  .crudDef {
+    padding: 10px 20px;
+    display: flex;
+    margin: 0;
+    width: 100%;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+
+    &:hover {
+      background-color: #000;
+      color: #fff;
+      padding-left: 40px;
+    }
+  }
+
+  .selected {
+    background-color: #000;
+    color: #fff;
+    padding-left: 60px;
+
+    &:hover {
+      padding-left: 60px;
+    }
+  }
+
+  p {
+    margin: 0;
+    padding: 5px;
+  }
+}
+
+.method {
+  width: 75px;
+  text-align: center;
+  background-color: #111;
+  border-radius: 10px;
+  padding: 5px 9px;
+  margin-top: -5px;
+  margin-right: 20px;
+  font-weight: bold;
+}
+
+.method.get {
+  background-color: #4caf50;
+}
+
+.method.delete {
+  background-color: #111;
+  color: #0c7e9d;
+}
+
+.method.post {
+  background-color: #e37d1e;
+}
+
+.url {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-right: 20px;
+  color: lightblue;
+}
+
+.contentType {
+  margin-left: auto;
+  margin-left: 20px;
+  color: #e37d1e;
+}
+
+.id {
+  margin-left: auto;
+  width: 45%;
+}
+
+.stubUnmatchedBtn {
+  background-color: #035597;
+  border: none;
+  border-radius: 2px;
+  color: #fff;
+  height: 38px;
+  font-size: 0.8em;
+  text-align: center;
+  position: absolute;
+  font-weight: bold;
+  top: 5px;
+  right: -150px;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
+  transition: all 0.2s ease-in;
+}
+
+.unmatch:hover .stubUnmatchedBtn {
+  right: 20px;
+}

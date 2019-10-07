@@ -18,9 +18,11 @@ export function Stubs({ stubs, onClear, setStarter }) {
 
   return (
     <div className="panel">
-      <h1>Stubs</h1>
+      <h1>
+        Stubs<i className="material-icons">import_export</i>
+      </h1>
       <button className="clearBtn" onClick={clear}>
-        CLEAR
+        <i className="material-icons">clear_all</i>Clear
       </button>
       <div className="stubs">
         <StubsList stubs={stubs} selected={selected} setSelected={setSelected} />

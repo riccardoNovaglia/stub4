@@ -37,30 +37,44 @@ export function New({ afterSuccessfulCreation, building, onBuilding, onEscape, h
   return (
     <>
       <button className="newButton" onClick={onBuilding}>
-        New
+        <span>
+          <i className="material-icons">add_box</i>New
+        </span>
       </button>
       {building && (
         <>
           <div className="new" onKeyDown={e => e.keyCode === 27 && close()}>
-            <button onClick={setup}>Save</button>
-            <button onClick={close}>Close</button>
+            <h1>
+              Create new
+              <div className="newSwitcher">
+                <select
+                  value={hooky.starterType.starterType.value}
+                  onChange={handle(hooky.starterType.starterType.set)}
+                >
+                  <option value="stub">stub</option>
+                  <option value="crud">crud</option>
+                  <option value="proxy">proxy</option>
+                </select>
+              </div>
+              <button onClick={close}>
+                <i className="material-icons">clear</i>Close
+              </button>
+            </h1>
+            <div>
+              {hooky.starterType.starterType.value === 'stub' ? (
+                <Stub stub={hooky.stub} handle={handle} />
+              ) : hooky.starterType.starterType.value === 'crud' ? (
+                <Crud crud={hooky.crud} handle={handle} />
+              ) : (
+                <Proxy proxy={hooky.proxy} handle={handle} />
+              )}
 
-            <select
-              value={hooky.starterType.starterType.value}
-              onChange={handle(hooky.starterType.starterType.set)}
-            >
-              <option value="stub">stub</option>
-              <option value="crud">crud</option>
-              <option value="proxy">proxy</option>
-            </select>
-
-            {hooky.starterType.starterType.value === 'stub' ? (
-              <Stub stub={hooky.stub} handle={handle} />
-            ) : hooky.starterType.starterType.value === 'crud' ? (
-              <Crud crud={hooky.crud} handle={handle} />
-            ) : (
-              <Proxy proxy={hooky.proxy} handle={handle} />
-            )}
+              <div className="buttonGroup">
+                <button onClick={setup}>
+                  <i className="material-icons">playlist_add</i>Save
+                </button>
+              </div>
+            </div>
           </div>
           <div className="overlay" />
         </>

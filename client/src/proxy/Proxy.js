@@ -4,8 +4,6 @@ import { ProxyList } from './list/ProxyList';
 import { SelectedProxy } from './selected/SelectedProxy';
 import Stub4 from '@stub4/stubClient';
 
-import './Proxy.scss';
-
 const proxyClient = new Stub4.ProxyClient();
 
 export function Proxy({ proxy, onClear, setStarter }) {
@@ -17,10 +15,12 @@ export function Proxy({ proxy, onClear, setStarter }) {
   };
 
   return (
-    <div>
-      <h1 className="proxyTitle">Proxy</h1>
-      <button className="clearProxyBtn" onClick={clear}>
-        CLEAR
+    <div className="panel">
+      <h1>
+        Proxy<i className="material-icons">redo</i>
+      </h1>
+      <button className="clearBtn" onClick={clear}>
+        <i className="material-icons">clear_all</i>Clear
       </button>
       <div className="proxyBody">
         <ProxyList proxy={proxy} selected={selected} setSelected={setSelected} />

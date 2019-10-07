@@ -35,7 +35,14 @@ export function Stub({ stub, handle }) {
 
       <div>
         <label htmlFor="body">BODY</label>
-        <input id="body" type="text" onChange={handle(stub.body.set)} value={stub.body.value} />
+        <textarea
+          id="body"
+          className="responseBody"
+          onChange={handle(stub.body.set)}
+          rows="5"
+          cols="33"
+          value={stub.body.value}
+        />
       </div>
     </>
   );

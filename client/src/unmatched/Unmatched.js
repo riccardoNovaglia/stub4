@@ -4,8 +4,6 @@ import Stub4 from '@stub4/stubClient';
 
 import { UnmatchedList } from './list/UnmatchedList';
 
-import './Unmatched.scss';
-
 const unmatchedClient = new Stub4.UnmatchedClient();
 
 export function Unmatched({ setStarter }) {
@@ -24,9 +22,11 @@ export function Unmatched({ setStarter }) {
 
   return (
     <div className="panel unmatched">
-      <h1>Unmatched requests</h1>
+      <h1>
+        Unmatched requests<i className="material-icons">call_missed</i>
+      </h1>
       <button className="clearBtn" onClick={() => clear()}>
-        CLEAR
+        <i className="material-icons">clear_all</i>Clear
       </button>
       <div className="unmatched">
         <UnmatchedList unmatched={unmatched} setStarter={setStarter} />
