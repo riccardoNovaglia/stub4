@@ -19,6 +19,7 @@ function load(loadFile) {
   const contents = JSON.parse(fs.readFileSync(loadFile, { encoding: 'utf8' }).toString());
 
   cruds.load(contents.cruds);
+  stubs.load(contents.stub);
 }
 
 app.use('/stubs', stubs.router);
