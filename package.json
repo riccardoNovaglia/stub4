@@ -2,7 +2,10 @@
   "name": "@stub4/stub4",
   "version": "0.0.0",
   "description": "We'll see",
-  "repository": "https://github.com/riccardoNovaglia/stub4",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/riccardoNovaglia/stub4.git"
+  },
   "main": "./server/src/index.js",
   "scripts": {
     "test": "cd server && npm run test:ci",
@@ -16,7 +19,7 @@
     "build:client": "cd client  && npm run build",
     "build:server": "cd server  && npm run build"
   },
-  "author": "",
+  "author": "Riccardo <stub4js+npm@gmail.com>",
   "license": "ISC",
   "dependencies": {
     "@pact-foundation/pact": "^9.1.1",
@@ -47,5 +50,12 @@
   "files": [
     "dist",
     "lib"
-  ]
+  ],
+  "bugs": {
+    "url": "https://github.com/riccardoNovaglia/stub4/issues"
+  },
+  "homepage": "https://github.com/riccardoNovaglia/stub4#readme",
+  "directories": {
+    "lib": "lib"
+  }
 }
