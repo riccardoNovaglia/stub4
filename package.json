@@ -1,6 +1,6 @@
 {
   "name": "@stub4/stub4",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "We'll see",
   "repository": "https://github.com/riccardoNovaglia/stub4",
   "main": "./server/src/index.js",
@@ -40,5 +40,12 @@
   },
   "bin": {
     "stub4": "./lib/bin.js"
-  }
+  },
+  "engines": {
+    "node": "8"
+  },
+  "files": [
+    "dist",
+    "lib"
+  ]
 }

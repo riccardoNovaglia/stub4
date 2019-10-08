@@ -1,5 +1,5 @@
 {
-  "name": "@stub4/stubClient",
+  "name": "@stub4/stub-client",
   "version": "0.0.1",
   "description": "Client to programmatically setup stubs and more",
   "main": "index.js",
