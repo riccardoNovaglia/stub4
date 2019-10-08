@@ -13,8 +13,9 @@
   "scripts": {
     "start": "PORT=8081 react-scripts start",
     "build": "react-scripts build",
+    "postbuild": "cp -r build/ ../dist",
     "test": "react-scripts test",
-    "build:local": "npm run build && cp -r build ../server"
+    "build:local": "npm run build && cp -r build ../server/dist"
   },
   "proxy": "http://localhost:8080",
   "browserslist": {

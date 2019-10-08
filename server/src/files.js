@@ -3,10 +3,12 @@ const path = require('path');
 
 const files = express();
 
-files.use(express.static('build', { index: false }));
+const clientFiles = path.resolve(__dirname, '../dist');
+
+files.use(express.static(clientFiles, { index: false }));
 
 files.get('*', (_, res) => {
-  res.sendFile(path.resolve('build', 'index.html'));
+  res.sendFile(path.resolve(clientFiles, 'index.html'));
 });
 
 module.exports = files;
