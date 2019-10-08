@@ -1,4 +1,10 @@
 {
+  "stubs": [
+    {
+      "requestMatcher": { "url": "/some-url" },
+      "response": { "body": "this was setup", "type": "text" }
+    }
+  ],
   "cruds": [
     {
       "meta": { "url": "/some-url" },
