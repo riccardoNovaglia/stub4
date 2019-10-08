@@ -1,6 +1,6 @@
 {
   "name": "@stub4/stub4",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "We'll see",
   "repository": {
     "type": "git",
@@ -17,7 +17,13 @@
     "cleanup-build": "rm -rf ./lib && mkdir lib && rm -rf ./dist && mkdir dist",
     "build": "npm run build:server && npm run build:client",
     "build:client": "cd client  && npm run build",
-    "build:server": "cd server  && npm run build"
+    "build:server": "cd server  && npm run build",
+    "install:all": "npm install && npm run install:client && npm run install:server",
+    "install:client": "cd client && npm install",
+    "install:server": "cd server && npm install",
+    "audit-fix:all": "npm audit --fix && npm run audit-fix:client && npm run audit-fix:server",
+    "audit-fix:client": "cd client && npm audit --fix",
+    "audit-fix:server": "cd server && npm audit --fix"
   },
   "author": "Riccardo <stub4js+npm@gmail.com>",
   "license": "ISC",
@@ -43,9 +49,6 @@
   },
   "bin": {
     "stub4": "./lib/bin.js"
-  },
-  "engines": {
-    "node": "8"
   },
   "files": [
     "dist",
