@@ -1,7 +1,6 @@
 #!/usr/bin/env node
-
-const { app, load } = require('./build/src/app');
-const files = require('./server/src/files');
+const { app, load } = require('./app');
+const files = require('./files');
 
 try {
   const loadFile = process.argv[2];
