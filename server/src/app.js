@@ -4,6 +4,7 @@ const cors = require('cors');
 const fs = require('fs');
 
 const stubs = require('./stubs');
+const scenarios = require('./scenarios');
 const cruds = require('./cruds');
 const proxy = require('./proxy');
 const unmatched = require('./unmatched');
@@ -24,6 +25,8 @@ function load(loadFile) {
 
 app.use('/stubs', stubs.router);
 
+app.use('/scenarios', scenarios.router);
+
 app.use('/cruds', cruds.router);
 
 app.use('/proxy', proxy.router);
@@ -40,7 +43,14 @@ app.post('/generate-pact', async (req, res) => {
   return res.end();
 });
 
-app.all('*', stubs.middleware, cruds.middleware, proxy.middleware, unmatched.middleware);
+app.all(
+  '*',
+  stubs.middleware,
+  scenarios.middleware,
+  cruds.middleware,
+  proxy.middleware,
+  unmatched.middleware
+);
 
 module.exports = {
   app,
