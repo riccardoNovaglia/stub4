@@ -27,6 +27,7 @@ router.post('/clear', (_, res) => {
   return res.end();
 });
 
+// TODO: GET?!
 router.post('/count', (req, res) => {
   const url = req.body.url;
 
