@@ -1,0 +1,29 @@
+{
+  "name": "@stub4/client",
+  "version": "0.0.1",
+  "description": "Client to programmatically setup stubs and more",
+  "main": "src/index.js",
+  "author": "Riccardo <stub4js+npm@gmail.com>",
+  "scripts": {
+    "test": "jest:ci"
+  },
+  "dependencies": {
+    "axios": "^0.19.0",
+    "lodash": "^4.17.15"
+  },
+  "devDependencies": {
+    "jest": "^24.8.0"
+  },
+  "license": "ISC",
+  "files": [
+    "src"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/riccardoNovaglia/stub4.git"
+  },
+  "bugs": {
+    "url": "https://github.com/riccardoNovaglia/stub4/issues"
+  },
+  "homepage": "https://github.com/riccardoNovaglia/stub4#readme"
+}

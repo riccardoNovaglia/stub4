@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Stub4 from '@stub4/stubClient';
+import Stub4 from '@stub4/client';
 
 import './SelectedStub.scss';
 

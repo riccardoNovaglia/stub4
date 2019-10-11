@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import Stub4 from '@stub4/stubClient';
+import Stub4 from '@stub4/client';
 
 import './Contracts.scss';
 

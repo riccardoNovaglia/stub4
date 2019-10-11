@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { CrudsList } from './list/CrudsList';
 import { SelectedCrud } from './selected/SelectedCrud';
-import Stub4 from '@stub4/stubClient';
+import Stub4 from '@stub4/client';
 
 const crudClient = new Stub4.CrudClient();
 

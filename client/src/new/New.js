@@ -5,7 +5,7 @@ import { Stub } from './Stub';
 import { Crud } from './Crud';
 import { Proxy } from './Proxy';
 
-import Stub4 from '@stub4/stubClient';
+import Stub4 from '@stub4/client';
 
 import './New.scss';
 

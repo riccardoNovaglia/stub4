@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { ProxyList } from './list/ProxyList';
 import { SelectedProxy } from './selected/SelectedProxy';
-import Stub4 from '@stub4/stubClient';
+import Stub4 from '@stub4/client';
 
 const proxyClient = new Stub4.ProxyClient();
 

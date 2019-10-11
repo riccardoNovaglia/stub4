@@ -6,7 +6,7 @@ import { Proxy } from './proxy/Proxy';
 import { Contracts } from './contracts/Contracts';
 import { Unmatched } from './unmatched/Unmatched';
 import { New, useHooky } from './new/New';
-import Stub4 from '@stub4/stubClient';
+import Stub4 from '@stub4/client';
 
 import './App.scss';
 import './Lists.scss';

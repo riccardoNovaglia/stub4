@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { StubsList } from './list/StubsList';
 import { SelectedStub } from './selected/SelectedStub';
-import Stub4 from '@stub4/stubClient';
+import Stub4 from '@stub4/client';
 
 import './Stub.scss';
 
