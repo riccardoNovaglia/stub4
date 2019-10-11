@@ -15,8 +15,8 @@ function add(request, response) {
 }
 
 // TODO: match method, headers
-function get(url) {
-  return stubs.find(stub => stub.request.url === url);
+function get(url, method = 'GET') {
+  return stubs.find(stub => stub.request.url === url && stub.request.method === method);
 }
 
 function getInteraction(url) {

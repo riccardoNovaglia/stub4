@@ -4,8 +4,9 @@ const stubs = require('../stubbing');
 function middleware(req, res, next) {
   try {
     const url = req.originalUrl;
+    const method = req.method;
 
-    const matchedStub = stubs.get(url);
+    const matchedStub = stubs.get(url, method);
     stubs.countUp(url);
     return res
       .set('Content-Type', matchedStub.response.contentType)

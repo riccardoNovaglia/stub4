@@ -48,6 +48,18 @@ describe('Setting up stubs', () => {
     expect(response.body).toEqual({ just: 'posted' });
   });
 
+  it('only replies to the stub on the method setup', async () => {
+    await request(app)
+      .post('/stubs/new')
+      .send({
+        requestMatcher: { method: 'POST', url: '/post-only' },
+        response: { body: { just: 'posted' } }
+      });
+
+    const response = await request(app).get('/post-only');
+    expect(response.status).toEqual(404);
+  });
+
   it('responds with the correct body format and header given a response type', async () => {
     await request(app)
       .post('/stubs/new')
