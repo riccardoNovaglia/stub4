@@ -16,6 +16,9 @@ export function UnmatchedList({ unmatched, setStarter }) {
           <p>
             <span className={`method ${unmatch.method.toLowerCase()}`}>{unmatch.method}</span>{' '}
             <span className="url">{unmatch.url}</span>
+            <span className="called">
+              Called {unmatch.called > 1 ? `${unmatch.called} times` : 'once'}
+            </span>
             <button className="stubUnmatchedBtn" onClick={setUnmatchedStarter(unmatch)}>
               <i className="material-icons">playlist_add</i>Create Stub
             </button>

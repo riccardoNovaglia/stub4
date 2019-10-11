@@ -13,6 +13,7 @@ describe('Saving and returning unmatched interactions', () => {
     const unmatched = await request(app).get('/unmatched');
     expect(unmatched.status).toEqual(200);
     expect(unmatched.body[0].url).toEqual('/this-dont-exist');
+    expect(unmatched.body[0].called).toEqual(1);
   });
 
   it('also saves the method of the call', async () => {
@@ -22,8 +23,8 @@ describe('Saving and returning unmatched interactions', () => {
     const unmatched = await request(app).get('/unmatched');
     expect(unmatched.status).toEqual(200);
     expect(unmatched.body).toEqual([
-      { url: '/this-dont-exist', method: 'GET' },
-      { url: '/this-also-dont-exist', method: 'POST' }
+      { url: '/this-dont-exist', method: 'GET', called: 1 },
+      { url: '/this-also-dont-exist', method: 'POST', called: 1 }
     ]);
   });
 
@@ -36,9 +37,23 @@ describe('Saving and returning unmatched interactions', () => {
     await request(app).get('/this-dont-exist');
     const unmatched = await request(app).get('/unmatched');
     expect(unmatched.body[0].url).toEqual('/this-dont-exist');
+    expect(unmatched.body[0].called).toEqual(1);
   });
 
-  it('returns the request url under unmatched, with multiple items', async () => {
+  it('returns the request url under unmatched', async () => {
+    await request(app).get('/this-dont-exist');
+    await request(app).get('/another');
+    await request(app).get('/other');
+
+    const unmatched = await request(app).get('/unmatched');
+    expect(unmatched.body).toEqual([
+      { url: '/this-dont-exist', method: 'GET', called: 1 },
+      { url: '/another', method: 'GET', called: 1 },
+      { url: '/other', method: 'GET', called: 1 }
+    ]);
+  });
+
+  it('returns the request under unmatched, consolidating + counting similar requests', async () => {
     await request(app).get('/this-dont-exist');
     await request(app).get('/another');
     await request(app).get('/other');
@@ -46,10 +61,9 @@ describe('Saving and returning unmatched interactions', () => {
 
     const unmatched = await request(app).get('/unmatched');
     expect(unmatched.body).toEqual([
-      { url: '/this-dont-exist', method: 'GET' },
-      { url: '/another', method: 'GET' },
-      { url: '/other', method: 'GET' },
-      { url: '/this-dont-exist', method: 'GET' }
+      { url: '/this-dont-exist', method: 'GET', called: 2 },
+      { url: '/another', method: 'GET', called: 1 },
+      { url: '/other', method: 'GET', called: 1 }
     ]);
   });
 });
