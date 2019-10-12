@@ -3,44 +3,8 @@ const _ = require('lodash');
 const scenarios = [];
 // const interactions = [];
 
-const Scenario = (matching, defaultResponse, outcomes) => ({
-  matching,
-  defaultResponse,
-  outcomes,
-  mappedOutcomes: outcomes.map(outcome => Outcome(outcome)),
-  defaultBody: () => defaultResponse.response.body,
-  urlMatch(url) {
-    return url.match(matching.regex)[1];
-  },
-  matches(url) {
-    return !!this.urlMatch(url);
-  },
-  getResponseFor(url) {
-    const matchedOutcome = this.mappedOutcomes.find(outcome => {
-      return outcome.matches(this.matching.variableName.toString(), this.urlMatch(url));
-    });
-
-    return {
-      ...this.defaultBody(),
-      ...(matchedOutcome ? matchedOutcome.body() : {})
-    };
-  }
-});
-
-function Outcome(outcome) {
-  return {
-    outcome,
-    matches(variableName, variableValue) {
-      return outcome[variableName].toString() === variableValue;
-    },
-    body() {
-      return this.outcome.response.body;
-    }
-  };
-}
-
-function add(matching, defaultResponse, outcomes) {
-  scenarios.push(Scenario(matching, defaultResponse, outcomes));
+function add(scenario) {
+  scenarios.push(scenario);
 }
 
 function get(url) {

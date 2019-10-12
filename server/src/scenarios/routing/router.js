@@ -1,16 +1,14 @@
 const express = require('express');
 const router = express.Router();
 
-const extractMatching = require('./matching');
-const extractOutcomes = require('./outcomes');
 const scenarios = require('../scenarios');
+const { ScenarioFromRequest } = require('../Scenario');
 
 router.post('/new', function(req, res) {
   try {
-    const matching = extractMatching(req);
-    const { defaultResponse, outcomes } = extractOutcomes(req);
+    const scenario = ScenarioFromRequest(req);
 
-    scenarios.add(matching, defaultResponse, outcomes);
+    scenarios.add(scenario);
 
     return res.sendStatus(200);
   } catch (error) {
