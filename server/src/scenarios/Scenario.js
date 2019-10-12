@@ -46,7 +46,9 @@ function ScenarioFromRequest(req) {
   const variableStart = url.indexOf('{');
   const variableEnd = url.indexOf('}');
   const variableName = url.slice(variableStart + 1, variableEnd);
-  const regex = new RegExp(url.replace(`{${variableName}}`, '(.*)'), 'i');
+  const urlWithCaptureGroup = url.replace(`{${variableName}}`, '(.*)');
+  const urlWithEscapedQueries = urlWithCaptureGroup.replace('?', '\\?');
+  const regex = new RegExp(urlWithEscapedQueries, 'i');
 
   const matching = { regex, variableName };
 

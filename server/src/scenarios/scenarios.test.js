@@ -2,7 +2,7 @@ const request = require('supertest');
 const { app } = require('../app');
 
 describe('Configuring scenarios', () => {
-  it('creates creates a scenario, with default response body and specific overrides', async () => {
+  it('creates a scenario, with default response body and specific overrides', async () => {
     const setupResponse = await request(app)
       .post('/scenarios/new')
       .send({
@@ -35,7 +35,7 @@ describe('Configuring scenarios', () => {
     expect(answer.body).toEqual({ hey: 'the answer' });
   });
 
-  it('creates creates a scenario, with status codes', async () => {
+  it('creates a scenario, with status codes', async () => {
     await request(app)
       .post('/scenarios/new')
       .send({
@@ -65,5 +65,32 @@ describe('Configuring scenarios', () => {
     const defaultResponse = await request(app).get('/statuses/123321');
     expect(defaultResponse.status).toEqual(200);
     expect(defaultResponse.body).toEqual({});
+  });
+
+  it('creates a scenario, based on a query parameter', async () => {
+    await request(app)
+      .post('/scenarios/new')
+      .send({
+        matching: { url: '/things?stuff={stuff}' },
+        outcomes: [
+          { stuff: 'yes', response: { body: { some: 'thing' }, statusCode: 200 } },
+          { stuff: 'no', response: { body: {}, statusCode: 404 } }
+        ],
+        default: {
+          response: { body: {}, statusCode: 404 }
+        }
+      });
+
+    const yes = await request(app).get('/things?stuff=yes');
+    expect(yes.status).toEqual(200);
+    expect(yes.body).toEqual({ some: 'thing' });
+
+    const no = await request(app).get('/things?stuff=no');
+    expect(no.status).toEqual(404);
+    expect(no.body).toEqual({});
+
+    const other = await request(app).get('/things?stuff=other');
+    expect(other.status).toEqual(404);
+    expect(other.body).toEqual({});
   });
 });
