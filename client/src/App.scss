@@ -45,10 +45,12 @@ body {
 
 .unmatchedBody {
   flex: 3;
+  min-width: 475px;
 }
 
 .stubsAndCruds {
-  min-width: 600px;
+  width: 700px;
+  min-width: 400px;
   margin-right: 20px;
   resize: horizontal;
   overflow: hidden;
