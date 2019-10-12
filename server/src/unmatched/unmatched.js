@@ -2,13 +2,13 @@ let unmatched = [];
 
 const addUnmatch = (url, method) => {
   if (requestAlreadyExists(url, method)) {
-    unmatched.forEach((request, index) => {
-      if (sameRequest(url, method, request.url, request.method)) {
-        const requestClone = { ...unmatched[index] };
-        requestClone.called = request.called + 1;
-        unmatched[index] = requestClone;
+    unmatched.forEach(
+      ({ url: prevUnmatechedUrl, method: prevUnmatchedMethod, called: prevCallCount }, index) => {
+        if (sameRequest(url, method, prevUnmatechedUrl, prevUnmatchedMethod)) {
+          unmatched[index] = { ...unmatched[index], called: prevCallCount + 1 };
+        }
       }
-    });
+    );
   } else {
     unmatched.push({ url, method, called: 1 });
   }
@@ -19,12 +19,10 @@ const requestAlreadyExists = (url, method) => {
     return false;
   }
 
-  for (unmatchedRequest of unmatched) {
-    if (sameRequest(url, method, unmatchedRequest.url, unmatchedRequest.method)) {
-      return true;
-    }
-  }
-  return false;
+  const prevUnmatchedRequest = unmatched.find(({ url: storedUrl, method: storedMethod }) =>
+    sameRequest(url, method, storedUrl, storedMethod)
+  );
+  return prevUnmatchedRequest !== undefined;
 };
 
 const sameRequest = (url, method, storedUrl, storedMethod) =>

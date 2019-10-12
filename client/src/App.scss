@@ -48,8 +48,10 @@ body {
 }
 
 .stubsAndCruds {
-  flex: 4;
+  min-width: 600px;
   margin-right: 20px;
+  resize: horizontal;
+  overflow: hidden;
 }
 
 .tabrow {
@@ -99,11 +101,24 @@ body {
 
 .panel {
   width: 100%;
+  height: 700px;
   position: relative;
-  height: 800px;
+  pointer-events: none;
   color: #fff;
   background-color: #282c34;
-  border-bottom: 1px solid grey;
+
+  & > * {
+    pointer-events: auto;
+  }
+
+  .resizer {
+    position: absolute;
+    bottom: 0;
+    right: 0px;
+    transform: rotate(90deg);
+    pointer-events: none;
+    font-size: 1em;
+  }
 
   h1 {
     margin-top: 0;

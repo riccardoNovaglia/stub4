@@ -28,6 +28,7 @@ export function Stubs({ stubs, onClear, setStarter }) {
         <StubsList stubs={stubs} selected={selected} setSelected={setSelected} />
         {selected && <SelectedStub selectedStub={selected} setStarter={setStarter} />}
       </div>
+      <i className="material-icons resizer">height</i>
     </div>
   );
 }
