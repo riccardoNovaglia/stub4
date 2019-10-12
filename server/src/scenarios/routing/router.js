@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const scenarios = require('../scenarios');
+const scenarios = require('./scenarios');
 const { ScenarioFromRequest } = require('../Scenario');
 
 router.post('/new', function(req, res) {

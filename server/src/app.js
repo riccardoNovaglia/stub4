@@ -4,7 +4,7 @@ const cors = require('cors');
 const fs = require('fs');
 
 const stubs = require('./stubs');
-const scenarios = require('./scenarios');
+const scenarios = require('./scenarios/routing');
 const cruds = require('./cruds');
 const proxy = require('./proxy');
 const unmatched = require('./unmatched');

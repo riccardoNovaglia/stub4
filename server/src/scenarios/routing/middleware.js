@@ -1,5 +1,5 @@
 const log = require('../../logger');
-const scenarios = require('../scenarios');
+const scenarios = require('./scenarios');
 
 function middleware(req, res, next) {
   try {
