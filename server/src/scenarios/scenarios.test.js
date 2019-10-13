@@ -93,4 +93,43 @@ describe('Configuring scenarios', () => {
     expect(other.status).toEqual(404);
     expect(other.body).toEqual({});
   });
+
+  it('creates a scenario, with multiple capturing groups', async () => {
+    await request(app)
+      .post('/scenarios/new')
+      .send({
+        matching: { url: '/many?things={things}&other-things={other-things}' },
+        outcomes: [
+          {
+            things: 'yes',
+            'other-things': 'yes',
+            response: { body: { gots: 'alls' }, statusCode: 200 }
+          },
+          {
+            things: 'yes',
+            'other-things': 'no',
+            response: { body: { gots: 'just some' }, statusCode: 200 }
+          }
+        ],
+        default: {
+          response: { body: { gots: 'not enough' }, statusCode: 404 }
+        }
+      });
+
+    const yes = await request(app).get('/many?things=yes&other-things=yes');
+    expect(yes.status).toEqual(200);
+    expect(yes.body).toEqual({ gots: 'alls' });
+
+    const some = await request(app).get('/many?things=yes&other-things=no');
+    expect(some.status).toEqual(200);
+    expect(some.body).toEqual({ gots: 'just some' });
+
+    const notEnough = await request(app).get('/many?things=no&other-things=yes');
+    expect(notEnough.status).toEqual(404);
+    expect(notEnough.body).toEqual({ gots: 'not enough' });
+
+    const none = await request(app).get('/many?things=no&other-things=no');
+    expect(none.status).toEqual(404);
+    expect(none.body).toEqual({ gots: 'not enough' });
+  });
 });
