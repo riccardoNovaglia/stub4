@@ -1,4 +1,4 @@
-const { clearAll, get, all } = require('../stubbing');
+const { clearAll, get } = require('../stubbing');
 const loadFromFile = require('./fileLoad');
 
 describe('Loading stubs from an initialiser file', () => {
@@ -29,7 +29,7 @@ describe('Loading stubs from an initialiser file', () => {
       }
     ]);
 
-    const item = get('/whatever');
+    const item = get('/whatever', 'PATCH');
     expect(item).toEqual({
       request: { url: '/whatever', method: 'PATCH', contract: { state, uponReceiving } },
       response: { body: { item: `whatever` }, contentType: 'application/json', statusCode: 123 }
