@@ -20,17 +20,26 @@ const Scenario = (urlMatcher, defaultResponse, outcomes) => ({
   }
 });
 
-function ScenarioFromRequest(req) {
-  const urlMatcher = UrlMatcher(req.body.matching.url);
-
+function ScenarioFrom(url, defaults, outcomes) {
   const defaultResponse = {
     statusCode: 200,
     body: {},
-    ...req.body.default.response
+    ...defaults
   };
-  const outcomes = req.body.outcomes.map(outcome => Outcome(outcome, defaultResponse));
 
-  return Scenario(urlMatcher, req.body.default, outcomes);
+  return Scenario(
+    UrlMatcher(url),
+    defaults,
+    outcomes.map(outcome => Outcome(outcome, defaultResponse))
+  );
 }
 
-module.exports = { Scenario, ScenarioFromRequest };
+function ScenarioFromRequest(req) {
+  return ScenarioFrom(req.body.matching.url, req.body.default, req.body.outcomes);
+}
+
+function ScenarioFromFile(fromFile) {
+  return ScenarioFrom(fromFile.matching.url, fromFile.default, fromFile.outcomes);
+}
+
+module.exports = { Scenario, ScenarioFromRequest, ScenarioFromFile };

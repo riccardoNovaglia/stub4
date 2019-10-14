@@ -10,5 +10,21 @@
       "meta": { "url": "/some-url" },
       "data": [{ "id": 1, "some": "content" }, { "id": 3, "some": "stuff" }]
     }
+  ],
+  "scenarios": [
+    {
+      "matching": { "url": "/dude/{id}" },
+      "outcomes": [{ "id": 1, "response": { "body": { "hey": "other" } } }],
+      "default": {
+        "response": { "body": { "hey": "some" }, "statusCode": 200 }
+      }
+    },
+    {
+      "matching": { "url": "/other/{bananas}" },
+      "outcomes": [{ "bananas": "yes", "response": { "body": {} } }],
+      "default": {
+        "response": { "body": { "hey": "no bananas" }, "statusCode": 404 }
+      }
+    }
   ]
 }

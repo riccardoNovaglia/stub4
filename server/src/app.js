@@ -21,6 +21,7 @@ function load(loadFile) {
 
   cruds.load(contents.cruds);
   stubs.loadFromFile(contents.stubs);
+  scenarios.loadFromFile(contents.scenarios);
 }
 
 app.use('/stubs', stubs.router);
