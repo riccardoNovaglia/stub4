@@ -132,4 +132,82 @@ describe('Configuring scenarios', () => {
     expect(none.status).toEqual(404);
     expect(none.body).toEqual({ gots: 'not enough' });
   });
+
+  it('clears scenarios on demand', async () => {
+    await request(app)
+      .post('/scenarios/new')
+      .send({
+        matching: { url: '/some/{id}' },
+        outcomes: [],
+        default: {
+          response: { body: { hey: 'you' }, statusCode: 200 }
+        }
+      });
+
+    const some = await request(app).get('/some/1');
+    expect(some.status).toEqual(200);
+    expect(some.body).toEqual({ hey: 'you' });
+
+    const clear = await request(app).post('/scenarios/clear');
+    expect(clear.status).toEqual(200);
+
+    const someCleared = await request(app).get('/some/1');
+    expect(someCleared.status).toEqual(404);
+  });
+
+  it('returns all scenarios', async () => {
+    await request(app)
+      .post('/scenarios/new')
+      .send({
+        matching: { url: '/some/{id}' },
+        outcomes: [],
+        default: {
+          response: { body: { hey: 'you' }, statusCode: 200 }
+        }
+      });
+    await request(app)
+      .post('/scenarios/new')
+      .send({
+        matching: { url: '/some-other/{bananas}/{more}' },
+        outcomes: [
+          {
+            bananas: '1',
+            response: { body: {}, statusCode: 200 }
+          }
+        ],
+        default: {
+          response: { body: {}, statusCode: 404 }
+        }
+      });
+
+    const allScenarios = await request(app).get('/scenarios');
+    expect(allScenarios.status).toEqual(200);
+    expect(allScenarios.body).toEqual([
+      {
+        urlMatcher: {
+          variableNames: ['id'],
+          regex: '/\\/some\\/(.*)/g'
+        },
+        outcomes: [],
+        defaultResponse: {
+          response: { body: { hey: 'you' }, statusCode: 200 }
+        }
+      },
+      {
+        urlMatcher: {
+          variableNames: ['bananas', 'more'],
+          regex: '/\\/some-other\\/(.*)\\/(.*)/g'
+        },
+        outcomes: [
+          {
+            bananas: '1',
+            response: { body: {}, statusCode: 200 }
+          }
+        ],
+        defaultResponse: {
+          response: { body: {}, statusCode: 404 }
+        }
+      }
+    ]);
+  });
 });

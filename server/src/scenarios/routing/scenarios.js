@@ -1,7 +1,4 @@
-const _ = require('lodash');
-
 const scenarios = [];
-// const interactions = [];
 
 function add(scenario) {
   scenarios.push(scenario);
@@ -13,39 +10,22 @@ function get(url) {
   return matchedScenario.getResponseFor(url);
 }
 
-// function getInteraction(url) {
-//   return interactions.find(interaction => interaction.url === url);
-// }
-
 function all() {
-  return scenarios;
+  return scenarios.slice().map(outcome => {
+    let { urlMatcher, outcomes, defaultResponse } = outcome;
+    urlMatcher.regex = urlMatcher.regex.toString();
+    outcomes = outcomes.map(outcomeWrapper => outcomeWrapper.outcome);
+    return { urlMatcher, outcomes, defaultResponse };
+  });
 }
 
 function clearAll() {
   scenarios.length = 0;
-  // interactions.length = 0;
 }
-
-// function forEach(fn) {
-//   scenarios.forEach(stub => fn(stub));
-// }
-
-// function count(url) {
-//   const interaction = getInteraction(url);
-//   return _.get(interaction, 'count', 0);
-// }
-
-// function countUp(url) {
-//   const interaction = getInteraction(url);
-//   interaction ? (interaction.count += 1) : interactions.push({ url, count: 1 });
-// }
 
 module.exports = {
   add,
   all,
   clearAll,
   get
-  // forEach,
-  // countUp,
-  // count
 };

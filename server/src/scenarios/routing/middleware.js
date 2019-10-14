@@ -4,7 +4,6 @@ const scenarios = require('./scenarios');
 function middleware(req, res, next) {
   try {
     const url = req.originalUrl;
-    // const method = req.method;
 
     const response = scenarios.get(url);
 

@@ -25,11 +25,4 @@ router.post('/clear', (_, res) => {
   return res.end();
 });
 
-// router.post('/count', (req, res) => {
-//   const url = req.body.url;
-
-//   const count = scenarios.count(url);
-//   return res.send({ count });
-// });
-
 module.exports = router;
