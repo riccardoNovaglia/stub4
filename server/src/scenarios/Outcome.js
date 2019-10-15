@@ -1,22 +1,31 @@
-const _ = require('lodash');
+const { get, omit } = require('lodash');
 
-const Outcome = (outcome, defaultResponse) => ({
-  outcome,
+const Outcome = (outcome, defaultResponse) => {
+  const toMatch = Object.keys(omit(outcome, 'response'));
 
-  matchesMaps(variablesMaps) {
-    return variablesMaps
-      .map(varMap =>
-        Object.keys(varMap).map(key => varMap[key].toString() === outcome[key].toString())
-      )
-      .flat()
-      .reduce((prev, current) => prev && current);
-  },
-  toResponse() {
-    return {
-      body: _.get(this, 'outcome.response.body', defaultResponse.body),
-      statusCode: _.get(this, 'outcome.response.statusCode', defaultResponse.statusCode)
-    };
-  }
-});
+  return {
+    outcome,
+
+    matchesMaps(variablesMaps) {
+      return variablesMaps
+        .map(varMap =>
+          Object.keys(varMap).map(key => varMap[key].toString() === outcome[key].toString())
+        )
+        .flat()
+        .reduce((prev, current) => prev && current);
+    },
+    matchesBody(body) {
+      return toMatch
+        .map(key => (body[key] ? outcome[key].toString() === body[key].toString() : false))
+        .reduce((p, n) => p && n);
+    },
+    toResponse() {
+      return {
+        body: get(this, 'outcome.response.body', defaultResponse.body),
+        statusCode: get(this, 'outcome.response.statusCode', defaultResponse.statusCode)
+      };
+    }
+  };
+};
 
 module.exports = Outcome;

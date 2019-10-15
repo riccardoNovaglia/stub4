@@ -78,10 +78,19 @@ describe('A class to match urls to scenarios', () => {
       (urlVariablesDefinition, urlToMatch, shouldMatch) => {
         const matcher = UrlMatcher(urlVariablesDefinition);
 
-        const didMatch = matcher.match(urlToMatch);
+        const didMatch = matcher.matches(urlToMatch);
 
         expect(didMatch).toEqual(shouldMatch);
       }
     );
+  });
+
+  describe('Simple matcher', () => {
+    it('return a simple matcher if the url does not contain any variables', () => {
+      const matcher = UrlMatcher('/some-url');
+
+      expect(matcher.matches('/some-url')).toEqual(true);
+      expect(matcher.matches('/some-other-url')).toEqual(false);
+    });
   });
 });

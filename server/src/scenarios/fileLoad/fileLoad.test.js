@@ -39,6 +39,13 @@ describe('Loading stubs from an initialiser file', () => {
         default: {
           response: { body: { hey: 'no bananas' }, statusCode: 404 }
         }
+      },
+      {
+        matching: { url: '/other-things', body: { something: '*' } },
+        outcomes: [{ something: 'ok', response: { body: { the: 'other' }, statusCode: 302 } }],
+        default: {
+          response: { body: {} }
+        }
       }
     ]);
 
@@ -57,5 +64,9 @@ describe('Loading stubs from an initialiser file', () => {
     const noBananas = scenarios.get('/other/no');
     expect(noBananas.statusCode).toEqual(404);
     expect(noBananas.body).toEqual({ hey: 'no bananas' });
+
+    const other = scenarios.post('/other-things').send({ something: 'ok', irrelevant: 'yes' });
+    expect(other.statusCode).toEqual(302);
+    expect(other.body).toEqual({ the: 'other' });
   });
 });

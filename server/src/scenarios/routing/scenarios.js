@@ -4,10 +4,10 @@ function add(scenario) {
   scenarios.push(scenario);
 }
 
-function get(url) {
-  const matchedScenario = scenarios.find(scenario => scenario.matches(url));
+function get(url, body) {
+  const matchedScenario = scenarios.find(scenario => scenario.matches(url, body));
 
-  return matchedScenario.getResponseFor(url);
+  return matchedScenario.getResponseFor(url, body);
 }
 
 function all() {
