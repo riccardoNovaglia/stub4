@@ -1,7 +1,7 @@
 const UrlMatcher = url => {
   const findVariablesInCurlies = /\{([^}]+)\}/g;
-  const capturedGroups = Array.from(url.matchAll(findVariablesInCurlies));
-  const variableNames = capturedGroups.map(group => group[1]);
+  const capturedGroups = url.match(findVariablesInCurlies);
+  const variableNames = capturedGroups.map(group => group.replace('{', '').replace('}', ''));
 
   var regexedUrl = url;
   variableNames.forEach(subVal => (regexedUrl = regexedUrl.replace(`{${subVal}}`, '(.*)')));
@@ -9,11 +9,9 @@ const UrlMatcher = url => {
   const regex = new RegExp(escapedRegexedUrl, 'g');
 
   function getMatchedGroups(regex, string) {
-    const capturedGroups = Array.from(string.matchAll(regex));
+    const matchedGroups = string.match(regex.source);
 
-    const capturedValues = capturedGroups.map(group => group.slice(1)).flat();
-
-    return capturedValues;
+    return matchedGroups ? matchedGroups.slice(1) : [];
   }
 
   return {
