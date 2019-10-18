@@ -7,12 +7,11 @@ const Outcome = (outcome, defaultResponse) => {
     outcome,
 
     matchesMaps(variablesMaps) {
-      return variablesMaps
-        .map(varMap =>
-          Object.keys(varMap).map(key => varMap[key].toString() === outcome[key].toString())
-        )
-        .flat()
-        .reduce((prev, current) => prev && current);
+      const maps = variablesMaps.map(varMap =>
+        Object.keys(varMap).map(key => varMap[key].toString() === outcome[key].toString())
+      );
+      const flattenedMatches = [].concat(...maps);
+      return flattenedMatches.reduce((prev, current) => prev && current);
     },
     matchesBody(body) {
       return toMatch
