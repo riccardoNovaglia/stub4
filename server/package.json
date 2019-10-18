@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest --watch ./src/**/*.test.js",
+    "test": "jest --watch src",
     "test:ci": "jest",
     "start": "nodemon src/index.js --ignore generatedTestPacts --ignore logs",
     "pretty": "prettier --write ./src/**/*.js",

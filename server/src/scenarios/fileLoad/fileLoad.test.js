@@ -65,7 +65,7 @@ describe('Loading stubs from an initialiser file', () => {
     expect(noBananas.statusCode).toEqual(404);
     expect(noBananas.body).toEqual({ hey: 'no bananas' });
 
-    const other = scenarios.post('/other-things').send({ something: 'ok', irrelevant: 'yes' });
+    const other = scenarios.get('/other-things', { something: 'ok', irrelevant: 'yes' });
     expect(other.statusCode).toEqual(302);
     expect(other.body).toEqual({ the: 'other' });
   });
