@@ -28,6 +28,8 @@ function clearAll() {
 }
 
 function load(cruds) {
+  if (!cruds) return;
+
   cruds.forEach(crud => {
     const { meta, data } = crud;
     const idAlias = meta.idAlias || 'id';

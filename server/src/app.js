@@ -1,7 +1,6 @@
 const bodyParser = require('body-parser');
 const express = require('express');
 const cors = require('cors');
-const fs = require('fs');
 
 const stubs = require('./stubs');
 const scenarios = require('./scenarios/routing');
@@ -15,14 +14,6 @@ const log = require('./logger');
 const app = express();
 app.use(bodyParser.json());
 app.use(cors());
-
-function load(loadFile) {
-  const contents = JSON.parse(fs.readFileSync(loadFile, { encoding: 'utf8' }).toString());
-
-  cruds.load(contents.cruds);
-  stubs.loadFromFile(contents.stubs);
-  scenarios.loadFromFile(contents.scenarios);
-}
 
 app.use('/stubs', stubs.router);
 
@@ -53,7 +44,4 @@ app.all(
   unmatched.middleware
 );
 
-module.exports = {
-  app,
-  load
-};
+module.exports = app;

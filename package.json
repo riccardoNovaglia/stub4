@@ -48,7 +48,7 @@
     }
   },
   "bin": {
-    "stub4": "./lib/bin.js"
+    "stub4": "./lib/index.js"
   },
   "files": [
     "dist",

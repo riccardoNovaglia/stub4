@@ -1,14 +1,14 @@
 const express = require('express');
 const path = require('path');
 
-const files = express();
+const ui = express();
 
 const clientFiles = path.resolve(__dirname, '../dist');
 
-files.use(express.static(clientFiles, { index: false }));
+ui.use(express.static(clientFiles, { index: false }));
 
-files.get('*', (_, res) => {
+ui.get('*', (_, res) => {
   res.sendFile(path.resolve(clientFiles, 'index.html'));
 });
 
-module.exports = files;
+module.exports = ui;

@@ -3,6 +3,8 @@ const log = require('../../logger');
 const stubs = require('../stubbing');
 
 function loadFromFile(staticStubs) {
+  if (!staticStubs) return;
+
   staticStubs.forEach(stub => {
     try {
       const request = getRequestMatcher(stub.requestMatcher);

@@ -1,15 +1,15 @@
-const { app, load } = require('./app');
-const files = require('./files');
+#!/usr/bin/env node
+const app = require('./app');
+const ui = require('./ui');
+const config = require('./config');
+const defaultsLoader = require('./defaultsLoader');
 
-try {
-  const loadFile = process.argv[2];
-  load(loadFile);
-} catch (e) {}
+defaultsLoader.loadDefaultsFiles(config.defaultsFiles);
 
-app.listen(8080, () => {
-  console.log('Started on 8080');
+app.listen(config.stubsPort, () => {
+  console.log(`Stubs started on ${config.stubsPort}`);
 });
 
-files.listen(80, () => {
-  console.log('Started on 80');
+ui.listen(config.uiPort, () => {
+  console.log(`UI started on ${config.uiPort}`);
 });
