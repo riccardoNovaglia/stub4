@@ -6,6 +6,7 @@ import { Proxy } from './proxy/Proxy';
 import { Contracts } from './contracts/Contracts';
 import { Unmatched } from './unmatched/Unmatched';
 import { New, useHooky } from './new/New';
+import Tabs from './Tabs';
 import Stub4 from '@stub4/client';
 
 import './App.scss';
@@ -67,26 +68,7 @@ export default function App() {
       <Contracts />
       <div className="App">
         <div className="stubsAndCruds">
-          <ul className="tabrow">
-            <li
-              onClick={() => setCurrentTab('stubs')}
-              className={tab === 'stubs' ? 'selectedTab' : 'tab'}
-            >
-              Stubs<i className="material-icons">import_export</i>
-            </li>
-            <li
-              onClick={() => setCurrentTab('cruds')}
-              className={tab === 'cruds' ? 'selectedTab' : 'tab'}
-            >
-              Cruds<i className="material-icons">swap_horiz</i>
-            </li>
-            <li
-              onClick={() => setCurrentTab('proxy')}
-              className={tab === 'proxy' ? 'selectedTab' : 'tab'}
-            >
-              Proxy<i className="material-icons">redo</i>
-            </li>
-          </ul>
+          <Tabs tab={tab} setCurrentTab={setCurrentTab} />
           {tab === 'stubs' && (
             <Stubs stubs={stubs} setStarter={build} onClear={() => setStubs({})} />
           )}
