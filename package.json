@@ -1,64 +1,29 @@
 {
-  "name": "@stub4/stub4",
-  "version": "0.0.5",
-  "description": "We'll see",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/riccardoNovaglia/stub4.git"
-  },
-  "main": "./lib/src/index.js",
+  "name": "stub4-project",
+  "version": "0.0.0",
+  "description": "Stub4 Project",
   "scripts": {
     "test": "cd server && npm run test:ci",
     "start-client": "cd client && npm run start",
-    "sc": "npm run start-client",
     "start-server": "cd server && npm run start",
-    "ss": "npm run start-server",
-    "prebuild": "npm run cleanup-build",
-    "cleanup-build": "rm -rf ./lib && mkdir lib && rm -rf ./dist && mkdir dist",
-    "build": "npm run build:server && npm run build:client",
-    "build:client": "cd client  && npm run build",
-    "build:server": "cd server  && npm run build",
     "install:all": "npm install && npm run install:client && npm run install:server",
     "install:client": "cd client && npm install",
     "install:server": "cd server && npm install",
     "audit-fix:all": "npm audit --fix && npm run audit-fix:client && npm run audit-fix:server",
     "audit-fix:client": "cd client && npm audit --fix",
-    "audit-fix:server": "cd server && npm audit --fix"
+    "audit-fix:server": "cd server && npm audit --fix",
+    "build": "./.scripts/build.sh"
   },
   "author": "Riccardo <stub4js+npm@gmail.com>",
-  "license": "ISC",
-  "dependencies": {
-    "@pact-foundation/pact": "8.2.6",
-    "axios": "^0.19.0",
-    "body-parser": "^1.19.0",
-    "cors": "^2.8.5",
-    "express": "^4.17.1",
-    "lodash": "^4.17.15"
-  },
+  "dependencies": {},
   "devDependencies": {
     "husky": "^3.0.3",
-    "nodemon": "^1.19.3",
     "prettier": "^1.18.2",
-    "pretty-quick": "^1.11.1",
-    "supertest": "^3.4.2"
+    "pretty-quick": "^1.11.1"
   },
   "husky": {
     "hooks": {
       "pre-commit": "pretty-quick --staged"
     }
-  },
-  "bin": {
-    "stub4": "./lib/index.js"
-  },
-  "files": [
-    "dist",
-    "lib"
-  ],
-  "bugs": {
-    "url": "https://github.com/riccardoNovaglia/stub4/issues"
-  },
-  "homepage": "https://github.com/riccardoNovaglia/stub4#readme",
-  "directories": {
-    "lib": "lib"
   }
 }

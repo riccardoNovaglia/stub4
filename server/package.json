@@ -1,18 +1,33 @@
 {
-  "name": "superstub-server",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "@stub4/stub4",
+  "version": "0.0.6",
+  "description": "We'll see",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/riccardoNovaglia/stub4.git"
+  },
+  "main": "./lib/src/index.js",
+  "author": "Riccardo <stub4js+npm@gmail.com>",
+  "license": "ISC",
   "scripts": {
     "test": "jest --watch src",
     "test:ci": "jest",
-    "start": "nodemon src/index.js --ignore generatedTestPacts --ignore logs",
-    "pretty": "prettier --write ./src/**/*.js",
-    "build": "",
-    "postbuild": "cp -r src/ ../lib"
+    "start": "nodemon src/index.js --ignore generatedTestPacts --ignore logs"
   },
-  "author": "",
-  "license": "ISC",
+  "bin": {
+    "stub4": "./index.js"
+  },
+  "files": [
+    "dist",
+    "lib"
+  ],
+  "bugs": {
+    "url": "https://github.com/riccardoNovaglia/stub4/issues"
+  },
+  "homepage": "https://github.com/riccardoNovaglia/stub4#readme",
+  "directories": {
+    "lib": "lib"
+  },
   "dependencies": {
     "@pact-foundation/pact": "8.2.6",
     "axios": "^0.19.0",
