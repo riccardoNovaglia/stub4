@@ -1,5 +1,5 @@
 const request = require('supertest');
-const { app } = require('../app');
+const app = require('../app');
 
 describe('Configuring scenarios', () => {
   describe('url matching', () => {
@@ -291,6 +291,7 @@ describe('Configuring scenarios', () => {
     expect(allScenarios.body).toEqual([
       {
         urlMatcher: {
+          url: '/some/{id}',
           variableNames: ['id'],
           regex: '/\\/some\\/(.*)/g'
         },
@@ -301,6 +302,7 @@ describe('Configuring scenarios', () => {
       },
       {
         urlMatcher: {
+          url: '/some-other/{bananas}/{more}',
           variableNames: ['bananas', 'more'],
           regex: '/\\/some-other\\/(.*)\\/(.*)/g'
         },

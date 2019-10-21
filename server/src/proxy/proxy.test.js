@@ -1,5 +1,5 @@
 const axios = require('axios');
-const { app } = require('../app');
+const app = require('../app');
 
 describe('Setting up stubs', () => {
   let server;
