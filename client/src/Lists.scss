@@ -1,4 +1,5 @@
 .stubsList,
+.scenariosList,
 .unmatchedList,
 .proxyList,
 .crudsList {
@@ -9,6 +10,7 @@
   }
 
   .stub,
+  .scenario,
   .unmatch,
   .proxyDef,
   .crudDef {
@@ -78,6 +80,17 @@
   margin-left: auto;
   margin-left: 20px;
   color: #e37d1e;
+}
+
+.variableNames {
+  margin-left: 20px;
+  margin-right: 20px;
+  color: #e37d1e;
+}
+
+.outcomesLength {
+  margin-left: 20px;
+  color: #28e31e;
 }
 
 .id {

@@ -19,6 +19,7 @@ const UrlMatcher = url => {
   }
 
   return {
+    url,
     regex,
     variableNames,
     matches(url) {

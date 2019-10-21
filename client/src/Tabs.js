@@ -10,6 +10,12 @@ export default function Tabs({ tab, setCurrentTab }) {
         Stubs<i className="material-icons">import_export</i>
       </li>
       <li
+        onClick={() => setCurrentTab('scenarios')}
+        className={tab === 'scenarios' ? 'selectedTab' : 'tab'}
+      >
+        Scenarios<i className="material-icons">filter_list</i>
+      </li>
+      <li
         onClick={() => setCurrentTab('cruds')}
         className={tab === 'cruds' ? 'selectedTab' : 'tab'}
       >

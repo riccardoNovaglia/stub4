@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 import { Stubs } from './stubs/Stubs';
+import { Scenarios } from './scenarios/Scenarios';
 import { Cruds } from './cruds/Cruds';
 import { Proxy } from './proxy/Proxy';
 import { Contracts } from './contracts/Contracts';
@@ -15,6 +16,7 @@ import './Lists.scss';
 const stubClient = new Stub4.StubClient();
 const crudClient = new Stub4.CrudClient();
 const proxyClient = new Stub4.ProxyClient();
+const scenariosClient = new Stub4.ScenariosClient();
 
 export default function App() {
   const [tab, setCurrentTab] = useState('stubs');
@@ -36,6 +38,11 @@ export default function App() {
   useEffect(() => {
     proxyClient.fetchProxy(setProxy);
   }, [setProxy]);
+
+  const [scenarios, setScenarios] = useState([]);
+  useEffect(() => {
+    scenariosClient.fetchScenarios(setScenarios);
+  }, [setScenarios]);
 
   const hooky = useHooky();
 
@@ -71,6 +78,9 @@ export default function App() {
           <Tabs tab={tab} setCurrentTab={setCurrentTab} />
           {tab === 'stubs' && (
             <Stubs stubs={stubs} setStarter={build} onClear={() => setStubs({})} />
+          )}
+          {tab === 'scenarios' && (
+            <Scenarios scenarios={scenarios} setStarter={build} onClear={() => setScenarios({})} />
           )}
           {tab === 'cruds' && (
             <Cruds cruds={cruds} setStarter={build} onClear={() => setCruds({})} />

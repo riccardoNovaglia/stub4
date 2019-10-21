@@ -14,7 +14,10 @@
   "scenarios": [
     {
       "matching": { "url": "/dude/{id}" },
-      "outcomes": [{ "id": 1, "response": { "body": { "hey": "other" } } }],
+      "outcomes": [
+        { "id": 1, "response": { "body": { "hey": "other" } } },
+        { "id": 2, "response": { "body": { "hey": "other" } } }
+      ],
       "default": {
         "response": { "body": { "hey": "some" }, "statusCode": 200 }
       }
