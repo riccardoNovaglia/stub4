@@ -2,6 +2,8 @@ const request = require('supertest');
 const app = require('../app');
 
 describe('Configuring scenarios', () => {
+  beforeEach(async () => await request(app).post('/scenarios/clear'));
+
   describe('url matching', () => {
     it('creates a scenario, with default response body and specific overrides', async () => {
       const setupResponse = await request(app)
@@ -314,6 +316,43 @@ describe('Configuring scenarios', () => {
         ],
         defaultResponse: {
           response: { body: {}, statusCode: 404 }
+        }
+      }
+    ]);
+  });
+
+  it('updates when the same url is used to setup a new scenario', async () => {
+    await request(app)
+      .post('/scenarios/new')
+      .send({
+        matching: { url: '/some/{id}' },
+        outcomes: [],
+        default: {
+          response: { body: { hey: 'initial' }, statusCode: 200 }
+        }
+      });
+    await request(app)
+      .post('/scenarios/new')
+      .send({
+        matching: { url: '/some/{id}' },
+        outcomes: [],
+        default: {
+          response: { body: { hey: 'updated' }, statusCode: 200 }
+        }
+      });
+
+    const scenario = await request(app).get('/scenarios');
+    expect(scenario.status).toEqual(200);
+    expect(scenario.body).toEqual([
+      {
+        urlMatcher: {
+          url: '/some/{id}',
+          variableNames: ['id'],
+          regex: '/\\/some\\/(.*)/g'
+        },
+        outcomes: [],
+        defaultResponse: {
+          response: { body: { hey: 'updated' }, statusCode: 200 }
         }
       }
     ]);

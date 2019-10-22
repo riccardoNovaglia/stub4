@@ -1,6 +1,12 @@
 const scenarios = [];
 
 function add(scenario) {
+  const existingScenario = scenarios.find(existing =>
+    existing.urlMatcher.equals(scenario.urlMatcher)
+  );
+  if (existingScenario) {
+    scenarios.splice(scenarios.indexOf(existingScenario), 1);
+  }
   scenarios.push(scenario);
 }
 

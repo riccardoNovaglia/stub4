@@ -31,19 +31,23 @@ const UrlMatcher = url => {
       const capturedGroups = getMatchedGroups(regex, url);
       const zipped = variableNames.map((elem, index) => ({ [elem]: capturedGroups[index] }));
       return zipped;
-    }
+    },
+    equals: otherMatcher => otherMatcher.url === url
   };
 };
 
 const NoopMatcher = {
   matches: () => true,
-  getMatchedMap: () => undefined
+  getMatchedMap: () => undefined,
+  equals: otherMatcher => typeof otherMatcher === 'NoopMatcher'
 };
 
 const SimpleMatcher = url => {
   return {
+    url,
     matches: urlToMatch => urlToMatch === url,
-    getMatchedMap: () => undefined
+    getMatchedMap: () => undefined,
+    equals: otherMatcher => otherMatcher.url === url
   };
 };
 
