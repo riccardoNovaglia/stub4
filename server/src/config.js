@@ -1,9 +1,16 @@
 const fs = require('fs');
+const path = require('path');
 
 let config = {
   defaultsFiles: [],
   stubsPort: 8080,
-  uiPort: 80
+  uiPort: 80,
+  pact: {
+    serverPort: 9093,
+    logsDestination: path.resolve(process.cwd(), 'logs', 'pact.log'),
+    logLevel: 'WARN',
+    contractsFilesDestination: path.resolve(process.cwd(), 'generatedTestPacts')
+  }
 };
 
 function readProvidedConfig() {

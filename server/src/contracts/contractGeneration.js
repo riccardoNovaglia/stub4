@@ -1,21 +1,21 @@
 const _ = require('lodash');
 const axios = require('axios');
-const path = require('path');
 const { Pact } = require('@pact-foundation/pact');
 
 const log = require('../logger');
 const stubs = require('../stubs/stubbing');
+const pactConfig = require('../config').pact;
 
-const pactServerPort = 9093;
+const pactServerPort = pactConfig.serverPort;
 
 async function generateContracts({ consumer }) {
   const pact = new Pact({
     consumer,
     provider: 'provider', // their app
-    port: pactServerPort, // should at least try again
-    log: path.resolve(process.cwd(), 'logs', 'pact.log'), //should move or turn off?
-    dir: path.resolve(process.cwd(), 'generatedTestPacts'), // make configurable
-    logLevel: 'WARN' // make configurable
+    port: pactServerPort,
+    log: pactConfig.logsDestination,
+    dir: pactConfig.contractsFilesDestination,
+    logLevel: pactConfig.logLevel
   });
 
   await pact.setup();
