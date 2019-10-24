@@ -1,18 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { ScenariosList } from './list/ScenariosList';
 import { SelectedScenario } from './selected/SelectedScenario';
-import Stub4 from '@Stub4/client';
 
 import './Scenarios.scss';
 
-const scenarioClient = new Stub4.ScenariosClient();
-
-export function Scenarios({ scenarios, onClear, setStarter }) {
+export function Scenarios({ onClear, setStarter, client }) {
   const [selected, setSelected] = useState();
+  const [scenarios, setScenarios] = useState([]);
+  useEffect(() => {
+    client.fetchScenarios(setScenarios);
+  }, [setScenarios, client]);
 
   const clear = async () => {
-    await scenarioClient.clearScenarios();
+    await client.clearScenarios();
     onClear();
   };
 

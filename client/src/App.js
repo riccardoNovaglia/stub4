@@ -1,4 +1,6 @@
+import axios from 'axios';
 import React, { useState, useEffect } from 'react';
+import Stub4 from '@stub4/client';
 
 import { Stubs } from './stubs/Stubs';
 import { Scenarios } from './scenarios/Scenarios';
@@ -8,15 +10,9 @@ import { Contracts } from './contracts/Contracts';
 import { Unmatched } from './unmatched/Unmatched';
 import { New, useHooky } from './new/New';
 import Tabs from './Tabs';
-import Stub4 from '@stub4/client';
 
 import './App.scss';
 import './Lists.scss';
-
-const stubClient = new Stub4.StubClient();
-const crudClient = new Stub4.CrudClient();
-const proxyClient = new Stub4.ProxyClient();
-const scenariosClient = new Stub4.ScenariosClient();
 
 export default function App() {
   const [tab, setCurrentTab] = useState('stubs');
@@ -24,27 +20,9 @@ export default function App() {
   const [building, setBuilding] = useState(false);
   const [starter, setStarter] = useState(undefined);
 
-  const [stubs, setStubs] = useState([]);
-  useEffect(() => {
-    stubClient.fetchStubs(setStubs);
-  }, [setStubs]);
-
-  const [cruds, setCruds] = useState({});
-  useEffect(() => {
-    crudClient.fetchCruds(setCruds);
-  }, [setCruds]);
-
-  const [proxy, setProxy] = useState([]);
-  useEffect(() => {
-    proxyClient.fetchProxy(setProxy);
-  }, [setProxy]);
-
-  const [scenarios, setScenarios] = useState([]);
-  useEffect(() => {
-    scenariosClient.fetchScenarios(setScenarios);
-  }, [setScenarios]);
-
   const hooky = useHooky();
+
+  const clients = useClients();
 
   const build = starter => {
     setBuilding(true);
@@ -52,8 +30,6 @@ export default function App() {
     hooky.update(starter);
   };
   const doneBuilding = () => {
-    stubClient.fetchStubs(setStubs);
-    crudClient.fetchCruds(setCruds);
     setBuilding(false);
     setStarter(undefined);
     hooky.clear();
@@ -71,28 +47,44 @@ export default function App() {
         }}
         afterSuccessfulCreation={doneBuilding}
         onEscape={doneBuilding}
+        clients={clients}
       />
       <Contracts />
       <div className="App">
         <div className="stubsAndCruds">
           <Tabs tab={tab} setCurrentTab={setCurrentTab} />
-          {tab === 'stubs' && (
-            <Stubs stubs={stubs} setStarter={build} onClear={() => setStubs({})} />
-          )}
-          {tab === 'scenarios' && (
-            <Scenarios scenarios={scenarios} setStarter={build} onClear={() => setScenarios({})} />
-          )}
-          {tab === 'cruds' && (
-            <Cruds cruds={cruds} setStarter={build} onClear={() => setCruds({})} />
-          )}
-          {tab === 'proxy' && (
-            <Proxy proxy={proxy} setStarter={build} onClear={() => setProxy({})} />
-          )}
+          {tab === 'stubs' && <Stubs setStarter={build} client={clients.stubClient} />}
+          {tab === 'scenarios' && <Scenarios setStarter={build} client={clients.scenariosClient} />}
+          {tab === 'cruds' && <Cruds setStarter={build} client={clients.crudClient} />}
+          {tab === 'proxy' && <Proxy setStarter={build} client={clients.proxyClient} />}
         </div>
         <div className="unmatchedBody">
-          <Unmatched setStarter={build} />
+          <Unmatched setStarter={build} client={clients.unmatchedClient} />
         </div>
       </div>
     </>
   );
 }
+
+const useClients = () => {
+  const [port, setPort] = useState(8080);
+
+  useEffect(() => {
+    const fetchPort = async () => {
+      const ax = axios.create();
+      const response = await ax.get('/stubs-port');
+      setPort(response.data.port);
+    };
+
+    fetchPort();
+  }, [port, setPort]);
+
+  return {
+    stubClient: new Stub4.StubClient(port),
+    crudClient: new Stub4.CrudClient(port),
+    scenariosClient: new Stub4.ScenariosClient(port),
+    proxyClient: new Stub4.ProxyClient(port),
+    unmatchedClient: new Stub4.UnmatchedClient(port),
+    contractClient: new Stub4.ContractsClient(port)
+  };
+};

@@ -1,16 +1,12 @@
 import React, { useState } from 'react';
 
-import Stub4 from '@stub4/client';
-
 import './Contracts.scss';
 
-const contractsClient = new Stub4.ContractsClient();
-
-export function Contracts() {
+export function Contracts({ client }) {
   const [pactsCreated, setPactsCreated] = useState(false);
 
   async function contracts() {
-    await contractsClient.generateContracts();
+    await client.generateContracts();
     setPactsCreated(true);
   }
 

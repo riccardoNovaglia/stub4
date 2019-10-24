@@ -1,16 +1,13 @@
 import React, { useEffect, useState } from 'react';
 
-import Stub4 from '@stub4/client';
-
 import './SelectedCrud.scss';
-const crudClient = new Stub4.CrudClient();
 
-export function SelectedCrud({ selectedCrud }) {
+export function SelectedCrud({ selectedCrud, client }) {
   const [data, setData] = useState();
 
   useEffect(() => {
-    crudClient.fetchCrudData(selectedCrud.url, setData);
-  }, [selectedCrud.url, setData]);
+    client.fetchCrudData(selectedCrud.url, setData);
+  }, [selectedCrud.url, setData, client]);
 
   if (!data) return null;
 
@@ -23,18 +20,19 @@ export function SelectedCrud({ selectedCrud }) {
       <Contents
         crudUrl={selectedCrud.url}
         data={data}
-        onUpdate={() => crudClient.fetchCrudData(selectedCrud.url, setData)}
+        onUpdate={() => client.fetchCrudData(selectedCrud.url, setData)}
+        client={client}
       />
     </div>
   );
 }
 
-function Contents({ crudUrl, data, onUpdate }) {
+function Contents({ crudUrl, data, onUpdate, client }) {
   const [editing, setEditing] = useState(false);
   const [crudContents, setCrudContents] = useState(() => JSON.stringify(data, null, 2));
 
   async function saveData() {
-    await JSON.parse(crudContents).map(item => crudClient.saveCrudData(crudUrl, item));
+    await JSON.parse(crudContents).map(item => client.saveCrudData(crudUrl, item));
     setEditing(false);
     onUpdate();
   }

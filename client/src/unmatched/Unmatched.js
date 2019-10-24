@@ -1,23 +1,19 @@
 import React, { useEffect, useState } from 'react';
 
-import Stub4 from '@stub4/client';
-
 import { UnmatchedList } from './list/UnmatchedList';
 
-const unmatchedClient = new Stub4.UnmatchedClient();
-
-export function Unmatched({ setStarter }) {
+export function Unmatched({ setStarter, client }) {
   const [unmatched, setUnmatched] = useState([]);
 
   useEffect(() => {
-    unmatchedClient.fetchUnmatched(setUnmatched);
-    const interval = setInterval(() => unmatchedClient.fetchUnmatched(setUnmatched), 1000);
+    client.fetchUnmatched(setUnmatched);
+    const interval = setInterval(() => client.fetchUnmatched(setUnmatched), 1000);
     return () => clearInterval(interval);
-  }, [setUnmatched]);
+  }, [setUnmatched, client]);
 
   const clear = async () => {
-    await unmatchedClient.clearUnmatched();
-    await unmatchedClient.fetchUnmatched(setUnmatched);
+    await client.clearUnmatched();
+    await client.fetchUnmatched(setUnmatched);
   };
 
   return (

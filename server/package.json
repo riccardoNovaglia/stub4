@@ -1,12 +1,12 @@
 {
   "name": "@stub4/stub4",
-  "version": "0.0.6",
+  "version": "0.0.9",
   "description": "We'll see",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/riccardoNovaglia/stub4.git"
   },
-  "main": "./lib/src/index.js",
+  "main": "./lib/index.js",
   "author": "Riccardo <stub4js+npm@gmail.com>",
   "license": "ISC",
   "scripts": {
@@ -15,7 +15,7 @@
     "start": "nodemon src/index.js --ignore generatedTestPacts --ignore logs"
   },
   "bin": {
-    "stub4": "./index.js"
+    "stub4": "./lib/index.js"
   },
   "files": [
     "dist",

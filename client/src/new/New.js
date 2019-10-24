@@ -5,15 +5,11 @@ import { Stub } from './Stub';
 import { Crud } from './Crud';
 import { Proxy } from './Proxy';
 
-import Stub4 from '@stub4/client';
-
 import './New.scss';
 
-const stubClient = new Stub4.StubClient();
-const crudClient = new Stub4.CrudClient();
-const proxyClient = new Stub4.ProxyClient();
+export function New({ afterSuccessfulCreation, building, onBuilding, onEscape, hooky, clients }) {
+  const { stubClient, crudClient, proxyClient } = clients;
 
-export function New({ afterSuccessfulCreation, building, onBuilding, onEscape, hooky }) {
   const setup = async () => {
     hooky.starterType.starterType.value === 'stub'
       ? await stubClient.stub(

@@ -1,3 +1,4 @@
 {
+  "stubsPort": 9090,
   "defaultsFiles": ["sampleConfig/sample.json", "sampleConfig/sample2.json"]
 }

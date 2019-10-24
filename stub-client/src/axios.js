@@ -1,7 +1,9 @@
 const axios = require('axios');
 
-const axiosInstance = axios.create({
-  baseURL: 'http://localhost:8080'
-});
+function getAxios(port) {
+  return axios.create({
+    baseURL: `http://localhost:${port}`
+  });
+}
 
-module.exports = axiosInstance;
+module.exports = { getAxios };

@@ -1,18 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { StubsList } from './list/StubsList';
 import { SelectedStub } from './selected/SelectedStub';
-import Stub4 from '@stub4/client';
 
 import './Stub.scss';
 
-const stubClient = new Stub4.StubClient();
+export function Stubs({ onClear, setStarter, client }) {
+  const [stubs, setStubs] = useState([]);
+  useEffect(() => {
+    client.fetchStubs(setStubs);
+  }, [setStubs, client]);
 
-export function Stubs({ stubs, onClear, setStarter }) {
   const [selected, setSelected] = useState();
 
   const clear = async () => {
-    await stubClient.clearStubs();
+    await client.clearStubs();
     onClear();
   };
 
@@ -26,7 +28,9 @@ export function Stubs({ stubs, onClear, setStarter }) {
       </button>
       <div className="stubs">
         <StubsList stubs={stubs} selected={selected} setSelected={setSelected} />
-        {selected && <SelectedStub selectedStub={selected} setStarter={setStarter} />}
+        {selected && (
+          <SelectedStub selectedStub={selected} setStarter={setStarter} client={client} />
+        )}
       </div>
       <i className="material-icons resizer">height</i>
     </div>

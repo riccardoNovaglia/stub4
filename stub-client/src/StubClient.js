@@ -1,8 +1,12 @@
-const axios = require('./axios');
+const { getAxios } = require('./axios');
 
 export class StubClient {
+  constructor(port) {
+    this.ax = getAxios(port);
+  }
+
   async stub(stubDefinition) {
-    await axios.post(`/stubs/new`, {
+    await this.ax.post(`/stubs/new`, {
       requestMatcher: { url: stubDefinition.url, method: stubDefinition.method },
       response: {
         type: stubDefinition.type,
@@ -48,16 +52,16 @@ export class StubClient {
   }
 
   async fetchStubs(set) {
-    const res = await axios.get(`/stubs`);
+    const res = await this.ax.get(`/stubs`);
     set(res.data);
   }
 
   async clearStubs() {
-    await axios.post('/stubs/clear');
+    await this.ax.post('/stubs/clear');
   }
 
   async fetchInteractions(url, set) {
-    const res = await axios.post('/stubs/count', { url });
+    const res = await this.ax.post('/stubs/count', { url });
     set(res.data.count);
   }
 }

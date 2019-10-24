@@ -1,24 +1,28 @@
-const axios = require('./axios');
+const { getAxios } = require('./axios');
 
 export class ScenariosClient {
+  constructor(port) {
+    this.ax = getAxios(port);
+  }
+
   async createScenario(scenarioDefinition) {
     return Promise.resolve({});
     // TODO: this
-    // await axios.post(`/scenarios/new`, {});
+    // await this.ax.post(`/scenarios/new`, {});
   }
 
   async fetchScenarios(set) {
-    const res = await axios.get(`/scenarios`);
+    const res = await this.ax.get(`/scenarios`);
     set(res.data);
   }
 
   async clearScenarios() {
-    await axios.post('/scenarios/clear');
+    await this.ax.post('/scenarios/clear');
   }
 
   // TODO: this would be useful
   // async fetchInteractions(url, set) {
-  //   const res = await axios.post('/scenarios/count', { url });
+  //   const res = this.ax.post('/scenarios/count', { url });
   //   set(res.data.count);
   // }
 }

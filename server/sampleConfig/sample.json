@@ -7,8 +7,8 @@
   ],
   "cruds": [
     {
-      "meta": { "url": "/some-url" },
-      "data": [{ "id": 1, "some": "content" }, { "id": 3, "some": "stuff" }]
+      "meta": { "url": "/some-crud-url", "idAlias": "customerId" },
+      "data": [{ "customerId": 1, "some": "content" }, { "customerId": 3, "some": "stuff" }]
     }
   ],
   "scenarios": [

@@ -1,25 +1,29 @@
-const axios = require('./axios');
+const { getAxios } = require('./axios');
 
 export class CrudClient {
+  constructor(port) {
+    this.ax = getAxios(port);
+  }
+
   async createCrud(url, idAlias) {
-    await axios.post(`/cruds/new`, { url, idAlias });
+    await this.ax.post(`/cruds/new`, { url, idAlias });
   }
 
   async fetchCruds(set) {
-    const res = await axios.get(`/cruds`);
+    const res = await this.ax.get(`/cruds`);
     set(res.data);
   }
 
   async clearCruds() {
-    await axios.post('/cruds/clear');
+    await this.ax.post('/cruds/clear');
   }
 
   async fetchCrudData(url, set) {
-    const res = await axios.get(url);
+    const res = await this.ax.get(url);
     set(res.data);
   }
 
   async saveCrudData(url, data) {
-    await axios.post(url, data);
+    await this.ax.post(url, data);
   }
 }

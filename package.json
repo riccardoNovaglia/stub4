@@ -12,6 +12,8 @@
     "audit-fix:all": "npm audit --fix && npm run audit-fix:client && npm run audit-fix:server",
     "audit-fix:client": "cd client && npm audit --fix",
     "audit-fix:server": "cd server && npm audit --fix",
+    "publish": "./.scripts/build.sh && cd publish && npm publish --access public",
+    "publish:only": "cd publish && npm publish --access public",
     "build": "./.scripts/build.sh"
   },
   "author": "Riccardo <stub4js+npm@gmail.com>",

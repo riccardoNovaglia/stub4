@@ -1,16 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { ProxyList } from './list/ProxyList';
 import { SelectedProxy } from './selected/SelectedProxy';
-import Stub4 from '@stub4/client';
 
-const proxyClient = new Stub4.ProxyClient();
-
-export function Proxy({ proxy, onClear, setStarter }) {
+export function Proxy({ onClear, setStarter, client }) {
   const [selected, setSelected] = useState();
+  const [proxy, setProxy] = useState([]);
+  useEffect(() => {
+    client.fetchProxy(setProxy);
+  }, [setProxy, client]);
 
   const clear = async () => {
-    await proxyClient.clearProxy();
+    await client.clearProxy();
     onClear();
   };
 

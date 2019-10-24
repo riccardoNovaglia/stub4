@@ -1,21 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import Stub4 from '@stub4/client';
 
 import './SelectedStub.scss';
 
-const stubClient = new Stub4.StubClient();
-
-export function SelectedStub({ selectedStub, setStarter }) {
+export function SelectedStub({ selectedStub, setStarter, client }) {
   const [interactions, setInteractions] = useState(undefined);
 
   useEffect(() => {
-    stubClient.fetchInteractions(selectedStub.request.url, setInteractions);
+    client.fetchInteractions(selectedStub.request.url, setInteractions);
     const interval = setInterval(
-      () => stubClient.fetchInteractions(selectedStub.request.url, setInteractions),
+      () => client.fetchInteractions(selectedStub.request.url, setInteractions),
       1000
     );
     return () => clearInterval(interval);
-  }, [selectedStub.request.url, interactions]);
+  }, [selectedStub.request.url, interactions, client]);
 
   return (
     <>

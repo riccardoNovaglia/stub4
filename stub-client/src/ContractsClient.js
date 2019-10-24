@@ -1,7 +1,11 @@
-const axios = require('./axios');
+const { getAxios } = require('./axios');
 
 export class ContractsClient {
+  constructor(port) {
+    this.ax = getAxios(port);
+  }
+
   async generateContracts() {
-    await axios.post('/generate-pact', { consumer: 'SomeApp' });
+    await this.ax.post('/generate-pact', { consumer: 'SomeApp' });
   }
 }

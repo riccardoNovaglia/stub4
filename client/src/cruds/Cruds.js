@@ -1,16 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { CrudsList } from './list/CrudsList';
 import { SelectedCrud } from './selected/SelectedCrud';
-import Stub4 from '@stub4/client';
 
-const crudClient = new Stub4.CrudClient();
-
-export function Cruds({ cruds, onClear }) {
+export function Cruds({ onClear, client }) {
   const [selected, setSelected] = useState();
+  const [cruds, setCruds] = useState({});
+  useEffect(() => {
+    client.fetchCruds(setCruds);
+  }, [setCruds, client]);
 
   const clear = async () => {
-    await crudClient.clearCruds();
+    await client.clearCruds();
     onClear();
   };
 
@@ -24,7 +25,7 @@ export function Cruds({ cruds, onClear }) {
       </button>
       <div className="cruds">
         <CrudsList cruds={cruds} selected={selected} setSelected={setSelected} />
-        {selected && <SelectedCrud selectedCrud={selected} />}
+        {selected && <SelectedCrud selectedCrud={selected} client={client} />}
       </div>
     </div>
   );
