@@ -8,7 +8,7 @@ describe('Loading stubs from an initialiser file', () => {
     loadFromFile([
       {
         matching: { url: '/dude/{id}' },
-        outcomes: [{ id: 1, response: { body: { hey: 'dude number 1!' } } }],
+        outcomes: [{ match: { id: 1 }, response: { body: { hey: 'dude number 1!' } } }],
         default: {
           response: { body: { hey: 'setup default' }, statusCode: 200 }
         }
@@ -28,21 +28,23 @@ describe('Loading stubs from an initialiser file', () => {
     loadFromFile([
       {
         matching: { url: '/dude/{id}' },
-        outcomes: [{ id: 1, response: { body: { hey: 'other' } } }],
+        outcomes: [{ match: { id: 1 }, response: { body: { hey: 'other' } } }],
         default: {
           response: { body: { hey: 'some' }, statusCode: 200 }
         }
       },
       {
         matching: { url: '/other/{bananas}' },
-        outcomes: [{ bananas: 'yes', response: { body: {} } }],
+        outcomes: [{ match: { bananas: 'yes' }, response: { body: {} } }],
         default: {
           response: { body: { hey: 'no bananas' }, statusCode: 404 }
         }
       },
       {
         matching: { url: '/other-things', body: { something: '*' } },
-        outcomes: [{ something: 'ok', response: { body: { the: 'other' }, statusCode: 302 } }],
+        outcomes: [
+          { match: { something: 'ok' }, response: { body: { the: 'other' }, statusCode: 302 } }
+        ],
         default: {
           response: { body: {} }
         }

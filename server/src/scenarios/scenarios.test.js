@@ -11,9 +11,9 @@ describe('Configuring scenarios', () => {
         .send({
           matching: { url: '/dude/{id}' },
           outcomes: [
-            { id: 1, response: { body: { hey: 'dude number 1!' } } },
-            { id: 2, response: { body: { hey: 'dude number 2!' } } },
-            { id: 42, response: { body: { hey: 'the answer' } } }
+            { match: { id: 1 }, response: { body: { hey: 'dude number 1!' } } },
+            { match: { id: 2 }, response: { body: { hey: 'dude number 2!' } } },
+            { match: { id: 42 }, response: { body: { hey: 'the answer' } } }
           ],
           default: {
             response: { body: { hey: 'default dude!' }, statusCode: 200 }
@@ -44,9 +44,9 @@ describe('Configuring scenarios', () => {
         .send({
           matching: { url: '/statuses/{bananas}' },
           outcomes: [
-            { bananas: 51, response: { body: {}, statusCode: 201 } },
-            { bananas: 29, response: { body: {}, statusCode: 303 } },
-            { bananas: 42, response: { body: {}, statusCode: 404 } }
+            { match: { bananas: 51 }, response: { body: {}, statusCode: 201 } },
+            { match: { bananas: 29 }, response: { body: {}, statusCode: 303 } },
+            { match: { bananas: 42 }, response: { body: {}, statusCode: 404 } }
           ],
           default: {
             response: { body: {}, statusCode: 200 }
@@ -76,8 +76,8 @@ describe('Configuring scenarios', () => {
         .send({
           matching: { url: '/things?stuff={stuff}' },
           outcomes: [
-            { stuff: 'yes', response: { body: { some: 'thing' }, statusCode: 200 } },
-            { stuff: 'no', response: { body: {}, statusCode: 404 } }
+            { match: { stuff: 'yes' }, response: { body: { some: 'thing' }, statusCode: 200 } },
+            { match: { stuff: 'no' }, response: { body: {}, statusCode: 404 } }
           ],
           default: {
             response: { body: {}, statusCode: 404 }
@@ -104,13 +104,11 @@ describe('Configuring scenarios', () => {
           matching: { url: '/many?things={things}&other-things={other-things}' },
           outcomes: [
             {
-              things: 'yes',
-              'other-things': 'yes',
+              match: { things: 'yes', 'other-things': 'yes' },
               response: { body: { gots: 'alls' }, statusCode: 200 }
             },
             {
-              things: 'yes',
-              'other-things': 'no',
+              match: { things: 'yes', 'other-things': 'no' },
               response: { body: { gots: 'just some' }, statusCode: 200 }
             }
           ],
@@ -146,9 +144,9 @@ describe('Configuring scenarios', () => {
         .send({
           matching: { url: '/dude', body: { id: '*' } },
           outcomes: [
-            { id: 1, response: { body: { hey: 'dude number 1!' } } },
-            { id: 2, response: { body: { hey: 'dude number 2!' } } },
-            { id: 42, response: { body: { hey: 'the answer' } } }
+            { match: { id: 1 }, response: { body: { hey: 'dude number 1!' } } },
+            { match: { id: 2 }, response: { body: { hey: 'dude number 2!' } } },
+            { match: { id: 42 }, response: { body: { hey: 'the answer' } } }
           ],
           default: {
             response: { body: { hey: 'default dude!' }, statusCode: 200 }
@@ -181,8 +179,8 @@ describe('Configuring scenarios', () => {
         .send({
           matching: { url: '/bananas', body: { id: '*', bananas: '*' } },
           outcomes: [
-            { id: 1, bananas: 'yes', response: { body: { hey: 'dude 1, bananas!' } } },
-            { id: 1, bananas: 'no', response: { body: { hey: 'dude 1, no bananas!' } } }
+            { match: { id: 1, bananas: 'yes' }, response: { body: { hey: 'dude 1, bananas!' } } },
+            { match: { id: 1, bananas: 'no' }, response: { body: { hey: 'dude 1, no bananas!' } } }
           ],
           default: {
             response: { body: { hey: 'whatever' }, statusCode: 200 }
@@ -279,7 +277,7 @@ describe('Configuring scenarios', () => {
         matching: { url: '/some-other/{bananas}/{more}' },
         outcomes: [
           {
-            bananas: '1',
+            match: { bananas: '1' },
             response: { body: {}, statusCode: 200 }
           }
         ],
@@ -310,7 +308,7 @@ describe('Configuring scenarios', () => {
         },
         outcomes: [
           {
-            bananas: '1',
+            match: { bananas: '1' },
             response: { body: {}, statusCode: 200 }
           }
         ],

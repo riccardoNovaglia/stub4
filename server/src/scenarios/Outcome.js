@@ -1,21 +1,21 @@
-const { get, omit } = require('lodash');
+const { get } = require('lodash');
 
 const Outcome = (outcome, defaultResponse) => {
-  const toMatch = Object.keys(omit(outcome, 'response'));
+  const toMatch = Object.keys(outcome.match);
 
   return {
     outcome,
 
     matchesMaps(variablesMaps) {
       const maps = variablesMaps.map(varMap =>
-        Object.keys(varMap).map(key => varMap[key].toString() === outcome[key].toString())
+        Object.keys(varMap).map(key => varMap[key].toString() === outcome.match[key].toString())
       );
       const flattenedMatches = [].concat(...maps);
       return flattenedMatches.reduce((prev, current) => prev && current);
     },
     matchesBody(body) {
       return toMatch
-        .map(key => (body[key] ? outcome[key].toString() === body[key].toString() : false))
+        .map(key => (body[key] ? outcome.match[key].toString() === body[key].toString() : false))
         .reduce((p, n) => p && n);
     },
     toResponse() {

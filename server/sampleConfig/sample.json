@@ -15,8 +15,8 @@
     {
       "matching": { "url": "/dude/{id}" },
       "outcomes": [
-        { "id": 1, "response": { "body": { "hey": "other" } } },
-        { "id": 2, "response": { "body": { "hey": "other" } } }
+        { "match": { "id": 1 }, "response": { "body": { "hey": "other" } } },
+        { "match": { "id": 2 }, "response": { "body": { "hey": "other" } } }
       ],
       "default": {
         "response": { "body": { "hey": "some" }, "statusCode": 200 }
@@ -24,7 +24,7 @@
     },
     {
       "matching": { "url": "/other/{bananas}" },
-      "outcomes": [{ "bananas": "yes", "response": { "body": {} } }],
+      "outcomes": [{ "match": { "bananas": "yes" }, "response": { "body": {} } }],
       "default": {
         "response": { "body": { "hey": "no bananas" }, "statusCode": 404 }
       }

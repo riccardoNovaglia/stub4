@@ -14,7 +14,7 @@ let config = {
 };
 
 function readProvidedConfig() {
-  if (process.argv[2]) {
+  if (process.env.NODE_ENV !== 'test' && process.argv[2]) {
     const configFile = process.argv[2];
     const parsed = JSON.parse(fs.readFileSync(configFile, { encoding: 'utf8' }).toString());
 
