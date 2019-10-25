@@ -5,7 +5,7 @@ import { SelectedCrud } from './selected/SelectedCrud';
 
 export function Cruds({ onClear, client }) {
   const [selected, setSelected] = useState();
-  const [cruds, setCruds] = useState({});
+  const [cruds, setCruds] = useState([]);
   useEffect(() => {
     client.fetchCruds(setCruds);
   }, [setCruds, client]);

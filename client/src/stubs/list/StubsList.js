@@ -1,28 +1,28 @@
-import _ from 'lodash';
 import React from 'react';
+
+import ItemsList from '../../prototypes/ItemsList';
 
 export function StubsList({ stubs, selected, setSelected }) {
   return (
-    <div className="stubsList">
-      {_.isEmpty(stubs) && <p className="noResultsMsg">No stubs have been created yet</p>}
-      {stubs.map(stub => (
-        <div
-          key={`${stub.request.url}-item`}
-          className={
-            selected && selected.request.url === stub.request.url ? 'stub selected' : 'stub'
-          }
-          onClick={() => setSelected(stub)}
-        >
-          <p>
-            <span className={`method ${stub.request.method.toLowerCase()}`}>
-              {stub.request.method}
-            </span>{' '}
-            <span className="url">{stub.request.url}</span>
-            <span>→</span>
-            <span className="contentType">{stub.response.contentType}</span>
-          </p>
-        </div>
-      ))}
-    </div>
+    <ItemsList
+      items={stubs}
+      selected={selected}
+      setSelected={setSelected}
+      styles={{ itemClass: 'stub', listClass: 'stubsList' }}
+      itemKey={item => `${item.request.url}-item`}
+      selectionMatch={(selected, current) => selected.request.url === current.request.url}
+      itemComponent={StubListItem}
+    />
+  );
+}
+
+function StubListItem({ item }) {
+  return (
+    <p>
+      <span className={`method ${item.request.method.toLowerCase()}`}>{item.request.method}</span>{' '}
+      <span className="url">{item.request.url}</span>
+      <span>→</span>
+      <span className="contentType">{item.response.contentType}</span>
+    </p>
   );
 }

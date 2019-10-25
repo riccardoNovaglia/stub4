@@ -1,22 +1,27 @@
-import _ from 'lodash';
 import React from 'react';
+
+import ItemsList from '../../prototypes/ItemsList';
 
 export function CrudsList({ cruds, selected, setSelected }) {
   return (
-    <div className="crudsList">
-      {_.isEmpty(cruds) ? (
-        <p className="noResultsMsg">No cruds have been created yet</p>
-      ) : (
-        cruds.map(crud => (
-          <div key={`${crud.url}-item`} className="crud" onClick={() => setSelected(crud)}>
-            <p className={selected && selected.url === crud.url ? 'selected crudDef' : 'crudDef'}>
-              <span className="url">{crud.url}</span>
-              <span>→</span>
-              <span className="id">{crud.idAlias}</span>
-            </p>
-          </div>
-        ))
-      )}
-    </div>
+    <ItemsList
+      items={cruds}
+      selected={selected}
+      setSelected={setSelected}
+      styles={{ itemClass: 'crudDef', listClass: 'crudsList' }}
+      itemKey={item => `${item.url}-item`}
+      selectionMatch={(selected, current) => selected.url === current.url}
+      itemComponent={CrudListItem}
+    />
+  );
+}
+
+function CrudListItem({ item }) {
+  return (
+    <p>
+      <span className="url">{item.url}</span>
+      <span>→</span>
+      <span className="id">{item.idAlias}</span>
+    </p>
   );
 }

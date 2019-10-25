@@ -1,27 +1,30 @@
-import _ from 'lodash';
 import React from 'react';
+
+import ItemsList from '../../prototypes/ItemsList';
 
 export function ScenariosList({ scenarios, selected, setSelected }) {
   return (
-    <div className="scenariosList">
-      {_.isEmpty(scenarios) && <p className="noResultsMsg">No scenarios have been created yet</p>}
-      {scenarios.map(scenario => (
-        <div
-          className={
-            selected && selected.urlMatcher.url === scenario.urlMatcher.url
-              ? 'scenario selected'
-              : 'scenario'
-          }
-          onClick={() => setSelected(scenario)}
-        >
-          <span className="url">{scenario.urlMatcher.url}</span>
-          <span className="variableNames">{scenario.urlMatcher.variableNames}</span>
-          <span>→</span>
-          <span className="outcomesLength">
-            {scenario.outcomes.length} outcome{scenario.outcomes.length > 1 ? 's' : ''}
-          </span>
-        </div>
-      ))}
-    </div>
+    <ItemsList
+      items={scenarios}
+      selected={selected}
+      setSelected={setSelected}
+      styles={{ itemClass: 'scenario', listClass: 'scenariosList' }}
+      itemKey={item => `${item.urlMatcher.url}-item`}
+      selectionMatch={(selected, current) => selected.urlMatcher.url === current.urlMatcher.url}
+      itemComponent={ScenarioListItem}
+    />
+  );
+}
+
+function ScenarioListItem({ item }) {
+  return (
+    <p>
+      <span className="url">{item.urlMatcher.url}</span>
+      <span className="variableNames">{item.urlMatcher.variableNames}</span>
+      <span>→</span>
+      <span className="outcomesLength">
+        {item.outcomes.length} outcome{item.outcomes.length > 1 ? 's' : ''}
+      </span>
+    </p>
   );
 }
