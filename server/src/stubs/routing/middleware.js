@@ -6,12 +6,13 @@ function middleware(req, res, next) {
     const url = req.originalUrl;
     const method = req.method;
 
-    const matchedStub = stubs.get(url, method);
+    const matchedStub = stubs.get(url, method, req.body);
     stubs.countUp(url);
+
     return res
-      .set('Content-Type', matchedStub.response.contentType)
-      .status(matchedStub.response.statusCode)
-      .send(matchedStub.response.body);
+      .set('Content-Type', matchedStub.response.toResponse().contentType)
+      .status(matchedStub.response.toResponse().statusCode)
+      .send(matchedStub.response.toResponse().body);
   } catch (e) {
     log('Not a stub', e);
     return next();

@@ -28,11 +28,12 @@ describe('Clearing and listing stubs', () => {
 
     const response = await request(app).get('/stubs');
     expect(response.status).toEqual(200);
-    expect(response.body).toMatchObject([
-      {
-        request: { method: 'GET', url: '/tubs' },
-        response: { body: 'bods', contentType: 'text/plain' }
-      }
-    ]);
+    expect(response.body.length).toEqual(1);
+    expect(response.body[0].urlMatcher.url).toEqual('/tubs');
+    expect(response.body[0].response.response).toEqual({
+      body: 'bods',
+      contentType: 'text/plain',
+      statusCode: 200
+    });
   });
 });

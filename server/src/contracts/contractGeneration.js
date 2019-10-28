@@ -9,12 +9,12 @@ const pactConfig = require('../config').pact;
 const pactServerPort = pactConfig.serverPort;
 
 async function generateContracts({ consumer }) {
-  const stubsWithContracts = stubs.all().filter(stub => !!stub.request.contract);
-  const providers = new Set(stubsWithContracts.map(stub => stub.request.contract.providerName));
+  const stubsWithContracts = stubs.all().filter(stub => !!stub.contract);
+  const providers = new Set(stubsWithContracts.map(stub => stub.contract.providerName));
   for (const provider of providers) {
     try {
       const relevantStubs = stubsWithContracts.filter(
-        stub => stub.request.contract.providerName === provider
+        stub => stub.contract.providerName === provider
       );
       await generateContract(consumer, provider, relevantStubs);
     } catch (e) {
@@ -35,10 +35,10 @@ async function generateContract(consumer, provider, providerStubs) {
 
   await pact.setup();
 
-  const interactions = providerStubs.map(stub => addInteraction(pact, stub));
-  await Promise.all(interactions);
-
   try {
+    const interactions = providerStubs.map(stub => addInteraction(pact, stub));
+    await Promise.all(interactions);
+
     await pact.verify();
   } catch (e) {
     // and then what?
@@ -50,19 +50,19 @@ async function generateContract(consumer, provider, providerStubs) {
 
 function addInteraction(pact, stub) {
   pact.addInteraction({
-    state: stub.request.contract.state,
-    uponReceiving: stub.request.contract.uponReceiving,
+    state: stub.contract.state,
+    uponReceiving: stub.contract.uponReceiving,
     withRequest: {
-      method: stub.request.method,
-      path: stub.request.url
+      method: stub.method,
+      path: stub.urlMatcher.url
     },
     willRespondWith: {
-      status: stub.response.statusCode,
-      headers: { 'Content-Type': stub.response.contentType },
-      body: stub.response.body
+      status: stub.response.response.statusCode,
+      headers: { 'Content-Type': stub.response.response.contentType },
+      body: stub.response.response.body
     }
   });
-  return callStub(pactServerPort, stub.request.url, stub.request.method);
+  return callStub(pactServerPort, stub.urlMatcher.url, stub.method);
 }
 
 async function callStub(port, url, method) {

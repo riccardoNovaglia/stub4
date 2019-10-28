@@ -1,22 +1,21 @@
 const _ = require('lodash');
 
 const stubs = [];
+const sstubs = [];
 const interactions = [];
 
-function add(request, response) {
-  const newStub = { request, response };
-  const stub = get(request.url);
-  if (stub) {
-    stub.request = newStub.request;
-    stub.response = newStub.response;
-  } else {
-    stubs.push(newStub);
+function add(stub) {
+  const existingStub = sstubs.find(existing => existing.urlMatcher.url === stub.urlMatcher.url);
+  if (existingStub) {
+    sstubs.splice(sstubs.indexOf(existingStub), 1);
   }
+
+  sstubs.push(stub);
 }
 
-// TODO: match method, headers
-function get(url, method = 'GET') {
-  return stubs.find(stub => stub.request.url === url && stub.request.method === method);
+function get(url, method, body) {
+  // console.log('getting', url, method, body);
+  return sstubs.find(stub => stub.matches(url, method, body));
 }
 
 function getInteraction(url) {
@@ -24,11 +23,12 @@ function getInteraction(url) {
 }
 
 function all() {
-  return stubs;
+  return sstubs;
 }
 
 function clearAll() {
   stubs.length = 0;
+  sstubs.length = 0;
   interactions.length = 0;
 }
 

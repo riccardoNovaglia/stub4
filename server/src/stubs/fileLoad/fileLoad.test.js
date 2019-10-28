@@ -12,10 +12,13 @@ describe('Loading stubs from an initialiser file', () => {
       }
     ]);
 
-    const item = get('/some-url');
-    expect(item).toEqual({
-      request: { url: '/some-url', method: 'GET', contract: undefined },
-      response: { body: `this was setup`, contentType: 'text/plain', statusCode: 200 }
+    const item = get('/some-url', 'GET', undefined);
+    expect(item.urlMatcher.url).toEqual('/some-url');
+    expect(item.method).toEqual('GET');
+    expect(item.response.toResponse()).toEqual({
+      body: `this was setup`,
+      contentType: 'text/plain',
+      statusCode: 200
     });
   });
 
@@ -24,16 +27,21 @@ describe('Loading stubs from an initialiser file', () => {
     const uponReceiving = 'receiving some request';
     loadFromFile([
       {
-        requestMatcher: { url: '/whatever', method: 'PATCH', contract: { state, uponReceiving } },
-        response: { body: { item: `whatever` }, type: 'json', statusCode: 123 }
+        requestMatcher: { url: '/whatever', method: 'PATCH' },
+        response: { body: { item: `whatever` }, type: 'json', statusCode: 123 },
+        contract: { state, uponReceiving }
       }
     ]);
 
     const item = get('/whatever', 'PATCH');
-    expect(item).toEqual({
-      request: { url: '/whatever', method: 'PATCH', contract: { state, uponReceiving } },
-      response: { body: { item: `whatever` }, contentType: 'application/json', statusCode: 123 }
+    expect(item.urlMatcher.url).toEqual('/whatever');
+    expect(item.method).toEqual('PATCH');
+    expect(item.response.toResponse()).toEqual({
+      body: { item: `whatever` },
+      contentType: 'application/json',
+      statusCode: 123
     });
+    expect(item.contract).toEqual({ state, uponReceiving });
   });
 
   it('loads multiple stubs', () => {
@@ -48,15 +56,19 @@ describe('Loading stubs from an initialiser file', () => {
       }
     ]);
 
-    const some = get('/some-url');
-    expect(some).toEqual({
-      request: { url: '/some-url', method: 'GET', contract: undefined },
-      response: { body: `this was setup`, contentType: 'text/plain', statusCode: 200 }
+    const some = get('/some-url', 'GET', undefined);
+    expect(some.urlMatcher.url).toEqual('/some-url');
+    expect(some.response.toResponse()).toEqual({
+      body: `this was setup`,
+      contentType: 'text/plain',
+      statusCode: 200
     });
-    const another = get('/another');
-    expect(another).toEqual({
-      request: { url: '/another', method: 'GET', contract: undefined },
-      response: { body: `some else`, contentType: 'application/json', statusCode: 200 }
+    const another = get('/another', 'GET');
+    expect(another.urlMatcher.url).toEqual('/another');
+    expect(another.response.toResponse()).toEqual({
+      body: `some else`,
+      contentType: 'application/json',
+      statusCode: 200
     });
   });
 });

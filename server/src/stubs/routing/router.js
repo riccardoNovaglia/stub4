@@ -1,16 +1,15 @@
 const express = require('express');
 const router = express.Router();
 
-const getRequestMatcher = require('./request');
-const extractResponse = require('./response');
 const stubs = require('../stubbing');
+
+const { StubFromRequest } = require('../Stub');
 
 router.post('/new', function(req, res) {
   try {
-    const request = getRequestMatcher(req);
-    const response = extractResponse(req);
+    const stub = StubFromRequest(req);
 
-    stubs.add(request, response);
+    stubs.add(stub);
 
     return res.sendStatus(200);
   } catch (error) {

@@ -116,4 +116,27 @@ describe('Setting up stubs', () => {
     const response = await request(app).get('/to-be-overridden');
     expect(response.text).toEqual('the new text!');
   });
+
+  describe('body matching', () => {
+    it('sets up a stub with body matching', async () => {
+      const stubCreationResponse = await request(app)
+        .post('/stubs/new')
+        .send({
+          requestMatcher: { url: '/john', body: { id: '1' } },
+          response: { body: `hello, how's it going`, type: 'text' }
+        });
+      expect(stubCreationResponse.status).toEqual(200);
+
+      const stubbedResponse = await request(app)
+        .post('/john')
+        .send({ id: '1' });
+      expect(stubbedResponse.status).toEqual(200);
+      expect(stubbedResponse.body).toEqual({});
+
+      const matchMiss = await request(app)
+        .post('/john')
+        .send({ id: '2' });
+      expect(matchMiss.status).toEqual(404);
+    });
+  });
 });
