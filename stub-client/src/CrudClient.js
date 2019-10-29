@@ -1,6 +1,6 @@
 const { getAxios } = require('./axios');
 
-export class CrudClient {
+class CrudClient {
   constructor(port) {
     this.ax = getAxios(port);
   }
@@ -27,3 +27,5 @@ export class CrudClient {
     await this.ax.post(url, data);
   }
 }
+
+module.exports = { CrudClient };

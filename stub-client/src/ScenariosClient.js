@@ -1,6 +1,6 @@
 const { getAxios } = require('./axios');
 
-export class ScenariosClient {
+class ScenariosClient {
   constructor(port) {
     this.ax = getAxios(port);
   }
@@ -26,3 +26,5 @@ export class ScenariosClient {
   //   set(res.data.count);
   // }
 }
+
+module.exports = { ScenariosClient };

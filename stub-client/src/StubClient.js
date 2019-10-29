@@ -1,51 +1,25 @@
 const { getAxios } = require('./axios');
 
-export class StubClient {
+class StubClient {
   constructor(port) {
     this.ax = getAxios(port);
   }
 
   async stub(stubDefinition) {
+    const requestMatcher = stubDefinition.requestMatcher();
+    const response = stubDefinition.response();
     await this.ax.post(`/stubs/new`, {
-      requestMatcher: { url: stubDefinition.url, method: stubDefinition.method },
-      response: {
-        type: stubDefinition.type,
-        body: stubDefinition.body,
-        statusCode: stubDefinition.statusCode
-      }
+      requestMatcher,
+      response
     });
-  }
-
-  get(url) {
-    return {
-      returns: (type, body, status) => ({
-        url,
-        method: 'GET',
-        type,
-        body,
-        statusCode: status
-      })
-    };
-  }
-
-  post(url) {
-    return {
-      returns: (type, body, status) => ({
-        url,
-        method: 'POST',
-        type,
-        body,
-        statusCode: status
-      })
-    };
   }
 
   request(method, url) {
     switch (method) {
       case 'GET':
-        return this.get(url);
+        return get(url);
       case 'POST':
-        return this.post(url);
+        return post(url);
       default:
         throw new Error('Not yet');
     }
@@ -65,3 +39,63 @@ export class StubClient {
     set(res.data.count);
   }
 }
+
+class Stub {
+  constructor(url, method = 'GET') {
+    this.url = url;
+    this.method = method;
+    this.bodyMatch = undefined;
+    this.type = 'json';
+    this.body = {};
+    this.statusCode = 200;
+  }
+
+  withBody(body) {
+    this.bodyMatch = body;
+    return this;
+  }
+
+  returns(type, body, statusCode = 200) {
+    this.type = type;
+    this.body = body;
+    this.statusCode = statusCode;
+    return this;
+  }
+
+  returnsJson(body, statusCode = 200) {
+    this.body = body;
+    this.statusCode = statusCode;
+    return this;
+  }
+
+  requestMatcher() {
+    return this.bodyMatch
+      ? {
+          url: this.url,
+          method: this.method,
+          body: this.bodyMatch
+        }
+      : {
+          url: this.url,
+          method: this.method
+        };
+  }
+
+  response() {
+    return {
+      type: this.type,
+      body: this.body,
+      statusCode: this.statusCode
+    };
+  }
+}
+
+function get(url) {
+  return new Stub(url, 'GET');
+}
+
+function post(url) {
+  return new Stub(url, 'POST');
+}
+
+module.exports = { StubClient, Stub, get, post };

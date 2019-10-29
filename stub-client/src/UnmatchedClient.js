@@ -1,6 +1,6 @@
 const { getAxios } = require('./axios');
 
-export class UnmatchedClient {
+class UnmatchedClient {
   constructor(port) {
     this.ax = getAxios(port);
   }
@@ -10,3 +10,5 @@ export class UnmatchedClient {
     setFn(res.data);
   }
 }
+
+module.exports = { UnmatchedClient };

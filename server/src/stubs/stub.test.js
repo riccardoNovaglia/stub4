@@ -1,9 +1,23 @@
 const request = require('supertest');
+const axios = require('axios');
 const app = require('../app');
 
-describe('Setting up stubs', () => {
-  afterEach(async () => {
-    await request(app).post('/stubs/clear');
+const Stub4 = require('@stub4/client');
+const { get, post } = require('@stub4/client');
+
+describe.only('Stubbing via the client', () => {
+  let server;
+  const client = new Stub4.StubClient(9010);
+  beforeAll(done => {
+    server = app.listen(9010, done);
+  });
+
+  afterAll(() => {
+    server.close();
+  });
+
+  beforeEach(async () => {
+    await axios.post('http://localhost:9010/stubs/clear');
   });
 
   it('returns 404 for not-yet-existing stubs', async () => {
@@ -12,10 +26,7 @@ describe('Setting up stubs', () => {
   });
 
   it('creates a new stub with url only, defaulting to GET, returns ok and no body', async () => {
-    const stubCreationResponse = await request(app)
-      .post('/stubs/new')
-      .send({ requestMatcher: { url: '/john' } });
-    expect(stubCreationResponse.status).toEqual(200);
+    await client.stub(get('/john').returns('json', {}));
 
     const stubbedResponse = await request(app).get('/john');
     expect(stubbedResponse.status).toEqual(200);
@@ -23,12 +34,7 @@ describe('Setting up stubs', () => {
   });
 
   it('responds from the new stub with the given body', async () => {
-    await request(app)
-      .post('/stubs/new')
-      .send({
-        requestMatcher: { url: '/whateva' },
-        response: { body: { hey: 'you!' } }
-      });
+    await client.stub(get('/whateva').returns('json', { hey: 'you!' }));
 
     const response = await request(app).get('/whateva');
     expect(response.status).toEqual(200);
@@ -36,12 +42,15 @@ describe('Setting up stubs', () => {
   });
 
   it('sets up the stub with the required method', async () => {
-    await request(app)
-      .post('/stubs/new')
-      .send({
-        requestMatcher: { method: 'POST', url: '/another-one' },
-        response: { body: { just: 'posted' } }
-      });
+    await client.stub(post('/another-one').returns('json', { just: 'posted' }));
+
+    const response = await request(app).post('/another-one');
+    expect(response.status).toEqual(200);
+    expect(response.body).toEqual({ just: 'posted' });
+  });
+
+  it('sets up the stub with the required method (not with method alias)', async () => {
+    await client.stub(client.request('POST', '/another-one').returns('json', { just: 'posted' }));
 
     const response = await request(app).post('/another-one');
     expect(response.status).toEqual(200);
@@ -49,24 +58,14 @@ describe('Setting up stubs', () => {
   });
 
   it('only replies to the stub on the method setup', async () => {
-    await request(app)
-      .post('/stubs/new')
-      .send({
-        requestMatcher: { method: 'POST', url: '/post-only' },
-        response: { body: { just: 'posted' } }
-      });
+    await client.stub(client.request('POST', '/post-only').returns('json', { just: 'posted' }));
 
     const response = await request(app).get('/post-only');
     expect(response.status).toEqual(404);
   });
 
   it('responds with the correct body format and header given a response type', async () => {
-    await request(app)
-      .post('/stubs/new')
-      .send({
-        requestMatcher: { url: '/a-new-one' },
-        response: { body: `hello, how's it going`, type: 'text' }
-      });
+    await client.stub(get('/a-new-one').returns('text', `hello, how's it going`));
 
     const response = await request(app).get('/a-new-one');
     expect(response.status).toEqual(200);
@@ -78,40 +77,20 @@ describe('Setting up stubs', () => {
   });
 
   it('responds with the correct status code', async () => {
-    await request(app)
-      .post('/stubs/new')
-      .send({
-        requestMatcher: { url: '/failure' },
-        response: { statusCode: 543 }
-      });
+    await client.stub(get('/failure').returnsJson({}, 543));
 
     const response = await request(app).get('/failure');
     expect(response.statusCode).toEqual(543);
   });
 
   it('returns an error if the url is not specified', async () => {
-    const stubCreationResponse = await request(app)
-      .post('/stubs/new')
-      .send({ requestMatcher: {} });
-    expect(stubCreationResponse.status).toEqual(500);
-    expect(stubCreationResponse.body).toEqual({
-      error: 'A request matcher url must be provided!'
-    });
+    // TODO: return actual failure mgs, not just 500
+    expect(client.stub(get(undefined).returnsJson({}, 543))).rejects.toThrow('500');
   });
 
   it('can override an existing stub with a new one', async () => {
-    await request(app)
-      .post('/stubs/new')
-      .send({
-        requestMatcher: { url: '/to-be-overridden' },
-        response: { body: `this is the first one`, type: 'text' }
-      });
-    await request(app)
-      .post('/stubs/new')
-      .send({
-        requestMatcher: { url: '/to-be-overridden' },
-        response: { body: 'the new text!', type: 'text' }
-      });
+    await client.stub(get('/to-be-overridden').returns('text', `this is the first one`));
+    await client.stub(get('/to-be-overridden').returns('text', 'the new text!'));
 
     const response = await request(app).get('/to-be-overridden');
     expect(response.text).toEqual('the new text!');
@@ -119,13 +98,11 @@ describe('Setting up stubs', () => {
 
   describe('body matching', () => {
     it('sets up a stub with body matching', async () => {
-      const stubCreationResponse = await request(app)
-        .post('/stubs/new')
-        .send({
-          requestMatcher: { url: '/john', body: { id: '1' } },
-          response: { body: `hello, how's it going`, type: 'text' }
-        });
-      expect(stubCreationResponse.status).toEqual(200);
+      await client.stub(
+        post('/john')
+          .withBody({ id: '1' })
+          .returns('text', `hello, how's it going`)
+      );
 
       const stubbedResponse = await request(app)
         .post('/john')

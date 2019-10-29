@@ -1,6 +1,6 @@
 {
   "name": "@stub4/stub4",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "We'll see",
   "repository": {
     "type": "git",
@@ -37,6 +37,7 @@
     "lodash": "^4.17.15"
   },
   "devDependencies": {
+    "@stub4/client": "0.0.4",
     "jest": "^24.8.0",
     "nodemon": "^1.19.3",
     "supertest": "^3.4.2"

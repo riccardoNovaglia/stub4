@@ -1,6 +1,6 @@
 const { getAxios } = require('./axios');
 
-export class ProxyClient {
+class ProxyClient {
   constructor(port) {
     this.ax = getAxios(port);
   }
@@ -21,3 +21,5 @@ export class ProxyClient {
     await this.ax.post('/proxy/clear');
   }
 }
+
+module.exports = { ProxyClient };
