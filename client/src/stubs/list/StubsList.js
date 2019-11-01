@@ -9,8 +9,8 @@ export function StubsList({ stubs, selected, setSelected }) {
       selected={selected}
       setSelected={setSelected}
       styles={{ itemClass: 'stub', listClass: 'stubsList' }}
-      itemKey={item => `${item.request.url}-item`}
-      selectionMatch={(selected, current) => selected.request.url === current.request.url}
+      itemKey={item => `${item.urlMatcher.url}-item`}
+      selectionMatch={(selected, current) => selected.urlMatcher.url === current.urlMatcher.url}
       itemComponent={StubListItem}
     />
   );
@@ -19,10 +19,10 @@ export function StubsList({ stubs, selected, setSelected }) {
 function StubListItem({ item }) {
   return (
     <p>
-      <span className={`method ${item.request.method.toLowerCase()}`}>{item.request.method}</span>{' '}
-      <span className="url">{item.request.url}</span>
+      <span className={`method ${item.method.toLowerCase()}`}>{item.method}</span>{' '}
+      <span className="url">{item.urlMatcher.url}</span>
       <span>→</span>
-      <span className="contentType">{item.response.contentType}</span>
+      <span className="contentType">{item.response.response.contentType}</span>
     </p>
   );
 }
