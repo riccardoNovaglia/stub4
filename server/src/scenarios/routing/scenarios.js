@@ -18,10 +18,10 @@ function get(url, body) {
 
 function all() {
   return scenarios.slice().map(outcome => {
-    let { urlMatcher, outcomes, defaultResponse } = outcome;
-    urlMatcher.regex = urlMatcher.regex.toString();
+    let { urlMatcher, bodyMatcher, outcomes, defaultResponse } = outcome;
+    urlMatcher.regex = urlMatcher.regex ? urlMatcher.regex.toString() : 'N/A';
     outcomes = outcomes.map(outcomeWrapper => outcomeWrapper.outcome);
-    return { urlMatcher, outcomes, defaultResponse };
+    return { urlMatcher, bodyMatcher, outcomes, defaultResponse };
   });
 }
 

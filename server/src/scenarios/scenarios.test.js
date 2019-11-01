@@ -285,6 +285,20 @@ describe('Configuring scenarios', () => {
           response: { body: {}, statusCode: 404 }
         }
       });
+    await request(app)
+      .post('/scenarios/new')
+      .send({
+        matching: { url: '/with-body', body: { customerId: '*' } },
+        outcomes: [
+          {
+            match: { customerId: '1' },
+            response: { body: { name: 'jimbo' }, statusCode: 200 }
+          }
+        ],
+        default: {
+          response: { body: {}, statusCode: 404 }
+        }
+      });
 
     const allScenarios = await request(app).get('/scenarios');
     expect(allScenarios.status).toEqual(200);
@@ -295,6 +309,7 @@ describe('Configuring scenarios', () => {
           variableNames: ['id'],
           regex: '/\\/some\\/(.*)/g'
         },
+        bodyMatcher: {},
         outcomes: [],
         defaultResponse: {
           response: { body: { hey: 'you' }, statusCode: 200 }
@@ -306,10 +321,30 @@ describe('Configuring scenarios', () => {
           variableNames: ['bananas', 'more'],
           regex: '/\\/some-other\\/(.*)\\/(.*)/g'
         },
+        bodyMatcher: {},
         outcomes: [
           {
             match: { bananas: '1' },
             response: { body: {}, statusCode: 200 }
+          }
+        ],
+        defaultResponse: {
+          response: { body: {}, statusCode: 404 }
+        }
+      },
+      {
+        urlMatcher: {
+          url: '/with-body',
+          regex: 'N/A'
+        },
+        bodyMatcher: {
+          body: { customerId: '*' },
+          keys: ['customerId']
+        },
+        outcomes: [
+          {
+            match: { customerId: '1' },
+            response: { body: { name: 'jimbo' }, statusCode: 200 }
           }
         ],
         defaultResponse: {
@@ -348,6 +383,7 @@ describe('Configuring scenarios', () => {
           variableNames: ['id'],
           regex: '/\\/some\\/(.*)/g'
         },
+        bodyMatcher: {},
         outcomes: [],
         defaultResponse: {
           response: { body: { hey: 'updated' }, statusCode: 200 }

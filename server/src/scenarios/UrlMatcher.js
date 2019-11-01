@@ -37,6 +37,7 @@ const UrlMatcher = url => {
 };
 
 const NoopMatcher = {
+  url: '',
   matches: () => true,
   getMatchedMap: () => undefined,
   equals: otherMatcher => typeof otherMatcher === 'NoopMatcher'
