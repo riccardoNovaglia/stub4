@@ -48,7 +48,7 @@ function StubFromRequest(req) {
 
   const method = _.get(req.body, 'requestMatcher.method', _.isEmpty(body) ? 'GET' : 'POST');
   const response = Response(req.body.response);
-  return Stub(urlMatcher, method, bodyMatcher, response, contract);
+  return Stub(urlMatcher, method, bodyMatcher, response.toResponse(), contract);
 }
 
 function StubFromFile(stubDef) {
@@ -63,7 +63,7 @@ function StubFromFile(stubDef) {
 
   const method = _.get(stubDef, 'requestMatcher.method', _.isEmpty(body) ? 'GET' : 'POST');
   const response = Response(stubDef.response);
-  return Stub(urlMatcher, method, bodyMatcher, response, contract);
+  return Stub(urlMatcher, method, bodyMatcher, response.toResponse(), contract);
 }
 
 module.exports = { Stub, StubFromRequest, StubFromFile };

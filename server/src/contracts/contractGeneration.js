@@ -57,9 +57,9 @@ function addInteraction(pact, stub) {
       path: stub.urlMatcher.url
     },
     willRespondWith: {
-      status: stub.response.response.statusCode,
-      headers: { 'Content-Type': stub.response.response.contentType },
-      body: stub.response.response.body
+      status: stub.response.statusCode,
+      headers: { 'Content-Type': stub.response.contentType },
+      body: stub.response.body
     }
   });
   return callStub(pactServerPort, stub.urlMatcher.url, stub.method);

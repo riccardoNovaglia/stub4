@@ -32,10 +32,6 @@ function clearAll() {
   interactions.length = 0;
 }
 
-function forEach(fn) {
-  stubs.forEach(stub => fn(stub));
-}
-
 function count(url) {
   const interaction = getInteraction(url);
   return _.get(interaction, 'count', 0);
@@ -51,7 +47,6 @@ module.exports = {
   all,
   clearAll,
   get,
-  forEach,
   countUp,
   count
 };

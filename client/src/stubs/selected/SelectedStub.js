@@ -19,10 +19,10 @@ export function SelectedStub({ selectedStub, setStarter, client }) {
       <div className="selectedStub">
         <div className={`method ${selectedStub.method.toLowerCase()}`}>{selectedStub.method}</div>
         <div className="url">{selectedStub.urlMatcher.url}</div>
-        <div className="contentType">{selectedStub.response.response.contentType}</div>
+        <div className="contentType">{selectedStub.response.contentType}</div>
         <div className="responseBody">
           <strong>Response body:</strong>
-          <pre>{selectedStub.response.response.body}</pre>
+          <pre>{selectedStub.response.body}</pre>
           <button onClick={() => setStarter({ type: 'stub', stub: selectedStub })}>
             <i className="material-icons">code</i>Edit
           </button>

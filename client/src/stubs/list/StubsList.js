@@ -17,12 +17,13 @@ export function StubsList({ stubs, selected, setSelected }) {
 }
 
 function StubListItem({ item }) {
+  console.log(item);
   return (
     <p>
       <span className={`method ${item.method.toLowerCase()}`}>{item.method}</span>{' '}
       <span className="url">{item.urlMatcher.url}</span>
       <span>→</span>
-      <span className="contentType">{item.response.response.contentType}</span>
+      <span className="contentType">{item.response.contentType}</span>
     </p>
   );
 }

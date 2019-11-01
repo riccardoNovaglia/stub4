@@ -30,7 +30,7 @@ describe('Clearing and listing stubs', () => {
     expect(response.status).toEqual(200);
     expect(response.body.length).toEqual(1);
     expect(response.body[0].urlMatcher.url).toEqual('/tubs');
-    expect(response.body[0].response.response).toEqual({
+    expect(response.body[0].response).toEqual({
       body: 'bods',
       contentType: 'text/plain',
       statusCode: 200

@@ -10,9 +10,9 @@ function middleware(req, res, next) {
     stubs.countUp(url);
 
     return res
-      .set('Content-Type', matchedStub.response.toResponse().contentType)
-      .status(matchedStub.response.toResponse().statusCode)
-      .send(matchedStub.response.toResponse().body);
+      .set('Content-Type', matchedStub.response.contentType)
+      .status(matchedStub.response.statusCode)
+      .send(matchedStub.response.body);
   } catch (e) {
     log('Not a stub', e);
     return next();
