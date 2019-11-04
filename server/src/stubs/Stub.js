@@ -3,18 +3,31 @@ const _ = require('lodash');
 const UrlMatcher = require('../scenarios/UrlMatcher');
 const BodyMatcher = require('../stubs/BodyMatcher');
 
+const { createLogger } = require('../logger');
+
+const logger = createLogger('stubs');
+
 function Stub(urlMatcher, method, bodyMatcher, response, contract) {
-  return {
-    urlMatcher,
-    method,
-    bodyMatcher,
-    response,
-    contract,
+  const data = { urlMatcher, method, bodyMatcher, response, contract };
+
+  const stub = {
+    ...data,
     matches(url, method, body) {
-      // console.log('matching', url, method, body);
-      return urlMatcher.matches(url) && this.method === method && bodyMatcher.matches(body);
+      logger.silly(`${this.pretty()} attempting to match ${method} ${url} ${JSON.stringify(body)}`);
+      const matched =
+        urlMatcher.matches(url) && this.method === method && bodyMatcher.matches(body);
+      matched && logger.debug(`${this.pretty()} is a match`);
+      return matched;
+    },
+    pretty() {
+      return `'${method} ${urlMatcher.pretty()} ${bodyMatcher.pretty()}'`;
+    },
+    prettyJson() {
+      return JSON.stringify(data, null, 2);
     }
   };
+
+  return stub;
 }
 
 function Response(response) {

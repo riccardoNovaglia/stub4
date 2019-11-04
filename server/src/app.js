@@ -9,7 +9,7 @@ const proxy = require('./proxy');
 const unmatched = require('./unmatched');
 const { generateContracts } = require('./contracts/contractGeneration');
 
-const log = require('./logger');
+const { log } = require('./logger');
 
 const app = express();
 app.use(bodyParser.json());

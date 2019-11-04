@@ -2,7 +2,7 @@ const _ = require('lodash');
 const axios = require('axios');
 const { Pact } = require('@pact-foundation/pact');
 
-const log = require('../logger');
+const { log } = require('../logger');
 const stubs = require('../stubs/stubbing');
 const pactConfig = require('../config').pact;
 

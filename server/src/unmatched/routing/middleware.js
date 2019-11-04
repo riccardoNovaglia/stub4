@@ -1,4 +1,4 @@
-const log = require('../../logger');
+const { log } = require('../../logger');
 const unmatched = require('../unmatched');
 
 function middleware(req, _, next) {

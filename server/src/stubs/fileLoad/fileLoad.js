@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const log = require('../../logger');
+const { log } = require('../../logger');
 const stubs = require('../stubbing');
 
 const { StubFromFile } = require('../Stub');

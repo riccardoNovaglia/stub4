@@ -10,6 +10,11 @@ let config = {
     logsDestination: path.resolve(process.cwd(), 'logs', 'pact.log'),
     logLevel: 'WARN',
     contractsFilesDestination: path.resolve(process.cwd(), 'generatedTestPacts')
+  },
+  logging: {
+    baseLevel: 'warn',
+    toIgnore: [],
+    specifics: []
   }
 };
 

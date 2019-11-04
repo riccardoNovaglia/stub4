@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const log = require('../../logger');
+const { log } = require('../../logger');
 const unmatched = require('../unmatched');
 
 router.get('/unmatched', (_, res) => {

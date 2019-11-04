@@ -32,7 +32,10 @@ const UrlMatcher = url => {
       const zipped = variableNames.map((elem, index) => ({ [elem]: capturedGroups[index] }));
       return zipped;
     },
-    equals: otherMatcher => otherMatcher.url === url
+    equals: otherMatcher => otherMatcher.url === url,
+    pretty() {
+      return regex.toString();
+    }
   };
 };
 
@@ -40,7 +43,8 @@ const NoopMatcher = {
   url: '',
   matches: () => true,
   getMatchedMap: () => undefined,
-  equals: otherMatcher => typeof otherMatcher === 'NoopMatcher'
+  equals: otherMatcher => typeof otherMatcher === 'NoopMatcher',
+  pretty: () => '*'
 };
 
 const SimpleMatcher = url => {
@@ -48,7 +52,8 @@ const SimpleMatcher = url => {
     url,
     matches: urlToMatch => urlToMatch === url,
     getMatchedMap: () => undefined,
-    equals: otherMatcher => otherMatcher.url === url
+    equals: otherMatcher => otherMatcher.url === url,
+    pretty: () => url
   };
 };
 

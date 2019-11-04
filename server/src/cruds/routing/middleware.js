@@ -1,4 +1,4 @@
-const log = require('../../logger');
+const { log } = require('../../logger');
 const { getAll, get, push, remove, meta } = require('../stubbing');
 
 function middleware(req, res, next) {

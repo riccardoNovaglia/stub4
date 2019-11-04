@@ -9,16 +9,17 @@ const BodyMatcher = body => {
     body,
     keys,
     matches(body) {
-      // console.log('matching ', body, ' and', this.body);
       if (_.isEmpty(body)) return false;
 
       return keys.map(k => body[k] === this.body[k]).reduce((a, b) => a && b);
-    }
+    },
+    pretty: () => JSON.stringify(body)
   };
 };
 
 const NoopMatcher = {
-  matches: () => true
+  matches: () => true,
+  pretty: () => '*'
 };
 
 module.exports = BodyMatcher;
