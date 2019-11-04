@@ -3,27 +3,26 @@ const _ = require('lodash');
 const { createLogger } = require('../logger');
 
 const stubs = [];
-const sstubs = [];
 const interactions = [];
 
 const logger = createLogger('stubs');
 
 function add(stub) {
-  const existingStub = sstubs.find(existing => existing.urlMatcher.url === stub.urlMatcher.url);
+  const existingStub = stubs.find(existing => existing.urlMatcher.url === stub.urlMatcher.url);
   if (existingStub) removeExisting(existingStub);
 
   logger.info(`Created new stub ${stub.pretty()}`);
   logger.silly(`New stub: ${JSON.stringify(stub, null, 2)}`);
-  sstubs.push(stub);
+  stubs.push(stub);
 }
 
 function removeExisting(stub) {
   logger.debug(`Removing existing stub ${stub.pretty()}`);
-  sstubs.splice(sstubs.indexOf(stub), 1);
+  stubs.splice(stubs.indexOf(stub), 1);
 }
 
 function get(url, method, body) {
-  return sstubs.find(stub => stub.matches(url, method, body));
+  return stubs.find(stub => stub.matches(url, method, body));
 }
 
 function getInteraction(url) {
@@ -31,12 +30,11 @@ function getInteraction(url) {
 }
 
 function all() {
-  return sstubs;
+  return stubs;
 }
 
 function clearAll() {
   stubs.length = 0;
-  sstubs.length = 0;
   interactions.length = 0;
   logger.info('All stubs cleared');
 }
