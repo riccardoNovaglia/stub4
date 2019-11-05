@@ -2,11 +2,13 @@ const _ = require('lodash');
 const axios = require('axios');
 const { Pact } = require('@pact-foundation/pact');
 
-const { log } = require('../logger');
+const { log, createLogger } = require('../logger');
 const stubs = require('../stubs/stubbing');
 const pactConfig = require('../config').pact;
 
 const pactServerPort = pactConfig.serverPort;
+
+const logger = createLogger('contracts');
 
 async function generateContracts({ consumer }) {
   const stubsWithContracts = stubs.all().filter(stub => !!stub.contract);
@@ -16,14 +18,19 @@ async function generateContracts({ consumer }) {
       const relevantStubs = stubsWithContracts.filter(
         stub => stub.contract.providerName === provider
       );
+      logger.info(`${relevantStubs.length} stubs with contracts setup found. Generating...`);
       await generateContract(consumer, provider, relevantStubs);
+      logger.info(`Contracts generated in ${pactConfig.contractsFilesDestination}`);
     } catch (e) {
-      console.log(`Coudln't genrate contract between ${consumer} and ${provider}`, e);
+      logger.error(`An error occurred generating contract between ${consumer} and ${provider}`, e);
     }
   }
 }
 
 async function generateContract(consumer, provider, providerStubs) {
+  logger.debug(
+    `Starting Pact on port ${pactServerPort} to generate contracts between ${consumer} and ${provider}`
+  );
   const pact = new Pact({
     consumer,
     provider,
@@ -41,8 +48,7 @@ async function generateContract(consumer, provider, providerStubs) {
 
     await pact.verify();
   } catch (e) {
-    // and then what?
-    log('Pact provider Verification failed', e);
+    logger.warn(`Pact verification failed between ${consumer} and ${provider}`, e);
   } finally {
     await pact.finalize();
   }
