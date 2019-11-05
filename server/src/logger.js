@@ -10,9 +10,9 @@ function log(msg) {
   }
 }
 
-const typeLabelFormat = printf(({ level, message, label }) => {
+const typeLabelFormat = printf(({ level, message, label, stack }) => {
   const pad = level.length !== 15 ? ' ' : '';
-  return `${level}${pad} [${label}]: ${message}`;
+  return `${level}${pad} [${label}]: ${message}${stack ? '\n' + stack : ''}`;
 });
 
 const toFilter = config.logging.toIgnore;

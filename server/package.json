@@ -46,6 +46,9 @@
   "jest": {
     "watchPathIgnorePatterns": [
       "<rootDir>/generatedTestPacts/*"
+    ],
+    "setupFilesAfterEnv": [
+      "./src/setupTests.js"
     ]
   }
 }

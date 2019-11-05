@@ -1,8 +1,10 @@
 const express = require('express');
 const router = express.Router();
 
-const { log } = require('../../logger');
+const { createLogger } = require('../../logger');
 const unmatched = require('../unmatched');
+
+const logger = createLogger('unmatched');
 
 router.get('/unmatched', (_, res) => {
   const allUnmatched = unmatched.all();
@@ -11,6 +13,7 @@ router.get('/unmatched', (_, res) => {
 
 router.delete('/unmatched', (_, res) => {
   unmatched.clear();
+  logger.info('Cleared all unmatched requests');
   return res.end();
 });
 
