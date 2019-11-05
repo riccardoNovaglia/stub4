@@ -1,80 +1,43 @@
-const { log } = require('../logger');
+const { createLogger } = require('../logger');
 
-let cruds = {};
+const logger = createLogger('cruds');
 
-const meta = {
-  idAliases: {},
-  getAlias(url) {
-    return this.idAliases[url].idAlias || 'id';
-  },
-  pushAlias(url, idAlias) {
-    this.idAliases[url] = { idAlias };
-  },
-  reset() {
-    this.idAliases = {};
+const cruds = [];
+
+function add(crud) {
+  logger.info(`Adding new crud ${crud.pretty()}`);
+  logger.silly(crud.prettyJson());
+  cruds.push(crud);
+}
+
+function get(url, method, body) {
+  const maybeCrud = cruds.find(crud => crud.matches(url));
+  if (!maybeCrud) return undefined;
+
+  switch (method) {
+    case 'GET':
+      if (maybeCrud.mightHaveIdFor(url)) return maybeCrud.getItem(url);
+      else return maybeCrud.allItems();
+    case 'POST':
+      return maybeCrud.push(body);
+    case 'DELETE':
+      return maybeCrud.delete(url);
+    default:
+      break;
   }
-};
+}
 
-function addCrud(url, idAlias) {
-  log(`Added crud for ${url} with idAlias ${idAlias}`);
-
-  cruds[url] = {};
-  meta.pushAlias(url, idAlias);
+function all() {
+  return cruds.map(crud => crud.simple());
 }
 
 function clearAll() {
-  cruds = {};
-  meta.reset();
-}
-
-function load(cruds) {
-  if (!cruds) return;
-
-  cruds.forEach(crud => {
-    const { meta, data } = crud;
-    const idAlias = meta.idAlias || 'id';
-
-    addCrud(meta.url, idAlias);
-
-    data.forEach(item => push(meta.url, item[idAlias], item));
-  });
-}
-
-function push(url, id, item) {
-  cruds[url][id] = item;
-}
-
-function getAll(crudUrl) {
-  const matchedCrud = cruds[crudUrl];
-  if (matchedCrud) {
-    return Object.keys(matchedCrud).map(id => matchedCrud[id]);
-  } else {
-    throw new Error('CRUD not found');
-  }
-}
-
-function get(url, id) {
-  const matchedCrud = cruds[url];
-  const item = matchedCrud[id];
-  if (item) {
-    return item;
-  } else {
-    throw new Error('Item not found');
-  }
-}
-
-function remove(url, id) {
-  delete cruds[url][id];
+  cruds.length = 0;
 }
 
 module.exports = {
-  addCrud,
-  clearAll,
-  load,
-
-  remove,
+  add,
   get,
-  getAll,
-  push,
-  meta
+  all,
+  clearAll
 };

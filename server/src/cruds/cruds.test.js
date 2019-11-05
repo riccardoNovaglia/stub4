@@ -45,7 +45,7 @@ describe('Once the crud is created', () => {
       .post('/cruds/new')
       .send({ url });
   });
-  afterEach(async () => await request(app).post('/clear-cruds'));
+  afterEach(async () => await request(app).post('/cruds/clear'));
 
   it('can add things', async () => {
     const response = await request(app)
