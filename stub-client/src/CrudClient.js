@@ -6,16 +6,16 @@ class CrudClient {
   }
 
   async createCrud(url, idAlias) {
-    await this.ax.post(`/cruds/new`, { url, idAlias });
+    await this.ax.post('/cruds', { url, idAlias });
   }
 
   async fetchCruds(set) {
-    const res = await this.ax.get(`/cruds`);
+    const res = await this.ax.get('/cruds');
     set(res.data);
   }
 
   async clearCruds() {
-    await this.ax.post('/cruds/clear');
+    await this.ax.delete('/cruds');
   }
 
   async fetchCrudData(url, set) {

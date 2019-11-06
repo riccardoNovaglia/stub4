@@ -33,7 +33,7 @@ function all() {
   return stubs;
 }
 
-function clearAll() {
+function clear() {
   stubs.length = 0;
   interactions.length = 0;
   logger.info('All stubs cleared');
@@ -52,7 +52,7 @@ function countUp(url) {
 module.exports = {
   add,
   all,
-  clearAll,
+  clear,
   get,
   countUp,
   count

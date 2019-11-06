@@ -8,7 +8,7 @@ class ScenariosClient {
   async createScenario(scenarioDefinition) {
     return Promise.resolve({});
     // TODO: this
-    // await this.ax.post(`/scenarios/new`, {});
+    // await this.ax.post(`/scenarios`, {});
   }
 
   async fetchScenarios(set) {
@@ -17,7 +17,7 @@ class ScenariosClient {
   }
 
   async clearScenarios() {
-    await this.ax.post('/scenarios/clear');
+    await this.ax.delete('/scenarios');
   }
 
   // TODO: this would be useful

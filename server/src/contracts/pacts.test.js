@@ -9,12 +9,12 @@ describe('Pact contracts generation for stubs', () => {
     try {
       fs.unlinkSync(generatedPactFilepath);
     } catch (e) {}
-    await request(app).post('/stubs/clear');
+    await request(app).delete('/stubs');
   });
 
   it('does not generate a contract for a stub that does not have contract details setup', async () => {
     await request(app)
-      .post('/stubs/new')
+      .post('/stubs')
       .send({ requestMatcher: { url: '/john' } });
 
     const response = await request(app)
@@ -32,7 +32,7 @@ describe('Pact contracts generation for stubs', () => {
     const uponReceiving = 'receiving some request';
     const providerName = 'some-provider';
     await request(app)
-      .post('/stubs/new')
+      .post('/stubs')
       .send({ requestMatcher: { url: '/john' }, contract: { state, uponReceiving, providerName } });
 
     const response = await request(app)
@@ -52,13 +52,13 @@ describe('Pact contracts generation for stubs', () => {
     const uponReceiving = 'upon whatevere';
     const providerName = 'some-provider';
     await request(app)
-      .post('/stubs/new')
+      .post('/stubs')
       .send({
         requestMatcher: { url: '/some-url' },
         contract: { state, uponReceiving, providerName }
       });
     await request(app)
-      .post('/stubs/new')
+      .post('/stubs')
       .send({ requestMatcher: { url: '/some-other-url' } });
 
     const response = await request(app)
@@ -78,7 +78,7 @@ describe('Pact contracts generation for stubs', () => {
     const uponReceiving = 'receiving some request';
     const providerName = 'some-provider';
     await request(app)
-      .post('/stubs/new')
+      .post('/stubs')
       .send({
         requestMatcher: { url: '/john', method: 'POST' },
         contract: { state, uponReceiving, providerName }
@@ -101,7 +101,7 @@ describe('Pact contracts generation for stubs', () => {
     const uponReceiving = 'receiving some request';
     const providerName = 'some-provider';
     await request(app)
-      .post('/stubs/new')
+      .post('/stubs')
       .send({
         requestMatcher: { url: '/stuff' },
         response: { body: { msg: `hello, how's it going` } },
@@ -133,7 +133,7 @@ describe('Pact contracts generation for stubs', () => {
         fs.unlinkSync(contract1);
         fs.unlinkSync(contract2);
       } catch (e) {}
-      await request(app).post('/stubs/clear');
+      await request(app).delete('/stubs');
     });
 
     it('generates a contract for each different provider-consumer pair', async () => {
@@ -142,13 +142,13 @@ describe('Pact contracts generation for stubs', () => {
       const providerName1 = 'some-provider1';
       const providerName2 = 'some-provider2';
       await request(app)
-        .post('/stubs/new')
+        .post('/stubs')
         .send({
           requestMatcher: { url: '/some-url' },
           contract: { state, uponReceiving, providerName: providerName1 }
         });
       await request(app)
-        .post('/stubs/new')
+        .post('/stubs')
         .send({
           requestMatcher: { url: '/some-other-url' },
           contract: { state, uponReceiving, providerName: providerName2 }

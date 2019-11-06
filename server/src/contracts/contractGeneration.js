@@ -48,7 +48,7 @@ async function generateContract(consumer, provider, providerStubs) {
 
     await pact.verify();
   } catch (e) {
-    logger.warn(`Pact verification failed between ${consumer} and ${provider}`, e);
+    logger.warn(`Pact verification failed between ${consumer} and ${provider}: `, e);
   } finally {
     await pact.finalize();
   }

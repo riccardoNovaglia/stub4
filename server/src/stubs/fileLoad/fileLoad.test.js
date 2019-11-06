@@ -1,8 +1,8 @@
-const { clearAll, get } = require('../stubbing');
+const { clear, get } = require('../stubbing');
 const loadFromFile = require('./fileLoad');
 
 describe('Loading stubs from an initialiser file', () => {
-  afterEach(clearAll);
+  afterEach(clear);
 
   it('creates a stub with some response and fills all defaults', () => {
     loadFromFile([

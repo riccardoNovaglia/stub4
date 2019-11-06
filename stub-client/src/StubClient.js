@@ -8,7 +8,7 @@ class StubClient {
   async stub(stubDefinition) {
     const requestMatcher = stubDefinition.requestMatcher();
     const response = stubDefinition.response();
-    await this.ax.post(`/stubs/new`, {
+    await this.ax.post(`/stubs`, {
       requestMatcher,
       response
     });
@@ -31,11 +31,11 @@ class StubClient {
   }
 
   async clearStubs() {
-    await this.ax.post('/stubs/clear');
+    await this.ax.delete('/stubs');
   }
 
   async fetchInteractions(url, set) {
-    const res = await this.ax.post('/stubs/count', { url });
+    const res = await this.ax.get('/stubs/count', { url });
     set(res.data.count);
   }
 }

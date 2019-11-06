@@ -25,13 +25,13 @@ function all() {
   });
 }
 
-function clearAll() {
+function clear() {
   scenarios.length = 0;
 }
 
 module.exports = {
   add,
   all,
-  clearAll,
+  clear,
   get
 };

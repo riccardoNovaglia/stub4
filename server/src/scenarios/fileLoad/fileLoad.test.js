@@ -2,7 +2,7 @@ const scenarios = require('../routing/scenarios');
 const loadFromFile = require('./fileLoad');
 
 describe('Loading stubs from an initialiser file', () => {
-  afterEach(scenarios.clearAll);
+  afterEach(scenarios.clear);
 
   it('creates a scenario from some file', () => {
     loadFromFile([

@@ -12,7 +12,8 @@
   "scripts": {
     "test": "jest --watch src",
     "test:ci": "jest",
-    "start": "nodemon src/index.js --ignore generatedTestPacts --ignore logs"
+    "start": "nodemon src/index.js --ignore generatedTestPacts --ignore logs",
+    "link-client": "cd ../stub-client && npm link && cd ../server && npm link @stub4/client"
   },
   "bin": {
     "stub4": "./lib/index.js"
@@ -38,7 +39,7 @@
     "winston": "3.2.1"
   },
   "devDependencies": {
-    "@stub4/client": "0.0.4",
+    "@stub4/client": "0.0.5",
     "jest": "^24.8.0",
     "nodemon": "^1.19.3",
     "supertest": "^3.4.2"

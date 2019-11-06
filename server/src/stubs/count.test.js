@@ -4,17 +4,17 @@ const app = require('../app');
 describe('Counting interactions', () => {
   beforeEach(async () => {
     await request(app)
-      .post('/stubs/new')
+      .post('/stubs')
       .send({ requestMatcher: { url: '/counted' } });
 
     afterEach(async () => {
-      await request(app).post('/stubs/clear');
+      await request(app).delete('/stubs');
     });
   });
 
   it('returns 0 for non-called stubs', async () => {
     const response = await request(app)
-      .post('/stubs/count')
+      .get('/stubs/count')
       .send({ url: '/counted' });
 
     expect(response.status).toEqual(200);
@@ -25,7 +25,7 @@ describe('Counting interactions', () => {
     await request(app).get('/counted');
 
     const response = await request(app)
-      .post('/stubs/count')
+      .get('/stubs/count')
       .send({ url: '/counted' });
 
     expect(response.status).toEqual(200);
@@ -39,7 +39,7 @@ describe('Counting interactions', () => {
     await request(app).get('/counted');
 
     const response = await request(app)
-      .post('/stubs/count')
+      .get('/stubs/count')
       .send({ url: '/counted' });
 
     expect(response.body.count).toEqual(4);
@@ -48,17 +48,17 @@ describe('Counting interactions', () => {
   it('clears back to 0 when clearing out stubs, and then counts up again', async () => {
     await request(app).get('/counted');
     await request(app)
-      .post('/stubs/count')
+      .get('/stubs/count')
       .send({ url: '/counted' });
 
-    await request(app).post('/stubs/clear');
+    await request(app).delete('/stubs');
 
     await request(app)
-      .post('/stubs/new')
+      .post('/stubs')
       .send({ requestMatcher: { url: '/counted' } });
     await request(app).get('/counted');
     const response = await request(app)
-      .post('/stubs/count')
+      .get('/stubs/count')
       .send({ url: '/counted' });
 
     expect(response.body.count).toEqual(1);

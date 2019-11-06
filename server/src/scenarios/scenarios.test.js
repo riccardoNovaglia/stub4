@@ -2,12 +2,12 @@ const request = require('supertest');
 const app = require('../app');
 
 describe('Configuring scenarios', () => {
-  beforeEach(async () => await request(app).post('/scenarios/clear'));
+  beforeEach(async () => await request(app).delete('/scenarios'));
 
   describe('url matching', () => {
     it('creates a scenario, with default response body and specific overrides', async () => {
       const setupResponse = await request(app)
-        .post('/scenarios/new')
+        .post('/scenarios')
         .send({
           matching: { url: '/dude/{id}' },
           outcomes: [
@@ -40,7 +40,7 @@ describe('Configuring scenarios', () => {
 
     it('creates a scenario, with status codes', async () => {
       await request(app)
-        .post('/scenarios/new')
+        .post('/scenarios')
         .send({
           matching: { url: '/statuses/{bananas}' },
           outcomes: [
@@ -72,7 +72,7 @@ describe('Configuring scenarios', () => {
 
     it('creates a scenario, based on a query parameter', async () => {
       await request(app)
-        .post('/scenarios/new')
+        .post('/scenarios')
         .send({
           matching: { url: '/things?stuff={stuff}' },
           outcomes: [
@@ -99,7 +99,7 @@ describe('Configuring scenarios', () => {
 
     it('creates a scenario, with multiple capturing groups', async () => {
       await request(app)
-        .post('/scenarios/new')
+        .post('/scenarios')
         .send({
           matching: { url: '/many?things={things}&other-things={other-things}' },
           outcomes: [
@@ -136,11 +136,11 @@ describe('Configuring scenarios', () => {
   });
 
   describe('body matching', () => {
-    beforeEach(async () => await request(app).post('/scenarios/clear'));
+    beforeEach(async () => await request(app).delete('/scenarios'));
 
     it('matches requests based on their body', async () => {
       const setupResponse = await request(app)
-        .post('/scenarios/new')
+        .post('/scenarios')
         .send({
           matching: { url: '/dude', body: { id: '*' } },
           outcomes: [
@@ -175,7 +175,7 @@ describe('Configuring scenarios', () => {
 
     it('matches requests based on their body, with multiple properties', async () => {
       const setupResponse = await request(app)
-        .post('/scenarios/new')
+        .post('/scenarios')
         .send({
           matching: { url: '/bananas', body: { id: '*', bananas: '*' } },
           outcomes: [
@@ -209,7 +209,7 @@ describe('Configuring scenarios', () => {
 
     it('disambiguates by url', async () => {
       await request(app)
-        .post('/scenarios/new')
+        .post('/scenarios')
         .send({
           matching: { url: '/dude', body: { id: '*' } },
           outcomes: [],
@@ -218,7 +218,7 @@ describe('Configuring scenarios', () => {
           }
         });
       await request(app)
-        .post('/scenarios/new')
+        .post('/scenarios')
         .send({
           matching: { url: '/bananas', body: { id: '*' } },
           outcomes: [],
@@ -241,7 +241,7 @@ describe('Configuring scenarios', () => {
 
   it('clears scenarios on demand', async () => {
     await request(app)
-      .post('/scenarios/new')
+      .post('/scenarios')
       .send({
         matching: { url: '/some/{id}' },
         outcomes: [],
@@ -254,7 +254,7 @@ describe('Configuring scenarios', () => {
     expect(some.status).toEqual(200);
     expect(some.body).toEqual({ hey: 'you' });
 
-    const clear = await request(app).post('/scenarios/clear');
+    const clear = await request(app).delete('/scenarios');
     expect(clear.status).toEqual(200);
 
     const someCleared = await request(app).get('/some/1');
@@ -263,7 +263,7 @@ describe('Configuring scenarios', () => {
 
   it('returns all scenarios', async () => {
     await request(app)
-      .post('/scenarios/new')
+      .post('/scenarios')
       .send({
         matching: { url: '/some/{id}' },
         outcomes: [],
@@ -272,7 +272,7 @@ describe('Configuring scenarios', () => {
         }
       });
     await request(app)
-      .post('/scenarios/new')
+      .post('/scenarios')
       .send({
         matching: { url: '/some-other/{bananas}/{more}' },
         outcomes: [
@@ -286,7 +286,7 @@ describe('Configuring scenarios', () => {
         }
       });
     await request(app)
-      .post('/scenarios/new')
+      .post('/scenarios')
       .send({
         matching: { url: '/with-body', body: { customerId: '*' } },
         outcomes: [
@@ -356,7 +356,7 @@ describe('Configuring scenarios', () => {
 
   it('updates when the same url is used to setup a new scenario', async () => {
     await request(app)
-      .post('/scenarios/new')
+      .post('/scenarios')
       .send({
         matching: { url: '/some/{id}' },
         outcomes: [],
@@ -365,7 +365,7 @@ describe('Configuring scenarios', () => {
         }
       });
     await request(app)
-      .post('/scenarios/new')
+      .post('/scenarios')
       .send({
         matching: { url: '/some/{id}' },
         outcomes: [],

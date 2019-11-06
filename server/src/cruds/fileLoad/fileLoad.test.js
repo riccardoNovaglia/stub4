@@ -1,8 +1,8 @@
-const { clearAll, get } = require('../stubbing');
+const { clear, get } = require('../stubbing');
 const loadFromFile = require('./fileLoad');
 
 describe('Loading cruds from an initialiser file v2', () => {
-  afterEach(clearAll);
+  afterEach(clear);
 
   it('creates a crud with some data', () => {
     const someItem = { id: '1', some: 'content' };

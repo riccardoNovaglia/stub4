@@ -1,9 +1,11 @@
-const router = require('./routing/router');
 const middleware = require('./routing/middleware');
-const { load } = require('./stubbing');
+
+const cruds = require('./stubbing');
+const { crudFromRequest } = require('./Crud');
+
+const router = require('../router')(cruds, crudFromRequest, { many: 'cruds', one: 'crud' });
 
 module.exports = {
   router,
-  middleware,
-  load
+  middleware
 };

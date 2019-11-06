@@ -17,7 +17,7 @@ describe.only('Stubbing via the client', () => {
   });
 
   beforeEach(async () => {
-    await axios.post('http://localhost:9010/stubs/clear');
+    await axios.delete('http://localhost:9010/stubs');
   });
 
   it('returns 404 for not-yet-existing stubs', async () => {

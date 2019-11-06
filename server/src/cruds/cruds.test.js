@@ -4,29 +4,29 @@ const app = require('../app');
 describe('Create crud-like endpoints', () => {
   it('exists', async () => {
     const response = await request(app)
-      .post('/cruds/new')
+      .post('/cruds')
       .send({ url: '/some-url' });
     expect(response.status).toEqual(200);
   });
 
   it('deletes all cruds on demand', async () => {
     await request(app)
-      .post('/cruds/new')
+      .post('/cruds')
       .send({ url: '/some-url' });
     await request(app)
       .post('/some-url')
       .send({ id: '1', name: 'stuff' });
-    await request(app).post('/cruds/clear');
+    await request(app).delete('/cruds');
     const response = await request(app).get('/some-url/1');
     expect(response.status).toEqual(404);
   });
 
   it('can list all existing ones, their urls and id aliases', async () => {
     await request(app)
-      .post('/cruds/new')
+      .post('/cruds')
       .send({ url: '/some-url' });
     await request(app)
-      .post('/cruds/new')
+      .post('/cruds')
       .send({ url: '/some-other-one', idAlias: 'thingId' });
 
     const response = await request(app).get('/cruds');
@@ -42,10 +42,10 @@ describe('Once the crud is created', () => {
   const url = '/some-crud';
   beforeEach(async () => {
     await request(app)
-      .post('/cruds/new')
+      .post('/cruds')
       .send({ url });
   });
-  afterEach(async () => await request(app).post('/cruds/clear'));
+  afterEach(async () => await request(app).delete('/cruds'));
 
   it('can add things', async () => {
     const response = await request(app)
@@ -114,7 +114,7 @@ describe('Custom IDs', () => {
   afterEach(async () => await request(app).post('/clear-cruds'));
   it('accepts an id alias on creation and uses that going forward', async () => {
     await request(app)
-      .post('/cruds/new')
+      .post('/cruds')
       .send({ url: '/custom-id-crud', idAlias: 'customerId' });
 
     await request(app)
@@ -128,7 +128,7 @@ describe('Custom IDs', () => {
 
   it('deletes using a custom id', async () => {
     await request(app)
-      .post('/cruds/new')
+      .post('/cruds')
       .send({ url, idAlias: 'customerId' });
     await request(app)
       .post(url)
@@ -144,7 +144,7 @@ describe('Custom IDs', () => {
 describe('Complex urls', () => {
   it('can create crud-likes with complex urls', async () => {
     const response = await request(app)
-      .post('/cruds/new')
+      .post('/cruds')
       .send({ url: '/some-url/with/version123' });
     expect(response.status).toEqual(200);
   });
@@ -152,7 +152,7 @@ describe('Complex urls', () => {
   it('can get stuff out of complex urls', async () => {
     const url = '/some-url/with/version123';
     await request(app)
-      .post('/cruds/new')
+      .post('/cruds')
       .send({ url });
 
     await request(app)
@@ -167,7 +167,7 @@ describe('Complex urls', () => {
   it('can get everything out of complex urls', async () => {
     const url = '/some-url/with/version123';
     await request(app)
-      .post('/cruds/new')
+      .post('/cruds')
       .send({ url });
 
     await request(app)

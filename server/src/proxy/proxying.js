@@ -1,14 +1,23 @@
+const axios = require('axios');
+const { createLogger } = require('../logger');
+
+const logger = createLogger('proxy');
+
 const proxys = [];
 
-function addProxy(request, proxyUrl) {
-  proxys.push({
-    request,
-    proxyUrl
-  });
+function add(proxy) {
+  proxys.push(proxy);
 }
 
-function get(url) {
-  return proxys.filter(proxy => proxy.request.url === url)[0].proxyUrl;
+async function get(url) {
+  logger.debug(`Trying to get proxy for ${url}`);
+  const proxy = proxys.find(proxy => proxy.request.url === url);
+  if (!proxy) return undefined;
+
+  logger.debug(`Proxying request to ${proxy.proxyUrl}`);
+  const response = await axios.get(proxy.proxyUrl);
+
+  return response;
 }
 
 function all() {
@@ -20,7 +29,7 @@ function clear() {
 }
 
 module.exports = {
-  addProxy,
+  add,
   get,
   all,
   clear

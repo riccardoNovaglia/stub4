@@ -16,12 +16,12 @@ describe('Setting up stubs', () => {
   });
 
   it('proxies requests to other endpoints, within the same app', async () => {
-    await axios.post('http://localhost:9009/stubs/new', {
+    await axios.post('http://localhost:9009/stubs', {
       requestMatcher: { url: '/bananas' },
       response: { body: 'it worked!', type: 'text' }
     });
 
-    const proxyCreationResponse = await axios.post('http://localhost:9009/proxy/new', {
+    const proxyCreationResponse = await axios.post('http://localhost:9009/proxy', {
       requestMatcher: { url: '/john' },
       proxy: { destination: { url: 'http://localhost:9009/bananas' } }
     });
@@ -33,7 +33,7 @@ describe('Setting up stubs', () => {
   });
 
   it('returns all created proxies', async () => {
-    await axios.post('http://localhost:9009/proxy/new', {
+    await axios.post('http://localhost:9009/proxy', {
       requestMatcher: { url: '/john' },
       proxy: { destination: { url: 'http://localhost:9009/bananas' } }
     });

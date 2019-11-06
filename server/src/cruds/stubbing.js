@@ -31,7 +31,7 @@ function all() {
   return cruds.map(crud => crud.simple());
 }
 
-function clearAll() {
+function clear() {
   cruds.length = 0;
 }
 
@@ -39,5 +39,5 @@ module.exports = {
   add,
   get,
   all,
-  clearAll
+  clear
 };
