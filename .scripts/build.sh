@@ -4,8 +4,8 @@ rm -rf publish
 
 mkdir publish
 
-cd client && npm run build && cd ..
-cp -r client/build/ publish/dist
+cd ui && npm run build && cd ..
+cp -r ui/build/ publish/dist
 
 cp -r server/src/ publish/lib
 rm -rf publish/lib/**/*.test.js

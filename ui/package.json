@@ -1,5 +1,5 @@
 {
-  "name": "client",
+  "name": "ui",
   "version": "0.0.1",
   "private": true,
   "dependencies": {
@@ -14,7 +14,7 @@
     "start": "PORT=8081 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "link-client": "cd ../stub-client && npm link && cd ../client && npm link @stub4/client"
+    "link-client": "cd ../stub-client && npm link && cd ../ui && npm link @stub4/client"
   },
   "proxy": "http://localhost:80",
   "browserslist": {
