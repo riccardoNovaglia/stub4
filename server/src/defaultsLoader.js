@@ -1,11 +1,11 @@
 const fs = require('fs');
-const stubs = require('./stubs/stubbing');
+const stubs = require('./stubs/Stubs');
 const { StubFromFile } = require('./stubs/Stub');
 
-const scenarios = require('./scenarios/routing/scenarios');
+const scenarios = require('./scenarios/Scenarios');
 const { ScenarioFromFile } = require('./scenarios/Scenario');
 
-const cruds = require('./cruds/stubbing');
+const cruds = require('./cruds/Cruds');
 const { CrudFromFile: CrudFromFile } = require('./cruds/Crud');
 
 const { createLogger } = require('./logger');

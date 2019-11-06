@@ -1,7 +1,18 @@
 const { createLogger } = require('../logger');
-const stubs = require('./stubbing');
+const stubs = require('./Stubs');
 
 const logger = createLogger('stubs');
+
+const { StubFromRequest } = require('./Stub');
+
+const router = require('../router')(stubs, StubFromRequest, { many: 'stubs', one: 'stub' });
+
+router.get('/count', (req, res) => {
+  const url = req.body.url;
+
+  const count = stubs.count(url);
+  return res.send({ count });
+});
 
 function middleware(req, res, next) {
   try {
@@ -26,4 +37,4 @@ function middleware(req, res, next) {
   }
 }
 
-module.exports = middleware;
+module.exports = { middleware, router };

@@ -1,6 +1,9 @@
-const proxy = require('../proxying');
+const proxy = require('./Proxys');
 
-const { createLogger } = require('../../logger');
+const { ProxyFromRequest } = require('./Proxy');
+const router = require('../router')(proxy, ProxyFromRequest, { many: 'proxy', one: 'proxy' });
+
+const { createLogger } = require('../logger');
 
 const logger = createLogger('proxy');
 
@@ -20,4 +23,4 @@ async function middleware(req, res, next) {
   }
 }
 
-module.exports = middleware;
+module.exports = { middleware, router };

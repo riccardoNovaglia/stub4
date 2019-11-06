@@ -1,4 +1,4 @@
-const { clear, get, add } = require('../stubbing');
+const { clear, get, add } = require('../Cruds');
 const { CrudFromFile } = require('../Crud');
 
 describe('Loading cruds from an initialiser file v2', () => {

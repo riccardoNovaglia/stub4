@@ -1,12 +1,16 @@
 const { createLogger } = require('../logger');
-const { get } = require('./stubbing');
 
 const logger = createLogger('cruds');
+
+const cruds = require('./Cruds');
+const { crudFromRequest } = require('./Crud');
+
+const router = require('../router')(cruds, crudFromRequest, { many: 'cruds', one: 'crud' });
 
 function middleware(req, res, next) {
   try {
     logger.debug(`Trying to find crud for ${req.originalUrl} ${req.method}`);
-    const crud = get(req.originalUrl, req.method, req.body);
+    const crud = cruds.get(req.originalUrl, req.method, req.body);
     if (crud) {
       logger.debug(`Crud found matching request. Returning json: ${JSON.stringify(crud)}`);
       return res.json(crud);
@@ -20,4 +24,4 @@ function middleware(req, res, next) {
   }
 }
 
-module.exports = middleware;
+module.exports = { middleware, router };

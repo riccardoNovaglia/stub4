@@ -1,4 +1,4 @@
-const { get, add, clear } = require('../routing/scenarios');
+const { get, add, clear } = require('../Scenarios');
 const { ScenarioFromFile } = require('../Scenario');
 
 describe('Loading stubs from an initialiser file', () => {

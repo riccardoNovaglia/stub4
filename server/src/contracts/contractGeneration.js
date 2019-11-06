@@ -2,8 +2,8 @@ const _ = require('lodash');
 const axios = require('axios');
 const { Pact } = require('@pact-foundation/pact');
 
-const { log, createLogger } = require('../logger');
-const stubs = require('../stubs/stubbing');
+const { createLogger } = require('../logger');
+const stubs = require('../stubs/Stubs');
 const pactConfig = require('../config').pact;
 
 const pactServerPort = pactConfig.serverPort;

@@ -1,5 +1,12 @@
-const { log } = require('../../logger');
-const scenarios = require('./scenarios');
+const { log } = require('../logger');
+const scenarios = require('./Scenarios');
+
+const { ScenarioFromRequest } = require('./Scenario');
+
+const router = require('../router')(scenarios, ScenarioFromRequest, {
+  many: 'scenarios',
+  one: 'scenario'
+});
 
 function middleware(req, res, next) {
   try {
@@ -15,4 +22,4 @@ function middleware(req, res, next) {
   }
 }
 
-module.exports = middleware;
+module.exports = { middleware, router };

@@ -1,4 +1,4 @@
-const { createLogger } = require('../../logger');
+const { createLogger } = require('../logger');
 
 const logger = createLogger('scenarios');
 

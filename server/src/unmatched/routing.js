@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
-const { createLogger } = require('../../logger');
-const unmatched = require('../unmatched');
+const { createLogger } = require('../logger');
+const unmatched = require('./Unmatched');
 
 const logger = createLogger('unmatched');
 
@@ -17,4 +17,12 @@ router.delete('/unmatched', (_, res) => {
   return res.end();
 });
 
-module.exports = router;
+function middleware(req, _, next) {
+  unmatched.addUnmatch(req.originalUrl, req.method);
+  logger.info(
+    `'${req.method} ${req.originalUrl} ${JSON.stringify(req.body)}' didn't match any existing stub`
+  );
+  return next();
+}
+
+module.exports = { router, middleware };

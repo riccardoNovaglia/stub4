@@ -1,4 +1,4 @@
-const { clear, get, add } = require('../stubbing');
+const { clear, get, add } = require('../Stubs');
 const { StubFromFile } = require('../Stub');
 
 describe('Loading stubs from an initialiser file', () => {

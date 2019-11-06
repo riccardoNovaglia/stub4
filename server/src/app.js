@@ -2,11 +2,11 @@ const bodyParser = require('body-parser');
 const express = require('express');
 const cors = require('cors');
 
-const stubs = require('./stubs');
+const stubs = require('./stubs/routing');
 const scenarios = require('./scenarios/routing');
-const cruds = require('./cruds');
-const proxy = require('./proxy');
-const unmatched = require('./unmatched');
+const cruds = require('./cruds/routing');
+const proxy = require('./proxy/routing');
+const unmatched = require('./unmatched/routing');
 const { generateContracts } = require('./contracts/contractGeneration');
 
 const { log } = require('./logger');
