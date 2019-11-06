@@ -6,6 +6,7 @@ const logger = createLogger('proxy');
 const proxys = [];
 
 function add(proxy) {
+  logger.info(`Adding new proxy ${proxy.pretty()}`);
   proxys.push(proxy);
 }
 

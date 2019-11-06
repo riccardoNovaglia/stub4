@@ -6,7 +6,10 @@ const scenarios = require('./scenarios/Scenarios');
 const { ScenarioFromFile } = require('./scenarios/Scenario');
 
 const cruds = require('./cruds/Cruds');
-const { CrudFromFile: CrudFromFile } = require('./cruds/Crud');
+const { CrudFromFile } = require('./cruds/Crud');
+
+const proxy = require('./proxy/Proxys');
+const { ProxyFromFile } = require('./proxy/Proxy');
 
 const { createLogger } = require('./logger');
 const logger = createLogger('load');
@@ -18,6 +21,7 @@ function loadDefaultsFiles(defaultsFiles) {
     load(contents.cruds, CrudFromFile, cruds.add, 'crud');
     load(contents.stubs, StubFromFile, stubs.add, 'stub');
     load(contents.scenarios, ScenarioFromFile, scenarios.add, 'scenario');
+    load(contents.proxy, ProxyFromFile, proxy.add, 'proxy');
   });
 }
 

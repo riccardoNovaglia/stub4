@@ -3,7 +3,10 @@ const _ = require('lodash');
 function Proxy(url, method, proxyUrl) {
   return {
     request: { url, method },
-    proxyUrl
+    proxyUrl,
+    pretty() {
+      return `${method} ${url} -> ${method} ${proxyUrl}`;
+    }
   };
 }
 
@@ -18,4 +21,15 @@ function ProxyFromRequest(req) {
   return Proxy(url, method, proxyUrl);
 }
 
-module.exports = { ProxyFromRequest, Proxy };
+function ProxyFromFile(proxyDef) {
+  const url = _.get(proxyDef, 'url');
+  const method = _.get(proxyDef, 'method', 'GET');
+  const proxyUrl = _.get(proxyDef, 'destination.url');
+
+  if (!url) throw new Error('A request matcher url must be provided!');
+  if (!proxyUrl) throw new Error('A url to proxy to must be provided!');
+
+  return Proxy(url, method, proxyUrl);
+}
+
+module.exports = { ProxyFromRequest, ProxyFromFile, Proxy };

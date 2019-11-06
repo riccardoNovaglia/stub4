@@ -18,5 +18,18 @@
         "response": { "body": {}, "statusCode": 404 }
       }
     }
+  ],
+  "proxy": [
+    {
+      "url": "/to-be-proxied",
+      "method": "GET",
+      "destination": { "url": "http://localhost:9090/to-be-proxied-to" }
+    }
+  ],
+  "stubs": [
+    {
+      "requestMatcher": { "url": "/to-be-proxied-to" },
+      "response": { "body": "it was proxied!", "type": "text" }
+    }
   ]
 }
