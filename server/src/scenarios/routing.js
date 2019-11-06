@@ -1,4 +1,4 @@
-const { log } = require('../logger');
+const { createLogger } = require('../logger');
 const scenarios = require('./Scenarios');
 
 const { ScenarioFromRequest } = require('./Scenario');
@@ -8,16 +8,21 @@ const router = require('../router')(scenarios, ScenarioFromRequest, {
   one: 'scenario'
 });
 
+const logger = createLogger('scenarios');
+
 function middleware(req, res, next) {
   try {
     const url = req.originalUrl;
     const body = req.body;
 
     const response = scenarios.get(url, body);
-
-    return res.status(response.statusCode).send(response.body);
+    if (response) {
+      return res.status(response.statusCode).send(response.body);
+    } else {
+      return next();
+    }
   } catch (e) {
-    log('Not a scenario', e);
+    logger.error(`An error occurred trying to get scenarios for ${req.originalUrl}`);
     return next();
   }
 }

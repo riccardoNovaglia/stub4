@@ -20,6 +20,8 @@ function add(scenario) {
 function get(url, body) {
   const matchedScenario = scenarios.find(scenario => scenario.matches(url, body));
 
+  if (!matchedScenario) return undefined;
+
   return matchedScenario.getResponseFor(url, body);
 }
 
