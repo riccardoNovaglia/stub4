@@ -1,5 +1,5 @@
-const { createLogger } = require('../../logger');
-const stubs = require('../stubbing');
+const { createLogger } = require('../logger');
+const stubs = require('./stubbing');
 
 const logger = createLogger('stubs');
 

@@ -1,4 +1,4 @@
-const middleware = require('./routing/middleware');
+const middleware = require('./middleware');
 
 const cruds = require('./stubbing');
 const { crudFromRequest } = require('./Crud');

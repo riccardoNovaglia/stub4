@@ -52,16 +52,15 @@ function Crud(url, idAlias) {
 }
 
 function DB(meta) {
-  const idFrom = item => item[meta.idAlias];
-
   return {
     meta,
     items: [],
     get(id) {
-      return this.items.find(item => idFrom(item).toString() === id.toString());
+      logger.debug(`Trying to get item from crud with id ${id} - ${JSON.stringify(this.items)}`);
+      return this.items.find(item => this.idFrom(item).toString() === id.toString());
     },
     upsert(item) {
-      const maybeAlreadyExisting = this.get(idFrom(item));
+      const maybeAlreadyExisting = this.get(this.idFrom(item));
       if (maybeAlreadyExisting) {
         this.items.splice(this.items.indexOf(maybeAlreadyExisting), 1, item);
         logger.debug(`Updating existing item into crud`);
@@ -69,13 +68,16 @@ function DB(meta) {
         this.items.push(item);
         logger.debug(`Pushed item into crud. Now ${this.items.length} items`);
       }
-      return idFrom(item);
+      return this.idFrom(item);
     },
     remove(id) {
       const item = this.get(id);
       this.items.splice(this.items.indexOf(item), 1);
       logger.silly(`Deleted. Items now ${JSON.stringify(this.items)}`);
-      return idFrom(item);
+      return this.idFrom(item);
+    },
+    idFrom(item) {
+      return item[this.meta.idAlias];
     }
   };
 }
@@ -86,7 +88,7 @@ function crudFromRequest(req) {
   return Crud(url, idAlias);
 }
 
-function crudFromFile(item) {
+function CrudFromFile(item) {
   const url = item.url;
   const idAlias = _.get(item, 'idAlias', 'id');
   const crud = Crud(url, idAlias);
@@ -94,4 +96,4 @@ function crudFromFile(item) {
   return crud;
 }
 
-module.exports = { Crud, crudFromRequest, crudFromFile };
+module.exports = { Crud, crudFromRequest, CrudFromFile };

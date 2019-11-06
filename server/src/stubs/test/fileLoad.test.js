@@ -1,16 +1,16 @@
-const { clear, get } = require('../stubbing');
-const loadFromFile = require('./fileLoad');
+const { clear, get, add } = require('../stubbing');
+const { StubFromFile } = require('../Stub');
 
 describe('Loading stubs from an initialiser file', () => {
   afterEach(clear);
 
   it('creates a stub with some response and fills all defaults', () => {
-    loadFromFile([
-      {
+    add(
+      StubFromFile({
         requestMatcher: { url: '/some-url' },
         response: { body: `this was setup`, type: 'text' }
-      }
-    ]);
+      })
+    );
 
     const item = get('/some-url', 'GET', undefined);
     expect(item.urlMatcher.url).toEqual('/some-url');
@@ -25,13 +25,13 @@ describe('Loading stubs from an initialiser file', () => {
   it('creates a stub with some method and contract and response type and status', () => {
     const state = 'in a given state';
     const uponReceiving = 'receiving some request';
-    loadFromFile([
-      {
+    add(
+      StubFromFile({
         requestMatcher: { url: '/whatever', method: 'PATCH' },
         response: { body: { item: `whatever` }, type: 'json', statusCode: 123 },
         contract: { state, uponReceiving }
-      }
-    ]);
+      })
+    );
 
     const item = get('/whatever', 'PATCH');
     expect(item.urlMatcher.url).toEqual('/whatever');
@@ -45,16 +45,18 @@ describe('Loading stubs from an initialiser file', () => {
   });
 
   it('loads multiple stubs', () => {
-    loadFromFile([
-      {
+    add(
+      StubFromFile({
         requestMatcher: { url: '/some-url' },
         response: { body: `this was setup`, type: 'text' }
-      },
-      {
+      })
+    );
+    add(
+      StubFromFile({
         requestMatcher: { url: '/another' },
         response: { body: `some else`, type: 'json' }
-      }
-    ]);
+      })
+    );
 
     const some = get('/some-url', 'GET', undefined);
     expect(some.urlMatcher.url).toEqual('/some-url');

@@ -1,6 +1,13 @@
+const { createLogger } = require('../../logger');
+
+const logger = createLogger('scenarios');
+
 const scenarios = [];
 
 function add(scenario) {
+  logger.info(
+    `Adding new scenario for ${scenario.urlMatcher.url} with ${scenario.outcomes.length} outcomes`
+  );
   const existingScenario = scenarios.find(existing =>
     existing.urlMatcher.equals(scenario.urlMatcher)
   );

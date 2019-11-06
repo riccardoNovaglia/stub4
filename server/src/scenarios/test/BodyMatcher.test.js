@@ -1,4 +1,4 @@
-const BodyMatcher = require('./BodyMatcher');
+const BodyMatcher = require('../BodyMatcher');
 
 describe('A class to match bodies to scenarios', () => {
   it('matches a body when it is equal to the given', () => {

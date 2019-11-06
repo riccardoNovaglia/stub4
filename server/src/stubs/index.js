@@ -1,5 +1,4 @@
-const middleware = require('./routing/middleware');
-const loadFromFile = require('./fileLoad/fileLoad');
+const middleware = require('./middleware');
 
 const stubs = require('./stubbing');
 const { StubFromRequest } = require('./Stub');
@@ -15,6 +14,5 @@ router.get('/count', (req, res) => {
 
 module.exports = {
   router,
-  middleware,
-  loadFromFile
+  middleware
 };

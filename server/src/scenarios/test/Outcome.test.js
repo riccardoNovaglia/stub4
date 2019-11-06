@@ -1,4 +1,4 @@
-const Outcome = require('./Outcome');
+const Outcome = require('../Outcome');
 
 describe('an outcome', () => {
   it('matches a given body if the required property is found and matched', () => {
