@@ -2,10 +2,10 @@ import React from 'react';
 
 import ItemsList from '../../prototypes/ItemsList';
 
-export function ScenariosList({ scenarios, selected, setSelected }) {
+export function ScenariosList({ items, selected, setSelected }) {
   return (
     <ItemsList
-      items={scenarios}
+      items={items}
       selected={selected}
       setSelected={setSelected}
       styles={{ itemClass: 'scenario', listClass: 'scenariosList' }}

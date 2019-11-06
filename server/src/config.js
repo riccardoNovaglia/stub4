@@ -12,7 +12,7 @@ let config = {
     contractsFilesDestination: path.resolve(process.cwd(), 'generatedTestPacts')
   },
   logging: {
-    baseLevel: process.env.NODE_ENV === 'test' ? 'off' : 'warn',
+    baseLevel: process.env.NODE_ENV === 'test' ? 'off' : 'info',
     toIgnore: [],
     specifics: []
   }

@@ -1,11 +1,11 @@
 import React from 'react';
 
-import ItemsList from '../../prototypes/ItemsList';
+import ItemsList from '../prototypes/ItemsList';
 
-export function CrudsList({ cruds, selected, setSelected }) {
+export function CrudsList({ items, selected, setSelected }) {
   return (
     <ItemsList
-      items={cruds}
+      items={items}
       selected={selected}
       setSelected={setSelected}
       styles={{ itemClass: 'crudDef', listClass: 'crudsList' }}

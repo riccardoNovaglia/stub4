@@ -20,7 +20,10 @@ export default function ItemsList({
         <div
           key={itemKey(item)}
           className={className(selected, item)}
-          onClick={() => setSelected(item)}
+          onClick={() => {
+            console.log('selecting', item);
+            setSelected(item);
+          }}
         >
           {itemComponent({ item })}
         </div>

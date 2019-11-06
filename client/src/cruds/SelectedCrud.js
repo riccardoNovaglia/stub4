@@ -2,44 +2,40 @@ import React, { useEffect, useState } from 'react';
 
 import './SelectedCrud.scss';
 
-export function SelectedCrud({ selectedCrud, client }) {
-  const [data, setData] = useState();
-
-  useEffect(() => {
-    client.fetchCrudData(selectedCrud.url, setData);
-  }, [selectedCrud.url, setData, client]);
-
-  if (!data) return null;
-
+export function SelectedCrud({ selected, client }) {
   return (
     <div className="selectedCrud">
-      <p>
-        <span className="length">{data.length}</span> items found in{' '}
-        <span className="selectedUrl">{selectedCrud.url}</span>
-      </p>
-      <Contents
-        crudUrl={selectedCrud.url}
-        data={data}
-        onUpdate={() => client.fetchCrudData(selectedCrud.url, setData)}
-        client={client}
-      />
+      <Contents crudUrl={selected.url} client={client} />
     </div>
   );
 }
 
-function Contents({ crudUrl, data, onUpdate, client }) {
+function Contents({ crudUrl, client }) {
+  const [data, setData] = useState([]);
   const [editing, setEditing] = useState(false);
-  const [crudContents, setCrudContents] = useState(() => JSON.stringify(data, null, 2));
+  const [crudContents, setCrudContents] = useState({});
+
+  useEffect(() => {
+    function fetchData() {
+      client.fetchCrudData(crudUrl, setData);
+    }
+    fetchData();
+  }, [crudUrl, client, setData, editing]);
+
+  useEffect(() => {
+    setCrudContents(JSON.stringify(data, null, 2));
+  }, [data]);
 
   async function saveData() {
     await JSON.parse(crudContents).map(item => client.saveCrudData(crudUrl, item));
     setEditing(false);
-    onUpdate();
   }
 
   return (
     <>
-      <p className="contentsLabel">Contents:</p>
+      <p className="contentsLabel">
+        <span className="length">{data.length}</span> items found
+      </p>
       <button onClick={() => setEditing(!editing)} className="editButton">
         Edit
       </button>

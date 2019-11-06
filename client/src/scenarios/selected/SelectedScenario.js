@@ -3,12 +3,12 @@ import { omit } from 'lodash';
 
 import './SelectedScenario.scss';
 
-export function SelectedScenario({ selectedScenario, setStarter }) {
+export function SelectedScenario({ selected, setStarter }) {
   return (
     <>
       <div className="selectedScenario">
-        <div className="url">{selectedScenario.urlMatcher.url}</div>
-        {selectedScenario.outcomes.map(outcome => (
+        <div className="url">{selected.urlMatcher.url}</div>
+        {selected.outcomes.map(outcome => (
           <div>
             <span className="variableNames">{JSON.stringify(omit(outcome, 'response'))}</span>
             <span>→</span>
@@ -16,7 +16,7 @@ export function SelectedScenario({ selectedScenario, setStarter }) {
           </div>
         ))}
         <p>Default</p>
-        <p>{JSON.stringify(selectedScenario.defaultResponse.response)}</p>
+        <p>{JSON.stringify(selected.defaultResponse.response)}</p>
       </div>
     </>
   );

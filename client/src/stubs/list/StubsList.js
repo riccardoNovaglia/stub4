@@ -2,10 +2,10 @@ import React from 'react';
 
 import ItemsList from '../../prototypes/ItemsList';
 
-export function StubsList({ stubs, selected, setSelected }) {
+export function StubsList({ items, selected, setSelected }) {
   return (
     <ItemsList
-      items={stubs}
+      items={items}
       selected={selected}
       setSelected={setSelected}
       styles={{ itemClass: 'stub', listClass: 'stubsList' }}

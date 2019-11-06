@@ -2,10 +2,10 @@ import React from 'react';
 
 import ItemsList from '../../prototypes/ItemsList';
 
-export function ProxyList({ proxy, selected, setSelected }) {
+export function ProxyList({ items, selected, setSelected }) {
   return (
     <ItemsList
-      items={proxy}
+      items={items}
       selected={selected}
       setSelected={setSelected}
       styles={{ itemClass: 'proxyDef', listClass: 'proxyList' }}

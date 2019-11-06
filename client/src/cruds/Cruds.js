@@ -1,14 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
-import { CrudsList } from './list/CrudsList';
-import { SelectedCrud } from './selected/SelectedCrud';
+import { CrudsList } from './CrudsList';
+import { SelectedCrud } from './SelectedCrud';
+
+import { Panel } from '../prototypes/Panel';
 
 export function Cruds({ onClear, client }) {
-  const [selected, setSelected] = useState();
-  const [cruds, setCruds] = useState([]);
-  useEffect(() => {
-    client.fetchCruds(setCruds);
-  }, [setCruds, client]);
+  const setStarter = () => {};
+
+  const fetch = set => {
+    client.fetchCruds(set);
+  };
 
   const clear = async () => {
     await client.clearCruds();
@@ -16,17 +18,12 @@ export function Cruds({ onClear, client }) {
   };
 
   return (
-    <div className="panel">
-      <h1>
-        Cruds<i className="material-icons">swap_horiz</i>
-      </h1>
-      <button className="clearBtn" onClick={clear}>
-        <i className="material-icons">clear_all</i>Clear
-      </button>
-      <div className="cruds">
-        <CrudsList cruds={cruds} selected={selected} setSelected={setSelected} />
-        {selected && <SelectedCrud selectedCrud={selected} client={client} />}
-      </div>
-    </div>
+    <Panel
+      itemsLifecycle={{ fetch, clear }}
+      presentation={{ label: 'Cruds', icon: 'swap_horiz', className: 'cruds' }}
+      components={{ list: CrudsList, edit: SelectedCrud }}
+      setStarter={setStarter}
+      client={client}
+    />
   );
 }

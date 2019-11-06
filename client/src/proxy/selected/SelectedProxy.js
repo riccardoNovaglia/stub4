@@ -2,7 +2,7 @@ import React from 'react';
 
 import './SelectedProxy.scss';
 
-export function SelectedProxy({ selectedProxy, setStarter }) {
+export function SelectedProxy({ selected, setStarter }) {
   // const [interactions, setInteractions] = useState(undefined);
   // const [countClass, setCountClass] = useState('flashing');
 
@@ -20,12 +20,12 @@ export function SelectedProxy({ selectedProxy, setStarter }) {
   return (
     <>
       <div className="selectedProxy">
-        <div>{selectedProxy.request.url}</div>
+        <div>{selected.request.url}</div>
         <div>↓</div>
-        <div>{selectedProxy.proxyUrl}</div>
+        <div>{selected.proxyUrl}</div>
         <button
           className="newButton"
-          onClick={() => setStarter({ type: 'proxy', proxy: selectedProxy })}
+          onClick={() => setStarter({ type: 'proxy', proxy: selected })}
         >
           Edit
         </button>
