@@ -17,7 +17,6 @@ export function StubsList({ items, selected, setSelected }) {
 }
 
 function StubListItem({ item }) {
-  console.log(item);
   return (
     <p>
       <span className={`method ${item.method.toLowerCase()}`}>{item.method}</span>{' '}

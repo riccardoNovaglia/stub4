@@ -104,8 +104,8 @@ export function defaults(starter) {
       return {
         ...defaultValues,
         starterType: 'stub',
-        initialUrl: _.get(starter, 'stub.request.url', ''),
-        initialMethod: _.get(starter, 'stub.request.method', 'GET'),
+        initialUrl: _.get(starter, 'stub.urlMatcher.url', ''),
+        initialMethod: _.get(starter, 'stub.method', 'GET'),
         initialStatus: _.get(starter, 'stub.response.statusCode', 200),
         initialBody: _.get(starter, 'stub.response.body', '{}'),
         initialType: _.get(starter, 'stub.response.type', 'json')
