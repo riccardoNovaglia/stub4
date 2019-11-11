@@ -44,7 +44,9 @@ describe('Pact contracts generation for stubs', () => {
       fs.readFileSync(generatedPactFilepath, { encoding: 'utf8' }).toString()
     );
 
-    expect(pact).toEqual(aPact('/john', state, uponReceiving, providerName));
+    expect(pact).toEqual(
+      aPactWithStructure({ url: '/john' }, { state, uponReceiving, providerName })
+    );
   });
 
   it('generates a contract just for the stub with the contract details set', async () => {
@@ -70,7 +72,9 @@ describe('Pact contracts generation for stubs', () => {
       fs.readFileSync(generatedPactFilepath, { encoding: 'utf8' }).toString()
     );
 
-    expect(pact).toEqual(aPact('/some-url', state, uponReceiving, providerName));
+    expect(pact).toEqual(
+      aPactWithStructure({ url: '/some-url' }, { state, uponReceiving, providerName })
+    );
   });
 
   it('plays the interaction with the right method', async () => {
@@ -93,7 +97,9 @@ describe('Pact contracts generation for stubs', () => {
       fs.readFileSync(generatedPactFilepath, { encoding: 'utf8' }).toString()
     );
 
-    expect(pact).toEqual(aPact('/john', state, uponReceiving, providerName, 'POST'));
+    expect(pact).toEqual(
+      aPactWithStructure({ url: '/john', method: 'POST' }, { state, uponReceiving, providerName })
+    );
   });
 
   it('sets up the right body given the stub response body', async () => {
@@ -120,6 +126,67 @@ describe('Pact contracts generation for stubs', () => {
     expect(pact).toEqual(
       aPactWithStructure(
         { url: '/stuff', body: { msg: `hello, how's it going` } },
+        { state, uponReceiving, providerName }
+      )
+    );
+  });
+
+  it('sets up the right status code', async () => {
+    const state = 'in a given state';
+    const uponReceiving = 'receiving some request';
+    const providerName = 'some-provider';
+    await request(app)
+      .post('/stubs')
+      .send({
+        requestMatcher: { url: '/stuff' },
+        response: { body: { msg: `hello, how's it going` }, statusCode: 404 },
+        contract: { state, uponReceiving, providerName }
+      });
+
+    const response = await request(app)
+      .post('/generate-pact')
+      .send({ consumer: 'some-consumer' });
+    expect(response.statusCode).toEqual(200);
+
+    const pact = JSON.parse(
+      fs.readFileSync(generatedPactFilepath, { encoding: 'utf8' }).toString()
+    );
+
+    expect(pact).toEqual(
+      aPactWithStructure(
+        { url: '/stuff', body: { msg: `hello, how's it going` }, statusCode: 404 },
+        { state, uponReceiving, providerName }
+      )
+    );
+  });
+
+  it('sets up the right content type', async () => {
+    const state = 'in a given state';
+    const uponReceiving = 'receiving some request';
+    const providerName = 'some-provider';
+    await request(app)
+      .post('/stubs')
+      .send({
+        requestMatcher: { url: '/stuff' },
+        response: {
+          body: `hello, how's it going`,
+          type: 'text'
+        },
+        contract: { state, uponReceiving, providerName }
+      });
+
+    const response = await request(app)
+      .post('/generate-pact')
+      .send({ consumer: 'some-consumer' });
+    expect(response.statusCode).toEqual(200);
+
+    const pact = JSON.parse(
+      fs.readFileSync(generatedPactFilepath, { encoding: 'utf8' }).toString()
+    );
+
+    expect(pact).toEqual(
+      aPactWithStructure(
+        { url: '/stuff', body: `hello, how's it going`, contentType: 'text/plain' },
         { state, uponReceiving, providerName }
       )
     );
@@ -173,47 +240,24 @@ describe('Pact contracts generation for stubs', () => {
           .toString()
       );
 
-      expect(pact1).toEqual(aPact('/some-url', state, uponReceiving, providerName1));
-      expect(pact2).toEqual(aPact('/some-other-url', state, uponReceiving, providerName2));
+      expect(pact1).toEqual(
+        aPactWithStructure(
+          { url: '/some-url' },
+          { state, uponReceiving, providerName: providerName1 }
+        )
+      );
+      expect(pact2).toEqual(
+        aPactWithStructure(
+          { url: '/some-other-url' },
+          { state, uponReceiving, providerName: providerName2 }
+        )
+      );
     });
   });
 });
 
-function aPact(url, state, uponReceiving, providerName, method = 'GET') {
-  return {
-    consumer: {
-      name: 'some-consumer'
-    },
-    provider: {
-      name: providerName
-    },
-    interactions: [
-      {
-        description: uponReceiving,
-        providerState: state,
-        request: {
-          method,
-          path: url
-        },
-        response: {
-          status: 200,
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: {}
-        }
-      }
-    ],
-    metadata: {
-      pactSpecification: {
-        version: '2.0.0'
-      }
-    }
-  };
-}
-
 function aPactWithStructure(
-  { url, method = 'GET', body = {} },
+  { url, method = 'GET', body = {}, statusCode = 200, contentType = 'application/json' },
   { state, uponReceiving, providerName }
 ) {
   return {
@@ -232,9 +276,9 @@ function aPactWithStructure(
           path: url
         },
         response: {
-          status: 200,
+          status: statusCode,
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': contentType
           },
           body
         }
