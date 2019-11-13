@@ -54,8 +54,9 @@ async function generateContract(consumer, provider, providerStubs) {
   }
 }
 
-function addInteraction(pact, stub) {
-  pact.addInteraction({
+async function addInteraction(pact, stub) {
+  logger.debug(`Adding interaction for ${stub.prettyJson()}`);
+  await pact.addInteraction({
     state: stub.contract.state,
     uponReceiving: stub.contract.uponReceiving,
     withRequest: {
@@ -72,7 +73,11 @@ function addInteraction(pact, stub) {
 }
 
 async function callStub(port, url, method) {
-  return axios.request({ url: `http://localhost:${port}${url}`, method });
+  try {
+    return await axios.request({ url: `http://localhost:${port}${url}`, method });
+  } catch (e) {
+    logger.debug(`Calling stub at ${url} returned exception. This might be expected: `, e);
+  }
 }
 
 module.exports = {

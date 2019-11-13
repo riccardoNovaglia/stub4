@@ -192,6 +192,80 @@ describe('Pact contracts generation for stubs', () => {
     );
   });
 
+  it('sets up multiple interactions for the same provider', async () => {
+    const state1 = 'in a given state 123';
+    const uponReceiving1 = 'receiving some request 123';
+    const state2 = 'in a given state 321';
+    const uponReceiving2 = 'receiving some request 321';
+    const providerName = 'some-provider';
+    await request(app)
+      .post('/stubs')
+      .send({
+        requestMatcher: { url: '/stuff' },
+        response: {
+          body: `hello, how's it going`,
+          type: 'text'
+        },
+        contract: { state: state1, uponReceiving: uponReceiving1, providerName }
+      });
+
+    await request(app)
+      .post('/stubs')
+      .send({
+        requestMatcher: { url: '/another-url', method: 'POST' },
+        response: {
+          body: { mgs: 'this be json' },
+          statusCode: 404
+        },
+        contract: { state: state2, uponReceiving: uponReceiving2, providerName }
+      });
+    const response = await request(app)
+      .post('/generate-pact')
+      .send({ consumer: 'some-consumer' });
+    expect(response.statusCode).toEqual(200);
+
+    const pact = JSON.parse(
+      fs.readFileSync(generatedPactFilepath, { encoding: 'utf8' }).toString()
+    );
+
+    expect(pact.consumer).toEqual({ name: 'some-consumer' });
+    expect(pact.provider).toEqual({ name: providerName });
+    expect(pact.interactions).toEqual(
+      expect.arrayContaining([
+        {
+          description: uponReceiving1,
+          providerState: state1,
+          request: {
+            method: 'GET',
+            path: '/stuff'
+          },
+          response: {
+            status: 200,
+            headers: {
+              'Content-Type': 'text/plain'
+            },
+            body: `hello, how's it going`
+          }
+        },
+        {
+          description: uponReceiving2,
+          providerState: state2,
+          request: {
+            method: 'POST',
+            path: '/another-url'
+          },
+          response: {
+            status: 404,
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: { mgs: 'this be json' }
+          }
+        }
+      ])
+    );
+  });
+
   describe('multiple providers', () => {
     const contract1 = './generatedTestPacts/some-consumer-some-provider1.json';
     const contract2 = './generatedTestPacts/some-consumer-some-provider2.json';
@@ -284,6 +358,39 @@ function aPactWithStructure(
         }
       }
     ],
+    metadata: {
+      pactSpecification: {
+        version: '2.0.0'
+      }
+    }
+  };
+}
+
+function aPactWithMultipleInteractions(theInteractions, providerName) {
+  const interactions = theInteractions.map(interaction => ({
+    description: interaction.uponReceiving,
+    providerState: interaction.state,
+    request: {
+      method: interaction.method,
+      path: interaction.url
+    },
+    response: {
+      status: interaction.statusCode,
+      headers: {
+        'Content-Type': interaction.contentType
+      },
+      body: interaction.body
+    }
+  }));
+
+  return {
+    consumer: {
+      name: 'some-consumer'
+    },
+    provider: {
+      name: providerName
+    },
+    interactions,
     metadata: {
       pactSpecification: {
         version: '2.0.0'
