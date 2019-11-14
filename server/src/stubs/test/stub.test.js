@@ -5,7 +5,7 @@ const app = require('../../app');
 const Stub4 = require('@stub4/client');
 const { get, post } = require('@stub4/client');
 
-describe.only('Stubbing via the client', () => {
+describe('Stubbing via the client', () => {
   let server;
   const client = new Stub4.StubClient(9010);
   beforeAll(done => {
