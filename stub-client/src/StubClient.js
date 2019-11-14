@@ -44,6 +44,7 @@ class Stub {
   constructor(url, method = 'GET') {
     this.url = url;
     this.method = method;
+    this.bodyMatchType = undefined;
     this.bodyMatch = undefined;
     this.type = 'json';
     this.body = {};
@@ -52,6 +53,12 @@ class Stub {
 
   withBody(body) {
     this.bodyMatch = body;
+    return this;
+  }
+
+  withXmlBodyMatch(xmlMatch) {
+    this.bodyMatchType = 'xml';
+    this.bodyMatch = xmlMatch;
     return this;
   }
 
@@ -73,7 +80,7 @@ class Stub {
       ? {
           url: this.url,
           method: this.method,
-          body: this.bodyMatch
+          body: { bodyMatch: this.bodyMatch, type: this.bodyMatchType }
         }
       : {
           url: this.url,

@@ -1,4 +1,5 @@
 const bodyParser = require('body-parser');
+const xmlparser = require('express-xml-bodyparser');
 const express = require('express');
 const cors = require('cors');
 
@@ -13,6 +14,7 @@ const { log } = require('./logger');
 
 const app = express();
 app.use(bodyParser.json());
+app.use(xmlparser());
 app.use(cors());
 
 app.use('/stubs', stubs.router);

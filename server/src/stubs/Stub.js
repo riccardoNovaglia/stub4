@@ -30,14 +30,26 @@ function Stub(urlMatcher, method, bodyMatcher, response, contract) {
   return stub;
 }
 
+function contentType(type) {
+  switch (type) {
+    case 'json':
+      return 'application/json';
+    case 'xml':
+      return 'application/xml';
+    case 'text':
+      return 'text/plain';
+    default:
+      return 'text/plain';
+  }
+}
+
 function Response(response) {
   const type = _.get(response, 'type', 'json');
   const body = _.get(response, 'body', type === 'json' ? {} : '');
   const statusCode = _.get(response, 'statusCode', 200);
-  const contentType = type === 'json' ? 'application/json' : 'text/plain';
   const res = {
     body,
-    contentType,
+    contentType: contentType(type),
     statusCode
   };
 
@@ -52,6 +64,8 @@ function Response(response) {
 function StubFromRequest(req) {
   const url = _.get(req.body, 'requestMatcher.url');
   if (!url) throw new Error('A request matcher url must be provided!');
+
+  logger.silly(`Building stub out of ${JSON.stringify(req.body, null, 2)}`);
 
   const urlMatcher = UrlMatcher(req.body.requestMatcher.url);
   const bodyMatcher = BodyMatcher(req.body.requestMatcher.body);
