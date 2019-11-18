@@ -8,10 +8,11 @@ export function SelectedStub({ selected, setStarter, client }) {
       <div className="selectedStub">
         <div className={`method ${selected.method.toLowerCase()}`}>{selected.method}</div>
         <div className="url">{selected.urlMatcher.url}</div>
+        <div className="url">{JSON.stringify(selected.bodyMatcher)}</div>
         <div className="contentType">{selected.response.contentType}</div>
         <div className="responseBody">
           <strong>Response body:</strong>
-          <pre>{selected.response.body}</pre>
+          <pre>{JSON.stringify(selected.response.body)}</pre>
           <button onClick={() => setStarter({ type: 'stub', stub: selected })}>
             <i className="material-icons">code</i>Edit
           </button>

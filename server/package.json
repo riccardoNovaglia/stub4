@@ -43,7 +43,7 @@
     "xpath": "0.0.27"
   },
   "devDependencies": {
-    "@stub4/client": "0.0.5",
+    "@stub4/client": "0.0.6",
     "jest": "^24.8.0",
     "nodemon": "^1.19.3",
     "supertest": "^3.4.2"

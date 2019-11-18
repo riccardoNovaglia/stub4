@@ -3,6 +3,25 @@
     {
       "requestMatcher": { "url": "/some-url" },
       "response": { "body": "this was setup", "type": "text" }
+    },
+    {
+      "requestMatcher": {
+        "method": "POST",
+        "url": "/body-match",
+        "body": { "bodyMatch": { "id": 321 } }
+      },
+      "response": { "body": { "mgs": "User 321 created" }, "type": "json" }
+    },
+    {
+      "requestMatcher": {
+        "method": "POST",
+        "url": "/body-match-xml",
+        "body": {
+          "bodyMatch": [{ "path": "string(//author)", "value": "somebody" }],
+          "type": "xml"
+        }
+      },
+      "response": { "body": "<msg>OK</msg>", "type": "xml" }
     }
   ],
   "cruds": [
