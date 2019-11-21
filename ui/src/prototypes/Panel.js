@@ -28,6 +28,14 @@ export function Panel({ itemsLifecycle, presentation, components, setStarter, cl
     setEditing(false);
   };
 
+  const onSave = async item => {
+    await save(item);
+    await fetch(setItems);
+    setCreating(false);
+    setEditing(false);
+    setSelected(null);
+  };
+
   return (
     <div className="panel">
       <h1>
@@ -44,7 +52,7 @@ export function Panel({ itemsLifecycle, presentation, components, setStarter, cl
         {list({ items, selected, setSelected })}
         {selected && preview({ selected, setStarter, client, onEdit })}
         {(creating || editing) && (
-          <NewItemModal onClose={onClose} create={create} save={save} selected={something} />
+          <NewItemModal onClose={onClose} create={create} save={onSave} selected={something} />
         )}
       </div>
       <i className="material-icons resizer">height</i>
