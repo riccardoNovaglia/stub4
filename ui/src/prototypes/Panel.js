@@ -63,7 +63,7 @@ export function Panel({ itemsLifecycle, presentation, components, setStarter, cl
         {list({ items, selected, setSelected })}
         {selected && preview({ selected, setStarter, client, onEdit })}
         {(creating || editing) && (
-          <NewItemModal onClose={onClose} create={create} save={onSave} selected={edited} />
+          <NewItemModal onClose={onClose} create={create} save={onSave} edited={edited} />
         )}
       </div>
       <i className="material-icons resizer">height</i>
