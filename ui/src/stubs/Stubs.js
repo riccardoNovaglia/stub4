@@ -29,7 +29,7 @@ export function Stubs({ onClear, setStarter, client }) {
     <Panel
       itemsLifecycle={{ fetch, clear, save }}
       presentation={{ label: 'Stubs', icon: 'import_export', className: 'stubs' }}
-      components={{ list: StubsList, edit: SelectedStub, create: NewStub }}
+      components={{ list: StubsList, preview: SelectedStub, create: NewStub }}
       setStarter={setStarter}
       client={client}
     />

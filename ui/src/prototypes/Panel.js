@@ -12,7 +12,7 @@ export function Panel({ itemsLifecycle, presentation, components, setStarter, cl
 
   const { fetch, clear, save } = itemsLifecycle;
   const { label, icon, className } = presentation;
-  const { list, edit, create } = components;
+  const { list, preview, create } = components;
 
   useEffect(() => {
     fetch(setItems);
@@ -42,7 +42,7 @@ export function Panel({ itemsLifecycle, presentation, components, setStarter, cl
       </h1>
       <div className={className}>
         {list({ items, selected, setSelected })}
-        {selected && edit({ selected, setStarter, client, onEdit })}
+        {selected && preview({ selected, setStarter, client, onEdit })}
         {(creating || editing) && (
           <NewItemModal onClose={onClose} create={create} save={save} selected={something} />
         )}

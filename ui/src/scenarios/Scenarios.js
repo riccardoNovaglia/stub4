@@ -21,7 +21,7 @@ export function Scenarios({ onClear, setStarter, client }) {
     <Panel
       itemsLifecycle={{ fetch, clear }}
       presentation={{ label: 'Scenarios', icon: 'import_export', className: 'scenarios' }}
-      components={{ list: ScenariosList, edit: SelectedScenario }}
+      components={{ list: ScenariosList, preview: SelectedScenario }}
       setStarter={setStarter}
       client={client}
     />

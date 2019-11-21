@@ -19,7 +19,7 @@ export function Proxy({ onClear, setStarter, client }) {
     <Panel
       itemsLifecycle={{ fetch, clear }}
       presentation={{ label: 'Proxy', icon: 'redo', className: 'proxyBody' }}
-      components={{ list: ProxyList, edit: SelectedProxy }}
+      components={{ list: ProxyList, preview: SelectedProxy }}
       setStarter={setStarter}
       client={client}
     />

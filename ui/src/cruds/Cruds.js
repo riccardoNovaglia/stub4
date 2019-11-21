@@ -21,7 +21,7 @@ export function Cruds({ onClear, client }) {
     <Panel
       itemsLifecycle={{ fetch, clear }}
       presentation={{ label: 'Cruds', icon: 'swap_horiz', className: 'cruds' }}
-      components={{ list: CrudsList, edit: SelectedCrud }}
+      components={{ list: CrudsList, preview: SelectedCrud }}
       setStarter={setStarter}
       client={client}
     />
