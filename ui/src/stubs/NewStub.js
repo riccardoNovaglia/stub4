@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Url } from '../new/Url';
 
-export function NewStub({ onClose, setNewItem, selected }) {
-  const something = {
+export function NewStub({ onClose, setNewItem, edited }) {
+  const defaults = {
     urlMatcher: { url: '' },
     method: 'GET',
     response: {
@@ -10,15 +10,15 @@ export function NewStub({ onClose, setNewItem, selected }) {
       body: '{}',
       contentType: 'application/json'
     },
-    ...selected
+    ...edited
   };
 
   const stub = {
-    ...useObject('url', something.urlMatcher.url),
-    ...useObject('method', something.method),
-    ...useObject('status', something.response.statusCode),
-    ...useObject('body', something.response.body),
-    ...useObject('type', something.response.contentType)
+    ...useObject('url', defaults.urlMatcher.url),
+    ...useObject('method', defaults.method),
+    ...useObject('status', defaults.response.statusCode),
+    ...useObject('body', defaults.response.body),
+    ...useObject('type', defaults.response.contentType)
   };
 
   function handle(setFn) {

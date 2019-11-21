@@ -6,7 +6,7 @@ export function Panel({ itemsLifecycle, presentation, components, setStarter, cl
   const [items, setItems] = useState([]);
   const [selected, setSelected] = useState();
 
-  const [something, setSomething] = useState();
+  const [edited, setEdited] = useState();
   const [creating, setCreating] = useState();
   const [editing, setEditing] = useState();
 
@@ -19,7 +19,7 @@ export function Panel({ itemsLifecycle, presentation, components, setStarter, cl
   }, [fetch, setItems]);
 
   const onEdit = item => {
-    setSomething(item);
+    setEdited(item);
     setEditing(true);
   };
 
@@ -36,12 +36,17 @@ export function Panel({ itemsLifecycle, presentation, components, setStarter, cl
     setSelected(null);
   };
 
+  const createNew = () => {
+    setEdited(null);
+    setCreating(true);
+  };
+
   return (
     <div className="panel">
       <h1>
         {label}
         <i className="material-icons">{icon}</i>
-        <button className="createBtn" onClick={() => setCreating(true)}>
+        <button className="createBtn" onClick={createNew}>
           <i className="material-icons">add_box</i>Create
         </button>
         <button className="clearBtn" onClick={clear}>
@@ -52,7 +57,7 @@ export function Panel({ itemsLifecycle, presentation, components, setStarter, cl
         {list({ items, selected, setSelected })}
         {selected && preview({ selected, setStarter, client, onEdit })}
         {(creating || editing) && (
-          <NewItemModal onClose={onClose} create={create} save={onSave} selected={something} />
+          <NewItemModal onClose={onClose} create={create} save={onSave} selected={edited} />
         )}
       </div>
       <i className="material-icons resizer">height</i>
