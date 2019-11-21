@@ -37,6 +37,11 @@ export function Panel({ itemsLifecycle, presentation, components, setStarter, cl
     setSelected(null);
   };
 
+  const onClear = async () => {
+    await clear();
+    await fetch(setItems);
+  };
+
   const createNew = () => {
     setEdited(null);
     setCreating(true);
@@ -50,7 +55,7 @@ export function Panel({ itemsLifecycle, presentation, components, setStarter, cl
         <button className="createBtn" onClick={createNew}>
           <i className="material-icons">add_box</i>Create
         </button>
-        <button className="clearBtn" onClick={clear}>
+        <button className="clearBtn" onClick={onClear}>
           <i className="material-icons">clear_all</i>Clear
         </button>
       </h1>
