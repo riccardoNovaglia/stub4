@@ -7,8 +7,9 @@ export function Panel({ itemsLifecycle, presentation, components, setStarter, cl
   const [selected, setSelected] = useState();
 
   const [edited, setEdited] = useState();
-  const [creating, setCreating] = useState();
-  const [editing, setEditing] = useState();
+
+  const [creating, setCreating] = useState(false);
+  const [editing, setEditing] = useState(false);
 
   const { fetch, clear, save } = itemsLifecycle;
   const { label, icon, className } = presentation;

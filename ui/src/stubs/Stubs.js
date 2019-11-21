@@ -7,7 +7,7 @@ import { NewStub } from './NewStub';
 
 import './Stub.scss';
 
-export function Stubs({ onClear, setStarter, client }) {
+export function Stubs({ onClear, client }) {
   const fetch = async set => {
     await client.fetchStubs(set);
   };
@@ -30,7 +30,6 @@ export function Stubs({ onClear, setStarter, client }) {
       itemsLifecycle={{ fetch, clear, save }}
       presentation={{ label: 'Stubs', icon: 'import_export', className: 'stubs' }}
       components={{ list: StubsList, preview: SelectedStub, create: NewStub }}
-      setStarter={setStarter}
       client={client}
     />
   );
