@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Url } from '../new/Url';
+import { Url } from '../prototypes/Url';
 
 export function NewCrud({ onClose, setNewItem, edited }) {
   const defaults = {

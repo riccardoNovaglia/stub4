@@ -1,8 +1,6 @@
 import _ from 'lodash';
 import React, { useState } from 'react';
 
-import { Stub } from './Stub';
-import { Crud } from './Crud';
 import { Proxy } from './Proxy';
 
 import './New.scss';
@@ -58,9 +56,11 @@ export function New({ afterSuccessfulCreation, building, onBuilding, onEscape, h
             </h1>
             <div>
               {hooky.starterType.starterType.value === 'stub' ? (
-                <Stub stub={hooky.stub} handle={handle} />
+                // <Stub stub={hooky.stub} handle={handle} />
+                <></>
               ) : hooky.starterType.starterType.value === 'crud' ? (
-                <Crud crud={hooky.crud} handle={handle} />
+                // <Crud crud={hooky.crud} handle={handle} />
+                <></>
               ) : (
                 <Proxy proxy={hooky.proxy} handle={handle} />
               )}

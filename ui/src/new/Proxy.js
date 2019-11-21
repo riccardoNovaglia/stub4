@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Url } from './Url';
+import { Url } from '../prototypes/Url';
 
 export function Proxy({ proxy, handle }) {
   return (
