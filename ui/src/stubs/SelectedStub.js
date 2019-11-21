@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
-import './SelectedStub.scss';
+import './Stub.scss';
 
-export function SelectedStub({ selected, setStarter, client }) {
+export function SelectedStub({ selected, client, onEdit }) {
   return (
     <>
       <div className="selectedStub">
@@ -13,7 +13,7 @@ export function SelectedStub({ selected, setStarter, client }) {
         <div className="responseBody">
           <strong>Response body:</strong>
           <pre>{JSON.stringify(selected.response.body)}</pre>
-          <button onClick={() => setStarter({ type: 'stub', stub: selected })}>
+          <button onClick={() => onEdit(selected)}>
             <i className="material-icons">code</i>Edit
           </button>
         </div>

@@ -1,25 +1,18 @@
 import React from 'react';
 
-export function Url({ url }) {
-  function handleWithLeadingSlash(setFn) {
-    return event =>
-      setFn(
-        event.target.value.length > 0 && event.target.value[0] !== '/'
-          ? `/${event.target.value}`
-          : event.target.value
-      );
+export function Url({ url, handle }) {
+  function handleWithLeadingSlash(event) {
+    handle(
+      event.target.value.length > 0 && event.target.value[0] !== '/'
+        ? `/${event.target.value}`
+        : event.target.value
+    );
   }
 
   return (
     <div>
       <label htmlFor="url">URL</label>
-      <input
-        id="url"
-        type="text"
-        onChange={handleWithLeadingSlash(url.set)}
-        value={url.value}
-        autoFocus
-      />
+      <input id="url" type="text" onChange={handleWithLeadingSlash} value={url.value} autoFocus />
     </div>
   );
 }

@@ -53,10 +53,18 @@ export default function App() {
       <div className="App">
         <div className="stubsAndCruds">
           <Tabs tab={tab} setCurrentTab={setCurrentTab} />
-          {tab === 'stubs' && <Stubs setStarter={build} client={clients.stubClient} />}
-          {tab === 'scenarios' && <Scenarios setStarter={build} client={clients.scenariosClient} />}
-          {tab === 'cruds' && <Cruds setStarter={build} client={clients.crudClient} />}
-          {tab === 'proxy' && <Proxy setStarter={build} client={clients.proxyClient} />}
+          {tab === 'stubs' && (
+            <Stubs setStarter={build} client={clients.stubClient} onClear={() => {}} />
+          )}
+          {tab === 'scenarios' && (
+            <Scenarios setStarter={build} client={clients.scenariosClient} onClear={() => {}} />
+          )}
+          {tab === 'cruds' && (
+            <Cruds setStarter={build} client={clients.crudClient} onClear={() => {}} />
+          )}
+          {tab === 'proxy' && (
+            <Proxy setStarter={build} client={clients.proxyClient} onClear={() => {}} />
+          )}
         </div>
         <div className="unmatchedBody">
           <Unmatched setStarter={build} client={clients.unmatchedClient} />

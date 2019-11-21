@@ -1,0 +1,91 @@
+import React, { useState } from 'react';
+import { Url } from '../new/Url';
+
+export function NewStub({ onClose, setNewItem, selected }) {
+  const something = {
+    urlMatcher: { url: '' },
+    method: 'GET',
+    response: {
+      status: 200,
+      body: '{}',
+      contentType: 'application/json'
+    },
+    ...selected
+  };
+
+  const stub = {
+    ...useObject('url', something.urlMatcher.url),
+    ...useObject('method', something.method),
+    ...useObject('status', something.response.statusCode),
+    ...useObject('body', something.response.body),
+    ...useObject('type', something.response.contentType)
+  };
+
+  function handle(setFn) {
+    return function(event) {
+      setFn(event.target.value);
+      setNewItem(stub);
+    };
+  }
+
+  function handleValue(setFn) {
+    return function(value) {
+      setFn(value);
+      setNewItem(stub);
+    };
+  }
+
+  return (
+    <div onKeyDown={e => e.keyCode === 27 && onClose()}>
+      <Url url={stub.url} handle={handleValue(stub.url.set)} />
+      <div>
+        <label htmlFor="method">METHOD</label>
+        <select value={stub.method.value} onChange={handle(stub.method.set)}>
+          <option value="GET">GET</option>
+          <option value="POST">POST</option>
+        </select>
+      </div>
+
+      <div>
+        <label htmlFor="status">STATUS</label>
+        <input
+          id="status"
+          type="text"
+          onChange={handle(stub.status.set)}
+          value={stub.status.value}
+        />
+      </div>
+
+      <div>
+        <label htmlFor="type">TYPE</label>
+        <select value={stub.type.value} onChange={handle(stub.type.set)}>
+          <option value="text/plain">text/plain</option>
+          <option value="application/json">application/json</option>
+          <option value="application/xml">application/xml</option>
+        </select>
+      </div>
+
+      <div>
+        <label htmlFor="body">BODY</label>
+        <textarea
+          id="body"
+          className="responseBody"
+          onChange={handle(stub.body.set)}
+          rows="5"
+          cols="33"
+          value={stub.body.value}
+        />
+      </div>
+    </div>
+  );
+}
+
+function useObject(key, initialValue) {
+  const [value, set] = useState(initialValue);
+  return {
+    [key]: {
+      value,
+      set
+    }
+  };
+}
