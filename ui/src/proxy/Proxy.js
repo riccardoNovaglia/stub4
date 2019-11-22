@@ -1,26 +1,29 @@
 import React from 'react';
 
-import { ProxyList } from './list/ProxyList';
-import { SelectedProxy } from './selected/SelectedProxy';
+import { ProxyList } from './ProxyList';
+import { NewProxy } from './NewProxy';
+import { SelectedProxy } from './SelectedProxy';
 
 import { Panel } from '../prototypes/Panel';
 
-export function Proxy({ onClear, setStarter, client }) {
+export function Proxy({ client }) {
   const fetch = set => {
     client.fetchProxy(set);
   };
 
   const clear = async () => {
     await client.clearProxy();
-    onClear();
+  };
+
+  const save = async proxy => {
+    await client.proxyRequests(proxy.url.value, proxy.proxyUrl.value);
   };
 
   return (
     <Panel
-      itemsLifecycle={{ fetch, clear }}
+      itemsLifecycle={{ fetch, clear, save }}
       presentation={{ label: 'Proxy', icon: 'redo', className: 'proxyBody' }}
-      components={{ list: ProxyList, preview: SelectedProxy }}
-      setStarter={setStarter}
+      components={{ list: ProxyList, preview: SelectedProxy, create: NewProxy }}
       client={client}
     />
   );

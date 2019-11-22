@@ -1,6 +1,6 @@
 import React from 'react';
 
-export function Url({ url, handle }) {
+export function Url({ url, handle, label = 'URL', focus = true }) {
   function handleWithLeadingSlash(event) {
     handle(
       event.target.value.length > 0 && event.target.value[0] !== '/'
@@ -11,8 +11,14 @@ export function Url({ url, handle }) {
 
   return (
     <div>
-      <label htmlFor="url">URL</label>
-      <input id="url" type="text" onChange={handleWithLeadingSlash} value={url.value} autoFocus />
+      <label htmlFor="url">{label}</label>
+      <input
+        id="url"
+        type="text"
+        onChange={handleWithLeadingSlash}
+        value={url.value}
+        autoFocus={focus}
+      />
     </div>
   );
 }

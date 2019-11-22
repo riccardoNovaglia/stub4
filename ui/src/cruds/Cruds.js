@@ -6,14 +6,13 @@ import { NewCrud } from './NewCrud';
 
 import { Panel } from '../prototypes/Panel';
 
-export function Cruds({ onClear, client }) {
+export function Cruds({ client }) {
   const fetch = set => {
     client.fetchCruds(set);
   };
 
   const clear = async () => {
     await client.clearCruds();
-    onClear();
   };
 
   const save = async crud => {

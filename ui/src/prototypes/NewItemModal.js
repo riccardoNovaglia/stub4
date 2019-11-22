@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 
+import './New.scss';
+
 export function NewItemModal({ itemName, create, onClose, save, edited }) {
   const [newItem, setNewItem] = useState({});
 

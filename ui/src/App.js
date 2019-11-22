@@ -8,7 +8,7 @@ import { Cruds } from './cruds/Cruds';
 import { Proxy } from './proxy/Proxy';
 import { Contracts } from './contracts/Contracts';
 import { Unmatched } from './unmatched/Unmatched';
-import { New, useHooky } from './new/New';
+
 import Tabs from './Tabs';
 
 import './App.scss';
@@ -17,57 +17,21 @@ import './Lists.scss';
 export default function App() {
   const [tab, setCurrentTab] = useState('stubs');
 
-  const [building, setBuilding] = useState(false);
-  const [starter, setStarter] = useState(undefined);
-
-  const hooky = useHooky();
-
   const clients = useClients();
-
-  const build = starter => {
-    setBuilding(true);
-    setStarter(starter);
-    hooky.update(starter);
-  };
-  const doneBuilding = () => {
-    setBuilding(false);
-    setStarter(undefined);
-    hooky.clear();
-  };
 
   return (
     <>
-      <New
-        starter={starter}
-        hooky={hooky}
-        building={building}
-        onBuilding={() => {
-          setStarter(undefined);
-          setBuilding(true);
-        }}
-        afterSuccessfulCreation={doneBuilding}
-        onEscape={doneBuilding}
-        clients={clients}
-      />
       <Contracts />
       <div className="App">
         <div className="stubsAndCruds">
           <Tabs tab={tab} setCurrentTab={setCurrentTab} />
-          {tab === 'stubs' && (
-            <Stubs setStarter={build} client={clients.stubClient} onClear={() => {}} />
-          )}
-          {tab === 'scenarios' && (
-            <Scenarios setStarter={build} client={clients.scenariosClient} onClear={() => {}} />
-          )}
-          {tab === 'cruds' && (
-            <Cruds setStarter={build} client={clients.crudClient} onClear={() => {}} />
-          )}
-          {tab === 'proxy' && (
-            <Proxy setStarter={build} client={clients.proxyClient} onClear={() => {}} />
-          )}
+          {tab === 'stubs' && <Stubs client={clients.stubClient} />}
+          {tab === 'scenarios' && <Scenarios client={clients.scenariosClient} />}
+          {tab === 'cruds' && <Cruds client={clients.crudClient} />}
+          {tab === 'proxy' && <Proxy client={clients.proxyClient} />}
         </div>
         <div className="unmatchedBody">
-          <Unmatched setStarter={build} client={clients.unmatchedClient} />
+          <Unmatched client={clients.unmatchedClient} />
         </div>
       </div>
     </>

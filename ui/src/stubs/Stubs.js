@@ -7,14 +7,13 @@ import { NewStub } from './NewStub';
 
 import './Stub.scss';
 
-export function Stubs({ onClear, client }) {
+export function Stubs({ client }) {
   const fetch = async set => {
     await client.fetchStubs(set);
   };
 
   const clear = async () => {
     await client.clearStubs();
-    onClear();
   };
 
   const save = async stub => {

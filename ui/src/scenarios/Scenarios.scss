@@ -11,3 +11,78 @@
   margin-left: 50px;
   text-align: center;
 }
+
+.selectedScenario {
+  margin: 0;
+  display: inline-block;
+  width: 70%;
+  background: #000;
+  text-align: center;
+  padding: 10px;
+  height: 100%;
+
+  .callCount {
+    animation-name: flash-update;
+    animation-duration: 0.3s;
+  }
+
+  .method {
+    margin: 0 auto 10px;
+  }
+
+  .url,
+  .newButton,
+  .responseBody {
+    margin: 0 0 10px 0;
+  }
+
+  .responseBody {
+    width: 100%;
+    background-color: rgb(2, 44, 99);
+    border-radius: 2px;
+    padding: 0;
+    box-shadow: inset 0 0 3px #000000;
+    text-align: left;
+    position: relative;
+    margin-left: 20px;
+
+    button {
+      position: absolute;
+      top: 6px;
+      right: 10px;
+      background-color: #4caf50;
+      border: none;
+      color: white;
+      padding: 5px 9px;
+      text-align: center;
+      line-height: 0;
+      font-weight: bold;
+      font-size: 14px;
+      border-radius: 2px;
+      text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
+    }
+
+    strong {
+      display: block;
+      width: 100%;
+      line-height: 38px;
+      padding-left: 10px;
+      background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    pre {
+      padding: 10px;
+      margin: 0;
+      font-family: 'Courier New', Courier, monospace;
+    }
+  }
+}
+
+@keyframes flash-update {
+  from {
+    background: grey;
+  }
+  to {
+    background: default;
+  }
+}

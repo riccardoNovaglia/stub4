@@ -1,7 +1,7 @@
 import React from 'react';
 import { omit } from 'lodash';
 
-import './SelectedScenario.scss';
+import './Scenarios.scss';
 
 export function SelectedScenario({ selected, setStarter }) {
   return (

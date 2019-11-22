@@ -1,6 +1,6 @@
 import React from 'react';
 
-import './SelectedProxy.scss';
+import './Proxy.scss';
 
 export function SelectedProxy({ selected, setStarter }) {
   // const [interactions, setInteractions] = useState(undefined);
