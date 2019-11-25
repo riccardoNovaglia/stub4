@@ -245,7 +245,8 @@ describe('Pact contracts generation for stubs', () => {
               'Content-Type': 'text/plain'
             },
             body: `hello, how's it going`
-          }
+          },
+          metadata: null
         },
         {
           description: uponReceiving2,
@@ -260,7 +261,8 @@ describe('Pact contracts generation for stubs', () => {
               'Content-Type': 'application/json'
             },
             body: { mgs: 'this be json' }
-          }
+          },
+          metadata: null
         }
       ])
     );
@@ -355,7 +357,8 @@ function aPactWithStructure(
             'Content-Type': contentType
           },
           body
-        }
+        },
+        metadata: null
       }
     ],
     metadata: {

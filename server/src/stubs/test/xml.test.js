@@ -7,9 +7,9 @@ const { get, post } = require('@stub4/client');
 
 describe('Stubbing via the client', () => {
   let server;
-  const client = new Stub4.StubClient(9010);
+  const client = new Stub4.StubClient(9011);
   beforeAll(done => {
-    server = app.listen(9010, done);
+    server = app.listen(9011, done);
   });
 
   afterAll(() => {
@@ -17,7 +17,7 @@ describe('Stubbing via the client', () => {
   });
 
   beforeEach(async () => {
-    await axios.delete('http://localhost:9010/stubs');
+    await axios.delete('http://localhost:9011/stubs');
   });
 
   it('responds from the new stub with the given body', async () => {
