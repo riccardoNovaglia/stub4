@@ -6,7 +6,7 @@ export function NewStub({ onClose, setNewItem, edited }) {
     urlMatcher: { url: '' },
     method: 'GET',
     response: {
-      status: 200,
+      statusCode: 200,
       body: '{}',
       contentType: 'application/json'
     },

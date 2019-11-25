@@ -5,7 +5,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest --watch",
+    "test": "jest --watchAll",
     "stub4": "stub4"
   },
   "author": "",
@@ -15,7 +15,7 @@
     "@stub4/stub4": "0.0.11",
     "axios": "^0.19.0",
     "jest": "^24.9.0",
-    "taiko": "^1.0.2",
+    "taiko": "https://github.com/getgauge/taiko",
     "taiko-screencast": "0.0.1"
   },
   "jest": {}

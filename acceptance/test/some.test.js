@@ -3,66 +3,60 @@ const {
   goto,
   click,
   write,
-  reload,
-  press,
-  focus,
-  highlight,
   closeBrowser,
-  dropDown,
-  near,
+  textBox,
+  toRightOf,
   text
 } = require('taiko');
+const axios = require('axios');
 
-jest.setTimeout(10000);
+// WHY
+jest.setTimeout(100000);
 
-describe('something', () => {
-  beforeEach(async () => await openBrowser({ headless: false }));
-  afterEach(async () => await closeBrowser());
+const appUrl = 'localhost:8081';
+const stubsUrl = 'http://localhost:8080';
 
-  it('does things', async () => {
-    try {
-      await goto('localhost');
-      await click('New');
-      // await write('hello-world');
-      // await click('save');
-      // await click('hello-world');
-      // await click('edit');
-      // await click('close');
-      // await click('clear');
-      // await reload();
-      // await click('new');
-      // await dropDown('stub');
-      await highlight(dropDown(near('create new')));
-      await focus(dropDown(near('create new')));
-      await dropDown(near('create new')).select('crud');
-      await click(dropDown(near('create new')));
-      await click(dropDown(near('create new')));
-      await press('Space');
-      console.log('checking');
-      await text('ID ALIAS').exists();
-      await wait();
-      await dropDown(near('create new')).select('stub');
-      await wait();
-      // await click(dropDown(near('create new')));
-      // await doubleClick(dropDown(near('create new')));
-      // await focus(dropDown(near('create new')));
-      // await click(dropDown(near('create new')));
-      // await click(dropDown(near('create new')));
-      // click(dropDown(near('create new')));
-      // await click(dropDown(near('create new')));
-      // press('Enter');
-      // await press('Enter');
-      // click(dropDown(near('create new')));
-      // await press('Enter');
-      // click(dropDown(near('create new')));
-      // press('Enter');
-    } catch (error) {
-      console.error(error);
-      throw error;
-    }
+describe('Stubs', () => {
+  beforeEach(async () => {
+    // await openBrowser({ headless: false });
+    await openBrowser();
+    await axios.delete(`${stubsUrl}/stubs`);
+    await axios.delete(`${stubsUrl}/cruds`);
+    await axios.delete(`${stubsUrl}/proxy`);
+    await axios.delete(`${stubsUrl}/scenarios`);
+  });
+  afterEach(async () => {
+    await closeBrowser();
+  });
+
+  it('Creates a stub that responds with 200', async () => {
+    await goto(appUrl);
+    await text('Stubs').exists();
+    await text('None created yet').exists();
+    await click('create');
+    await writeUrl('some-url');
+    await click('save');
+    await text('GET /some-url').exists();
+    const response = await axios.get(`${stubsUrl}/some-url`);
+    expect(response.status).toEqual(200);
+    expect(response.data).toEqual({});
+  });
+
+  it('Clears existing stubs', async () => {
+    await goto(appUrl);
+    await click('create');
+    await writeUrl('another-url');
+    await click('save');
+    await text('GET /another-url').exists();
+    await click('clear');
+    await text('None created yet').exists();
+    await expect(axios.get(`${stubsUrl}/another-url`)).rejects.toEqual(
+      new Error('Request failed with status code 404')
+    );
   });
 });
 
-function wait(ms = 1000) {
-  return new Promise(res => setTimeout(res, ms));
+async function writeUrl(url) {
+  // why do I have to add a space to make it write the last letter?!?
+  await write(`${url} `, textBox(toRightOf('URL')));
 }
