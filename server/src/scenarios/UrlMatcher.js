@@ -3,7 +3,7 @@ const UrlMatcher = url => {
 
   const findVariablesInCurlies = /\{([^}]+)\}/g;
   const capturedGroups = url.match(findVariablesInCurlies);
-  if (!capturedGroups) return SimpleMatcher(url);
+  if (!capturedGroups) return SimpleMatcher(url.trim());
 
   const variableNames = capturedGroups.map(group => group.replace('{', '').replace('}', ''));
 

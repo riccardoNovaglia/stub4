@@ -59,9 +59,9 @@ export function NewStub({ onClose, setNewItem, edited }) {
       <div>
         <label htmlFor="type">TYPE</label>
         <select value={stub.type.value} onChange={handle(stub.type.set)}>
-          <option value="text/plain">text/plain</option>
-          <option value="application/json">application/json</option>
-          <option value="application/xml">application/xml</option>
+          <option value="text">text/plain</option>
+          <option value="json">application/json</option>
+          <option value="xml">application/xml</option>
         </select>
       </div>
 
