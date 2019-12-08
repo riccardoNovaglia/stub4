@@ -44,9 +44,9 @@
   },
   "devDependencies": {
     "@stub4/client": "0.0.6",
-    "jest": "^24.8.0",
-    "nodemon": "^1.19.3",
-    "supertest": "^3.4.2"
+    "jest": "^24.9.0",
+    "nodemon": "^2.0.1",
+    "supertest": "^4.0.2"
   },
   "jest": {
     "watchPathIgnorePatterns": [
