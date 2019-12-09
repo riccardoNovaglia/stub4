@@ -35,12 +35,12 @@ describe('Stubs', () => {
   });
 
   it('Creates a stub that responds with 200', async () => {
-    await text('Stubs').exists();
-    await text('None created yet').exists();
+    await expect(text('Stubs').exists()).toBeTruthy();
+    await expect(text('None created yet').exists()).toBeTruthy();
     await click('create');
-    await writeUrl('some-url');
+    await write('some-url', textBox(toRightOf('URL')));
     await click('save');
-    await text('GET /some-url').exists();
+    await expect(text('GET /some-url').exists()).toBeTruthy();
     await expect(get(`${stubsUrl}/some-url`)).resolves.toMatchObject({
       status: 200,
       data: {}
@@ -49,11 +49,11 @@ describe('Stubs', () => {
 
   it('Clears existing stubs', async () => {
     await click('create');
-    await writeUrl('another-url');
+    await write('another-url', textBox(toRightOf('URL')));
     await click('save');
-    await text('GET /another-url').exists();
+    await expect(text('GET /another-url').exists()).toBeTruthy();
     await click('clear');
-    await text('None created yet').exists();
+    await expect(text('None created yet').exists()).toBeTruthy();
     await expect(get(`${stubsUrl}/another-url`)).rejects.toEqual(
       new Error('Request failed with status code 404')
     );
@@ -61,17 +61,17 @@ describe('Stubs', () => {
 
   it('Lets you create a new stub from an existing stub', async () => {
     await click('create');
-    await writeUrl('the-original-stub');
+    await write('the-original-stub', textBox(toRightOf('URL')));
     await click('save');
     await click('the-original-stub');
     await click('edit');
-    await text('/the-original-stub', toRightOf('URL')).exists();
+    await expect(text('/the-original-stub', toRightOf('URL')).exists()).toBeTruthy();
     await focus(textBox(toRightOf('URL')));
     await clear();
-    await writeUrl('a-new-stub');
+    await write('a-new-stub', textBox(toRightOf('URL')));
     await click('save');
-    await text('GET /the-original-stub').exists();
-    await text('GET /a-new-stub').exists();
+    await expect(text('GET /the-original-stub').exists()).toBeTruthy();
+    await expect(text('GET /a-new-stub').exists()).toBeTruthy();
     await expect(get(`${stubsUrl}/the-original-stub`)).resolves.toMatchObject({
       status: 200
     });
@@ -80,7 +80,7 @@ describe('Stubs', () => {
 
   it('Lets you tweak each part of a stub', async () => {
     await click('create');
-    await writeUrl('some-new-stub');
+    await write('some-new-stub', textBox(toRightOf('URL')));
 
     await clear(textBox(toRightOf('STATUS')));
     await write('203', textBox(toRightOf('STATUS')));
@@ -88,7 +88,7 @@ describe('Stubs', () => {
     await dropDown(toRightOf('METHOD')).select('POST');
     await dropDown(toRightOf('TYPE')).select('application/xml');
     await clear(textBox(toRightOf('BODY')));
-    await write('<customer><id>123</id><name>jimbo</name></customer> ', textBox(toRightOf('BODY')));
+    await write('<customer><id>123</id><name>jimbo</name></customer>', textBox(toRightOf('BODY')));
     await click('save');
     await expect(post(`${stubsUrl}/some-new-stub`)).resolves.toMatchObject({
       status: 203,
@@ -97,10 +97,3 @@ describe('Stubs', () => {
     });
   });
 });
-
-async function writeUrl(url) {
-  // why do I have to add a space to make it write the last letter?!?
-  // turns out to be the last thing I write, not necessarily just the url
-  // just the last thing written on the page before submittin or something?!
-  await write(`${url} `, textBox(toRightOf('URL')));
-}

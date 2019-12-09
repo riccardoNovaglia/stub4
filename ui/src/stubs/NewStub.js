@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Url } from '../prototypes/Url';
+import { useObject, updatableItem } from '../prototypes/NewItemManagement';
 
 export function NewStub({ onClose, setNewItem, edited }) {
   const defaults = {
@@ -13,34 +14,35 @@ export function NewStub({ onClose, setNewItem, edited }) {
     ...edited
   };
 
-  const stub = {
-    ...useObject('url', defaults.urlMatcher.url),
-    ...useObject('method', defaults.method),
-    ...useObject('status', defaults.response.statusCode),
-    ...useObject('body', defaults.response.body),
-    ...useObject('type', defaults.response.contentType)
-  };
+  const stub = updatableItem(
+    {
+      ...useObject('url', defaults.urlMatcher.url),
+      ...useObject('method', defaults.method),
+      ...useObject('status', defaults.response.statusCode),
+      ...useObject('body', defaults.response.body),
+      ...useObject('type', defaults.response.contentType)
+    },
+    setNewItem
+  );
 
-  function handle(setFn) {
+  function handle(setFn, key) {
     return function(event) {
-      setFn(event.target.value);
-      setNewItem(stub);
+      stub.updateFromEvent(setFn, key, event);
     };
   }
 
-  function handleValue(setFn) {
+  function handleValue(setFn, key) {
     return function(value) {
-      setFn(value);
-      setNewItem(stub);
+      stub.updateFromValue(setFn, key, value);
     };
   }
 
   return (
     <div onKeyDown={e => e.keyCode === 27 && onClose()}>
-      <Url url={stub.url} handle={handleValue(stub.url.set)} />
+      <Url url={stub.url} handle={handleValue(stub.url.set, 'url')} />
       <div>
         <label htmlFor="method">METHOD</label>
-        <select value={stub.method.value} onChange={handle(stub.method.set)}>
+        <select value={stub.method.value} onChange={handle(stub.method.set, 'method')}>
           <option value="GET">GET</option>
           <option value="POST">POST</option>
         </select>
@@ -51,14 +53,14 @@ export function NewStub({ onClose, setNewItem, edited }) {
         <input
           id="status"
           type="text"
-          onChange={handle(stub.status.set)}
+          onChange={handle(stub.status.set, 'status')}
           value={stub.status.value}
         />
       </div>
 
       <div>
         <label htmlFor="type">TYPE</label>
-        <select value={stub.type.value} onChange={handle(stub.type.set)}>
+        <select value={stub.type.value} onChange={handle(stub.type.set, 'type')}>
           <option value="text">text/plain</option>
           <option value="json">application/json</option>
           <option value="xml">application/xml</option>
@@ -70,7 +72,7 @@ export function NewStub({ onClose, setNewItem, edited }) {
         <textarea
           id="body"
           className="responseBody"
-          onChange={handle(stub.body.set)}
+          onChange={handle(stub.body.set, 'body')}
           rows="5"
           cols="33"
           value={stub.body.value}
@@ -78,14 +80,4 @@ export function NewStub({ onClose, setNewItem, edited }) {
       </div>
     </div>
   );
-}
-
-function useObject(key, initialValue) {
-  const [value, set] = useState(initialValue);
-  return {
-    [key]: {
-      value,
-      set
-    }
-  };
 }
