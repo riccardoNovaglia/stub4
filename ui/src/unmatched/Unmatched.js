@@ -11,6 +11,7 @@ export function Unmatched({ setStarter, client }) {
     return () => clearInterval(interval);
   }, [setUnmatched, client]);
 
+  // TODO: is this broken?
   const clear = async () => {
     await client.clearUnmatched();
     await client.fetchUnmatched(setUnmatched);

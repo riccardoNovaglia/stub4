@@ -8,6 +8,7 @@ export function NewProxy({ onClose, setNewItem, edited }) {
     ...edited
   };
 
+  // TODO: update me following stub, crud
   const proxy = {
     ...useObject('url', defaults.url),
     ...useObject('proxyUrl', defaults.proxyUrl)
