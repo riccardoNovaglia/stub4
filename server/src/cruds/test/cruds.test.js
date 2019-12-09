@@ -111,7 +111,7 @@ describe('Once the crud is created', () => {
 
 describe('Custom IDs', () => {
   const url = '/custom-id-crud';
-  afterEach(async () => await request(app).post('/clear-cruds'));
+  afterEach(async () => await request(app).delete('/cruds'));
   it('accepts an id alias on creation and uses that going forward', async () => {
     await request(app)
       .post('/cruds')
@@ -138,6 +138,20 @@ describe('Custom IDs', () => {
 
     const response = await request(app).get(`${url}/2`);
     expect(response.status).toBe(404);
+  });
+
+  it('defaults to "id" if an empty string is passed', async () => {
+    await request(app)
+      .post('/cruds')
+      .send({ url: '/custom-id-crud', idAlias: '' });
+
+    await request(app)
+      .post('/custom-id-crud')
+      .send({ id: '1', name: 'michelangelo' });
+
+    const response = await request(app).get('/custom-id-crud/1');
+    expect(response.status).toBe(200);
+    expect(response.body).toEqual({ id: '1', name: 'michelangelo' });
   });
 });
 

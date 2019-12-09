@@ -82,15 +82,20 @@ function DB(meta) {
   };
 }
 
+function getIdAlias(source) {
+  const alias = _.get(source, 'idAlias', 'id');
+  return _.isEmpty(alias) ? 'id' : alias;
+}
+
 function crudFromRequest(req) {
   const url = req.body.url;
-  const idAlias = _.get(req.body, 'idAlias', 'id');
+  const idAlias = getIdAlias(req.body);
   return Crud(url, idAlias);
 }
 
 function CrudFromFile(item) {
   const url = item.url;
-  const idAlias = _.get(item, 'idAlias', 'id');
+  const idAlias = getIdAlias(item);
   const crud = Crud(url, idAlias);
   item.data.forEach(dataItem => crud.push(dataItem));
   return crud;
