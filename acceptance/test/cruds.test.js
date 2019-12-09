@@ -1,4 +1,5 @@
 const {
+  below,
   click,
   clear,
   closeBrowser,
@@ -41,8 +42,27 @@ describe('Cruds', () => {
     await write('some-crud-url', textBox(toRightOf('URL')));
     await write('idAlias', textBox(toRightOf('ID ALIAS')));
     await click('save');
-    await expect(text('/some-crud-url→id').exists()).toBeTruthy();
+    await expect(text('/some-crud-url→idAlias').exists()).toBeTruthy();
     await click('/some-crud-url');
     await expect(text('0 items found').exists()).toBeTruthy();
+  });
+
+  it('Creates a crud with alias and adds an item', async () => {
+    await click('Cruds');
+    await click('create');
+    await write('some-crud-url', textBox(toRightOf('URL')));
+    await write('personId', textBox(toRightOf('ID ALIAS')));
+    await click('save');
+    await click('/some-crud-url');
+    await click('edit');
+    await clear(textBox(below('edit')));
+    await write('[{"personId": 123,"name":"jimmy"}]', textBox(below('edit')));
+    await click('save');
+    await click('/some-crud-url');
+    await expect(text('1 items found').exists()).toBeTruthy();
+    await expect(get(`${stubsUrl}/some-crud-url/123`)).resolves.toMatchObject({
+      status: 200,
+      data: { personId: 123, name: 'jimmy' }
+    });
   });
 });
