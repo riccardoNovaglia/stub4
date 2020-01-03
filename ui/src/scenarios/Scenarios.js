@@ -24,9 +24,18 @@ export function Scenarios({ client }) {
     <Panel
       itemsLifecycle={{ fetch, clear, save }}
       presentation={{ label: 'Scenarios', icon: 'import_export', className: 'scenarios' }}
-      components={{ list: ScenariosList, preview: SelectedScenario, create: NewScenario }}
       client={client}
-    />
+    >
+      {{
+        preview: selected => <SelectedScenario selected={selected} client={client} />,
+        list: (items, selected, setSelected) => (
+          <ScenariosList items={items} selected={selected} setSelected={setSelected} />
+        ),
+        create: (onClose, setNewItem, edited) => (
+          <NewScenario onClose={onClose} setNewItem={setNewItem} edited={edited} />
+        )
+      }}
+    </Panel>
   );
 }
 

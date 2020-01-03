@@ -11,8 +11,11 @@ export function CrudsList({ items, selected, setSelected }) {
       styles={{ itemClass: 'crudDef', listClass: 'crudsList' }}
       itemKey={item => `${item.url}-item`}
       selectionMatch={(selected, current) => selected.url === current.url}
-      itemComponent={CrudListItem}
-    />
+    >
+      {{
+        item: item => <CrudListItem item={item} />
+      }}
+    </ItemsList>
   );
 }
 

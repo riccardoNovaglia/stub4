@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import './New.scss';
 
-export function NewItemModal({ itemName, create, onClose, save, edited }) {
+export function NewItemModal({ itemName, onClose, save, children }) {
   const [newItem, setNewItem] = useState({});
 
   return (
@@ -15,7 +15,7 @@ export function NewItemModal({ itemName, create, onClose, save, edited }) {
           </button>
         </h1>
         <div>
-          {create ? create({ onClose, setNewItem, edited }) : <p>Create would go here</p>}
+          {children.create(onClose, setNewItem)}
           <div className="buttonGroup">
             <button onClick={() => save(newItem)}>
               <i className="material-icons">playlist_add</i>Save

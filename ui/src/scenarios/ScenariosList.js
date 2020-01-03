@@ -11,8 +11,11 @@ export function ScenariosList({ items, selected, setSelected }) {
       styles={{ itemClass: 'scenario', listClass: 'scenariosList' }}
       itemKey={item => `${item.urlMatcher.url}-item`}
       selectionMatch={(selected, current) => selected.urlMatcher.url === current.urlMatcher.url}
-      itemComponent={ScenarioListItem}
-    />
+    >
+      {{
+        item: item => <ScenarioListItem item={item} />
+      }}
+    </ItemsList>
   );
 }
 

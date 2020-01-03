@@ -3,6 +3,15 @@ import React, { useEffect, useState } from 'react';
 import './Stub.scss';
 
 export function SelectedStub({ selected, client, onEdit }) {
+  const [interactions, setInteractions] = useState();
+  const url = selected.urlMatcher.url;
+
+  useEffect(() => {
+    client.fetchInteractions(url, setInteractions);
+    const interval = setInterval(() => client.fetchInteractions(url, setInteractions), 1000);
+    return () => clearInterval(interval);
+  }, [url, interactions, client]);
+
   return (
     <>
       <div className="selectedStub">
@@ -17,20 +26,12 @@ export function SelectedStub({ selected, client, onEdit }) {
             <i className="material-icons">code</i>Edit
           </button>
         </div>
-        <Interactions url={selected.urlMatcher.url} client={client} />
+        <Interactions interactions={interactions} />
       </div>
     </>
   );
 }
 
-function Interactions({ url, client }) {
-  const [interactions, setInteractions] = useState();
-
-  useEffect(() => {
-    client.fetchInteractions(url, setInteractions);
-    const interval = setInterval(() => client.fetchInteractions(url, setInteractions), 1000);
-    return () => clearInterval(interval);
-  }, [url, interactions, client]);
-
+function Interactions({ interactions }) {
   return <>{interactions && <div className="callCount">Called {interactions} times</div>}</>;
 }

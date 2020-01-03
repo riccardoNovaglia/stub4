@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import { NewItemModal } from './NewItemModal';
 
-export function Panel({ itemsLifecycle, presentation, components, setStarter, client }) {
+export function Panel({ itemsLifecycle, presentation, client, children }) {
   const [items, setItems] = useState([]);
   const [selected, setSelected] = useState();
 
@@ -13,7 +13,6 @@ export function Panel({ itemsLifecycle, presentation, components, setStarter, cl
 
   const { fetch, clear, save } = itemsLifecycle;
   const { label, icon, className } = presentation;
-  const { list, preview, create } = components;
 
   useEffect(() => {
     fetch(setItems);
@@ -60,10 +59,14 @@ export function Panel({ itemsLifecycle, presentation, components, setStarter, cl
         </button>
       </h1>
       <div className={className}>
-        {list({ items, selected, setSelected })}
-        {selected && preview({ selected, setStarter, client, onEdit })}
+        {children.list(items, selected, setSelected)}
+        {selected && children.preview(selected, client, onEdit)}
         {(creating || editing) && (
-          <NewItemModal onClose={onClose} create={create} save={onSave} edited={edited} />
+          <NewItemModal onClose={onClose} save={onSave} edited={edited}>
+            {{
+              create: (onClose, setNewItem) => children.create(onClose, setNewItem, edited)
+            }}
+          </NewItemModal>
         )}
       </div>
       <i className="material-icons resizer">height</i>

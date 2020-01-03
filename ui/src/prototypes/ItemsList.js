@@ -5,10 +5,10 @@ export default function ItemsList({
   items,
   selected,
   setSelected,
-  itemComponent,
   styles,
   itemKey,
-  selectionMatch
+  selectionMatch,
+  children
 }) {
   const className = (selected, item) =>
     selected && selectionMatch(selected, item) ? `${styles.itemClass} selected` : styles.itemClass;
@@ -22,7 +22,7 @@ export default function ItemsList({
           className={className(selected, item)}
           onClick={() => setSelected(item)}
         >
-          {itemComponent({ item })}
+          {children.item(item)}
         </div>
       ))}
     </div>

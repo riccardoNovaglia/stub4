@@ -23,8 +23,17 @@ export function Proxy({ client }) {
     <Panel
       itemsLifecycle={{ fetch, clear, save }}
       presentation={{ label: 'Proxy', icon: 'redo', className: 'proxyBody' }}
-      components={{ list: ProxyList, preview: SelectedProxy, create: NewProxy }}
       client={client}
-    />
+    >
+      {{
+        preview: selected => <SelectedProxy selected={selected} client={client} />,
+        list: (items, selected, setSelected) => (
+          <ProxyList items={items} selected={selected} setSelected={setSelected} />
+        ),
+        create: (onClose, setNewItem, edited) => (
+          <NewProxy onClose={onClose} setNewItem={setNewItem} edited={edited} />
+        )
+      }}
+    </Panel>
   );
 }

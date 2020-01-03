@@ -28,8 +28,19 @@ export function Stubs({ client }) {
     <Panel
       itemsLifecycle={{ fetch, clear, save }}
       presentation={{ label: 'Stubs', icon: 'import_export', className: 'stubs' }}
-      components={{ list: StubsList, preview: SelectedStub, create: NewStub }}
       client={client}
-    />
+    >
+      {{
+        preview: (selected, client, onEdit) => (
+          <SelectedStub selected={selected} client={client} onEdit={onEdit} />
+        ),
+        list: (items, selected, setSelected) => (
+          <StubsList items={items} selected={selected} setSelected={setSelected} />
+        ),
+        create: (onClose, setNewItem, edited) => (
+          <NewStub onClose={onClose} setNewItem={setNewItem} edited={edited} />
+        )
+      }}
+    </Panel>
   );
 }

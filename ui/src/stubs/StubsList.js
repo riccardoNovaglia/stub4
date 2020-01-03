@@ -11,8 +11,11 @@ export function StubsList({ items, selected, setSelected }) {
       styles={{ itemClass: 'stub', listClass: 'stubsList' }}
       itemKey={item => `${item.urlMatcher.url}-item`}
       selectionMatch={(selected, current) => selected.urlMatcher.url === current.urlMatcher.url}
-      itemComponent={StubListItem}
-    />
+    >
+      {{
+        item: item => <StubListItem item={item} />
+      }}
+    </ItemsList>
   );
 }
 

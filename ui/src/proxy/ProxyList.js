@@ -11,8 +11,11 @@ export function ProxyList({ items, selected, setSelected }) {
       styles={{ itemClass: 'proxyDef', listClass: 'proxyList' }}
       itemKey={item => `${item.request.url}-item`}
       selectionMatch={(selected, current) => selected.request.url === current.request.url}
-      itemComponent={ProxyListItem}
-    />
+    >
+      {{
+        item: item => <ProxyListItem item={item} />
+      }}
+    </ItemsList>
   );
 }
 
