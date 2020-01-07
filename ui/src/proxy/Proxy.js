@@ -26,7 +26,9 @@ export function Proxy({ client }) {
       client={client}
     >
       {{
-        preview: selected => <SelectedProxy selected={selected} client={client} />,
+        preview: (selected, onEdit) => (
+          <SelectedProxy client={client} selected={selected} onEdit={onEdit} />
+        ),
         list: (items, selected, setSelected) => (
           <ProxyList items={items} selected={selected} setSelected={setSelected} />
         ),

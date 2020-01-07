@@ -26,7 +26,7 @@ export function Cruds({ client }) {
       client={client}
     >
       {{
-        preview: selected => <SelectedCrud selected={selected} client={client} />,
+        preview: (selected, onEdit) => <SelectedCrud client={client} selected={selected} />,
         list: (items, selected, setSelected) => (
           <CrudsList items={items} selected={selected} setSelected={setSelected} />
         ),

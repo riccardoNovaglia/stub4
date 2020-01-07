@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import { NewItemModal } from './NewItemModal';
 
-export function Panel({ itemsLifecycle, presentation, client, children }) {
+export function Panel({ itemsLifecycle, presentation, children }) {
   const [items, setItems] = useState([]);
   const [selected, setSelected] = useState();
 
@@ -60,7 +60,7 @@ export function Panel({ itemsLifecycle, presentation, client, children }) {
       </h1>
       <div className={className}>
         {children.list(items, selected, setSelected)}
-        {selected && children.preview(selected, client, onEdit)}
+        {selected && children.preview(selected, onEdit)}
         {(creating || editing) && (
           <NewItemModal onClose={onClose} save={onSave} edited={edited}>
             {{

@@ -28,11 +28,10 @@ export function Stubs({ client }) {
     <Panel
       itemsLifecycle={{ fetch, clear, save }}
       presentation={{ label: 'Stubs', icon: 'import_export', className: 'stubs' }}
-      client={client}
     >
       {{
-        preview: (selected, client, onEdit) => (
-          <SelectedStub selected={selected} client={client} onEdit={onEdit} />
+        preview: (selected, onEdit) => (
+          <SelectedStub client={client} selected={selected} onEdit={onEdit} />
         ),
         list: (items, selected, setSelected) => (
           <StubsList items={items} selected={selected} setSelected={setSelected} />

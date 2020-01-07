@@ -1,46 +1,38 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Url } from '../prototypes/Url';
+import { useObject, updatableItem } from '../prototypes/NewItemManagement';
 
 export function NewProxy({ onClose, setNewItem, edited }) {
   const defaults = {
-    url: '',
+    request: { url: '' },
     proxyUrl: '',
     ...edited
   };
 
-  // TODO: update me following stub, crud
-  const proxy = {
-    ...useObject('url', defaults.url),
-    ...useObject('proxyUrl', defaults.proxyUrl)
-  };
+  const proxy = updatableItem(
+    {
+      ...useObject('url', defaults.request.url),
+      ...useObject('proxyUrl', defaults.proxyUrl)
+    },
+    setNewItem
+  );
 
-  function handleValue(setFn) {
+  function handleValue(setFn, key) {
     return function(value) {
-      setFn(value);
-      setNewItem(proxy);
+      proxy.updateFromValue(setFn, key, value);
     };
   }
 
   return (
     <div onKeyDown={e => e.keyCode === 27 && onClose()}>
-      <Url url={proxy.url} handle={handleValue(proxy.url.set)} />
+      <Url url={proxy.url} handle={handleValue(proxy.url.set, 'url')} />
 
       <Url
         label="PROXY URL"
         focus={false}
         url={proxy.proxyUrl}
-        handle={handleValue(proxy.proxyUrl.set)}
+        handle={handleValue(proxy.proxyUrl.set, 'proxyUrl')}
       />
     </div>
   );
-}
-
-function useObject(key, initialValue) {
-  const [value, set] = useState(initialValue);
-  return {
-    [key]: {
-      value,
-      set
-    }
-  };
 }
