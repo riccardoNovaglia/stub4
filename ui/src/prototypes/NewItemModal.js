@@ -12,7 +12,7 @@ export function NewItemModal({ itemName, onClose, children }) {
             <i className="material-icons">clear</i>Close
           </button>
         </h1>
-        <div>{children.create()}</div>
+        <div>{children}</div>
       </div>
       <div className="overlay" />
     </>
