@@ -1,6 +1,6 @@
 import React from 'react';
 import { Url } from '../prototypes/Url';
-import { useObject, updatableItem2 } from '../prototypes/NewItemManagement';
+import { useObject, updatableItem } from '../prototypes/NewItemManagement';
 import { SaveButton } from '../prototypes/SaveButton';
 
 export function NewCrud({ onClose, onSaved, editedItem, client }) {
@@ -10,7 +10,7 @@ export function NewCrud({ onClose, onSaved, editedItem, client }) {
     ...editedItem
   };
 
-  const crud = updatableItem2({
+  const crud = updatableItem({
     ...useObject('url', defaults.url),
     ...useObject('idAlias', defaults.idAlias)
   });

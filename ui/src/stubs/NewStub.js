@@ -1,6 +1,6 @@
 import React from 'react';
 import { Url } from '../prototypes/Url';
-import { useObject, updatableItem2 } from '../prototypes/NewItemManagement';
+import { useObject, updatableItem } from '../prototypes/NewItemManagement';
 import { SaveButton } from '../prototypes/SaveButton';
 
 export function NewStub({ onClose, onSaved, editedItem, client }) {
@@ -15,7 +15,7 @@ export function NewStub({ onClose, onSaved, editedItem, client }) {
     ...editedItem
   };
 
-  const stub = updatableItem2({
+  const stub = updatableItem({
     ...useObject('url', defaults.urlMatcher.url),
     ...useObject('method', defaults.method),
     ...useObject('status', defaults.response.statusCode),

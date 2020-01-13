@@ -1,6 +1,6 @@
 import React from 'react';
 import { Url } from '../prototypes/Url';
-import { useObject, updatableItem2 } from '../prototypes/NewItemManagement';
+import { useObject, updatableItem } from '../prototypes/NewItemManagement';
 import { SaveButton } from '../prototypes/SaveButton';
 
 export function NewProxy({ onClose, onSaved, editedItem, client }) {
@@ -10,7 +10,7 @@ export function NewProxy({ onClose, onSaved, editedItem, client }) {
     ...editedItem
   };
 
-  const proxy = updatableItem2({
+  const proxy = updatableItem({
     ...useObject('url', defaults.request.url),
     ...useObject('proxyUrl', defaults.proxyUrl)
   });
