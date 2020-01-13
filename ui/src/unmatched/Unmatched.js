@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 
 import { UnmatchedList } from './list/UnmatchedList';
+import { UnmatchedToItem } from './UnmatchedToItem';
 
-export function Unmatched({ setStarter, client }) {
+export function Unmatched({ client, clients, setTab }) {
   const [unmatched, setUnmatched] = useState([]);
+  const [selected, setSelected] = useState();
 
   useEffect(() => {
     client.fetchUnmatched(setUnmatched);
@@ -11,7 +13,7 @@ export function Unmatched({ setStarter, client }) {
     return () => clearInterval(interval);
   }, [setUnmatched, client]);
 
-  // TODO: is this broken?
+  // TODO: why is this broken?
   const clear = async () => {
     await client.clearUnmatched();
     await client.fetchUnmatched(setUnmatched);
@@ -25,9 +27,13 @@ export function Unmatched({ setStarter, client }) {
       <button className="clearBtn" onClick={() => clear()}>
         <i className="material-icons">clear_all</i>Clear
       </button>
-      <div className="unmatched">
-        <UnmatchedList unmatched={unmatched} setStarter={setStarter} />
-      </div>
+      <UnmatchedList unmatched={unmatched} setSelected={setSelected} />
+      <UnmatchedToItem
+        clients={clients}
+        selected={selected}
+        setSelected={setSelected}
+        setTab={setTab}
+      />
     </div>
   );
 }

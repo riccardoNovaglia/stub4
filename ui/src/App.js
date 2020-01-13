@@ -31,7 +31,7 @@ export default function App() {
           {tab === 'proxy' && <Proxy client={clients.proxyClient} />}
         </div>
         <div className="unmatchedBody">
-          <Unmatched client={clients.unmatchedClient} clients={clients} />
+          <Unmatched client={clients.unmatchedClient} clients={clients} setTab={setCurrentTab} />
         </div>
       </div>
     </>

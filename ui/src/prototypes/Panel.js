@@ -61,7 +61,7 @@ export function Panel({ itemsLifecycle, presentation, children }) {
         {children.list(items, selected, setSelected)}
         {selected && children.preview(selected, onEdit)}
         {(creating || editing) && (
-          <NewItemModal onClose={onClose}>
+          <NewItemModal itemName={label} onClose={onClose}>
             {{
               create: () => children.create(onClose, onSaved, editedItem)
             }}
