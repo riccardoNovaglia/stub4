@@ -26,3 +26,15 @@ export function updatableItem(data, setItemFn) {
     }
   };
 }
+
+export function updatableItem2(data) {
+  return {
+    ...data,
+    updateFromValue(setFn, _key, value) {
+      setFn(value);
+    },
+    updateFromEvent(setFn, key, event) {
+      this.updateFromValue(setFn, key, event.target.value);
+    }
+  };
+}

@@ -32,8 +32,8 @@ export function Proxy({ client }) {
         list: (items, selected, setSelected) => (
           <ProxyList items={items} selected={selected} setSelected={setSelected} />
         ),
-        create: (onClose, setNewItem, edited) => (
-          <NewProxy onClose={onClose} setNewItem={setNewItem} edited={edited} />
+        create: (onClose, onSaved, editedItem) => (
+          <NewProxy client={client} onClose={onClose} onSaved={onSaved} editedItem={editedItem} />
         )
       }}
     </Panel>

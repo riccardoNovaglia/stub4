@@ -30,8 +30,8 @@ export function Cruds({ client }) {
         list: (items, selected, setSelected) => (
           <CrudsList items={items} selected={selected} setSelected={setSelected} />
         ),
-        create: (onClose, setNewItem, edited) => (
-          <NewCrud onClose={onClose} setNewItem={setNewItem} edited={edited} />
+        create: (onClose, onSaved, editedItem) => (
+          <NewCrud client={client} onClose={onClose} onSaved={onSaved} editedItem={editedItem} />
         )
       }}
     </Panel>

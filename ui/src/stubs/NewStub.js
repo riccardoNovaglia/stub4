@@ -1,8 +1,9 @@
 import React from 'react';
 import { Url } from '../prototypes/Url';
-import { useObject, updatableItem } from '../prototypes/NewItemManagement';
+import { useObject, updatableItem2 } from '../prototypes/NewItemManagement';
+import { SaveButton } from '../prototypes/SaveButton';
 
-export function NewStub({ onClose, setNewItem, edited }) {
+export function NewStub({ onClose, onSaved, editedItem, client }) {
   const defaults = {
     urlMatcher: { url: '' },
     method: 'GET',
@@ -11,19 +12,16 @@ export function NewStub({ onClose, setNewItem, edited }) {
       body: '{}',
       contentType: 'application/json'
     },
-    ...edited
+    ...editedItem
   };
 
-  const stub = updatableItem(
-    {
-      ...useObject('url', defaults.urlMatcher.url),
-      ...useObject('method', defaults.method),
-      ...useObject('status', defaults.response.statusCode),
-      ...useObject('body', defaults.response.body),
-      ...useObject('type', defaults.response.contentType)
-    },
-    setNewItem
-  );
+  const stub = updatableItem2({
+    ...useObject('url', defaults.urlMatcher.url),
+    ...useObject('method', defaults.method),
+    ...useObject('status', defaults.response.statusCode),
+    ...useObject('body', defaults.response.body),
+    ...useObject('type', defaults.response.contentType)
+  });
 
   function handle(setFn, key) {
     return function(event) {
@@ -35,6 +33,15 @@ export function NewStub({ onClose, setNewItem, edited }) {
     return function(value) {
       stub.updateFromValue(setFn, key, value);
     };
+  }
+
+  async function onSave() {
+    await client.stub(
+      client
+        .request(stub.method.value, stub.url.value)
+        .returns(stub.type.value, stub.body.value, stub.status.value)
+    );
+    onSaved();
   }
 
   return (
@@ -78,6 +85,8 @@ export function NewStub({ onClose, setNewItem, edited }) {
           value={stub.body.value}
         />
       </div>
+
+      <SaveButton onSave={onSave} />
     </div>
   );
 }

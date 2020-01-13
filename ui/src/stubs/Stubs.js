@@ -36,8 +36,8 @@ export function Stubs({ client }) {
         list: (items, selected, setSelected) => (
           <StubsList items={items} selected={selected} setSelected={setSelected} />
         ),
-        create: (onClose, setNewItem, edited) => (
-          <NewStub onClose={onClose} setNewItem={setNewItem} edited={edited} />
+        create: (onClose, onSaved, editedItem) => (
+          <NewStub client={client} onClose={onClose} onSaved={onSaved} editedItem={editedItem} />
         )
       }}
     </Panel>

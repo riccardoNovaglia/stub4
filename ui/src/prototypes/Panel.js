@@ -6,12 +6,12 @@ export function Panel({ itemsLifecycle, presentation, children }) {
   const [items, setItems] = useState([]);
   const [selected, setSelected] = useState();
 
-  const [edited, setEdited] = useState();
+  const [editedItem, setEditedItem] = useState();
 
   const [creating, setCreating] = useState(false);
   const [editing, setEditing] = useState(false);
 
-  const { fetch, clear, save } = itemsLifecycle;
+  const { fetch, clear } = itemsLifecycle;
   const { label, icon, className } = presentation;
 
   useEffect(() => {
@@ -19,7 +19,7 @@ export function Panel({ itemsLifecycle, presentation, children }) {
   }, [fetch, setItems]);
 
   const onEdit = item => {
-    setEdited(item);
+    setEditedItem(item);
     setEditing(true);
   };
 
@@ -28,8 +28,7 @@ export function Panel({ itemsLifecycle, presentation, children }) {
     setEditing(false);
   };
 
-  const onSave = async item => {
-    await save(item);
+  const onSaved = async () => {
     await fetch(setItems);
     setCreating(false);
     setEditing(false);
@@ -42,7 +41,7 @@ export function Panel({ itemsLifecycle, presentation, children }) {
   };
 
   const createNew = () => {
-    setEdited(null);
+    setEditedItem(null);
     setCreating(true);
   };
 
@@ -62,9 +61,9 @@ export function Panel({ itemsLifecycle, presentation, children }) {
         {children.list(items, selected, setSelected)}
         {selected && children.preview(selected, onEdit)}
         {(creating || editing) && (
-          <NewItemModal onClose={onClose} save={onSave} edited={edited}>
+          <NewItemModal onClose={onClose}>
             {{
-              create: (onClose, setNewItem) => children.create(onClose, setNewItem, edited)
+              create: () => children.create(onClose, onSaved, editedItem)
             }}
           </NewItemModal>
         )}

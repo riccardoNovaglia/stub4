@@ -1,26 +1,29 @@
 import React from 'react';
 import { Url } from '../prototypes/Url';
-import { useObject, updatableItem } from '../prototypes/NewItemManagement';
+import { useObject, updatableItem2 } from '../prototypes/NewItemManagement';
+import { SaveButton } from '../prototypes/SaveButton';
 
-export function NewProxy({ onClose, setNewItem, edited }) {
+export function NewProxy({ onClose, onSaved, editedItem, client }) {
   const defaults = {
     request: { url: '' },
     proxyUrl: '',
-    ...edited
+    ...editedItem
   };
 
-  const proxy = updatableItem(
-    {
-      ...useObject('url', defaults.request.url),
-      ...useObject('proxyUrl', defaults.proxyUrl)
-    },
-    setNewItem
-  );
+  const proxy = updatableItem2({
+    ...useObject('url', defaults.request.url),
+    ...useObject('proxyUrl', defaults.proxyUrl)
+  });
 
   function handleValue(setFn, key) {
     return function(value) {
       proxy.updateFromValue(setFn, key, value);
     };
+  }
+
+  async function onSave() {
+    await client.proxyRequests(proxy.url.value, proxy.proxyUrl.value);
+    onSaved();
   }
 
   return (
@@ -33,6 +36,8 @@ export function NewProxy({ onClose, setNewItem, edited }) {
         url={proxy.proxyUrl}
         handle={handleValue(proxy.proxyUrl.set, 'proxyUrl')}
       />
+
+      <SaveButton onSave={onSave} />
     </div>
   );
 }

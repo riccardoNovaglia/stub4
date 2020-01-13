@@ -1,21 +1,19 @@
 import React from 'react';
 import { Url } from '../prototypes/Url';
-import { useObject, updatableItem } from '../prototypes/NewItemManagement';
+import { useObject, updatableItem2 } from '../prototypes/NewItemManagement';
+import { SaveButton } from '../prototypes/SaveButton';
 
-export function NewCrud({ onClose, setNewItem, edited }) {
+export function NewCrud({ onClose, onSaved, editedItem, client }) {
   const defaults = {
     url: '',
     idAlias: '',
-    ...edited
+    ...editedItem
   };
 
-  const crud = updatableItem(
-    {
-      ...useObject('url', defaults.url),
-      ...useObject('idAlias', defaults.idAlias)
-    },
-    setNewItem
-  );
+  const crud = updatableItem2({
+    ...useObject('url', defaults.url),
+    ...useObject('idAlias', defaults.idAlias)
+  });
 
   function handle(setFn, key) {
     return function(event) {
@@ -27,6 +25,11 @@ export function NewCrud({ onClose, setNewItem, edited }) {
     return function(value) {
       crud.updateFromValue(setFn, key, value);
     };
+  }
+
+  async function onSave() {
+    await client.createCrud(crud.url.value, crud.idAlias.value);
+    onSaved();
   }
 
   return (
@@ -42,6 +45,8 @@ export function NewCrud({ onClose, setNewItem, edited }) {
           value={crud.idAlias.value}
         />
       </div>
+
+      <SaveButton onSave={onSave} />
     </div>
   );
 }

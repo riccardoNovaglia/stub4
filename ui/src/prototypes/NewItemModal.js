@@ -1,10 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import './New.scss';
 
-export function NewItemModal({ itemName, onClose, save, children }) {
-  const [newItem, setNewItem] = useState({});
-
+export function NewItemModal({ itemName, onClose, children }) {
   return (
     <>
       <div className="new" onKeyDown={e => e.keyCode === 27 && onClose()}>
@@ -14,14 +12,7 @@ export function NewItemModal({ itemName, onClose, save, children }) {
             <i className="material-icons">clear</i>Close
           </button>
         </h1>
-        <div>
-          {children.create(onClose, setNewItem)}
-          <div className="buttonGroup">
-            <button onClick={() => save(newItem)}>
-              <i className="material-icons">playlist_add</i>Save
-            </button>
-          </div>
-        </div>
+        <div>{children.create()}</div>
       </div>
       <div className="overlay" />
     </>
