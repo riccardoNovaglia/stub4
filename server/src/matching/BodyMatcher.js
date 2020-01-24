@@ -17,7 +17,7 @@ const BodyMatcher = body => {
     matches(body) {
       if (_.isEmpty(body)) return false;
 
-      return keys.map(k => body[k] === this.body[k]).reduce((a, b) => a && b);
+      return keys.every(k => this.body[k] === '*' || body[k] === this.body[k]);
     },
     pretty: () => JSON.stringify(body.bodyMatch)
   };

@@ -10,8 +10,9 @@ const logger = createLogger('proxy');
 async function middleware(req, res, next) {
   try {
     const url = req.originalUrl;
+    const method = req.method;
 
-    const response = await proxy.get(url);
+    const response = await proxy.get(url, method, req.body);
     if (response) {
       return res.status(response.status).send(response.data);
     } else {

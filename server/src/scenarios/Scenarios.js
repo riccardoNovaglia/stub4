@@ -21,6 +21,7 @@ function get(url, body) {
   const matchedScenario = scenarios.find(scenario => scenario.matches(url, body));
 
   if (!matchedScenario) return undefined;
+  else logger.info('found matching scenario');
 
   return matchedScenario.getResponseFor(url, body);
 }

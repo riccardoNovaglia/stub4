@@ -1,13 +1,13 @@
 {
   "cruds": [
     {
-      "url": "/some-other",
+      "requestMatcher": { "url": "/some-other" },
       "data": [{ "id": 1, "some": "content" }, { "id": 3, "some": "stuff" }]
     }
   ],
   "scenarios": [
     {
-      "matching": { "url": "/with-body", "body": { "customerId": "*" } },
+      "requestMatcher": { "url": "/with-body", "body": { "customerId": "*" } },
       "outcomes": [
         {
           "match": { "customerId": "1" },
@@ -21,7 +21,7 @@
   ],
   "proxy": [
     {
-      "url": "/to-be-proxied",
+      "requestMatcher": { "url": "/to-be-proxied" },
       "method": "GET",
       "destination": { "url": "http://localhost:9090/to-be-proxied-to" }
     }

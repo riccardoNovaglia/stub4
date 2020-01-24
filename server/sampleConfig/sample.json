@@ -26,14 +26,14 @@
   ],
   "cruds": [
     {
-      "url": "/some-crud-url",
+      "requestMatcher": { "url": "/some-crud-url" },
       "idAlias": "customerId",
       "data": [{ "customerId": 1, "some": "content" }, { "customerId": 3, "some": "stuff" }]
     }
   ],
   "scenarios": [
     {
-      "matching": { "url": "/dude/{id}" },
+      "requestMatcher": { "url": "/dude/{id}" },
       "outcomes": [
         { "match": { "id": 1 }, "response": { "body": { "hey": "other" } } },
         { "match": { "id": 2 }, "response": { "body": { "hey": "other" } } }
@@ -43,7 +43,7 @@
       }
     },
     {
-      "matching": { "url": "/other/{bananas}" },
+      "requestMatcher": { "url": "/other/{bananas}" },
       "outcomes": [{ "match": { "bananas": "yes" }, "response": { "body": {} } }],
       "default": {
         "response": { "body": { "hey": "no bananas" }, "statusCode": 404 }

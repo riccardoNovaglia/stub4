@@ -8,7 +8,7 @@ https://trello.com/b/BSfIfp9d/stub4
 - - ~~Create stub from unmatched~~
 - - Allow verification via call in client
 
-- Proxyish
+- ~~Proxyish~~
 
 - Pact?
 - - ~~Where do we get info about the name of the app/consumer?~~
@@ -19,8 +19,8 @@ https://trello.com/b/BSfIfp9d/stub4
 - - What do if the pact verification fails?
 - - Use recorded interactions - replay against Pact provider to generate contract?
 
-- Record and display all, even non matched
-- - Offer to setup stub for just-called?
+- ~~Record and display all, even non matched~~
+- - ~~Offer to setup stub for just-called?~~
 
 - DB-like for app?
 - - ~~Custom ID~~
@@ -31,7 +31,7 @@ https://trello.com/b/BSfIfp9d/stub4
 
 - Help create definition/stub by pointing at openapi def
 
-- Files for defaults/statics
+- ~~Files for defaults/statics~~
 
 - Named app abstraction?
 
@@ -39,6 +39,8 @@ https://trello.com/b/BSfIfp9d/stub4
 - - Starts with
 - - Ends with
 - - Contains?
+
+- '\*' for method, catchall
 
 DEFECTS:
 

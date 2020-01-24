@@ -1,33 +1,29 @@
+const axios = require('axios');
 const request = require('supertest');
 const app = require('../../app');
 
+const { stubFor, setPort } = require('@stub4/client');
+const { url } = require('@stub4/client/src/RequestMatcher');
+const { containsCrud } = require('@stub4/client/src/Crud');
+
+setPort(9011);
 describe('Create crud-like endpoints', () => {
-  it('exists', async () => {
-    const response = await request(app)
-      .post('/cruds')
-      .send({ url: '/some-url' });
-    expect(response.status).toEqual(200);
+  let server;
+  beforeAll(done => {
+    server = app.listen(9011, done);
   });
 
-  it('deletes all cruds on demand', async () => {
-    await request(app)
-      .post('/cruds')
-      .send({ url: '/some-url' });
-    await request(app)
-      .post('/some-url')
-      .send({ id: '1', name: 'stuff' });
-    await request(app).delete('/cruds');
-    const response = await request(app).get('/some-url/1');
-    expect(response.status).toEqual(404);
+  afterAll(() => {
+    server.close();
+  });
+
+  afterEach(async () => {
+    await axios.delete('http://localhost:9011/cruds');
   });
 
   it('can list all existing ones, their urls and id aliases', async () => {
-    await request(app)
-      .post('/cruds')
-      .send({ url: '/some-url' });
-    await request(app)
-      .post('/cruds')
-      .send({ url: '/some-other-one', idAlias: 'thingId' });
+    await stubFor(url('/some-url'), containsCrud());
+    await stubFor(url('/some-other-one'), containsCrud().withIdAlias('thingId'));
 
     const response = await request(app).get('/cruds');
     expect(response.status).toEqual(200);
@@ -36,73 +32,90 @@ describe('Create crud-like endpoints', () => {
       { url: '/some-other-one', idAlias: 'thingId' }
     ]);
   });
+
+  it('deletes all cruds on demand', async () => {
+    await stubFor(url('/some-url'), containsCrud());
+
+    await request(app)
+      .post('/some-url')
+      .send({ id: '1', name: 'stuff' });
+    await request(app).delete('/cruds');
+    const response = await request(app).get('/some-url/1');
+    expect(response.status).toEqual(404);
+  });
 });
 
 describe('Once the crud is created', () => {
-  const url = '/some-crud';
+  const crudUrl = '/some-crud';
+  let server;
+  beforeAll(done => {
+    server = app.listen(9011, done);
+  });
+
+  afterAll(() => {
+    server.close();
+  });
   beforeEach(async () => {
-    await request(app)
-      .post('/cruds')
-      .send({ url });
+    await stubFor(url(crudUrl), containsCrud());
   });
   afterEach(async () => await request(app).delete('/cruds'));
 
   it('can add things', async () => {
     const response = await request(app)
-      .post(url)
+      .post(crudUrl)
       .send({ id: '1', name: 'jimmy' });
     expect(response.status).toEqual(200);
   });
 
   it('can get things out that were added', async () => {
     await request(app)
-      .post(url)
+      .post(crudUrl)
       .send({ id: '1', name: 'jimmy' });
-    const response = await request(app).get(`${url}/1`);
+    const response = await request(app).get(`${crudUrl}/1`);
     expect(response.status).toEqual(200);
     expect(response.body).toEqual({ id: '1', name: 'jimmy' });
   });
 
   it('updates already existing items on post', async () => {
     await request(app)
-      .post(url)
+      .post(crudUrl)
       .send({ id: '1', name: 'jimmy' });
 
     await request(app)
-      .post(url)
+      .post(crudUrl)
       .send({ id: '1', name: 'banana' });
-    const response = await request(app).get(`${url}/1`);
+    const response = await request(app).get(`${crudUrl}/1`);
     expect(response.status).toEqual(200);
     expect(response.body).toEqual({ id: '1', name: 'banana' });
   });
 
   it('deletes things', async () => {
     await request(app)
-      .post(url)
+      .post(crudUrl)
       .send({ id: '1', name: 'jimmy' });
 
-    await request(app).delete(`${url}/1`);
+    await request(app).delete(`${crudUrl}/1`);
 
-    const response = await request(app).get(`${url}/1`);
+    const response = await request(app).get(`${crudUrl}/1`);
     expect(response.status).toEqual(404);
   });
 
   it('dumps everything out of the crud', async () => {
     await request(app)
-      .post(url)
+      .post(crudUrl)
       .send({ id: '1', name: 'jimmy' });
     await request(app)
-      .post(url)
+      .post(crudUrl)
       .send({ id: '2', name: 'giorgy' });
 
-    const response = await request(app).get(url);
+    const response = await request(app).get(crudUrl);
 
     expect(response.status).toEqual(200);
     expect(response.body).toEqual([{ id: '1', name: 'jimmy' }, { id: '2', name: 'giorgy' }]);
   });
 
   it('returns an empty list for an empty crud', async () => {
-    const response = await request(app).get(url);
+    const response = await request(app).get(crudUrl);
 
     expect(response.status).toEqual(200);
     expect(response.body).toEqual([]);
@@ -110,12 +123,18 @@ describe('Once the crud is created', () => {
 });
 
 describe('Custom IDs', () => {
-  const url = '/custom-id-crud';
+  const crudUrl = '/custom-id-crud';
+  let server;
+  beforeAll(done => {
+    server = app.listen(9011, done);
+  });
+
+  afterAll(() => {
+    server.close();
+  });
   afterEach(async () => await request(app).delete('/cruds'));
   it('accepts an id alias on creation and uses that going forward', async () => {
-    await request(app)
-      .post('/cruds')
-      .send({ url: '/custom-id-crud', idAlias: 'customerId' });
+    await stubFor(url(crudUrl), containsCrud().withIdAlias('customerId'));
 
     await request(app)
       .post('/custom-id-crud')
@@ -127,23 +146,19 @@ describe('Custom IDs', () => {
   });
 
   it('deletes using a custom id', async () => {
+    await stubFor(url(crudUrl), containsCrud().withIdAlias('customerId'));
     await request(app)
-      .post('/cruds')
-      .send({ url, idAlias: 'customerId' });
-    await request(app)
-      .post(url)
+      .post(crudUrl)
       .send({ customerId: '2', name: 'michelangelo' });
 
-    await request(app).delete(`${url}/2`);
+    await request(app).delete(`${crudUrl}/2`);
 
-    const response = await request(app).get(`${url}/2`);
+    const response = await request(app).get(`${crudUrl}/2`);
     expect(response.status).toBe(404);
   });
 
   it('defaults to "id" if an empty string is passed', async () => {
-    await request(app)
-      .post('/cruds')
-      .send({ url: '/custom-id-crud', idAlias: '' });
+    await stubFor(url(crudUrl), containsCrud());
 
     await request(app)
       .post('/custom-id-crud')
@@ -156,42 +171,45 @@ describe('Custom IDs', () => {
 });
 
 describe('Complex urls', () => {
+  let server;
+  beforeAll(done => {
+    server = app.listen(9011, done);
+  });
+
+  afterAll(() => {
+    server.close();
+  });
+  afterEach(async () => await request(app).delete('/cruds'));
+
   it('can create crud-likes with complex urls', async () => {
-    const response = await request(app)
-      .post('/cruds')
-      .send({ url: '/some-url/with/version123' });
-    expect(response.status).toEqual(200);
+    await stubFor(url('/some-url/with/version123'), containsCrud());
   });
 
   it('can get stuff out of complex urls', async () => {
-    const url = '/some-url/with/version123';
-    await request(app)
-      .post('/cruds')
-      .send({ url });
+    const crudUrl = '/some-url/with/version123';
+    await stubFor(url(crudUrl), containsCrud());
 
     await request(app)
-      .post(url)
+      .post(crudUrl)
       .send({ id: '2', name: 'leonardo' });
 
-    const response = await request(app).get(`${url}/2`);
+    const response = await request(app).get(`${crudUrl}/2`);
     expect(response.status).toEqual(200);
     expect(response.body).toEqual({ id: '2', name: 'leonardo' });
   });
 
   it('can get everything out of complex urls', async () => {
-    const url = '/some-url/with/version123';
-    await request(app)
-      .post('/cruds')
-      .send({ url });
+    const crudUrl = '/some-url/with/version123';
+    await stubFor(url(crudUrl), containsCrud());
 
     await request(app)
-      .post(url)
+      .post(crudUrl)
       .send({ id: '2', name: 'leonardo' });
     await request(app)
-      .post(url)
+      .post(crudUrl)
       .send({ id: '3', name: 'raffaello' });
 
-    const response = await request(app).get(`${url}`);
+    const response = await request(app).get(`${crudUrl}`);
     expect(response.status).toEqual(200);
     expect(response.body).toEqual([{ id: '2', name: 'leonardo' }, { id: '3', name: 'raffaello' }]);
   });

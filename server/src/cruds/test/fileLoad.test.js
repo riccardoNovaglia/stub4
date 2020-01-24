@@ -9,7 +9,7 @@ describe('Loading cruds from an initialiser file v2', () => {
 
     add(
       CrudFromFile({
-        url: '/some-url',
+        requestMatcher: { url: '/some-url' },
         data: [someItem]
       })
     );
@@ -23,7 +23,7 @@ describe('Loading cruds from an initialiser file v2', () => {
 
     add(
       CrudFromFile({
-        url: '/bananas/v21',
+        requestMatcher: { url: '/bananas/v21' },
         idAlias: 'bananaId',
         data: [someItem]
       })
@@ -39,14 +39,14 @@ describe('Loading cruds from an initialiser file v2', () => {
 
     add(
       CrudFromFile({
-        url: '/bananas/v21',
+        requestMatcher: { url: '/bananas/v21' },
         idAlias: 'bananaId',
         data: [aBanana]
       })
     );
     add(
       CrudFromFile({
-        url: '/other-url',
+        requestMatcher: { url: '/other-url' },
         data: things
       })
     );

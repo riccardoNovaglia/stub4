@@ -1,7 +1,7 @@
 const _ = require('lodash');
 
-const UrlMatcher = require('../scenarios/UrlMatcher');
-const BodyMatcher = require('../stubs/BodyMatcher');
+const UrlMatcher = require('../matching/UrlMatcher');
+const BodyMatcher = require('../matching/BodyMatcher');
 
 const { createLogger } = require('../logger');
 
@@ -64,8 +64,6 @@ function Response(response) {
 function StubFromRequest(req) {
   const url = _.get(req.body, 'requestMatcher.url');
   if (!url) throw new Error('A request matcher url must be provided!');
-
-  logger.silly(`Building stub out of ${JSON.stringify(req.body, null, 2)}`);
 
   const urlMatcher = UrlMatcher(req.body.requestMatcher.url);
   const bodyMatcher = BodyMatcher(req.body.requestMatcher.body);

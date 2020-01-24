@@ -1,8 +1,12 @@
 const _ = require('lodash');
 
-const UrlMatcher = require('./UrlMatcher');
-const BodyMatcher = require('./BodyMatcher');
+const { createLogger } = require('../logger');
+
+const UrlMatcher = require('../matching/UrlMatcher');
+const BodyMatcher = require('../matching/BodyMatcher');
 const Outcome = require('./Outcome');
+
+const logger = createLogger('scenarios');
 
 const Scenario = (urlMatcher, bodyMatcher, defaultResponse, outcomes) => ({
   urlMatcher,
@@ -14,6 +18,7 @@ const Scenario = (urlMatcher, bodyMatcher, defaultResponse, outcomes) => ({
     return this.urlMatcher.matches(url) && this.bodyMatcher.matches(body);
   },
   getResponseFor(url, body) {
+    logger.debug(`Finding matching scenario for ${url} ${body}`);
     const matchedMapFromUrl = this.urlMatcher.getMatchedMap(url);
     if (matchedMapFromUrl) {
       const matchedOutcome = this.outcomes.find(outcome => outcome.matchesMaps(matchedMapFromUrl));
@@ -44,8 +49,8 @@ function ScenarioFrom(url, body, defaults, outcomes) {
 
 function ScenarioFromRequest(req) {
   return ScenarioFrom(
-    req.body.matching.url,
-    req.body.matching.body,
+    req.body.requestMatcher.url,
+    req.body.requestMatcher.body,
     req.body.default,
     req.body.outcomes
   );
@@ -53,8 +58,8 @@ function ScenarioFromRequest(req) {
 
 function ScenarioFromFile(fromFile) {
   return ScenarioFrom(
-    fromFile.matching.url,
-    fromFile.matching.body,
+    fromFile.requestMatcher.url,
+    fromFile.requestMatcher.bodyMatch,
     fromFile.default,
     fromFile.outcomes
   );

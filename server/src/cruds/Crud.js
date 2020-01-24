@@ -88,13 +88,13 @@ function getIdAlias(source) {
 }
 
 function crudFromRequest(req) {
-  const url = req.body.url;
+  const url = req.body.requestMatcher.url;
   const idAlias = getIdAlias(req.body);
   return Crud(url, idAlias);
 }
 
 function CrudFromFile(item) {
-  const url = item.url;
+  const url = item.requestMatcher.url;
   const idAlias = getIdAlias(item);
   const crud = Crud(url, idAlias);
   item.data.forEach(dataItem => crud.push(dataItem));

@@ -5,6 +5,8 @@ const { ProxyClient } = require('./ProxyClient');
 const { ContractsClient } = require('./ContractsClient');
 const { UnmatchedClient } = require('./UnmatchedClient');
 
+const { stubFor, setPort } = require('./stubFor');
+
 const stubs = { StubClient, Stub, get, post };
 
 module.exports = {
@@ -13,5 +15,7 @@ module.exports = {
   ProxyClient,
   CrudClient,
   ContractsClient,
-  UnmatchedClient
+  UnmatchedClient,
+  stubFor,
+  setPort
 };

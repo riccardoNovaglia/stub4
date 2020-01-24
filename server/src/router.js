@@ -15,6 +15,7 @@ module.exports = (items, builderFn, names, extra) => {
 
   router.post('/', (req, res) => {
     try {
+      logger.silly(`Building ${names.one} out of ${JSON.stringify(req.body, null, 2)}`);
       const item = builderFn(req);
 
       items.add(item);

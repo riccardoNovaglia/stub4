@@ -6,7 +6,7 @@ class CrudClient {
   }
 
   async createCrud(url, idAlias) {
-    await this.ax.post('/cruds', { url, idAlias });
+    await this.ax.post('/cruds', { requestMatcher: { url }, idAlias });
   }
 
   async fetchCruds(set) {

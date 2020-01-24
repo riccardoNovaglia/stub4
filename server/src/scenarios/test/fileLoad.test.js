@@ -7,7 +7,7 @@ describe('Loading stubs from an initialiser file', () => {
   it('creates a scenario from some file', () => {
     add(
       ScenarioFromFile({
-        matching: { url: '/dude/{id}' },
+        requestMatcher: { url: '/dude/{id}' },
         outcomes: [{ match: { id: 1 }, response: { body: { hey: 'dude number 1!' } } }],
         default: {
           response: { body: { hey: 'setup default' }, statusCode: 200 }
@@ -24,10 +24,35 @@ describe('Loading stubs from an initialiser file', () => {
     expect(dude3.body).toEqual({ hey: 'setup default' });
   });
 
+  it('creates a scenario from file with body matching', () => {
+    add(
+      ScenarioFromFile({
+        requestMatcher: {
+          url: '/other-things',
+          body: { bodyMatch: { something: '*' } }
+        },
+        outcomes: [
+          { match: { something: 'ok' }, response: { body: { the: 'other' }, statusCode: 302 } }
+        ],
+        default: {
+          response: { body: {}, statusCode: 404 }
+        }
+      })
+    );
+
+    const matched = get('/other-things', { something: 'ok' });
+    expect(matched.statusCode).toEqual(302);
+    expect(matched.body).toEqual({ the: 'other' });
+
+    const unmatched = get('/other-things', { something: 'not this' });
+    expect(unmatched.statusCode).toEqual(404);
+    expect(unmatched.body).toEqual({});
+  });
+
   it('loads multiple scenarios', () => {
     add(
       ScenarioFromFile({
-        matching: { url: '/dude/{id}' },
+        requestMatcher: { url: '/dude/{id}' },
         outcomes: [{ match: { id: 1 }, response: { body: { hey: 'other' } } }],
         default: {
           response: { body: { hey: 'some' }, statusCode: 200 }
@@ -36,7 +61,7 @@ describe('Loading stubs from an initialiser file', () => {
     );
     add(
       ScenarioFromFile({
-        matching: { url: '/other/{bananas}' },
+        requestMatcher: { url: '/other/{bananas}' },
         outcomes: [{ match: { bananas: 'yes' }, response: { body: {} } }],
         default: {
           response: { body: { hey: 'no bananas' }, statusCode: 404 }
@@ -45,7 +70,10 @@ describe('Loading stubs from an initialiser file', () => {
     );
     add(
       ScenarioFromFile({
-        matching: { url: '/other-things', body: { something: '*' } },
+        requestMatcher: {
+          url: '/other-things',
+          body: { bodyMatch: { something: '*' } }
+        },
         outcomes: [
           { match: { something: 'ok' }, response: { body: { the: 'other' }, statusCode: 302 } }
         ],

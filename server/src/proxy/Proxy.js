@@ -11,8 +11,8 @@ function Proxy(url, method, proxyUrl) {
 }
 
 function ProxyFromRequest(req) {
-  const method = _.get(req.body, 'requestMatcher.method', 'GET');
   const url = _.get(req.body, 'requestMatcher.url');
+  const method = _.get(req.body, 'requestMatcher.method', 'GET');
   const proxyUrl = _.get(req.body, 'proxy.destination.url');
 
   if (!url) throw new Error('A request matcher url must be provided!');
@@ -22,8 +22,8 @@ function ProxyFromRequest(req) {
 }
 
 function ProxyFromFile(proxyDef) {
-  const url = _.get(proxyDef, 'url');
-  const method = _.get(proxyDef, 'method', 'GET');
+  const url = _.get(proxyDef, 'requestMatcher.url');
+  const method = _.get(proxyDef, 'requestMatcher.method', 'GET');
   const proxyUrl = _.get(proxyDef, 'destination.url');
 
   if (!url) throw new Error('A request matcher url must be provided!');

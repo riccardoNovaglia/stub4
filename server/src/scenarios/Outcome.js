@@ -14,9 +14,10 @@ const Outcome = (outcome, defaultResponse) => {
       return flattenedMatches.reduce((prev, current) => prev && current);
     },
     matchesBody(body) {
-      return toMatch
-        .map(key => (body[key] ? outcome.match[key].toString() === body[key].toString() : false))
-        .reduce((p, n) => p && n);
+      if (!body) return false;
+      return toMatch.every(key =>
+        body[key] ? outcome.match[key].toString() === body[key].toString() : false
+      );
     },
     toResponse() {
       return {
