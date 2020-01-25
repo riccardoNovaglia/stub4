@@ -61,5 +61,35 @@ describe('Stubbing via the client', () => {
         .send("<book author='J. K. Rowling'><title>Jerry Potter</title></book>");
       expect(matchMiss.status).toEqual(404);
     });
+
+    it('multiple value match', async () => {
+      await client.stub(
+        post('/books')
+          .withXmlBodyMatch([
+            { path: 'string(//title)', value: 'Harry Potter' },
+            { path: 'string(/book/@author)', value: 'J. K. Rowling' }
+          ])
+          .returns('xml', `<msg>yer a wizard</msg>`)
+      );
+
+      const stubbedResponse = await request(app)
+        .post('/books')
+        .type('xml')
+        .send("<book author='J. K. Rowling'><title>Harry Potter</title></book>");
+      expect(stubbedResponse.status).toEqual(200);
+      expect(stubbedResponse.body).toEqual({});
+
+      const titleMiss = await request(app)
+        .post('/books')
+        .set('Content-Type', 'text/xml')
+        .send("<book author='J. K. Rowling'><title>Jerry Potter</title></book>");
+      expect(titleMiss.status).toEqual(404);
+
+      const authorMiss = await request(app)
+        .post('/books')
+        .set('Content-Type', 'text/xml')
+        .send("<book author='J. J. Rowling'><title>Harry Potter</title></book>");
+      expect(authorMiss.status).toEqual(404);
+    });
   });
 });

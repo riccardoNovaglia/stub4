@@ -5,6 +5,10 @@ const xml2js = require('xml2js');
 
 const builder = new xml2js.Builder();
 
+const { createLogger } = require('../logger');
+
+const logger = createLogger('bodyM');
+
 const BodyMatcher = body => {
   if (_.isEmpty(body)) return NoopMatcher;
   if (_.get(body, 'type') === 'xml') return XMLMatcher(body.bodyMatch);
@@ -30,9 +34,17 @@ const XMLMatcher = body => {
       const xml = builder.buildObject(body);
       const doc = new dom().parseFromString(xml);
 
-      return this.body
-        .map(({ path, value }) => xpath.select(path, doc) === value)
-        .reduce((p, n) => p && n);
+      return this.body.every(({ path, value }) => {
+        const selectedValue = xpath.select(path, doc);
+        logger.debug(
+          `Using path '${JSON.stringify(path)}' 
+          to match from '${JSON.stringify(xml)}' 
+          Extracted '${selectedValue}' 
+          Comparing '${value}'`
+        );
+
+        return selectedValue === value;
+      });
     },
     pretty: () => JSON.stringify(body)
   };

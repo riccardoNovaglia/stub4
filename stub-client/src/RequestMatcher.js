@@ -21,15 +21,12 @@ class RequestMatcher {
 
   toJson() {
     // TODO: is there a better way?
-    const body = this.bodyMatcher
-      ? { bodyMatch: this.bodyMatcher, type: this.bodyMatchType }
-      : undefined;
+    const body = this.bodyMatcher ? { bodyMatch: this.bodyMatcher, type: this.type } : undefined;
 
     return {
       url: this.url,
       method: this.method,
-      body,
-      type: this.type
+      body
     };
   }
 }
@@ -45,6 +42,7 @@ function POST(url) {
   return new RequestMatcher(url).withMethod('POST');
 }
 function url(url) {
+  // TODO: make this work
   return new RequestMatcher(url).withMethod('*');
 }
 

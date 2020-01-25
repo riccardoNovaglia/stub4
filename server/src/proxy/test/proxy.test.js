@@ -9,17 +9,9 @@ const { respondsWith } = require('@stub4/client/src/StubResponse');
 describe('Setting up stubs', () => {
   let server;
   setPort(9009);
-  beforeAll(done => {
-    server = app.listen(9009, done);
-  });
-
-  afterAll(() => {
-    server.close();
-  });
-
-  afterEach(async () => {
-    await axios.delete('http://localhost:9009/proxy');
-  });
+  beforeAll(done => (server = app.listen(9009, done)));
+  afterAll(() => server.close());
+  afterEach(async () => await axios.delete('http://localhost:9009/proxy'));
 
   it('proxies requests to other endpoints, within the same app', async () => {
     await stubFor(GET('/bananas'), respondsWith(200, 'text', 'it worked!'));
@@ -70,5 +62,51 @@ describe('Setting up stubs', () => {
     });
     expect(proxiedResponse.status).toEqual(200);
     expect(proxiedResponse.data).toEqual('it worked!');
+
+    expect(
+      axios.request({
+        url: 'http://localhost:9009/to-be-proxied',
+        method: 'GET',
+        data: { id: '123' }
+      })
+    ).rejects.toEqual(new Error('Request failed with status code 404'));
+
+    expect(
+      axios.request({
+        url: 'http://localhost:9009/to-be-proxied',
+        method: 'POST',
+        data: { id: '321' }
+      })
+    ).rejects.toEqual(new Error('Request failed with status code 404'));
+  });
+
+  it('proxies over the body and content type of (POST) requests (xml)', async () => {
+    await stubFor(
+      POST('/post-and-body')
+        .withBody([{ path: 'string(//title)', value: 'Harry Potter' }])
+        .withType('xml'),
+      respondsWith(200, 'text', 'it worked!')
+    );
+
+    await stubFor(POST('/to-be-proxied'), proxyTo('http://localhost:9009/post-and-body'));
+    const proxiedResponse = await axios.post(
+      'http://localhost:9009/to-be-proxied',
+      "<book author='J. K. Rowling'><title>Harry Potter</title></book>",
+      {
+        headers: { 'Content-Type': 'text/xml' }
+      }
+    );
+    expect(proxiedResponse.status).toEqual(200);
+    expect(proxiedResponse.data).toEqual('it worked!');
+
+    expect(
+      axios.post(
+        'http://localhost:9009/to-be-proxied',
+        "<book author='J. K. Rowling'><title>Jerry Potter</title></book>",
+        {
+          headers: { 'Content-Type': 'text/xml' }
+        }
+      )
+    ).rejects.toEqual(new Error('Request failed with status code 404'));
   });
 });
