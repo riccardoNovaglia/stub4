@@ -9,9 +9,9 @@
     "install:all": "npm install && npm run install:ui && npm run install:server",
     "install:ui": "cd ui && npm install",
     "install:server": "cd server && npm install",
-    "audit-fix:all": "npm audit --fix && npm run audit-fix:ui && npm run audit-fix:server",
-    "audit-fix:ui": "cd ui && npm audit --fix",
-    "audit-fix:server": "cd server && npm audit --fix",
+    "audit-fix:all": "npm audit fix && npm run audit-fix:ui && npm run audit-fix:server",
+    "audit-fix:ui": "cd ui && npm audit fix",
+    "audit-fix:server": "cd server && npm audit fix",
     "publish": "./scripts/build.sh && cd publish && npm publish --access public",
     "publish:only": "cd publish && npm publish --access public",
     "build": "./scripts/build.sh"
