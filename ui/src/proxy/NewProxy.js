@@ -1,7 +1,7 @@
 import React from 'react';
-import { Url } from '../prototypes/Url';
-import { useObject, updatableItem } from '../prototypes/NewItemManagement';
 import { SaveButton } from '../prototypes/SaveButton';
+import { RequestMatcher } from '../prototypes/RequestMatcher';
+import { useObject, updatableItem, handle } from '../prototypes/NewItemManagement';
 
 export function NewProxy({ onClose, onSaved, editedItem, client }) {
   const defaults = {
@@ -15,12 +15,6 @@ export function NewProxy({ onClose, onSaved, editedItem, client }) {
     ...useObject('proxyUrl', defaults.proxyUrl)
   });
 
-  function handleValue(setFn, key) {
-    return function(value) {
-      proxy.updateFromValue(setFn, key, value);
-    };
-  }
-
   async function onSave() {
     await client.proxyRequests(proxy.url.value, proxy.proxyUrl.value);
     onSaved();
@@ -28,14 +22,18 @@ export function NewProxy({ onClose, onSaved, editedItem, client }) {
 
   return (
     <div onKeyDown={e => e.keyCode === 27 && onClose()}>
-      <Url url={proxy.url} handle={handleValue(proxy.url.set, 'url')} />
+      {/* TODO: this needs to become a FullRequestMatcher */}
+      <RequestMatcher item={proxy} />
 
-      <Url
-        label="PROXY URL"
-        focus={false}
-        url={proxy.proxyUrl}
-        handle={handleValue(proxy.proxyUrl.set, 'proxyUrl')}
-      />
+      <div>
+        <label htmlFor="url">PROXY URL</label>
+        <input
+          id="url"
+          type="text"
+          onChange={handle(proxy)(proxy.proxyUrl.set, 'proxyUrl')}
+          value={proxy.proxyUrl.value}
+        />
+      </div>
 
       <SaveButton onSave={onSave} />
     </div>

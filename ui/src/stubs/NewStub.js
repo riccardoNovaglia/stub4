@@ -1,9 +1,15 @@
-import React from 'react';
-import { Url } from '../prototypes/Url';
-import { useObject, updatableItem } from '../prototypes/NewItemManagement';
+import React, { useState } from 'react';
+import { isEmpty } from 'lodash';
+
+import { useObject, updatableItem, handle } from '../prototypes/NewItemManagement';
+import { FullRequestMatcher } from '../prototypes/RequestMatcher';
 import { SaveButton } from '../prototypes/SaveButton';
 
-export function NewStub({ onClose, onSaved, editedItem, client }) {
+const { stubFor } = require('@stub4/client');
+const { request } = require('@stub4/client/src/RequestMatcher');
+const { respondsWith } = require('@stub4/client/src/StubResponse');
+
+export function NewStub({ onClose, onSaved, editedItem }) {
   const defaults = {
     urlMatcher: { url: '' },
     method: 'GET',
@@ -23,51 +29,47 @@ export function NewStub({ onClose, onSaved, editedItem, client }) {
     ...useObject('type', defaults.response.contentType)
   });
 
-  function handle(setFn, key) {
-    return function(event) {
-      stub.updateFromEvent(setFn, key, event);
-    };
+  function getBodyMatcherValue(item) {
+    return isEmpty(item?.bodyMatcher)
+      ? undefined
+      : { body: JSON.stringify(item.bodyMatcher.body), type: item.bodyMatcher.type };
   }
 
-  function handleValue(setFn, key) {
-    return function(value) {
-      stub.updateFromValue(setFn, key, value);
-    };
-  }
+  const [bodyMatcher, setBodyMatcher] = useState(getBodyMatcherValue(editedItem));
 
   async function onSave() {
-    await client.stub(
-      client
-        .request(stub.method.value, stub.url.value)
-        .returns(stub.type.value, stub.body.value, stub.status.value)
-    );
+    // TODO: a method to setup everything from one JSON object
+    const req =
+      bodyMatcher !== undefined
+        ? request(stub.url.value)
+            .withMethod(stub.method.value)
+            .withBody(JSON.parse(bodyMatcher.body))
+            .withType(bodyMatcher.type)
+        : request(stub.url.value).withMethod(stub.method.value);
+
+    await stubFor(req, respondsWith(stub.status.value, stub.type.value, stub.body.value));
     onSaved();
   }
 
   return (
     <div onKeyDown={e => e.keyCode === 27 && onClose()}>
-      <Url url={stub.url} handle={handleValue(stub.url.set, 'url')} />
-      <div>
-        <label htmlFor="method">METHOD</label>
-        <select value={stub.method.value} onChange={handle(stub.method.set, 'method')}>
-          <option value="GET">GET</option>
-          <option value="POST">POST</option>
-        </select>
-      </div>
+      <FullRequestMatcher item={stub} bodyMatcher={bodyMatcher} setBodyMatcher={setBodyMatcher} />
 
+      <br />
+      <h3>Response: </h3>
       <div>
         <label htmlFor="status">STATUS</label>
         <input
           id="status"
           type="text"
-          onChange={handle(stub.status.set, 'status')}
+          onChange={handle(stub)(stub.status.set, 'status')}
           value={stub.status.value}
         />
       </div>
 
       <div>
         <label htmlFor="type">TYPE</label>
-        <select value={stub.type.value} onChange={handle(stub.type.set, 'type')}>
+        <select value={stub.type.value} onChange={handle(stub)(stub.type.set, 'type')}>
           <option value="text">text/plain</option>
           <option value="json">application/json</option>
           <option value="xml">application/xml</option>
@@ -79,7 +81,7 @@ export function NewStub({ onClose, onSaved, editedItem, client }) {
         <textarea
           id="body"
           className="responseBody"
-          onChange={handle(stub.body.set, 'body')}
+          onChange={handle(stub)(stub.body.set, 'body')}
           rows="5"
           cols="33"
           value={stub.body.value}

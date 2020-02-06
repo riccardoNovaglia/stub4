@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import Stub4 from '@stub4/client';
+import { setPort as setStubClientPort } from '@stub4/client';
 
 import { Stubs } from './stubs/Stubs';
 import { Scenarios } from './scenarios/Scenarios';
@@ -40,12 +41,14 @@ export default function App() {
 
 const useClients = () => {
   const [port, setPort] = useState(8080);
+  setStubClientPort(8080);
 
   useEffect(() => {
     const fetchPort = async () => {
       const ax = axios.create();
       const response = await ax.get('/stubs-port');
       setPort(response.data.port);
+      setStubClientPort(response.data.port);
     };
 
     fetchPort();
