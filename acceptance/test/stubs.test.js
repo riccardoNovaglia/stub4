@@ -1,5 +1,6 @@
 const {
   click,
+  checkBox,
   clear,
   closeBrowser,
   dropDown,
@@ -12,26 +13,22 @@ const {
   write
 } = require('taiko');
 const axios = require('axios');
-const { get, post } = require('axios');
+const { get, post, request } = require('axios');
+const { appUrl, stubsUrl } = require('../config');
 
 // WHY
 jest.setTimeout(100000);
 
-const appUrl = 'localhost:8081';
-const stubsUrl = 'http://localhost:8080';
-
 describe('Stubs', () => {
+  // beforeAll(async () => await openBrowser({ headless: false }));
+  beforeAll(async () => await openBrowser());
+  afterAll(async () => await closeBrowser());
   beforeEach(async () => {
-    // await openBrowser({ headless: false });
-    await openBrowser();
     await axios.delete(`${stubsUrl}/stubs`);
     await axios.delete(`${stubsUrl}/cruds`);
     await axios.delete(`${stubsUrl}/proxy`);
     await axios.delete(`${stubsUrl}/scenarios`);
     await goto(appUrl);
-  });
-  afterEach(async () => {
-    await closeBrowser();
   });
 
   it('Creates a stub that responds with 200', async () => {
@@ -94,6 +91,63 @@ describe('Stubs', () => {
       status: 203,
       data: '<customer><id>123</id><name>jimbo</name></customer>',
       headers: { 'content-type': 'application/xml; charset=utf-8' }
+    });
+  });
+
+  describe('Body matching', () => {
+    it('Creates a stub with body matching', async () => {
+      await click('create');
+      await write('with-body-match', textBox(toRightOf('URL')));
+      await dropDown(toRightOf('METHOD')).select('POST');
+      await click(checkBox(toRightOf('Body matching')));
+
+      await write('{"abc": "cde", "asd": 123}', textBox(toRightOf('BODY MATCHER')));
+
+      await clear(textBox(toRightOf('BODY')));
+      await dropDown(toRightOf('TYPE')).select('application/json');
+      await write('{"msg": "this is ok"}', textBox(toRightOf('BODY')));
+      await click('save');
+
+      await expect(get(`${stubsUrl}/with-body-match`)).rejects.toEqual(
+        new Error('Request failed with status code 404')
+      );
+      await expect(
+        request({
+          url: `${stubsUrl}/with-body-match`,
+          method: 'POST',
+          data: { abc: 'cde', asd: 123 }
+        })
+      ).resolves.toMatchObject({
+        status: 200,
+        data: { msg: 'this is ok' },
+        headers: { 'content-type': 'application/json; charset=utf-8' }
+      });
+    });
+
+    it('Creates a stub with xml body matching', async () => {
+      await click('create');
+      await write('with-body-match', textBox(toRightOf('URL')));
+      await dropDown(toRightOf('METHOD')).select('POST');
+      await click(checkBox(toRightOf('Body matching')));
+      await dropDown(toRightOf('BODY TYPE')).select('XML');
+
+      await write(
+        '[{ "path": "string(//customer/name)", "value": "jimbo" }]',
+        textBox(toRightOf('BODY MATCHER'))
+      );
+
+      await clear(textBox(toRightOf('BODY')));
+      await write('ok', textBox(toRightOf('BODY')));
+      await click('save');
+
+      await expect(
+        post(`${stubsUrl}/with-body-match`, '<customer><id>123</id><name>jimbo</name></customer>', {
+          headers: { 'Content-Type': 'text/xml' }
+        })
+      ).resolves.toMatchObject({
+        status: 200,
+        data: 'ok'
+      });
     });
   });
 });

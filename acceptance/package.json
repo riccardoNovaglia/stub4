@@ -5,15 +5,17 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest --watchAll",
+    "test": "npm run test:dev",
+    "test:dev": "UI_PORT=8081 STUBS_PORT=9090 jest --watchAll --runInBand",
+    "test:ci": "UI_PORT=80 STUBS_PORT=8080 jest --watchAll --runInBand",
     "taiko": "taiko",
     "stub4": "stub4"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@stub4/client": "0.0.6",
-    "@stub4/stub4": "0.0.11",
+    "@stub4/client": "0.0.7",
+    "@stub4/stub4": "0.0.12",
     "axios": "^0.19.0",
     "jest": "^24.9.0",
     "taiko": "https://github.com/getgauge/taiko",

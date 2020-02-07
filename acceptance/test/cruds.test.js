@@ -13,26 +13,22 @@ const {
   write
 } = require('taiko');
 const axios = require('axios');
-const { get, post } = require('axios');
+const { get } = require('axios');
+const { appUrl, stubsUrl } = require('../config');
 
 // WHY
 jest.setTimeout(100000);
 
-const appUrl = 'localhost:8081';
-const stubsUrl = 'http://localhost:8080';
-
 describe('Cruds', () => {
+  // beforeAll(async () => await openBrowser({ headless: false }));
+  beforeAll(async () => await openBrowser());
+  afterAll(async () => await closeBrowser());
   beforeEach(async () => {
-    // await openBrowser({ headless: false });
-    await openBrowser();
     await axios.delete(`${stubsUrl}/stubs`);
     await axios.delete(`${stubsUrl}/cruds`);
     await axios.delete(`${stubsUrl}/proxy`);
     await axios.delete(`${stubsUrl}/scenarios`);
     await goto(appUrl);
-  });
-  afterEach(async () => {
-    await closeBrowser();
   });
 
   it('Creates a crud with an id alias', async () => {
