@@ -9,6 +9,7 @@ https://trello.com/b/BSfIfp9d/stub4
 - - Allow verification via call in client
 
 - ~~Proxyish~~
+- - Websocket for observing in-route
 
 - Pact?
 - - ~~Where do we get info about the name of the app/consumer?~~
@@ -41,6 +42,8 @@ https://trello.com/b/BSfIfp9d/stub4
 - - Contains?
 
 - '\*' for method, catchall
+
+- CI in GitHub actions maybe? For test + publish?
 
 DEFECTS:
 
