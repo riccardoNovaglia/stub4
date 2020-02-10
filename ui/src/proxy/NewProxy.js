@@ -26,7 +26,9 @@ export function NewProxy({ onClose, onSaved, editedItem, client }) {
       <RequestMatcher item={proxy} />
 
       <div>
-        <label htmlFor="url">PROXY URL</label>
+        <label className="itemLabel" htmlFor="url">
+          PROXY URL
+        </label>
         <input
           id="url"
           type="text"

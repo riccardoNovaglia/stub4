@@ -11,7 +11,9 @@ export function Url({ url, handle, label = 'URL', focus = true }) {
 
   return (
     <div>
-      <label htmlFor="url">{label}</label>
+      <label className="itemLabel" htmlFor="url">
+        {label}
+      </label>
       <input
         id="url"
         type="text"

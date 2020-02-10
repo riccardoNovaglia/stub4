@@ -27,7 +27,9 @@ export function FullRequestMatcher({ item, bodyMatcher, setBodyMatcher }) {
 export function Method({ item }) {
   return (
     <div>
-      <label htmlFor="method">METHOD</label>
+      <label className="itemLabel" htmlFor="method">
+        METHOD
+      </label>
       <select value={item.method.value} onChange={handle(item)(item.method.set, 'method')}>
         <option value="GET">GET</option>
         <option value="POST">POST</option>
@@ -48,12 +50,13 @@ export function BodyMatcher({ bodyMatcher, setBodyMatcher }) {
 
   return (
     <>
-      <label htmlFor="bodyMatchCheckbox" className="bodyMatcherLabel">
+      <label className="itemLabel bodyMatchLabel" htmlFor="bodyMatchCheckbox">
         Body matching
       </label>
       <input
         id="bodyMatchCheckbox"
         type="checkbox"
+        className="bodyMatchCheckbox"
         checked={withBodyMatch}
         onChange={event => {
           setWithBodyMatch(event.target.checked);
@@ -63,7 +66,9 @@ export function BodyMatcher({ bodyMatcher, setBodyMatcher }) {
       {withBodyMatch && (
         <div>
           <div>
-            <label htmlFor="bodyType">BODY TYPE</label>
+            <label className="itemLabel" htmlFor="bodyType">
+              BODY TYPE
+            </label>
             <select
               id="bodyType"
               value={bodyMatcher?.type}
@@ -80,7 +85,9 @@ export function BodyMatcher({ bodyMatcher, setBodyMatcher }) {
           </div>
 
           <div>
-            <label htmlFor="bodyMatch">BODY MATCHER</label>
+            <label className="itemLabel" htmlFor="bodyMatch">
+              BODY MATCHER
+            </label>
             <textarea
               id="bodyMatch"
               value={bodyMatcher?.body}

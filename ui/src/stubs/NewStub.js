@@ -58,7 +58,9 @@ export function NewStub({ onClose, onSaved, editedItem }) {
       <br />
       <h3>Response: </h3>
       <div>
-        <label htmlFor="status">STATUS</label>
+        <label className="itemLabel" htmlFor="status">
+          STATUS
+        </label>
         <input
           id="status"
           type="text"
@@ -68,7 +70,9 @@ export function NewStub({ onClose, onSaved, editedItem }) {
       </div>
 
       <div>
-        <label htmlFor="type">TYPE</label>
+        <label className="itemLabel" htmlFor="type">
+          TYPE
+        </label>
         <select value={stub.type.value} onChange={handle(stub)(stub.type.set, 'type')}>
           <option value="text">text/plain</option>
           <option value="json">application/json</option>
@@ -77,7 +81,9 @@ export function NewStub({ onClose, onSaved, editedItem }) {
       </div>
 
       <div>
-        <label htmlFor="body">BODY</label>
+        <label className="itemLabel" htmlFor="body">
+          BODY
+        </label>
         <textarea
           id="body"
           className="responseBody"

@@ -6,15 +6,15 @@ export function NewItemModal({ itemName, onClose, children }) {
   return (
     <>
       <div className="new" onKeyDown={e => e.keyCode === 27 && onClose()}>
-        <h1>
+        <h1 className="newItemTitle">
           Create new {itemName}
-          <button onClick={onClose}>
+          <button className="closeButton" onClick={onClose}>
             <i className="material-icons">clear</i>Close
           </button>
         </h1>
-        <div>{children}</div>
+        <div className="newItemContents">{children}</div>
       </div>
-      <div className="overlay" />
+      <div className="modalBackgroundOverlay" />
     </>
   );
 }

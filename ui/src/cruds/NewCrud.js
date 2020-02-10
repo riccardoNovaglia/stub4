@@ -25,7 +25,9 @@ export function NewCrud({ onClose, onSaved, editedItem, client }) {
       <RequestMatcher item={crud} />
 
       <div>
-        <label htmlFor="idAlias">ID ALIAS</label>
+        <label className="itemLabel" htmlFor="idAlias">
+          ID ALIAS
+        </label>
         <input
           id="idAlias"
           type="text"
