@@ -9,6 +9,9 @@ const { stubFor } = require('@stub4/client');
 const { request } = require('@stub4/client/src/RequestMatcher');
 const { respondsWith } = require('@stub4/client/src/StubResponse');
 
+const asStringIfObject = item => (typeof item === 'object' ? JSON.stringify(item) : item);
+const asObjectIfString = item => (typeof item === 'string' ? JSON.parse(item) : item);
+
 export function NewStub({ onClose, onSaved, editedItem }) {
   const defaults = {
     urlMatcher: { url: '' },
@@ -25,7 +28,7 @@ export function NewStub({ onClose, onSaved, editedItem }) {
     ...useObject('url', defaults.urlMatcher.url),
     ...useObject('method', defaults.method),
     ...useObject('status', defaults.response.statusCode),
-    ...useObject('body', defaults.response.body),
+    ...useObject('body', asStringIfObject(defaults.response.body)),
     ...useObject('type', defaults.response.contentType)
   });
 
@@ -43,7 +46,7 @@ export function NewStub({ onClose, onSaved, editedItem }) {
       bodyMatcher !== undefined
         ? request(stub.url.value)
             .withMethod(stub.method.value)
-            .withBody(JSON.parse(bodyMatcher.body))
+            .withBody(asObjectIfString(bodyMatcher.body))
             .withType(bodyMatcher.type)
         : request(stub.url.value).withMethod(stub.method.value);
 
@@ -73,10 +76,10 @@ export function NewStub({ onClose, onSaved, editedItem }) {
         <label className="itemLabel" htmlFor="type">
           TYPE
         </label>
-        <select value={stub.type.value} onChange={handle(stub)(stub.type.set, 'type')}>
-          <option value="text">text/plain</option>
-          <option value="json">application/json</option>
-          <option value="xml">application/xml</option>
+        <select id="type" value={stub.type.value} onChange={handle(stub)(stub.type.set, 'type')}>
+          <option value="text/plain">text/plain</option>
+          <option value="application/json">application/json</option>
+          <option value="application/xml">application/xml</option>
         </select>
       </div>
 

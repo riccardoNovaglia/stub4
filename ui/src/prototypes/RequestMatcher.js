@@ -30,7 +30,11 @@ export function Method({ item }) {
       <label className="itemLabel" htmlFor="method">
         METHOD
       </label>
-      <select value={item.method.value} onChange={handle(item)(item.method.set, 'method')}>
+      <select
+        id="method"
+        value={item.method.value}
+        onChange={handle(item)(item.method.set, 'method')}
+      >
         <option value="GET">GET</option>
         <option value="POST">POST</option>
       </select>
