@@ -1,50 +1,45 @@
 https://trello.com/b/BSfIfp9d/stub4
 
-- ~~What happens when we set the same stub twice? Overwrites - fine for now~~
-
 - Record interactions and allow verification
-- - ~~Display on the page~~
-- - ~~Display unmatched interactions?~~
-- - ~~Create stub from unmatched~~
-- - Allow verification via call in client
+
+  - Allow verification via call in client
 
 - ~~Proxyish~~
-- - Websocket for observing in-route
+
+  - Websocket for observing in-route
 
 - Pact?
-- - ~~Where do we get info about the name of the app/consumer?~~
-- - Make files desination configurable
-- - How do we match each interactions to the correct provider? And created different providers when creating contracts? Does it need to be setup with each stub? Is this where I need the App/Downstream abstraction once to set this up?
-- - Random port? Retry?
-- - State/Upon receiving?
-- - What do if the pact verification fails?
-- - Use recorded interactions - replay against Pact provider to generate contract?
 
-- ~~Record and display all, even non matched~~
-- - ~~Offer to setup stub for just-called?~~
+  - Make files desination configurable
+  - How do we match each interactions to the correct provider? And created different providers when creating contracts? Does it need to be setup with each stub? Is this where I need the App/Downstream abstraction once to set this up?
+  - Random port? Retry?
+  - State/Upon receiving?
+  - What do if the pact verification fails?
+  - Use recorded interactions - replay against Pact provider to generate contract?
 
 - DB-like for app?
-- - ~~Custom ID~~
-- - ~~Load initial data from some json~~
-- - ~~UI~~
-- - ~~Should they be called CRUDs?~~
-- - Defects. Editing doesn't quite refresh, maybe should enforce format? Later
+
+  - Defects. Editing doesn't quite refresh, maybe should enforce format? Later
+  - Option to merge vs overwrite (maybe the default should be merge?)
 
 - Help create definition/stub by pointing at openapi def
 
-- ~~Files for defaults/statics~~
+- Files for defaults/statics
+
+  - Read all json files in a directory, set all up
+  - Restart on changes to files
+  - Reset button to go back to files data
 
 - Named app abstraction?
 
 - Better matching?
-- - Starts with
-- - Ends with
-- - Contains?
+
+  - Starts with
+  - Ends with
+  - Contains?
 
 - '\*' for method, catchall
 
 - CI in GitHub actions maybe? For test + publish?
 
 DEFECTS:
-
-- Request matching doesn't actually use the method...
