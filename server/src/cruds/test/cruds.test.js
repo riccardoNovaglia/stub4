@@ -48,16 +48,10 @@ describe('Create crud-like endpoints', () => {
 describe('Once the crud is created', () => {
   const crudUrl = '/some-crud';
   let server;
-  beforeAll(done => {
-    server = app.listen(9011, done);
-  });
+  beforeAll(done => (server = app.listen(9011, done)));
 
-  afterAll(() => {
-    server.close();
-  });
-  beforeEach(async () => {
-    await stubFor(url(crudUrl), containsCrud());
-  });
+  afterAll(() => server.close());
+  beforeEach(async () => await stubFor(url(crudUrl), containsCrud()));
   afterEach(async () => await request(app).delete('/cruds'));
 
   it('can add things', async () => {
@@ -87,6 +81,34 @@ describe('Once the crud is created', () => {
     const response = await request(app).get(`${crudUrl}/1`);
     expect(response.status).toEqual(200);
     expect(response.body).toEqual({ id: '1', name: 'banana' });
+  });
+
+  it('performs partial updates with patch', async () => {
+    await request(app)
+      .post(crudUrl)
+      .send({ id: '1', name: 'jimmy', surname: 'bananas' });
+
+    await request(app)
+      .patch(crudUrl)
+      .send({ id: '1', surname: 'patatas' });
+    const response = await request(app).get(`${crudUrl}/1`);
+    expect(response.status).toEqual(200);
+    expect(response.body).toEqual({ id: '1', name: 'jimmy', surname: 'patatas' });
+  });
+
+  it('performs partial updates on post when instructed', async () => {
+    const someOtherCrudUrl = '/some-other-url';
+    await stubFor(url(someOtherCrudUrl), containsCrud().withPatchOnPost(true));
+    await request(app)
+      .post(someOtherCrudUrl)
+      .send({ id: '1', name: 'jimmy', surname: 'bananas' });
+
+    await request(app)
+      .post(someOtherCrudUrl)
+      .send({ id: '1', surname: 'patatas' });
+    const response = await request(app).get(`${someOtherCrudUrl}/1`);
+    expect(response.status).toEqual(200);
+    expect(response.body).toEqual({ id: '1', name: 'jimmy', surname: 'patatas' });
   });
 
   it('deletes things', async () => {

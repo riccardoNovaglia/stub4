@@ -20,6 +20,8 @@ function get(url, method, body) {
       else return maybeCrud.allItems();
     case 'POST':
       return maybeCrud.push(body);
+    case 'PATCH':
+      return maybeCrud.patch(body);
     case 'DELETE':
       return maybeCrud.delete(url);
     default:

@@ -3,8 +3,8 @@ const { createLogger } = require('../logger');
 
 const logger = createLogger('crud ');
 
-function Crud(url, idAlias) {
-  const data = { url, meta: { idAlias }, db: DB({ idAlias }) };
+function Crud(url, idAlias, patchOnPost) {
+  const data = { url, meta: { idAlias }, db: DB({ idAlias }), patchOnPost };
 
   function idFromUrl(urlToParse) {
     return urlToParse.split('/').pop();
@@ -26,7 +26,10 @@ function Crud(url, idAlias) {
       return this.db.get(id);
     },
     push(item) {
-      return this.db.upsert(item);
+      return patchOnPost ? this.db.patch(item) : this.db.upsert(item);
+    },
+    patch(item) {
+      return this.db.patch(item);
     },
     delete(url) {
       if (this.mightHaveIdFor(url)) {
@@ -70,6 +73,20 @@ function DB(meta) {
       }
       return this.idFrom(item);
     },
+    patch(item) {
+      const maybeAlreadyExisting = this.get(this.idFrom(item));
+      if (maybeAlreadyExisting) {
+        this.items.splice(this.items.indexOf(maybeAlreadyExisting), 1, {
+          ...maybeAlreadyExisting,
+          ...item
+        });
+        logger.debug(`Patched existing item into crud`);
+      } else {
+        this.items.push(item);
+        logger.debug(`Pushed item into crud. Now ${this.items.length} items`);
+      }
+      return this.idFrom(item);
+    },
     remove(id) {
       const item = this.get(id);
       this.items.splice(this.items.indexOf(item), 1);
@@ -87,16 +104,20 @@ function getIdAlias(source) {
   return _.isEmpty(alias) ? 'id' : alias;
 }
 
+function getPatchOnPost(source) {
+  return _.get(source, 'patchOnPost', 'false');
+}
+
 function crudFromRequest(req) {
   const url = req.body.requestMatcher.url;
   const idAlias = getIdAlias(req.body);
-  return Crud(url, idAlias);
+  return Crud(url, idAlias, getPatchOnPost(req.body));
 }
 
 function CrudFromFile(item) {
   const url = item.requestMatcher.url;
   const idAlias = getIdAlias(item);
-  const crud = Crud(url, idAlias);
+  const crud = Crud(url, idAlias, getPatchOnPost(item));
   item.data.forEach(dataItem => crud.push(dataItem));
   return crud;
 }

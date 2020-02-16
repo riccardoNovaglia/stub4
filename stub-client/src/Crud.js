@@ -2,15 +2,21 @@ class CrudBuilder {
   constructor() {
     this.crud = true;
     this.idAlias = 'id';
+    this.patchOnPost = false;
   }
   withIdAlias(idAlias) {
     this.idAlias = idAlias;
     return this;
   }
+  withPatchOnPost(patchOnPost) {
+    this.patchOnPost = patchOnPost;
+    return this;
+  }
 
   toJson() {
     return {
-      idAlias: this.idAlias
+      idAlias: this.idAlias,
+      patchOnPost: this.patchOnPost
     };
   }
 }
