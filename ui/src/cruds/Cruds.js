@@ -7,21 +7,12 @@ import { NewCrud } from './NewCrud';
 import { Panel } from '../prototypes/Panel';
 
 export function Cruds({ client }) {
-  const fetch = set => {
-    client.fetchCruds(set);
-  };
-
-  const clear = async () => {
-    await client.clearCruds();
-  };
-
-  const save = async crud => {
-    await client.createCrud(crud.url.value, crud.idAlias.value);
-  };
+  const fetch = set => client.fetchCruds(set);
+  const clear = async () => await client.clearCruds();
 
   return (
     <Panel
-      itemsLifecycle={{ fetch, clear, save }}
+      itemsLifecycle={{ fetch, clear }}
       presentation={{ label: 'Cruds', icon: 'swap_horiz', className: 'cruds' }}
       client={client}
     >

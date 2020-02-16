@@ -3,6 +3,10 @@ import { SaveButton } from '../prototypes/SaveButton';
 import { RequestMatcher } from '../prototypes/RequestMatcher';
 import { useObject, updatableItem, handle } from '../prototypes/NewItemManagement';
 
+const { stubFor } = require('@stub4/client');
+const { request } = require('@stub4/client/src/RequestMatcher');
+const { containsCrud } = require('@stub4/client/src/Crud');
+
 export function NewCrud({ onClose, onSaved, editedItem, client }) {
   const defaults = {
     url: '',
@@ -16,7 +20,7 @@ export function NewCrud({ onClose, onSaved, editedItem, client }) {
   });
 
   async function onSave() {
-    await client.createCrud(crud.url.value, crud.idAlias.value);
+    await stubFor(request(crud.url.value), containsCrud().withIdAlias(crud.idAlias.value));
     onSaved();
   }
 

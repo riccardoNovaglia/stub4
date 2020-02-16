@@ -33,10 +33,13 @@ function Stub(urlMatcher, method, bodyMatcher, response, contract) {
 function contentType(type) {
   switch (type) {
     case 'json':
+    case 'application/json':
       return 'application/json';
     case 'xml':
+    case 'application/xml':
       return 'application/xml';
     case 'text':
+    case 'text/plain':
       return 'text/plain';
     default:
       return 'text/plain';

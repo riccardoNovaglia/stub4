@@ -52,7 +52,7 @@ const useClients = () => {
     };
 
     fetchPort();
-  }, [port, setPort]);
+  });
 
   return {
     stubClient: new Stub4.StubClient(port),

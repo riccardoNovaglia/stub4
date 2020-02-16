@@ -8,25 +8,12 @@ import { NewStub } from './NewStub';
 import './Stub.scss';
 
 export function Stubs({ client }) {
-  const fetch = async set => {
-    await client.fetchStubs(set);
-  };
-
-  const clear = async () => {
-    await client.clearStubs();
-  };
-
-  const save = async stub => {
-    await client.stub(
-      client
-        .request(stub.method.value, stub.url.value)
-        .returns(stub.type.value, stub.body.value, stub.status.value)
-    );
-  };
+  const fetch = async set => await client.fetchStubs(set);
+  const clear = async () => await client.clearStubs();
 
   return (
     <Panel
-      itemsLifecycle={{ fetch, clear, save }}
+      itemsLifecycle={{ fetch, clear }}
       presentation={{ label: 'Stubs', icon: 'import_export', className: 'stubs' }}
     >
       {{
