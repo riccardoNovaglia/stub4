@@ -7,18 +7,18 @@
   "scripts": {
     "test": "npm run test:dev",
     "test:dev": "UI_PORT=8081 STUBS_PORT=9090 jest --watchAll --runInBand",
-    "test:ci": "UI_PORT=80 STUBS_PORT=8080 jest --watchAll --runInBand",
+    "test:ci": "UI_PORT=80 STUBS_PORT=8080 jest --runInBand",
     "taiko": "taiko",
     "stub4": "stub4"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@stub4/client": "0.0.7",
-    "@stub4/stub4": "0.0.12",
+    "@stub4/client": "0.0.8",
+    "@stub4/stub4": "0.0.13",
     "axios": "^0.19.0",
     "jest": "^24.9.0",
-    "taiko": "https://github.com/getgauge/taiko",
+    "taiko": "1.0.3",
     "taiko-screencast": "0.0.1"
   },
   "jest": {}
