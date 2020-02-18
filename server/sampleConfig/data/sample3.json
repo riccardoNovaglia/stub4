@@ -1,0 +1,8 @@
+{
+  "cruds": [
+    {
+      "requestMatcher": { "url": "/and_another" },
+      "data": []
+    }
+  ]
+}

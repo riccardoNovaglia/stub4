@@ -1,4 +1,6 @@
 const fs = require('fs');
+const glob = require('glob');
+
 const stubs = require('./stubs/Stubs');
 const { StubFromFile } = require('./stubs/Stub');
 
@@ -16,13 +18,23 @@ const logger = createLogger('load');
 
 function loadDefaultsFiles(defaultsFiles) {
   defaultsFiles.forEach(defaultsFile => {
-    const contents = JSON.parse(fs.readFileSync(defaultsFile, { encoding: 'utf8' }).toString());
-
-    load(contents.cruds, CrudFromFile, cruds.add, 'crud');
-    load(contents.stubs, StubFromFile, stubs.add, 'stub');
-    load(contents.scenarios, ScenarioFromFile, scenarios.add, 'scenario');
-    load(contents.proxy, ProxyFromFile, proxy.add, 'proxy');
+    if (defaultsFile.includes('*')) {
+      glob(defaultsFile, {}, function(_er, files) {
+        files.forEach(filename => loadFromFile(filename));
+      });
+    } else {
+      loadFromFile(defaultsFile);
+    }
   });
+}
+
+function loadFromFile(filename) {
+  const contents = JSON.parse(fs.readFileSync(filename, { encoding: 'utf8' }).toString());
+
+  load(contents.cruds, CrudFromFile, cruds.add, 'crud');
+  load(contents.stubs, StubFromFile, stubs.add, 'stub');
+  load(contents.scenarios, ScenarioFromFile, scenarios.add, 'scenario');
+  load(contents.proxy, ProxyFromFile, proxy.add, 'proxy');
 }
 
 function load(content, buildFn, addFn, name) {
