@@ -1,9 +1,13 @@
 const proxy = require('./Proxys');
 
 const { ProxyFromRequest } = require('./Proxy');
-const router = require('../router')(proxy, ProxyFromRequest, { many: 'proxy', one: 'proxy' });
-
 const { createLogger } = require('../logger');
+
+const router = require('../router')({
+  items: proxy,
+  builderFn: ProxyFromRequest,
+  names: { many: 'proxy', one: 'proxy' }
+});
 
 const logger = createLogger('proxy');
 

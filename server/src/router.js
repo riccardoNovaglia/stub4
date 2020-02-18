@@ -3,7 +3,7 @@ const express = require('express');
 
 const { createLogger } = require('./logger');
 
-module.exports = (items, builderFn, names, extra) => {
+module.exports = ({ items, builderFn, names, extra }) => {
   const router = express.Router();
 
   const logger = createLogger(names.many);

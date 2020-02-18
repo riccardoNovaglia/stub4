@@ -3,9 +3,10 @@ const scenarios = require('./Scenarios');
 
 const { ScenarioFromRequest } = require('./Scenario');
 
-const router = require('../router')(scenarios, ScenarioFromRequest, {
-  many: 'scenarios',
-  one: 'scenario'
+const router = require('../router')({
+  items: scenarios,
+  builderFn: ScenarioFromRequest,
+  names: { many: 'scenarios', one: 'scenario' }
 });
 
 const logger = createLogger('scenarios');

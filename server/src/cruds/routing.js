@@ -5,7 +5,11 @@ const logger = createLogger('cruds');
 const cruds = require('./Cruds');
 const { crudFromRequest } = require('./Crud');
 
-const router = require('../router')(cruds, crudFromRequest, { many: 'cruds', one: 'crud' });
+const router = require('../router')({
+  items: cruds,
+  builderFn: crudFromRequest,
+  names: { many: 'cruds', one: 'crud' }
+});
 
 function middleware(req, res, next) {
   try {
