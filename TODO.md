@@ -43,3 +43,5 @@ https://trello.com/b/BSfIfp9d/stub4
 - CI in GitHub actions maybe? For test + publish?
 
 DEFECTS:
+
+- Why can't the log level be set on its own via static config? Not spread properly?
