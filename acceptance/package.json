@@ -16,7 +16,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@stub4/client": "0.0.9",
+    "@stub4/client": "0.0.10",
     "@stub4/stub4": "0.0.14",
     "axios": "^0.19.2",
     "jest": "^25.1.0",
