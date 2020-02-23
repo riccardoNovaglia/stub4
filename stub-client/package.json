@@ -9,11 +9,12 @@
     "publish": "npm publish --access public"
   },
   "dependencies": {
-    "axios": "^0.19.0",
+    "axios": "^0.19.2",
     "lodash": "^4.17.15"
   },
   "devDependencies": {
-    "jest": "^24.8.0"
+    "jest": "^25.1.0",
+    "prettier": "^1.19.1"
   },
   "license": "ISC",
   "files": [

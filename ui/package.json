@@ -3,18 +3,20 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
-    "@stub4/client": "0.0.8",
-    "axios": "^0.19.0",
+    "@stub4/client": "0.0.9",
+    "axios": "^0.19.2",
     "node-sass": "^4.13.1",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
-    "react-scripts": "3.3.0"
+    "react-scripts": "^3.4.0"
   },
   "scripts": {
     "start": "PORT=8081 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "link-client": "cd ../stub-client && npm link && cd ../ui && npm link @stub4/client"
+    "test:ci": "CI=true react-scripts test",
+    "link-client": "cd ../stub-client && npm link && cd ../ui && npm link @stub4/client",
+    "unlink-client": "npm install"
   },
   "proxy": "http://localhost:80",
   "browserslist": {
@@ -30,8 +32,8 @@
     ]
   },
   "devDependencies": {
-    "@testing-library/react": "^9.4.0",
-    "@testing-library/user-event": "^8.1.0",
+    "@testing-library/react": "^9.4.1",
+    "@testing-library/user-event": "^8.1.3",
     "jest-when": "^2.7.0"
   }
 }

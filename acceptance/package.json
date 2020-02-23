@@ -7,7 +7,8 @@
   "scripts": {
     "test": "npm run test:dev",
     "test:dev": "UI_PORT=8081 STUBS_PORT=9090 jest --watchAll --runInBand",
-    "test:ci": "UI_PORT=80 STUBS_PORT=8080 jest --runInBand",
+    "test:ci": "UI_PORT=8081 STUBS_PORT=9090 CI=true jest --runInBand",
+    "test:accept": "UI_PORT=80 STUBS_PORT=8080 jest --runInBand",
     "taiko": "taiko",
     "stub4": "stub4",
     "stub4:watch": "nodemon --exec \"stub4\""
@@ -15,10 +16,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@stub4/client": "0.0.8",
-    "@stub4/stub4": "0.0.13",
-    "axios": "^0.19.0",
-    "jest": "^24.9.0",
+    "@stub4/client": "0.0.9",
+    "@stub4/stub4": "0.0.14",
+    "axios": "^0.19.2",
+    "jest": "^25.1.0",
     "nodemon": "^2.0.2",
     "taiko": "1.0.3",
     "taiko-screencast": "0.0.1"
