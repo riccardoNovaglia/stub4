@@ -69,6 +69,11 @@
   background-color: #e37d1e;
 }
 
+.method.any {
+  padding: 4px 25px;
+  background-image: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet);
+}
+
 .url {
   overflow: hidden;
   text-overflow: ellipsis;

@@ -22,9 +22,12 @@ export function StubsList({ items, selected, setSelected }) {
 }
 
 function StubListItem({ item }) {
+  const methodClassName = method =>
+    method === '*' || method === undefined ? 'any' : method.toLowerCase();
+
   return (
     <p>
-      <span className={`method ${item.requestMatcher.method?.toLowerCase()}`}>
+      <span className={`method ${methodClassName(item.requestMatcher.method)}`}>
         {item.requestMatcher.method}
       </span>{' '}
       <span className="url">{item.requestMatcher.urlMatcher.url}</span>
