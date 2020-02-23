@@ -1,9 +1,7 @@
 function respondsWith(statusCode, type = 'json', body = {}) {
   return {
-    response: {
-      statusCode,
-      type,
-      body
+    toJson() {
+      return { response: { statusCode, type, body } };
     }
   };
 }

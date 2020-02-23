@@ -1,8 +1,10 @@
 function containsScenarios(outcomes, defaultOutcome) {
   return {
-    scenarios: true,
-    outcomes,
-    default: defaultOutcome
+    toJson() {
+      return {
+        scenarios: { outcomes, default: defaultOutcome }
+      };
+    }
   };
 }
 

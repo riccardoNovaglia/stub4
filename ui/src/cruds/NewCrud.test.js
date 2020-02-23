@@ -25,16 +25,13 @@ it('renders with a few default values', async () => {
 
 it('calls crud4 with the right parameters given the default values', async () => {
   when(mockedStub4)
-    .expectCalledWith(
-      {
-        url: '',
-        method: 'GET' // TODO: mmh
-      },
-      {
-        crud: true, // TODO: mmh
-        idAlias: ''
+    .expectCalledWith({
+      requestMatcher: { url: '' },
+      crud: {
+        idAlias: '',
+        patchOnPost: false
       }
-    )
+    })
     .mockResolvedValue();
   const { theCrudWasSavedSuccessfully } = renderNewCrud();
 
@@ -45,16 +42,15 @@ it('calls crud4 with the right parameters given the default values', async () =>
 
 it('allows changing values and calls crud4 correspondingly', async () => {
   when(mockedStub4)
-    .expectCalledWith(
-      {
-        url: '/some-url',
-        method: 'GET' // TODO: mmh
+    .expectCalledWith({
+      requestMatcher: {
+        url: '/some-url'
       },
-      {
-        crud: true, // TODO: mmh
-        idAlias: 'a-new-id'
+      crud: {
+        idAlias: 'a-new-id',
+        patchOnPost: false
       }
-    )
+    })
     .mockResolvedValue();
   const { theCrudWasSavedSuccessfully } = renderNewCrud();
 
@@ -68,20 +64,19 @@ it('allows changing values and calls crud4 correspondingly', async () => {
 
 it('picks values from an edited crud overwriting the defaults', async () => {
   when(mockedStub4)
-    .expectCalledWith(
-      {
-        url: '/some-random-url',
-        method: 'GET' // TODO: mmh
+    .expectCalledWith({
+      requestMatcher: {
+        url: '/some-random-url'
       },
-      {
-        crud: true, // TODO: mmh
-        idAlias: 'some-alias'
+      crud: {
+        idAlias: 'some-alias',
+        patchOnPost: false
       }
-    )
+    })
     .mockResolvedValue();
   const { theCrudWasSavedSuccessfully } = renderNewCrud({
-    url: '/some-random-url',
-    idAlias: 'some-alias'
+    requestMatcher: { url: '/some-random-url' },
+    crud: { idAlias: 'some-alias' }
   });
 
   userEvent.click(screen.getByText('Save'));
@@ -91,8 +86,8 @@ it('picks values from an edited crud overwriting the defaults', async () => {
 
 it('sets the value from the edited crud in the form', async () => {
   renderNewCrud({
-    url: '/some-random-url',
-    idAlias: 'some-stuff-id'
+    requestMatcher: { url: '/some-random-url' },
+    crud: { idAlias: 'some-stuff-id' }
   });
 
   expect(screen.getByLabelText('URL').value).toEqual('/some-random-url');

@@ -1,5 +1,6 @@
 const call = require('supertest');
 const axios = require('axios');
+const enableDestroy = require('server-destroy');
 
 const app = require('../../app');
 
@@ -10,10 +11,11 @@ const { containsScenarios } = require('@stub4/client/src/ScenariosResponse');
 describe('Configuring scenarios', () => {
   let server;
   setPort(9019);
-  beforeAll(done => (server = app.listen(9019, done)));
-
-  afterAll(() => server.close());
-
+  beforeAll(done => {
+    server = app.listen(9019, done);
+    enableDestroy(server);
+  });
+  afterAll(() => server.destroy());
   beforeEach(async () => await axios.delete('http://localhost:9019/scenarios'));
 
   describe('url matching', () => {

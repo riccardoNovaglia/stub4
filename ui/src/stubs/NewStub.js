@@ -6,16 +6,17 @@ import { FullRequestMatcher } from '../prototypes/RequestMatcher';
 import { SaveButton } from '../prototypes/SaveButton';
 
 const { stubFor } = require('@stub4/client');
-const { request } = require('@stub4/client/src/RequestMatcher');
-const { respondsWith } = require('@stub4/client/src/StubResponse');
 
 const asStringIfObject = item => (typeof item === 'object' ? JSON.stringify(item) : item);
 const asObjectIfString = item => (typeof item === 'string' ? JSON.parse(item) : item);
 
 export function NewStub({ onClose, onSaved, editedItem }) {
   const defaults = {
-    urlMatcher: { url: '' },
-    method: 'GET',
+    requestMatcher: {
+      urlMatcher: { url: '' },
+      method: 'GET',
+      bodyMatcher: { body: undefined, type: undefined }
+    },
     response: {
       statusCode: 200,
       body: '{}',
@@ -25,32 +26,37 @@ export function NewStub({ onClose, onSaved, editedItem }) {
   };
 
   const stub = updatableItem({
-    ...useObject('url', defaults.urlMatcher.url),
-    ...useObject('method', defaults.method),
+    ...useObject('url', defaults.requestMatcher.urlMatcher.url),
+    ...useObject('method', defaults.requestMatcher.method),
     ...useObject('status', defaults.response.statusCode),
     ...useObject('body', asStringIfObject(defaults.response.body)),
     ...useObject('type', defaults.response.contentType)
   });
 
   function getBodyMatcherValue(item) {
-    return isEmpty(item?.bodyMatcher)
+    return isEmpty(item?.requestMatcher.bodyMatcher)
       ? undefined
-      : { body: JSON.stringify(item.bodyMatcher.body), type: item.bodyMatcher.type };
+      : {
+          body: JSON.stringify(item.requestMatcher.bodyMatcher.body),
+          type: item.requestMatcher.bodyMatcher.type
+        };
   }
 
   const [bodyMatcher, setBodyMatcher] = useState(getBodyMatcherValue(editedItem));
 
   async function onSave() {
-    // TODO: a method to setup everything from one JSON object
-    const req =
-      bodyMatcher !== undefined
-        ? request(stub.url.value)
-            .withMethod(stub.method.value)
-            .withBody(asObjectIfString(bodyMatcher.body))
-            .withType(bodyMatcher.type)
-        : request(stub.url.value).withMethod(stub.method.value);
-
-    await stubFor(req, respondsWith(stub.status.value, stub.type.value, stub.body.value));
+    await stubFor({
+      requestMatcher: {
+        url: stub.url.value,
+        method: stub.method.value,
+        bodyMatcher: { body: asObjectIfString(bodyMatcher?.body), type: bodyMatcher?.type }
+      },
+      response: {
+        statusCode: stub.status.value,
+        type: stub.type.value,
+        body: stub.body.value
+      }
+    });
     onSaved();
   }
 

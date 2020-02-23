@@ -1,5 +1,6 @@
 const call = require('supertest');
 const axios = require('axios');
+const enableDestroy = require('server-destroy');
 const app = require('../../app');
 
 const { stubFor, setPort } = require('@stub4/client');
@@ -11,15 +12,10 @@ describe('Stubbing via the client, 2.0', () => {
   setPort(9010);
   beforeAll(done => {
     server = app.listen(9010, done);
+    enableDestroy(server);
   });
-
-  afterAll(() => {
-    server.close();
-  });
-
-  beforeEach(async () => {
-    await axios.delete('http://localhost:9010/stubs');
-  });
+  afterAll(() => server.destroy());
+  beforeEach(async () => await axios.delete('http://localhost:9010/stubs'));
 
   it('creates a new stub with url only, defaulting to GET, returns ok and no body', async () => {
     await stubFor(request('/john'), respondsWith(200));

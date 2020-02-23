@@ -1,7 +1,7 @@
 {
   "stubs": [
     {
-      "requestMatcher": { "url": "/some-url" },
+      "requestMatcher": { "url": "/some-url", "method": "GET" },
       "response": { "body": "this was setup", "type": "text" }
     },
     {

@@ -2,7 +2,7 @@ const fs = require('fs');
 const request = require('supertest');
 const app = require('../app');
 
-describe('Pact contracts generation for stubs', () => {
+describe.skip('Pact contracts generation for stubs', () => {
   const generatedPactFilepath = './generatedTestPacts/some-consumer-some-provider.json';
 
   beforeEach(async () => {

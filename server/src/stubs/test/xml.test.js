@@ -1,5 +1,6 @@
 const request = require('supertest');
 const axios = require('axios');
+const enableDestroy = require('server-destroy');
 const app = require('../../app');
 
 const Stub4 = require('@stub4/client');
@@ -10,15 +11,10 @@ describe('Stubbing via the client', () => {
   const client = new Stub4.StubClient(9018);
   beforeAll(done => {
     server = app.listen(9018, done);
+    enableDestroy(server);
   });
-
-  afterAll(() => {
-    server.close();
-  });
-
-  beforeEach(async () => {
-    await axios.delete('http://localhost:9018/stubs');
-  });
+  afterAll(() => server.destroy());
+  beforeEach(async () => await axios.delete('http://localhost:9018/stubs'));
 
   it('responds from the new stub with the given body', async () => {
     await client.stub(get('/whateva').returns('xml', '<xml></xml>'));

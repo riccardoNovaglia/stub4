@@ -8,7 +8,7 @@ const interactions = [];
 const logger = createLogger('stubs');
 
 function add(stub) {
-  const existingStub = stubs.find(existing => existing.urlMatcher.url === stub.urlMatcher.url);
+  const existingStub = stubs.find(existing => existing.equals(stub));
   if (existingStub) removeExisting(existingStub);
 
   logger.info(`Created new stub ${stub.pretty()}`);
@@ -30,7 +30,7 @@ function getInteraction(url) {
 }
 
 function all() {
-  return stubs;
+  return stubs.map(stub => stub.toJson());
 }
 
 function clear() {

@@ -1,4 +1,5 @@
 const axios = require('axios');
+const enableDestroy = require('server-destroy');
 const app = require('../../app');
 
 const { stubFor, setPort } = require('@stub4/client');
@@ -9,8 +10,11 @@ const { respondsWith } = require('@stub4/client/src/StubResponse');
 describe('Setting up stubs', () => {
   let server;
   setPort(9009);
-  beforeAll(done => (server = app.listen(9009, done)));
-  afterAll(() => server.close());
+  beforeAll(done => {
+    server = app.listen(9009, done);
+    enableDestroy(server);
+  });
+  afterAll(() => server.destroy());
   afterEach(async () => await axios.delete('http://localhost:9009/proxy'));
 
   it('proxies requests to other endpoints, within the same app', async () => {

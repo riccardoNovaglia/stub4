@@ -7,14 +7,14 @@ describe('Loading stubs from an initialiser file', () => {
   it('creates a stub with some response and fills all defaults', () => {
     add(
       StubFromFile({
-        requestMatcher: { url: '/some-url' },
+        requestMatcher: { url: '/some-url', method: 'GET' },
         response: { body: `this was setup`, type: 'text' }
       })
     );
 
     const item = get('/some-url', 'GET', undefined);
-    expect(item.urlMatcher.url).toEqual('/some-url');
-    expect(item.method).toEqual('GET');
+    expect(item.requestMatcher.urlMatcher.url).toEqual('/some-url');
+    expect(item.requestMatcher.methodMatcher.method).toEqual('GET');
     expect(item.response).toEqual({
       body: `this was setup`,
       contentType: 'text/plain',
@@ -34,8 +34,8 @@ describe('Loading stubs from an initialiser file', () => {
     );
 
     const item = get('/whatever', 'PATCH');
-    expect(item.urlMatcher.url).toEqual('/whatever');
-    expect(item.method).toEqual('PATCH');
+    expect(item.requestMatcher.urlMatcher.url).toEqual('/whatever');
+    expect(item.requestMatcher.methodMatcher.method).toEqual('PATCH');
     expect(item.response).toEqual({
       body: { item: `whatever` },
       contentType: 'application/json',
@@ -59,14 +59,14 @@ describe('Loading stubs from an initialiser file', () => {
     );
 
     const some = get('/some-url', 'GET', undefined);
-    expect(some.urlMatcher.url).toEqual('/some-url');
+    expect(some.requestMatcher.urlMatcher.url).toEqual('/some-url');
     expect(some.response).toEqual({
       body: `this was setup`,
       contentType: 'text/plain',
       statusCode: 200
     });
     const another = get('/another', 'GET');
-    expect(another.urlMatcher.url).toEqual('/another');
+    expect(another.requestMatcher.urlMatcher.url).toEqual('/another');
     expect(another.response).toEqual({
       body: `some else`,
       contentType: 'application/json',

@@ -35,6 +35,9 @@ const UrlMatcher = url => {
     equals: otherMatcher => otherMatcher.url === url,
     pretty() {
       return regex.toString();
+    },
+    toJson() {
+      return this.url;
     }
   };
 };
@@ -44,7 +47,8 @@ const NoopMatcher = {
   matches: () => true,
   getMatchedMap: () => undefined,
   equals: otherMatcher => typeof otherMatcher === 'NoopMatcher',
-  pretty: () => '*'
+  pretty: () => '*',
+  toJson: () => undefined
 };
 
 const SimpleMatcher = url => {
@@ -53,7 +57,8 @@ const SimpleMatcher = url => {
     matches: urlToMatch => urlToMatch === url,
     getMatchedMap: () => undefined,
     equals: otherMatcher => otherMatcher.url === url,
-    pretty: () => url
+    pretty: () => url,
+    toJson: () => ({ url })
   };
 };
 

@@ -37,6 +37,9 @@ export function Method({ item }) {
       >
         <option value="GET">GET</option>
         <option value="POST">POST</option>
+        <option value="PATCH">PATCH</option>
+        <option value="DELETE">DELETE</option>
+        <option value="*">* (Any)</option>
       </select>
     </div>
   );

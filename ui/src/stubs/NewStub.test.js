@@ -30,13 +30,18 @@ it('renders with a few default values', async () => {
 
 it('calls stub4 with the right parameters given the default values', async () => {
   when(mockedStub4)
-    .expectCalledWith(
-      {
+    .expectCalledWith({
+      requestMatcher: {
         url: '',
-        method: 'GET'
+        method: 'GET',
+        bodyMatcher: { body: undefined, type: undefined }
       },
-      { body: '{}', statusCode: 200, type: 'application/json' }
-    )
+      response: {
+        body: '{}',
+        statusCode: 200,
+        type: 'application/json'
+      }
+    })
     .mockResolvedValue();
   const { theStubWasSavedSuccessfully } = renderNewStub();
 
@@ -47,21 +52,26 @@ it('calls stub4 with the right parameters given the default values', async () =>
 
 it('allows changing values and calls stub4 correspondingly', async () => {
   when(mockedStub4)
-    .expectCalledWith(
-      {
+    .expectCalledWith({
+      requestMatcher: {
         url: '/some-url',
-        method: 'POST'
+        method: 'POST',
+        bodyMatcher: { body: undefined, type: undefined }
       },
-      { body: 'this is the body', statusCode: '321', type: 'application/json' }
-    )
+      response: {
+        body: 'this is the body',
+        statusCode: '321',
+        type: 'application/json'
+      }
+    })
     .mockResolvedValue();
   const { theStubWasSavedSuccessfully } = renderNewStub();
 
-  userEvent.type(screen.getByLabelText('URL'), 'some-url');
+  await userEvent.type(screen.getByLabelText('URL'), 'some-url');
   userEvent.selectOptions(screen.getByLabelText('METHOD'), 'POST');
 
-  userEvent.type(screen.getByLabelText('STATUS'), '321');
-  userEvent.type(screen.getByLabelText('BODY'), 'this is the body');
+  await userEvent.type(screen.getByLabelText('STATUS'), '321');
+  await userEvent.type(screen.getByLabelText('BODY'), 'this is the body');
   userEvent.selectOptions(screen.getByLabelText('TYPE'), 'application/json');
 
   userEvent.click(screen.getByText('Save'));
@@ -71,23 +81,26 @@ it('allows changing values and calls stub4 correspondingly', async () => {
 
 it('allows updating the body matcher once it is selected', async () => {
   when(mockedStub4)
-    .expectCalledWith(
-      {
+    .expectCalledWith({
+      requestMatcher: {
         url: '/with-body',
         method: 'POST',
-        bodyMatcher: { id: '321' },
-        type: 'json'
+        bodyMatcher: { body: { id: '321' }, type: 'json' }
       },
-      { body: '{}', statusCode: 200, type: 'application/json' }
-    )
+      response: {
+        body: '{}',
+        statusCode: 200,
+        type: 'application/json'
+      }
+    })
     .mockResolvedValue();
   const { theStubWasSavedSuccessfully } = renderNewStub();
 
-  userEvent.type(screen.getByLabelText('URL'), 'with-body');
+  await userEvent.type(screen.getByLabelText('URL'), 'with-body');
   userEvent.selectOptions(screen.getByLabelText('METHOD'), 'POST');
   userEvent.click(screen.getByLabelText('Body matching'));
 
-  userEvent.type(screen.getByLabelText('BODY MATCHER'), '{"id": "321"}');
+  await userEvent.type(screen.getByLabelText('BODY MATCHER'), '{"id": "321"}');
 
   userEvent.click(screen.getByText('Save'));
 
@@ -96,17 +109,24 @@ it('allows updating the body matcher once it is selected', async () => {
 
 it('picks values from an edited stub overwriting the defaults', async () => {
   when(mockedStub4)
-    .expectCalledWith(
-      {
+    .expectCalledWith({
+      requestMatcher: {
         url: '/some-random-url',
-        method: 'POST'
+        method: 'POST',
+        bodyMatcher: { body: undefined, type: undefined }
       },
-      { body: 'some-value that was setup', statusCode: 543, type: 'application/json' }
-    )
+      response: {
+        body: 'some-value that was setup',
+        statusCode: 543,
+        type: 'application/json'
+      }
+    })
     .mockResolvedValue();
   const { theStubWasSavedSuccessfully } = renderNewStub({
-    urlMatcher: { url: '/some-random-url' },
-    method: 'POST',
+    requestMatcher: {
+      urlMatcher: { url: '/some-random-url' },
+      method: 'POST'
+    },
     response: {
       statusCode: 543,
       contentType: 'application/json',
@@ -121,20 +141,25 @@ it('picks values from an edited stub overwriting the defaults', async () => {
 
 it('includes the body matching if present', async () => {
   when(mockedStub4)
-    .expectCalledWith(
-      {
+    .expectCalledWith({
+      requestMatcher: {
         url: '/with-body',
         method: 'GET',
-        bodyMatcher: { id: '321' },
-        type: 'xml'
+        bodyMatcher: { body: { id: '321' }, type: 'xml' }
       },
-      { body: '{}', statusCode: 200, type: 'text' }
-    )
+      response: {
+        body: '{}',
+        statusCode: 200,
+        type: 'text'
+      }
+    })
     .mockResolvedValue();
   const { theStubWasSavedSuccessfully } = renderNewStub({
-    urlMatcher: { url: '/with-body' },
-    bodyMatcher: { body: { id: '321' }, type: 'xml' },
-    method: 'GET',
+    requestMatcher: {
+      urlMatcher: { url: '/with-body' },
+      bodyMatcher: { body: { id: '321' }, type: 'xml' },
+      method: 'GET'
+    },
     response: {
       statusCode: 200,
       contentType: 'text',
@@ -149,8 +174,10 @@ it('includes the body matching if present', async () => {
 
 it('sets the value from the edited stub in the form', async () => {
   renderNewStub({
-    urlMatcher: { url: '/some-random-url' },
-    method: 'POST',
+    requestMatcher: {
+      urlMatcher: { url: '/some-random-url' },
+      method: 'POST'
+    },
     response: {
       statusCode: 543,
       contentType: 'application/json',
@@ -169,9 +196,11 @@ it('sets the value from the edited stub in the form', async () => {
 
 it('sets the value from the edited stub in the form, including the body matcher if present', async () => {
   renderNewStub({
-    urlMatcher: { url: '/body-match' },
-    method: 'POST',
-    bodyMatcher: { body: { id: 321 }, keys: ['id'], type: 'json' },
+    requestMatcher: {
+      urlMatcher: { url: '/body-match' },
+      method: 'POST',
+      bodyMatcher: { body: { id: 321 }, keys: ['id'], type: 'json' }
+    },
     response: {
       body: { mgs: 'User 321 created' },
       contentType: 'application/json',

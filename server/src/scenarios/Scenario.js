@@ -51,8 +51,8 @@ function ScenarioFromRequest(req) {
   return ScenarioFrom(
     req.body.requestMatcher.url,
     req.body.requestMatcher.body,
-    req.body.default,
-    req.body.outcomes
+    req.body.scenarios.default,
+    req.body.scenarios.outcomes
   );
 }
 

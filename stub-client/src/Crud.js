@@ -1,6 +1,5 @@
 class CrudBuilder {
   constructor() {
-    this.crud = true;
     this.idAlias = 'id';
     this.patchOnPost = false;
   }
@@ -15,8 +14,10 @@ class CrudBuilder {
 
   toJson() {
     return {
-      idAlias: this.idAlias,
-      patchOnPost: this.patchOnPost
+      crud: {
+        idAlias: this.idAlias,
+        patchOnPost: this.patchOnPost
+      }
     };
   }
 }

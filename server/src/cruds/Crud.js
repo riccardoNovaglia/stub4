@@ -13,6 +13,7 @@ function Crud(url, idAlias, patchOnPost) {
   return {
     ...data,
     matches(url) {
+      // TODO: make this into specific request/url matcher
       const matches = url.includes(this.url);
       logger.silly(`${this.pretty()} ${matches ? 'does' : "doesn't"} match ${url}`);
       return matches;
@@ -110,7 +111,7 @@ function getPatchOnPost(source) {
 
 function crudFromRequest(req) {
   const url = req.body.requestMatcher.url;
-  const idAlias = getIdAlias(req.body);
+  const idAlias = getIdAlias(req.body.crud);
   return Crud(url, idAlias, getPatchOnPost(req.body));
 }
 

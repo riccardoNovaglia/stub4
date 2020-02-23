@@ -4,23 +4,24 @@ import { RequestMatcher } from '../prototypes/RequestMatcher';
 import { useObject, updatableItem, handle } from '../prototypes/NewItemManagement';
 
 const { stubFor } = require('@stub4/client');
-const { request } = require('@stub4/client/src/RequestMatcher');
-const { containsCrud } = require('@stub4/client/src/Crud');
 
-export function NewCrud({ onClose, onSaved, editedItem, client }) {
+export function NewCrud({ onClose, onSaved, editedItem }) {
   const defaults = {
-    url: '',
-    idAlias: '',
+    requestMatcher: { url: '' },
+    crud: { idAlias: '' },
     ...editedItem
   };
 
   const crud = updatableItem({
-    ...useObject('url', defaults.url),
-    ...useObject('idAlias', defaults.idAlias)
+    ...useObject('url', defaults.requestMatcher.url),
+    ...useObject('idAlias', defaults.crud.idAlias)
   });
 
   async function onSave() {
-    await stubFor(request(crud.url.value), containsCrud().withIdAlias(crud.idAlias.value));
+    await stubFor({
+      requestMatcher: { url: crud.url.value },
+      crud: { idAlias: crud.idAlias.value, patchOnPost: false } // TODO: patchOnPost
+    });
     onSaved();
   }
 

@@ -23,7 +23,13 @@ const BodyMatcher = body => {
 
       return keys.every(k => this.body[k] === '*' || body[k] === this.body[k]);
     },
-    pretty: () => JSON.stringify(body.bodyMatch)
+    pretty: () => JSON.stringify(body.bodyMatch),
+    toJson() {
+      return {
+        body: this.body,
+        type: 'json'
+      };
+    }
   };
 };
 
@@ -46,13 +52,20 @@ const XMLMatcher = body => {
         return selectedValue === value;
       });
     },
-    pretty: () => JSON.stringify(body)
+    pretty: () => JSON.stringify(body),
+    toJson() {
+      return {
+        body: this.body,
+        type: 'xml'
+      };
+    }
   };
 };
 
 const NoopMatcher = {
   matches: () => true,
-  pretty: () => '*'
+  pretty: () => '*',
+  toJson: () => undefined
 };
 
 module.exports = BodyMatcher;

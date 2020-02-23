@@ -1,29 +1,36 @@
 const _ = require('lodash');
 
-const UrlMatcher = require('../matching/UrlMatcher');
-const BodyMatcher = require('../matching/BodyMatcher');
+const RequestMatcher = require('../matching/RequestMatcher');
 
 const { createLogger } = require('../logger');
 
 const logger = createLogger('stubs');
 
-function Stub(urlMatcher, method, bodyMatcher, response, contract) {
-  const data = { urlMatcher, method, bodyMatcher, response, contract };
+function Stub(requestMatcher, response, contract) {
+  const data = { response, contract, requestMatcher };
 
   const stub = {
     ...data,
     matches(url, method, body) {
       logger.silly(`${this.pretty()} attempting to match ${method} ${url} ${JSON.stringify(body)}`);
-      const matched =
-        urlMatcher.matches(url) && this.method === method && bodyMatcher.matches(body);
+      const matched = this.requestMatcher.matches({ url, method, body });
       matched && logger.debug(`${this.pretty()} is a match`);
       return matched;
     },
     pretty() {
-      return `'${method} ${urlMatcher.pretty()} ${bodyMatcher.pretty()}'`;
+      return `'${requestMatcher.methodMatcher.pretty()} ${requestMatcher.urlMatcher.pretty()} ${requestMatcher.bodyMatcher.pretty()}'`;
     },
     prettyJson() {
       return JSON.stringify(data, null, 2);
+    },
+    equals(otherStub) {
+      return this.requestMatcher.equals(otherStub.requestMatcher);
+    },
+    toJson() {
+      return {
+        requestMatcher: this.requestMatcher.toJson(),
+        response: this.response
+      };
     }
   };
 
@@ -65,33 +72,26 @@ function Response(response) {
 }
 
 function StubFromRequest(req) {
+  // TODO: maybe move to request/url matcher
   const url = _.get(req.body, 'requestMatcher.url');
   if (!url) throw new Error('A request matcher url must be provided!');
 
-  const urlMatcher = UrlMatcher(req.body.requestMatcher.url);
-  const bodyMatcher = BodyMatcher(req.body.requestMatcher.body);
-  const body = _.get(req.body, 'requestMatcher.body');
-
+  const requestMatcher = RequestMatcher(req.body.requestMatcher);
+  const response = Response(req.body.response);
   const contract = req.body.contract;
 
-  const method = _.get(req.body, 'requestMatcher.method', _.isEmpty(body) ? 'GET' : 'POST');
-  const response = Response(req.body.response);
-  return Stub(urlMatcher, method, bodyMatcher, response.toResponse(), contract);
+  return Stub(requestMatcher, response.toResponse(), contract);
 }
 
 function StubFromFile(stubDef) {
   const url = stubDef.requestMatcher.url;
   if (!url) throw new Error('A request matcher url must be provided!');
 
-  const urlMatcher = UrlMatcher(url);
-  const body = stubDef.requestMatcher.body;
-  const bodyMatcher = BodyMatcher(body);
-
+  const requestMatcher = RequestMatcher(stubDef.requestMatcher);
+  const response = Response(stubDef.response);
   const contract = stubDef.contract;
 
-  const method = _.get(stubDef, 'requestMatcher.method', _.isEmpty(body) ? 'GET' : 'POST');
-  const response = Response(stubDef.response);
-  return Stub(urlMatcher, method, bodyMatcher, response.toResponse(), contract);
+  return Stub(requestMatcher, response.toResponse(), contract);
 }
 
 module.exports = { Stub, StubFromRequest, StubFromFile };

@@ -1,5 +1,9 @@
 function proxyTo(url) {
-  return { proxy: { destination: { url } } };
+  return {
+    toJson() {
+      return { proxy: { destination: { url } } };
+    }
+  };
 }
 
 module.exports = { proxyTo };
