@@ -48,7 +48,7 @@ it('allows changing values and calls crud4 correspondingly', async () => {
       },
       crud: {
         idAlias: 'a-new-id',
-        patchOnPost: false
+        patchOnPost: true
       }
     })
     .mockResolvedValue();
@@ -56,6 +56,7 @@ it('allows changing values and calls crud4 correspondingly', async () => {
 
   userEvent.type(screen.getByLabelText('URL'), 'some-url');
   userEvent.type(screen.getByLabelText('ID ALIAS'), 'a-new-id');
+  userEvent.click(screen.getByLabelText('PATCH ON POST'));
 
   userEvent.click(screen.getByText('Save'));
 
@@ -76,7 +77,7 @@ it('picks values from an edited crud overwriting the defaults', async () => {
     .mockResolvedValue();
   const { theCrudWasSavedSuccessfully } = renderNewCrud({
     requestMatcher: { url: '/some-random-url' },
-    crud: { idAlias: 'some-alias' }
+    crud: { idAlias: 'some-alias', patchOnPost: false }
   });
 
   userEvent.click(screen.getByText('Save'));
@@ -87,11 +88,12 @@ it('picks values from an edited crud overwriting the defaults', async () => {
 it('sets the value from the edited crud in the form', async () => {
   renderNewCrud({
     requestMatcher: { url: '/some-random-url' },
-    crud: { idAlias: 'some-stuff-id' }
+    crud: { idAlias: 'some-stuff-id', patchOnPost: true }
   });
 
   expect(screen.getByLabelText('URL').value).toEqual('/some-random-url');
   expect(screen.getByLabelText('ID ALIAS').value).toEqual('some-stuff-id');
+  expect(screen.getByLabelText('PATCH ON POST').checked).toEqual(true);
 });
 
 function renderNewCrud(editedItem = noEditedItem) {

@@ -44,7 +44,7 @@ function Crud(url, idAlias, patchOnPost) {
       return this.db.items;
     },
     pretty() {
-      return `'${url} - ${idAlias}'`;
+      return `'${url} - ${idAlias} - ${patchOnPost ? "patchOnPost:true'" : "'"}`;
     },
     prettyJson() {
       return JSON.stringify({ url: this.url, meta: this.meta, items: this.db.items }, null, 2);
