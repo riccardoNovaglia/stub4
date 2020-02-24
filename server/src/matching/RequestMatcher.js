@@ -1,6 +1,7 @@
 const { UrlMatcher } = require('./UrlMatcher');
 const { BodyMatcher } = require('./BodyMatcher');
 const { MethodMatcher } = require('./MethodMatcher');
+const { HeadersMatcher } = require('./HeadersMatcher');
 const { createLogger } = require('../logger');
 
 const logger = createLogger('match');
@@ -9,19 +10,27 @@ function RequestMatcher(matchDefinition) {
   const urlMatcher = UrlMatcher(matchDefinition.url);
   const bodyMatcher = BodyMatcher(matchDefinition.body);
   const methodMatcher = MethodMatcher(matchDefinition.method);
+  const headersMatcher = HeadersMatcher(matchDefinition.headers);
 
   return {
     urlMatcher,
     bodyMatcher,
     methodMatcher,
-    matches({ url, method, body }) {
+    headersMatcher,
+    matches({ url, method, headers = {}, body }) {
       logger.debug(`Checking if ${this.pretty()} matches ${method} ${url} ${body}`);
-      return methodMatcher.matches(method) && urlMatcher.matches(url) && bodyMatcher.matches(body);
+      return (
+        this.methodMatcher.matches(method) &&
+        this.urlMatcher.matches(url) &&
+        this.headersMatcher.matches(headers) &&
+        this.bodyMatcher.matches(body)
+      );
     },
     pretty() {
       return `Request matcher:
       \nURL: ${this.urlMatcher.pretty()}
       \nMETHOD: ${this.methodMatcher.pretty()}
+      \nHEADERS: ${this.headersMatcher.pretty()}
       \nBODY: ${this.bodyMatcher.pretty()}
       `;
     },
@@ -36,7 +45,8 @@ function RequestMatcher(matchDefinition) {
       return {
         urlMatcher: this.urlMatcher.toJson(),
         method: this.methodMatcher.toJson(),
-        bodyMatcher: this.bodyMatcher.toJson()
+        bodyMatcher: this.bodyMatcher.toJson(),
+        headersMatcher: this.headersMatcher.toJson()
       };
     }
   };

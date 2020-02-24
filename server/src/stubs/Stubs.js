@@ -21,8 +21,8 @@ function removeExisting(stub) {
   stubs.splice(stubs.indexOf(stub), 1);
 }
 
-function get(url, method, body) {
-  return stubs.find(stub => stub.matches(url, method, body));
+function get(url, method, headers, body) {
+  return stubs.find(stub => stub.matches(url, method, headers, body));
 }
 
 function getInteraction(url) {

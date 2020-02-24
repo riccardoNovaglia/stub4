@@ -10,9 +10,9 @@ function Stub(requestMatcher, response, contract) {
 
   const stub = {
     ...data,
-    matches(url, method, body) {
+    matches(url, method, headers, body) {
       logger.silly(`${this.pretty()} attempting to match ${method} ${url} ${JSON.stringify(body)}`);
-      const matched = this.requestMatcher.matches({ url, method, body });
+      const matched = this.requestMatcher.matches({ url, method, headers, body });
       matched && logger.debug(`${this.pretty()} is a match`);
       return matched;
     },

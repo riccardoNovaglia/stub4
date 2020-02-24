@@ -23,7 +23,7 @@ function middleware(req, res, next) {
     const url = req.originalUrl;
     const method = req.method;
 
-    const matchedStub = stubs.get(url, method, req.body);
+    const matchedStub = stubs.get(url, method, req.headers, req.body);
     if (matchedStub) {
       stubs.countUp(url);
 
