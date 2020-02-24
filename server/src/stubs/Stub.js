@@ -1,7 +1,6 @@
 const _ = require('lodash');
 
-const RequestMatcher = require('../matching/RequestMatcher');
-
+const { RequestMatcher } = require('../matching/RequestMatcher');
 const { createLogger } = require('../logger');
 
 const logger = createLogger('stubs');
@@ -57,17 +56,10 @@ function Response(response) {
   const type = _.get(response, 'type', 'json');
   const body = _.get(response, 'body', type === 'json' ? {} : '');
   const statusCode = _.get(response, 'statusCode', 200);
-  const res = {
+  return {
     body,
     contentType: contentType(type),
     statusCode
-  };
-
-  return {
-    response: res,
-    toResponse() {
-      return res;
-    }
   };
 }
 
@@ -80,7 +72,7 @@ function StubFromRequest(req) {
   const response = Response(req.body.response);
   const contract = req.body.contract;
 
-  return Stub(requestMatcher, response.toResponse(), contract);
+  return Stub(requestMatcher, response, contract);
 }
 
 function StubFromFile(stubDef) {
@@ -91,7 +83,7 @@ function StubFromFile(stubDef) {
   const response = Response(stubDef.response);
   const contract = stubDef.contract;
 
-  return Stub(requestMatcher, response.toResponse(), contract);
+  return Stub(requestMatcher, response, contract);
 }
 
 module.exports = { Stub, StubFromRequest, StubFromFile };

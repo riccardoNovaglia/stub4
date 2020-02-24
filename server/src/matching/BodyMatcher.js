@@ -9,7 +9,7 @@ const { createLogger } = require('../logger');
 
 const logger = createLogger('bodyM');
 
-const BodyMatcher = body => {
+function BodyMatcher(body) {
   if (_.isEmpty(body)) return NoopMatcher;
   if (_.get(body, 'type') === 'xml') return XMLMatcher(body.bodyMatch);
 
@@ -31,7 +31,7 @@ const BodyMatcher = body => {
       };
     }
   };
-};
+}
 
 const XMLMatcher = body => {
   return {
@@ -68,4 +68,4 @@ const NoopMatcher = {
   toJson: () => undefined
 };
 
-module.exports = BodyMatcher;
+module.exports = { BodyMatcher };

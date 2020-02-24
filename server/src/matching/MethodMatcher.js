@@ -1,4 +1,4 @@
-const MethodMatcher = method => {
+function MethodMatcher(method) {
   if (method === undefined || method === null || method === '*') return NoopMatcher();
 
   return {
@@ -16,7 +16,7 @@ const MethodMatcher = method => {
       return this.method.toUpperCase();
     }
   };
-};
+}
 
 const NoopMatcher = () => ({
   method: '*',
@@ -26,4 +26,4 @@ const NoopMatcher = () => ({
   toJson: () => '*'
 });
 
-module.exports = MethodMatcher;
+module.exports = { MethodMatcher };

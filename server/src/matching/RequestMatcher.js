@@ -1,11 +1,11 @@
-const UrlMatcher = require('./UrlMatcher');
-const BodyMatcher = require('./BodyMatcher');
-const MethodMatcher = require('./MethodMatcher');
+const { UrlMatcher } = require('./UrlMatcher');
+const { BodyMatcher } = require('./BodyMatcher');
+const { MethodMatcher } = require('./MethodMatcher');
 const { createLogger } = require('../logger');
 
 const logger = createLogger('match');
 
-const RequestMatcher = matchDefinition => {
+function RequestMatcher(matchDefinition) {
   const urlMatcher = UrlMatcher(matchDefinition.url);
   const bodyMatcher = BodyMatcher(matchDefinition.body);
   const methodMatcher = MethodMatcher(matchDefinition.method);
@@ -40,6 +40,6 @@ const RequestMatcher = matchDefinition => {
       };
     }
   };
-};
+}
 
-module.exports = RequestMatcher;
+module.exports = { RequestMatcher };

@@ -2,8 +2,8 @@ const _ = require('lodash');
 
 const { createLogger } = require('../logger');
 
-const UrlMatcher = require('../matching/UrlMatcher');
-const BodyMatcher = require('../matching/BodyMatcher');
+const { UrlMatcher } = require('../matching/UrlMatcher');
+const { BodyMatcher } = require('../matching/BodyMatcher');
 const Outcome = require('./Outcome');
 
 const logger = createLogger('scenarios');

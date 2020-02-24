@@ -1,4 +1,4 @@
-const UrlMatcher = url => {
+function UrlMatcher(url) {
   if (!url) return NoopMatcher;
 
   const findVariablesInCurlies = /\{([^}]+)\}/g;
@@ -40,7 +40,7 @@ const UrlMatcher = url => {
       return this.url;
     }
   };
-};
+}
 
 const NoopMatcher = {
   url: '',
@@ -62,4 +62,4 @@ const SimpleMatcher = url => {
   };
 };
 
-module.exports = UrlMatcher;
+module.exports = { UrlMatcher };

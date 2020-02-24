@@ -1,4 +1,4 @@
-const UrlMatcher = require('../UrlMatcher');
+const { UrlMatcher } = require('../UrlMatcher');
 
 describe('A class to match urls to scenarios', () => {
   describe('Building up a regex and variableNames for values to be pulled from urls', () => {
