@@ -7,6 +7,7 @@ mkdir publish
 cd ui && npm run build && cd ..
 cp -r ui/build/ publish/dist
 
+cd server && npm install --prod-only && cd ..
 cp -r server/src/ publish/lib
 rm -rf publish/lib/**/*.test.js
 
