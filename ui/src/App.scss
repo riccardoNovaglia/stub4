@@ -1,24 +1,38 @@
 @import url('https://fonts.googleapis.com/css?family=Maven+Pro&display=swap');
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons&display=swap');
 
-html {
-  box-sizing: border-box;
-}
-*,
-*:before,
-*:after {
-  box-sizing: inherit;
-  font-family: 'Maven Pro', sans-serif;
+.App {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 20px;
 }
 
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
-    'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  padding: 30px;
-  background-color: #1e1e1e;
+.header {
+  .welcome {
+    color: rgba(255, 255, 255, 0.685);
+    display: inline;
+  }
+}
+
+.helpAndBackButton {
+  background-color: #4494df;
+  border: none;
+  color: black;
+  padding: 15px 32px;
+  font-size: 14px;
+  text-align: center;
+  font-weight: bold;
+  border-radius: 2px;
+  float: right;
+  z-index: 10;
+}
+
+.helpButton {
+  @extend .helpAndBackButton;
+}
+
+.backToStub4Button {
+  @extend .helpAndBackButton;
 }
 
 .material-icons {
@@ -42,94 +56,22 @@ body {
   padding-right: 5px;
 }
 
-.App {
-  display: flex;
-  justify-content: space-between;
-  padding-top: 20px;
+html {
+  box-sizing: border-box;
+}
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+  font-family: 'Maven Pro', sans-serif;
 }
 
-.unmatchedBody {
-  flex: 3;
-  min-width: 475px;
-}
-
-.stubsAndCruds {
-  width: 700px;
-  min-width: 1000px;
-  margin-right: 20px;
-  resize: horizontal;
-  overflow: hidden;
-  display: inline-block;
-}
-
-.panelControlBtn {
-  border: none;
-  border-radius: 2px;
-  color: #000;
-  height: 38px;
-  font-size: 0.8em;
-  text-align: center;
-  float: right;
-  font-weight: bold;
-  top: 10px;
-  right: 20px;
-  margin: 0 10px;
-}
-
-.clearBtn {
-  background-color: #d52e2e;
-  @extend .panelControlBtn;
-}
-
-.createBtn {
-  background-color: green;
-  @extend .panelControlBtn;
-}
-
-.panel {
-  width: 100%;
-  height: 700px;
-  position: relative;
-  pointer-events: none;
-  color: #fff;
-  background-color: #282c34;
-
-  & > * {
-    pointer-events: auto;
-  }
-
-  .resizer {
-    position: absolute;
-    bottom: 0;
-    right: 0px;
-    transform: rotate(90deg);
-    pointer-events: none;
-    font-size: 1em;
-  }
-
-  h1 {
-    margin-top: 0;
-    margin-bottom: 0px;
-    padding: 10px 0 10px 20px;
-    width: 100%;
-    line-height: 38px;
-    background-color: #111;
-
-    .material-icons {
-      font-size: inherit;
-      padding-left: 10px;
-      padding-right: 0;
-    }
-  }
-}
-
-.panel.unmatched {
-  margin-top: 44px;
-}
-
-.header {
-  .welcome {
-    color: rgba(255, 255, 255, 0.685);
-    display: inline;
-  }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
+    'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  padding: 30px;
+  background-color: #1e1e1e;
 }

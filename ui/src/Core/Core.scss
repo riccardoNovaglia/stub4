@@ -1,0 +1,37 @@
+.unmatchedBody {
+  flex: 3;
+  min-width: 475px;
+}
+
+.stubsAndCruds {
+  width: 700px;
+  min-width: 1000px;
+  margin-right: 20px;
+  resize: horizontal;
+  overflow: hidden;
+  display: inline-block;
+}
+
+.panelControlBtn {
+  border: none;
+  border-radius: 2px;
+  color: #000;
+  height: 38px;
+  font-size: 0.8em;
+  text-align: center;
+  float: right;
+  font-weight: bold;
+  top: 10px;
+  right: 20px;
+  margin: 0 10px;
+}
+
+.clearBtn {
+  background-color: #d52e2e;
+  @extend .panelControlBtn;
+}
+
+.createBtn {
+  background-color: green;
+  @extend .panelControlBtn;
+}

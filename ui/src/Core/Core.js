@@ -12,6 +12,8 @@ import { Unmatched } from './unmatched/Unmatched';
 
 import Tabs from './navigation/Tabs';
 
+import './Core.scss';
+
 function Core({ children }) {
   const clients = useClients();
 

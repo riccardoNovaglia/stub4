@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 
 import { NewItemModal } from './NewItemModal';
 
+import './Panel.scss';
+
 export function Panel({ itemsLifecycle, presentation, children }) {
   const [items, setItems] = useState([]);
   const [selected, setSelected] = useState();
