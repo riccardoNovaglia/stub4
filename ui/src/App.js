@@ -1,65 +1,38 @@
-import axios from 'axios';
-import React, { useState, useEffect } from 'react';
-import Stub4 from '@stub4/client';
-import { setPort as setStubClientPort } from '@stub4/client';
+import React from 'react';
+import { BrowserRouter as Router, Route, Switch, useHistory } from 'react-router-dom';
 
-import { Stubs } from './stubs/Stubs';
-import { Scenarios } from './scenarios/Scenarios';
-import { Cruds } from './cruds/Cruds';
-import { Proxy } from './proxy/Proxy';
-import { Contracts } from './contracts/Contracts';
-import { Unmatched } from './unmatched/Unmatched';
+import './Navigation.scss';
 
-import Tabs from './Tabs';
+import { Documentation } from './Docs/Documentation';
+import { Core } from './Core/Core';
 
 import './App.scss';
-import './Lists.scss';
 
 export default function App() {
-  const [tab, setCurrentTab] = useState('stubs');
-
-  const clients = useClients();
-
   return (
-    <>
-      <Contracts />
-      <div className="App">
-        <div className="stubsAndCruds">
-          <Tabs tab={tab} setCurrentTab={setCurrentTab} />
-          {tab === 'stubs' && <Stubs client={clients.stubClient} />}
-          {tab === 'scenarios' && <Scenarios client={clients.scenariosClient} />}
-          {tab === 'cruds' && <Cruds client={clients.crudClient} />}
-          {tab === 'proxy' && <Proxy client={clients.proxyClient} />}
-        </div>
-        <div className="unmatchedBody">
-          <Unmatched client={clients.unmatchedClient} clients={clients} setTab={setCurrentTab} />
-        </div>
-      </div>
-    </>
+    <Router>
+      <Switch>
+        <Route path="/docs">
+          <Documentation>
+            <NavButton to="/" label="Back to Stub4" className="helpAndBackButton" />
+          </Documentation>
+        </Route>
+        <Route path="/">
+          <Core>
+            <NavButton to="/docs" label="Docs" className="helpAndBackButton" />
+          </Core>
+        </Route>
+      </Switch>
+    </Router>
   );
 }
 
-const useClients = () => {
-  const [port, setPort] = useState(8080);
-  setStubClientPort(8080);
+const NavButton = ({ to, label, className }) => {
+  const history = useHistory();
 
-  useEffect(() => {
-    const fetchPort = async () => {
-      const ax = axios.create();
-      const response = await ax.get('/stubs-port');
-      setPort(response.data.port);
-      setStubClientPort(response.data.port);
-    };
-
-    fetchPort();
-  });
-
-  return {
-    stubClient: new Stub4.StubClient(port),
-    crudClient: new Stub4.CrudClient(port),
-    scenariosClient: new Stub4.ScenariosClient(port),
-    proxyClient: new Stub4.ProxyClient(port),
-    unmatchedClient: new Stub4.UnmatchedClient(port),
-    contractClient: new Stub4.ContractsClient(port)
-  };
+  return (
+    <button type="button" onClick={() => history.push(to)} className={className}>
+      {label}
+    </button>
+  );
 };

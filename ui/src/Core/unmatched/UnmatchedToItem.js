@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import Tabs from '../Tabs';
+import Tabs from '../navigation/Tabs';
 import { NewItemModal } from '../prototypes/NewItemModal';
 import { NewStub } from '../stubs/NewStub';
 import { NewCrud } from '../cruds/NewCrud';

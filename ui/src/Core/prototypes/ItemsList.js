@@ -1,6 +1,8 @@
 import _ from 'lodash';
 import React from 'react';
 
+import './Lists.scss';
+
 export default function ItemsList({
   items,
   selected,
