@@ -17,7 +17,7 @@ export default function App() {
         </Route>
         <Route path="/">
           <Core>
-            <NavButton to="/docs" label="Docs" className="backToStub4Button" />
+            <NavButton to="/docs" label="To the Docs" className="backToStub4Button" />
           </Core>
         </Route>
       </Switch>

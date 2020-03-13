@@ -1,0 +1,19 @@
+@import '../Colors.scss';
+
+.contentsTitle {
+  color: $prettyBlue;
+}
+
+.code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+  background-color: black;
+}
+
+.highlightedTerm {
+  color: $prettyBlue;
+  font-weight: bold;
+}
+
+.linkToOtherDocs {
+  color: rgb(61, 152, 255);
+}

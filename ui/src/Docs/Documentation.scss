@@ -1,11 +1,25 @@
-.documentationBody {
-  color: rgba(255, 255, 255, 0.685);
+.docsBody {
+  color: rgba(255, 255, 255, 0.774);
 }
 
 .docsTitle {
   margin-top: 0;
 }
 
-.code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+.docsContent {
+  display: flex;
+}
+
+.column {
+  flex: 1;
+  padding: 20px;
+  background-color: #3a3939;
+  min-height: 600px;
+}
+
+.centerColumn {
+  @extend .column;
+  flex: 2;
+  background-color: #1e1e1e;
+  border-left: 1px solid white;
 }

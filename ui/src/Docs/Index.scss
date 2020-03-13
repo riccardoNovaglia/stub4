@@ -1,0 +1,30 @@
+.indexListItem {
+  padding-bottom: 5px;
+}
+
+.linkWithoutColor {
+  color: inherit;
+}
+
+.docsLink {
+  @extend .linkWithoutColor;
+  font-size: 20px;
+}
+
+.selectedDocsLink {
+  @extend .docsLink;
+  font-weight: bold;
+  padding-left: 15px;
+}
+
+.subDocsLink {
+  @extend .linkWithoutColor;
+  font-size: 16px;
+  padding-left: 25px;
+}
+
+.selectedSubDocsLink {
+  @extend .subDocsLink;
+  font-weight: bold;
+  padding-left: 30px;
+}

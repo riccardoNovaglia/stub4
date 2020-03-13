@@ -17,7 +17,9 @@
     "test": "react-scripts test",
     "test:ci": "CI=true react-scripts test",
     "link-client": "cd ../stub-client && npm link && cd ../ui && npm link @stub4/client",
-    "unlink-client": "npm install"
+    "unlink-client": "npm install",
+    "setupDocs": "mv src/App.js src/App.backup.js && mv src/App.docs.js src/App.js",
+    "restoreApp": "mv src/App.js src/App.docs.js && mv src/App.backup.js src/App.js"
   },
   "proxy": "http://localhost:80",
   "browserslist": {

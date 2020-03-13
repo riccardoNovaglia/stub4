@@ -19,7 +19,8 @@
     "audit-fix:server": "cd server && npm audit fix",
     "publish": "./scripts/build.sh && cd publish && npm publish --access public",
     "publish:only": "cd publish && npm publish --access public",
-    "build": "./scripts/build.sh"
+    "build": "./scripts/build.sh",
+    "buildDocs": "./scripts/buildDocs.sh"
   },
   "author": "Riccardo <stub4js+npm@gmail.com>",
   "dependencies": {},
