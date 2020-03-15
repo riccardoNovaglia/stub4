@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, wait } from '@testing-library/react';
+import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { when, resetAllWhenMocks } from 'jest-when';
 
@@ -47,7 +47,7 @@ it('calls stub4 with the right parameters given the default values', async () =>
 
   userEvent.click(screen.getByText('Save'));
 
-  await wait(() => expect(theStubWasSavedSuccessfully()));
+  await waitFor(() => expect(theStubWasSavedSuccessfully()));
 });
 
 it('allows changing values and calls stub4 correspondingly', async () => {
@@ -70,13 +70,15 @@ it('allows changing values and calls stub4 correspondingly', async () => {
   await userEvent.type(screen.getByLabelText('URL'), 'some-url');
   userEvent.selectOptions(screen.getByLabelText('METHOD'), 'POST');
 
+  await clearInput(screen.getByLabelText('STATUS'));
   await userEvent.type(screen.getByLabelText('STATUS'), '321');
+  await clearInput(screen.getByLabelText('BODY'));
   await userEvent.type(screen.getByLabelText('BODY'), 'this is the body');
   userEvent.selectOptions(screen.getByLabelText('TYPE'), 'application/json');
 
   userEvent.click(screen.getByText('Save'));
 
-  await wait(() => expect(theStubWasSavedSuccessfully()));
+  await waitFor(() => expect(theStubWasSavedSuccessfully()));
 });
 
 it('allows updating the body matcher once it is selected', async () => {
@@ -104,7 +106,7 @@ it('allows updating the body matcher once it is selected', async () => {
 
   userEvent.click(screen.getByText('Save'));
 
-  await wait(() => expect(theStubWasSavedSuccessfully()));
+  await waitFor(() => expect(theStubWasSavedSuccessfully()));
 });
 
 it('picks values from an edited stub overwriting the defaults', async () => {
@@ -136,7 +138,7 @@ it('picks values from an edited stub overwriting the defaults', async () => {
 
   userEvent.click(screen.getByText('Save'));
 
-  await wait(() => expect(theStubWasSavedSuccessfully()));
+  await waitFor(() => expect(theStubWasSavedSuccessfully()));
 });
 
 it('includes the body matching if present', async () => {
@@ -169,7 +171,7 @@ it('includes the body matching if present', async () => {
 
   userEvent.click(screen.getByText('Save'));
 
-  await wait(() => expect(theStubWasSavedSuccessfully()));
+  await waitFor(() => expect(theStubWasSavedSuccessfully()));
 });
 
 it('sets the value from the edited stub in the form', async () => {
@@ -224,4 +226,8 @@ function renderNewStub(editedItem = noEditedItem) {
       expect(onSaved).toHaveBeenCalled();
     }
   };
+}
+
+async function clearInput(element) {
+  await fireEvent.change(element, { target: { value: '' } });
 }

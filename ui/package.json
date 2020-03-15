@@ -6,16 +6,16 @@
     "@stub4/client": "0.0.10",
     "axios": "^0.19.2",
     "node-sass": "^4.13.1",
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0",
+    "react": "^16.13.0",
+    "react-dom": "^16.13.0",
     "react-router-dom": "^5.1.2",
     "react-scripts": "^3.4.0"
   },
   "scripts": {
     "start": "PORT=8081 react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
-    "test:ci": "CI=true react-scripts test",
+    "test": "react-scripts test --env=jest-environment-jsdom-sixteen",
+    "test:ci": "CI=true react-scripts test --env=jest-environment-jsdom-sixteen",
     "link-client": "cd ../stub-client && npm link && cd ../ui && npm link @stub4/client",
     "unlink-client": "npm install",
     "setupDocs": "mv src/App.js src/App.backup.js && mv src/App.docs.js src/App.js",
@@ -35,8 +35,9 @@
     ]
   },
   "devDependencies": {
-    "@testing-library/react": "^9.4.1",
-    "@testing-library/user-event": "^8.1.3",
-    "jest-when": "^2.7.0"
+    "@testing-library/react": "^10.0.1",
+    "@testing-library/user-event": "^10.0.0",
+    "jest-when": "^2.7.0",
+    "jest-environment-jsdom-sixteen": "^1.0.3"
   }
 }

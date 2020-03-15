@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, wait } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { when, resetAllWhenMocks } from 'jest-when';
 
@@ -37,7 +37,7 @@ it('calls crud4 with the right parameters given the default values', async () =>
 
   userEvent.click(screen.getByText('Save'));
 
-  await wait(() => expect(theCrudWasSavedSuccessfully()));
+  await waitFor(() => expect(theCrudWasSavedSuccessfully()));
 });
 
 it('allows changing values and calls crud4 correspondingly', async () => {
@@ -60,7 +60,7 @@ it('allows changing values and calls crud4 correspondingly', async () => {
 
   userEvent.click(screen.getByText('Save'));
 
-  await wait(() => expect(theCrudWasSavedSuccessfully()));
+  await waitFor(() => expect(theCrudWasSavedSuccessfully()));
 });
 
 it('picks values from an edited crud overwriting the defaults', async () => {
@@ -82,7 +82,7 @@ it('picks values from an edited crud overwriting the defaults', async () => {
 
   userEvent.click(screen.getByText('Save'));
 
-  await wait(() => expect(theCrudWasSavedSuccessfully()));
+  await waitFor(() => expect(theCrudWasSavedSuccessfully()));
 });
 
 it('sets the value from the edited crud in the form', async () => {
