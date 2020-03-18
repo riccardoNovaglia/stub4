@@ -6,10 +6,6 @@ mkdir docs
 
 pushd ui
 npm run setupDocs
-popd
-
-cp -r ui/build/ docs
-
-pushd ui
+npm run deploy
 npm run restoreApp
 popd
