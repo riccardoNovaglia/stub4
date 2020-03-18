@@ -5,6 +5,7 @@
   "dependencies": {
     "@stub4/client": "0.0.10",
     "axios": "^0.19.2",
+    "gh-pages": "^2.2.0",
     "node-sass": "^4.13.1",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
@@ -19,8 +20,11 @@
     "link-client": "cd ../stub-client && npm link && cd ../ui && npm link @stub4/client",
     "unlink-client": "npm install",
     "setupDocs": "mv src/App.js src/App.backup.js && mv src/App.docs.js src/App.js",
-    "restoreApp": "mv src/App.js src/App.docs.js && mv src/App.backup.js src/App.js"
+    "restoreApp": "mv src/App.js src/App.docs.js && mv src/App.backup.js src/App.js",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
+  "homepage": "https://riccardonovaglia.github.io/stub4",
   "proxy": "http://localhost:80",
   "browserslist": {
     "production": [
