@@ -1,9 +1,9 @@
 import React from 'react';
-import { SectionTitle } from './SectionTitle';
-
-function escaped(json) {
-  return JSON.stringify(json, null, 2);
-}
+import { Code, SectionTitle } from '../DocsBits';
+import { Stubs } from './How/Stubs';
+import { Cruds } from './How/Cruds';
+import { Scenarios } from './How/Scenarios';
+import { Proxy } from './How/Proxy';
 
 function How() {
   return (
@@ -18,8 +18,8 @@ function How() {
         same configurations many times, or even better through code and config, you can specify your
         desired configuration in one or more json files. Here's a few examples:
       </p>
-      <pre className="code">
-        {escaped({
+      <Code>
+        {{
           stubs: [
             {
               requestMatcher: { url: '/some-url', method: 'GET' },
@@ -38,7 +38,10 @@ function How() {
             {
               requestMatcher: { url: '/some-crud-url' },
               idAlias: 'customerId',
-              data: [{ customerId: 1, some: 'content' }, { customerId: 3, some: 'stuff' }]
+              data: [
+                { customerId: 1, some: 'content' },
+                { customerId: 3, some: 'stuff' }
+              ]
             }
           ],
           scenarios: [
@@ -53,15 +56,15 @@ function How() {
               }
             }
           ]
-        })}
-      </pre>
+        }}
+      </Code>
       <p>
         Finally, you might only want some behaviours to be setup for the scope of a test you're
-        running. The most effective way of doing this is using the Stub4-client, which will help you
+        running. The most effective way of doing this is using the stub4-client, which will help you
         setup your config from json object, or through builder-like functions.
       </p>
     </>
   );
 }
 
-export { How };
+export { How, Stubs, Cruds, Scenarios, Proxy };

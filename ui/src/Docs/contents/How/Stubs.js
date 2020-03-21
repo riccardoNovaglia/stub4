@@ -1,5 +1,5 @@
 import React from 'react';
-import { SectionTitle } from '../SectionTitle';
+import { Code, InlineCode, SectionTitle } from '../../DocsBits';
 
 function Stubs() {
   const stub = {
@@ -49,7 +49,7 @@ function StubResponseDefinition() {
         needs to be added (this might well change in the future). All properties have default
         values: <InlineCode>statusCode</InlineCode> defaults to <InlineCode>200</InlineCode>,{' '}
         <InlineCode>type</InlineCode> defaults to <InlineCode>application/json</InlineCode>, and{' '}
-        <InlineCode>body</InlineCode> defaults to <InlineCode>{}</InlineCode>
+        <InlineCode>body</InlineCode> defaults to <InlineCode>{'{}'}</InlineCode>
       </p>
     </>
   );
@@ -100,14 +100,6 @@ function RequestMatching() {
       </Code>
     </>
   );
-}
-
-function Code({ children }) {
-  return <pre className="code">{JSON.stringify(children, null, 2)}</pre>;
-}
-
-function InlineCode({ children }) {
-  return <span className="code">{children}</span>;
 }
 
 export { Stubs };

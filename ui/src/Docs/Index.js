@@ -3,19 +3,11 @@ import { Link, useLocation } from 'react-router-dom';
 
 import './Index.scss';
 
-function Index() {
+function Index({ children }) {
   return (
     <>
       <h2 className="indexTitle">Index</h2>
-      <ul>
-        <DocsLink label="Motivation" path="/docs/why" />
-        <DocsLink label="How it works" path="/docs/what" />
-
-        <DocsLink label="How to use it" path="/docs/how" />
-        <DocsSubLink label="How to stub" path="/docs/how/stubs" parentPath="/docs/how" />
-
-        <DocsLink label="Next" path="/docs/next" />
-      </ul>
+      <ul>{children}</ul>
     </>
   );
 }

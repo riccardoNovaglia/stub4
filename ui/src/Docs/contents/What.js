@@ -1,5 +1,5 @@
 import React from 'react';
-import { SectionTitle } from './SectionTitle';
+import { SectionTitle, Link } from '../DocsBits';
 
 function What() {
   return (
@@ -13,10 +13,7 @@ function What() {
         Given a request matching some parameters, a pre-configured response is returned.
       </p>
       <p>
-        You can find how to create and use a stub{' '}
-        <a href="/docs/how/stubs" className="linkToOtherDocs">
-          here
-        </a>
+        You can find how to create and use a stub <Link to="/docs/how/stubs">here</Link>
       </p>
       <p>But that's not all.</p>
       <h3>Scenarios</h3>
@@ -29,10 +26,7 @@ function What() {
         outcome.
       </p>
       <p>
-        You can find how to create and use scenarios{' '}
-        <a href="/docs/how/scenarios" className="linkToOtherDocs">
-          here
-        </a>
+        You can find how to create and use scenarios <Link to="/docs/how/scenarios">here</Link>
       </p>
       <h3>Cruds</h3>
       <p>
@@ -42,10 +36,7 @@ function What() {
         you can add and remove things from via HTTP calls.
       </p>
       <p>
-        You can find how to create and use cruds{' '}
-        <a href="/docs/how/cruds" className="linkToOtherDocs">
-          here
-        </a>
+        You can find how to create and use cruds <Link to="/docs/how/cruds">here</Link>
       </p>
       <h3>Proxy</h3>
       <p>
@@ -58,10 +49,7 @@ function What() {
         specific cases.
       </p>
       <p>
-        You can find how to create and use a proxy{' '}
-        <a href="/docs/how/proxy" className="linkToOtherDocs">
-          here
-        </a>
+        You can find how to create and use a proxy <Link to="/docs/how/proxy">here</Link>
       </p>
     </>
   );
