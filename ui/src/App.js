@@ -11,9 +11,11 @@ export default function App() {
     <Router>
       <Switch>
         <Route path="/docs">
-          <Documentation>
-            <NavButton to="/" label="Back to Stub4" className="helpButton" />
-          </Documentation>
+          <UrlContext.Provider value="/">
+            <Documentation>
+              <NavButton to="/" label="Back to Stub4" className="helpButton" />
+            </Documentation>
+          </UrlContext.Provider>
         </Route>
         <Route path="/">
           <Core>
@@ -24,6 +26,10 @@ export default function App() {
     </Router>
   );
 }
+
+const UrlContext = React.createContext('/');
+
+export { UrlContext };
 
 const NavButton = ({ to, label, className }) => {
   const history = useHistory();

@@ -9,11 +9,17 @@ export default function App() {
   return (
     <Router>
       <Switch>
-        <Route path="/docs">
-          <Documentation></Documentation>
+        <Route path="/stub4/docs">
+          <UrlContext.Provider value="/stub4/">
+            <Documentation></Documentation>
+          </UrlContext.Provider>
         </Route>
-        <Redirect to="/docs" />
+        <Redirect to="/stub4/docs" />
       </Switch>
     </Router>
   );
 }
+
+const UrlContext = React.createContext();
+
+export { UrlContext };
