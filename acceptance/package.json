@@ -17,7 +17,7 @@
   "license": "ISC",
   "dependencies": {
     "@stub4/client": "0.0.10",
-    "@stub4/stub4": "0.0.16",
+    "@stub4/stub4": "0.0.18",
     "axios": "^0.19.2",
     "jest": "^25.1.0",
     "nodemon": "^2.0.2",

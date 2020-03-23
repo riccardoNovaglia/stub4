@@ -13,8 +13,10 @@ ui.get('/stubs-port', (_, res) => {
   res.send({ port: config.stubsPort });
 });
 
-ui.get('*', (_, res) => {
+ui.get('/stub4', (_, res) => {
   res.sendFile(path.resolve(clientFiles, 'index.html'));
 });
+
+ui.get('*', (_, res) => res.redirect(301, '/stub4'));
 
 module.exports = ui;

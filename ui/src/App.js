@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch, useHistory } from 'react-router-dom';
+import { BrowserRouter as Router, Link, Route, Switch, Redirect } from 'react-router-dom';
 
 import { Core } from './Core/Core';
 import { Documentation } from './Docs/Documentation';
@@ -10,33 +10,22 @@ export default function App() {
   return (
     <Router>
       <Switch>
-        <Route path="/docs">
-          <UrlContext.Provider value="/">
-            <Documentation>
-              <NavButton to="/" label="Back to Stub4" className="helpButton" />
-            </Documentation>
-          </UrlContext.Provider>
+        <Route path="/stub4/docs">
+          <Documentation>
+            <Link to="/stub4" className="backToStub4Button">
+              Back to Stub4
+            </Link>
+          </Documentation>
         </Route>
-        <Route path="/">
+        <Route path="/stub4">
           <Core>
-            <NavButton to="/docs" label="To the Docs" className="backToStub4Button" />
+            <Link to="/stub4/docs" className="helpButton">
+              To the Docs
+            </Link>
           </Core>
         </Route>
+        <Redirect to="/stub4" />
       </Switch>
     </Router>
   );
 }
-
-const UrlContext = React.createContext('/');
-
-export { UrlContext };
-
-const NavButton = ({ to, label, className }) => {
-  const history = useHistory();
-
-  return (
-    <button type="button" onClick={() => history.push(to)} className={className}>
-      {label}
-    </button>
-  );
-};

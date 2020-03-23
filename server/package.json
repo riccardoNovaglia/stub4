@@ -1,6 +1,6 @@
 {
   "name": "@stub4/stub4",
-  "version": "0.0.16",
+  "version": "0.0.18",
   "description": "We'll see",
   "repository": {
     "type": "git",
@@ -12,23 +12,16 @@
   "scripts": {
     "test": "jest --watch src --testPathIgnorePatterns slow",
     "test:ci": "CI=true jest",
-    "start": "nodemon src/index.js --ignore generatedTestPacts --ignore logs",
+    "start": "nodemon src/cli.js --ignore generatedTestPacts --ignore logs",
     "link-client": "cd ../stub-client && npm link && cd ../server && npm link @stub4/client"
   },
   "bin": {
-    "stub4": "./lib/index.js"
+    "stub4": "./lib/cli.js"
   },
-  "files": [
-    "dist",
-    "lib"
-  ],
   "bugs": {
     "url": "https://github.com/riccardoNovaglia/stub4/issues"
   },
   "homepage": "https://github.com/riccardoNovaglia/stub4#readme",
-  "directories": {
-    "lib": "lib"
-  },
   "dependencies": {
     "@pact-foundation/pact": "^9.8.0",
     "axios": "^0.19.2",
@@ -38,6 +31,7 @@
     "express-xml-bodyparser": "^0.3.0",
     "glob": "^7.1.6",
     "lodash": "^4.17.15",
+    "server-destroy": "^1.0.1",
     "winston": "3.2.1",
     "xml-js": "^1.6.11",
     "xmldom": "^0.3.0",
@@ -47,7 +41,6 @@
     "@stub4/client": "0.0.10",
     "jest": "^25.1.0",
     "nodemon": "^2.0.2",
-    "server-destroy": "^1.0.1",
     "supertest": "^4.0.2"
   },
   "jest": {

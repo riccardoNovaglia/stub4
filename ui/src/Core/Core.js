@@ -28,19 +28,19 @@ function Core({ children }) {
         <div className="stubsAndCruds">
           <Tabs />
           <Switch>
-            <Route path="/stubs">
+            <Route path="/stub4/stubs">
               <Stubs client={clients.stubClient} />
             </Route>
-            <Route path="/scenarios">
+            <Route path="/stub4/scenarios">
               <Scenarios client={clients.scenariosClient} />
             </Route>
-            <Route path="/cruds">
+            <Route path="/stub4/cruds">
               <Cruds client={clients.crudClient} />
             </Route>
-            <Route path="/proxy">
+            <Route path="/stub4/proxy">
               <Proxy client={clients.proxyClient} />
             </Route>
-            <Redirect to="/stubs" />
+            <Redirect to="/stub4/stubs" />
           </Switch>
         </div>
         <div className="unmatchedBody">

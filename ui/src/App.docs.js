@@ -10,16 +10,10 @@ export default function App() {
     <Router>
       <Switch>
         <Route path="/stub4/docs">
-          <UrlContext.Provider value="/stub4/">
-            <Documentation></Documentation>
-          </UrlContext.Provider>
+          <Documentation />
         </Route>
         <Redirect to="/stub4/docs" />
       </Switch>
     </Router>
   );
 }
-
-const UrlContext = React.createContext();
-
-export { UrlContext };
