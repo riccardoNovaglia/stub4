@@ -25,12 +25,16 @@ function DocsLink({ path, label }) {
   );
 }
 
-function DocsSubLink({ path, parentPath, label }) {
+function DocsSubLink({ path, label }) {
+  const pathBits = path.split('/');
+  pathBits.pop();
+  const parent = pathBits.join('/');
   const { pathname } = useLocation();
+
   const linkClassName = pathname === path ? 'selectedSubDocsLink' : 'subDocsLink';
 
   return (
-    pathname.startsWith(parentPath) && (
+    pathname.startsWith(parent) && (
       <li className="indexListSubItem" key={path}>
         <Link to={path} className={linkClassName}>
           {label}

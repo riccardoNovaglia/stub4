@@ -13,7 +13,7 @@ function What() {
         Given a request matching some parameters, a pre-configured response is returned.
       </p>
       <p>
-        You can find how to create and use a stub <Link to="/docs/how/stubs">here</Link>
+        You can find how to create and use a stub <Link to="/stub4/docs/how/stubs">here</Link>
       </p>
       <p>But that's not all.</p>
       <h3>Scenarios</h3>
@@ -26,7 +26,8 @@ function What() {
         outcome.
       </p>
       <p>
-        You can find how to create and use scenarios <Link to="/docs/how/scenarios">here</Link>
+        You can find how to create and use scenarios{' '}
+        <Link to="/stub4/docs/how/scenarios">here</Link>
       </p>
       <h3>Cruds</h3>
       <p>
@@ -36,7 +37,7 @@ function What() {
         you can add and remove things from via HTTP calls.
       </p>
       <p>
-        You can find how to create and use cruds <Link to="/docs/how/cruds">here</Link>
+        You can find how to create and use cruds <Link to="/stub4/docs/how/cruds">here</Link>
       </p>
       <h3>Proxy</h3>
       <p>
@@ -49,7 +50,7 @@ function What() {
         specific cases.
       </p>
       <p>
-        You can find how to create and use a proxy <Link to="/docs/how/proxy">here</Link>
+        You can find how to create and use a proxy <Link to="/stub4/docs/how/proxy">here</Link>
       </p>
     </>
   );
