@@ -23,7 +23,6 @@
   },
   "homepage": "https://github.com/riccardoNovaglia/stub4#readme",
   "dependencies": {
-    "@pact-foundation/pact": "^9.8.0",
     "axios": "^0.19.2",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
@@ -37,10 +36,14 @@
     "xmldom": "^0.3.0",
     "xpath": "^0.0.27"
   },
+  "peerDependencies": {
+    "@pact-foundation/pact": "9.9.x"
+  },
   "devDependencies": {
+    "@pact-foundation/pact": "9.9.12",
     "@stub4/client": "0.0.10",
-    "jest": "^25.1.0",
-    "nodemon": "^2.0.2",
+    "jest": "25.4.0",
+    "nodemon": "2.0.3",
     "supertest": "^4.0.2"
   },
   "jest": {

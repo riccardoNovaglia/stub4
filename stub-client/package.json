@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "author": "Riccardo <stub4js+npm@gmail.com>",
   "scripts": {
-    "test": "jest:ci",
+    "test": "CI=true jest",
     "publishPackage": "npm publish --access public"
   },
   "dependencies": {
@@ -13,7 +13,7 @@
     "lodash": "^4.17.15"
   },
   "devDependencies": {
-    "jest": "^25.1.0"
+    "jest": "25.4.0"
   },
   "license": "ISC",
   "files": [

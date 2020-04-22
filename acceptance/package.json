@@ -19,10 +19,9 @@
     "@stub4/client": "0.0.10",
     "@stub4/stub4": "0.0.18",
     "axios": "^0.19.2",
-    "jest": "^25.1.0",
-    "nodemon": "^2.0.2",
-    "taiko": "1.0.5",
-    "taiko-screencast": "0.0.1"
+    "jest": "25.4.0",
+    "nodemon": "2.0.3",
+    "taiko": "1.0.8"
   },
   "jest": {}
 }
