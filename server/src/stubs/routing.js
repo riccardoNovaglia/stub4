@@ -18,7 +18,7 @@ router.get('/count', (req, res) => {
   return res.send({ count });
 });
 
-function middleware(req, res, next) {
+async function middleware(req, res, next) {
   try {
     const url = req.originalUrl;
     const method = req.method;
@@ -27,10 +27,7 @@ function middleware(req, res, next) {
     if (matchedStub) {
       stubs.countUp(url);
 
-      return res
-        .set('Content-Type', matchedStub.response.contentType)
-        .status(matchedStub.response.statusCode)
-        .send(matchedStub.response.body);
+      return await matchedStub.respond(res);
     } else {
       logger.debug(`No stubs matched request ${req.originalUrl}`);
       return next();
