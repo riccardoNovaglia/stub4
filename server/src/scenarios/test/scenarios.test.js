@@ -5,13 +5,13 @@ const enableDestroy = require('server-destroy');
 const app = require('../../app');
 
 const { stubFor, setPort } = require('@stub4/client');
-const { GET, POST } = require('@stub4/client/src/RequestMatcher');
+const { GET, POST, url } = require('@stub4/client/src/RequestMatcher');
 const { containsScenarios } = require('@stub4/client/src/ScenariosResponse');
 
 describe('Configuring scenarios', () => {
   let server;
   setPort(9019);
-  beforeAll(done => {
+  beforeAll((done) => {
     server = app.listen(9019, done);
     enableDestroy(server);
   });
@@ -164,21 +164,15 @@ describe('Configuring scenarios', () => {
         )
       );
 
-      const dude1 = await call(app)
-        .post('/dude')
-        .send({ id: 1 });
+      const dude1 = await call(app).post('/dude').send({ id: 1 });
       expect(dude1.status).toEqual(200);
       expect(dude1.body).toEqual({ hey: 'dude number 1!' });
 
-      const dude2 = await call(app)
-        .post('/dude')
-        .send({ id: 2 });
+      const dude2 = await call(app).post('/dude').send({ id: 2 });
       expect(dude2.status).toEqual(200);
       expect(dude2.body).toEqual({ hey: 'dude number 2!' });
 
-      const dudeDef = await call(app)
-        .post('/dude')
-        .send({ id: 444 });
+      const dudeDef = await call(app).post('/dude').send({ id: 444 });
       expect(dudeDef.status).toEqual(200);
       expect(dudeDef.body).toEqual({ hey: 'default dude!' });
     });
@@ -197,21 +191,15 @@ describe('Configuring scenarios', () => {
         )
       );
 
-      const bananas = await call(app)
-        .post('/bananas')
-        .send({ id: 1, bananas: 'yes' });
+      const bananas = await call(app).post('/bananas').send({ id: 1, bananas: 'yes' });
       expect(bananas.status).toEqual(200);
       expect(bananas.body).toEqual({ hey: 'dude 1, bananas!' });
 
-      const nobananas = await call(app)
-        .post('/bananas')
-        .send({ id: 1, bananas: 'no' });
+      const nobananas = await call(app).post('/bananas').send({ id: 1, bananas: 'no' });
       expect(nobananas.status).toEqual(200);
       expect(nobananas.body).toEqual({ hey: 'dude 1, no bananas!' });
 
-      const dudeDef = await call(app)
-        .post('/bananas')
-        .send({ id: 444, bananas: 'whatever' });
+      const dudeDef = await call(app).post('/bananas').send({ id: 444, bananas: 'whatever' });
       expect(dudeDef.status).toEqual(200);
       expect(dudeDef.body).toEqual({ hey: 'whatever' });
     });
@@ -230,21 +218,17 @@ describe('Configuring scenarios', () => {
         })
       );
 
-      const dude = await call(app)
-        .post('/dude')
-        .send({ id: 1 });
+      const dude = await call(app).post('/dude').send({ id: 1 });
       expect(dude.body).toEqual({ hey: 'dude' });
 
-      const bananas = await call(app)
-        .post('/bananas')
-        .send({ id: 1 });
+      const bananas = await call(app).post('/bananas').send({ id: 1 });
       expect(bananas.body).toEqual({ hey: 'bananas' });
     });
   });
 
   it('clears scenarios on demand', async () => {
     await stubFor(
-      POST('/some/{id}'),
+      url('/some/{id}'),
       containsScenarios([], {
         response: { body: { hey: 'you' }, statusCode: 200 }
       })
@@ -300,24 +284,30 @@ describe('Configuring scenarios', () => {
     expect(allScenarios.status).toEqual(200);
     expect(allScenarios.body).toEqual([
       {
-        urlMatcher: {
-          url: '/some/{id}',
-          variableNames: ['id'],
-          regex: '/\\/some\\/(.*)/g'
+        requestMatcher: {
+          urlMatcher: {
+            url: '/some/{id}',
+            variableNames: ['id'],
+            regex: '/\\/some\\/(.*)/g'
+          },
+          method: 'POST',
+          headersMatcher: []
         },
-        bodyMatcher: {},
         outcomes: [],
         defaultResponse: {
           response: { body: { hey: 'you' }, statusCode: 200 }
         }
       },
       {
-        urlMatcher: {
-          url: '/some-other/{bananas}/{more}',
-          variableNames: ['bananas', 'more'],
-          regex: '/\\/some-other\\/(.*)\\/(.*)/g'
+        requestMatcher: {
+          urlMatcher: {
+            url: '/some-other/{bananas}/{more}',
+            variableNames: ['bananas', 'more'],
+            regex: '/\\/some-other\\/(.*)\\/(.*)/g'
+          },
+          method: 'POST',
+          headersMatcher: []
         },
-        bodyMatcher: {},
         outcomes: [
           {
             match: { bananas: '1' },
@@ -329,13 +319,17 @@ describe('Configuring scenarios', () => {
         }
       },
       {
-        urlMatcher: {
-          url: '/with-body',
-          regex: 'N/A'
-        },
-        bodyMatcher: {
-          body: { customerId: '*' },
-          keys: ['customerId']
+        requestMatcher: {
+          urlMatcher: {
+            url: '/with-body'
+          },
+          bodyMatcher: {
+            body: { customerId: '*' },
+            keys: ['customerId'],
+            type: 'json'
+          },
+          method: 'POST',
+          headersMatcher: []
         },
         outcomes: [
           {
@@ -368,12 +362,15 @@ describe('Configuring scenarios', () => {
     expect(scenario.status).toEqual(200);
     expect(scenario.body).toEqual([
       {
-        urlMatcher: {
-          url: '/some/{id}',
-          variableNames: ['id'],
-          regex: '/\\/some\\/(.*)/g'
+        requestMatcher: {
+          urlMatcher: {
+            url: '/some/{id}',
+            variableNames: ['id'],
+            regex: '/\\/some\\/(.*)/g'
+          },
+          method: 'POST',
+          headersMatcher: []
         },
-        bodyMatcher: {},
         outcomes: [],
         defaultResponse: {
           response: { body: { hey: 'updated' }, statusCode: 200 }

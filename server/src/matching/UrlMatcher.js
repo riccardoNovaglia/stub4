@@ -5,10 +5,10 @@ function UrlMatcher(url) {
   const capturedGroups = url.match(findVariablesInCurlies);
   if (!capturedGroups) return SimpleMatcher(url.trim());
 
-  const variableNames = capturedGroups.map(group => group.replace('{', '').replace('}', ''));
+  const variableNames = capturedGroups.map((group) => group.replace('{', '').replace('}', ''));
 
   var regexedUrl = url;
-  variableNames.forEach(subVal => (regexedUrl = regexedUrl.replace(`{${subVal}}`, '(.*)')));
+  variableNames.forEach((subVal) => (regexedUrl = regexedUrl.replace(`{${subVal}}`, '(.*)')));
   const escapedRegexedUrl = regexedUrl.replace('?', '\\?');
   const regex = new RegExp(escapedRegexedUrl, 'g');
 
@@ -32,12 +32,16 @@ function UrlMatcher(url) {
       const zipped = variableNames.map((elem, index) => ({ [elem]: capturedGroups[index] }));
       return zipped;
     },
-    equals: otherMatcher => otherMatcher.url === url,
+    equals: (otherMatcher) => otherMatcher.url === url,
     pretty() {
       return regex.toString();
     },
     toJson() {
-      return this.url;
+      return {
+        url: this.url,
+        regex: this.regex.toString(),
+        variableNames: this.variableNames
+      };
     }
   };
 }
@@ -46,17 +50,17 @@ const NoopMatcher = {
   url: '',
   matches: () => true,
   getMatchedMap: () => undefined,
-  equals: otherMatcher => typeof otherMatcher === 'NoopMatcher',
+  equals: (otherMatcher) => typeof otherMatcher === 'NoopMatcher',
   pretty: () => '*',
   toJson: () => undefined
 };
 
-const SimpleMatcher = url => {
+const SimpleMatcher = (url) => {
   return {
     url,
-    matches: urlToMatch => urlToMatch === url,
+    matches: (urlToMatch) => urlToMatch === url,
     getMatchedMap: () => undefined,
-    equals: otherMatcher => otherMatcher.url === url,
+    equals: (otherMatcher) => otherMatcher.url === url,
     pretty: () => url,
     toJson: () => ({ url })
   };

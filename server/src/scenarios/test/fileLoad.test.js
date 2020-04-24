@@ -40,11 +40,11 @@ describe('Loading stubs from an initialiser file', () => {
       })
     );
 
-    const matched = get('/other-things', { something: 'ok' });
+    const matched = get('/other-things', undefined, undefined, { something: 'ok' });
     expect(matched.statusCode).toEqual(302);
     expect(matched.body).toEqual({ the: 'other' });
 
-    const unmatched = get('/other-things', { something: 'not this' });
+    const unmatched = get('/other-things', undefined, undefined, { something: 'not this' });
     expect(unmatched.statusCode).toEqual(404);
     expect(unmatched.body).toEqual({});
   });
@@ -99,7 +99,10 @@ describe('Loading stubs from an initialiser file', () => {
     expect(noBananas.statusCode).toEqual(404);
     expect(noBananas.body).toEqual({ hey: 'no bananas' });
 
-    const other = get('/other-things', { something: 'ok', irrelevant: 'yes' });
+    const other = get('/other-things', undefined, undefined, {
+      something: 'ok',
+      irrelevant: 'yes'
+    });
     expect(other.statusCode).toEqual(302);
     expect(other.body).toEqual({ the: 'other' });
   });

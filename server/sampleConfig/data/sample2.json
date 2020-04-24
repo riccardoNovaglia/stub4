@@ -2,12 +2,15 @@
   "cruds": [
     {
       "requestMatcher": { "url": "/some-other" },
-      "data": [{ "id": 1, "some": "content" }, { "id": 3, "some": "stuff" }]
+      "data": [
+        { "id": 1, "some": "content" },
+        { "id": 3, "some": "stuff" }
+      ]
     }
   ],
   "scenarios": [
     {
-      "requestMatcher": { "url": "/with-body", "body": { "customerId": "*" } },
+      "requestMatcher": { "url": "/with-body", "body": { "bodyMatch": { "customerId": "*" } } },
       "outcomes": [
         {
           "match": { "customerId": "1" },

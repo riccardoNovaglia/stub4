@@ -9,10 +9,10 @@ function HeadersMatcher(headers) {
 
   return {
     headers: lowercased(headers),
-    keys: Object.keys(headers).map(key => key.toLowerCase()),
+    keys: Object.keys(headers).map((key) => key.toLowerCase()),
     matches(headers) {
       const lowercasedH = lowercased(headers);
-      return this.keys.every(key => lowercasedH[key] === this.headers[key]);
+      return this.keys.every((key) => lowercasedH[key] === this.headers[key]);
     },
     equals(otherMatcher) {
       return this.headers === otherMatcher.headers;
@@ -28,9 +28,9 @@ function HeadersMatcher(headers) {
 
 const NoopMatcher = () => ({
   matches: () => true,
-  equals: otherMatcher => typeof otherMatcher === 'NoopMatcher',
+  equals: (otherMatcher) => typeof otherMatcher === 'NoopMatcher',
   pretty: () => '[]',
-  toJson: () => '[]'
+  toJson: () => []
 });
 
 module.exports = { HeadersMatcher };

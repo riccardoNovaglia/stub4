@@ -21,19 +21,20 @@ function BodyMatcher(body) {
     matches(body) {
       if (_.isEmpty(body)) return false;
 
-      return keys.every(k => this.body[k] === '*' || body[k] === this.body[k]);
+      return keys.every((k) => this.body[k] === '*' || body[k] === this.body[k]);
     },
     pretty: () => JSON.stringify(body.bodyMatch),
     toJson() {
       return {
         body: this.body,
+        keys: this.keys,
         type: 'json'
       };
     }
   };
 }
 
-const XMLMatcher = body => {
+const XMLMatcher = (body) => {
   return {
     body,
     matches(body) {

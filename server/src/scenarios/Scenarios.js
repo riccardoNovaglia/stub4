@@ -6,10 +6,10 @@ const scenarios = [];
 
 function add(scenario) {
   logger.info(
-    `Adding new scenario for ${scenario.urlMatcher.url} with ${scenario.outcomes.length} outcomes`
+    `Adding new scenario for ${scenario.requestMatcher.urlMatcher.url} with ${scenario.outcomes.length} outcomes`
   );
-  const existingScenario = scenarios.find(existing =>
-    existing.urlMatcher.equals(scenario.urlMatcher)
+  const existingScenario = scenarios.find((existing) =>
+    existing.requestMatcher.equals(scenario.requestMatcher)
   );
   if (existingScenario) {
     scenarios.splice(scenarios.indexOf(existingScenario), 1);
@@ -17,8 +17,10 @@ function add(scenario) {
   scenarios.push(scenario);
 }
 
-function get(url, body) {
-  const matchedScenario = scenarios.find(scenario => scenario.matches(url, body));
+function get(url, method, headers, body) {
+  const matchedScenario = scenarios.find((scenario) =>
+    scenario.matches(url, method, headers, body)
+  );
 
   if (!matchedScenario) return undefined;
   else logger.info('found matching scenario');
@@ -27,12 +29,7 @@ function get(url, body) {
 }
 
 function all() {
-  return scenarios.slice().map(outcome => {
-    let { urlMatcher, bodyMatcher, outcomes, defaultResponse } = outcome;
-    urlMatcher.regex = urlMatcher.regex ? urlMatcher.regex.toString() : 'N/A';
-    outcomes = outcomes.map(outcomeWrapper => outcomeWrapper.outcome);
-    return { urlMatcher, bodyMatcher, outcomes, defaultResponse };
-  });
+  return scenarios.slice().map((scenario) => scenario.toJson());
 }
 
 function clear() {

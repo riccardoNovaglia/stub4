@@ -14,9 +14,9 @@ const logger = createLogger('scenarios');
 function middleware(req, res, next) {
   try {
     const url = req.originalUrl;
-    const body = req.body;
+    const method = req.method;
 
-    const response = scenarios.get(url, body);
+    const response = scenarios.get(url, method, req.headers, req.body);
     if (response) {
       return res.status(response.statusCode).send(response.body);
     } else {
