@@ -8,7 +8,7 @@ const logger = createLogger('stubs');
 const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
 function Stub(requestMatcher, response, contract) {
-  const data = { response, contract, requestMatcher };
+  const data = { response, contract, requestMatcher, interactions: 0 };
 
   const stub = {
     ...data,
@@ -33,7 +33,12 @@ function Stub(requestMatcher, response, contract) {
         response: this.response
       };
     },
+    addInteraction() {
+      this.interactions = this.interactions + 1;
+    },
     async respond(res) {
+      this.addInteraction();
+
       if (this.response.delay !== undefined) {
         await delay(this.response.delay);
       }

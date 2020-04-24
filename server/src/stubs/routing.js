@@ -14,8 +14,14 @@ const router = require('../router')({
 router.get('/count', (req, res) => {
   const url = req.body.url;
 
-  const count = stubs.count(url);
-  return res.send({ count });
+  const matchedStub = stubs.get(url, undefined, undefined, undefined);
+  if (matchedStub) {
+    const count = matchedStub.interactions;
+
+    return res.send({ count });
+  } else {
+    return res.status(404);
+  }
 });
 
 async function middleware(req, res, next) {
@@ -25,8 +31,6 @@ async function middleware(req, res, next) {
 
     const matchedStub = stubs.get(url, method, req.headers, req.body);
     if (matchedStub) {
-      stubs.countUp(url);
-
       return await matchedStub.respond(res);
     } else {
       logger.debug(`No stubs matched request ${req.originalUrl}`);
