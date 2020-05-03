@@ -26,10 +26,9 @@ router.get('/count', (req, res) => {
 
 async function middleware(req, res, next) {
   try {
-    const url = req.originalUrl;
-    const method = req.method;
+    const { originalUrl, method, headers, body } = req;
 
-    const matchedStub = stubs.get(url, method, req.headers, req.body);
+    const matchedStub = stubs.get(originalUrl, method, headers, body);
     if (matchedStub) {
       return await matchedStub.respond(res);
     } else {

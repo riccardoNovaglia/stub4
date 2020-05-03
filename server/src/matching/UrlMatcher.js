@@ -1,5 +1,5 @@
 function UrlMatcher(url) {
-  if (!url) return NoopMatcher;
+  if (!url) throw new Error('A request matcher url must be provided!');
 
   const findVariablesInCurlies = /\{([^}]+)\}/g;
   const capturedGroups = url.match(findVariablesInCurlies);
