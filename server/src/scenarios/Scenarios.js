@@ -25,7 +25,7 @@ function get(url, method, headers, body) {
   if (!matchedScenario) return undefined;
   else logger.info('found matching scenario');
 
-  return matchedScenario.getResponseFor(url, body);
+  return matchedScenario;
 }
 
 function all() {

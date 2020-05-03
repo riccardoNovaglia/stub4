@@ -1,10 +1,12 @@
-const { get } = require('lodash');
+const { Response } = require('../response/Response');
 
-const Outcome = (outcome, defaultResponse) => {
+const Outcome = (outcome) => {
   const toMatch = Object.keys(outcome.match);
+  const response = Response(outcome.response);
 
   return {
     outcome,
+    response,
 
     matchesMaps(variablesMaps) {
       const maps = variablesMaps.map((varMap) =>
@@ -18,12 +20,6 @@ const Outcome = (outcome, defaultResponse) => {
       return toMatch.every((key) =>
         body[key] ? outcome.match[key].toString() === body[key].toString() : false
       );
-    },
-    toResponse() {
-      return {
-        body: get(this, 'outcome.response.body', defaultResponse.body),
-        statusCode: get(this, 'outcome.response.statusCode', defaultResponse.statusCode)
-      };
     },
     toJson() {
       return outcome;

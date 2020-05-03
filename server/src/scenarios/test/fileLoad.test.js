@@ -16,12 +16,14 @@ describe('Loading stubs from an initialiser file', () => {
     );
 
     const dude1 = get('/dude/1');
-    expect(dude1.statusCode).toEqual(200);
-    expect(dude1.body).toEqual({ hey: 'dude number 1!' });
+    const dude1Response = dude1.getResponse('/dude/1', {});
+    expect(dude1Response.statusCode).toEqual(200);
+    expect(dude1Response.body).toEqual({ hey: 'dude number 1!' });
 
     const dude3 = get('/dude/3');
-    expect(dude3.statusCode).toEqual(200);
-    expect(dude3.body).toEqual({ hey: 'setup default' });
+    const dude3Response = dude3.getResponse('/dude/3', {});
+    expect(dude3Response.statusCode).toEqual(200);
+    expect(dude3Response.body).toEqual({ hey: 'setup default' });
   });
 
   it('creates a scenario from file with body matching', () => {
@@ -41,12 +43,14 @@ describe('Loading stubs from an initialiser file', () => {
     );
 
     const matched = get('/other-things', undefined, undefined, { something: 'ok' });
-    expect(matched.statusCode).toEqual(302);
-    expect(matched.body).toEqual({ the: 'other' });
+    const matchedResponse = matched.getResponse('/other-things', { something: 'ok' });
+    expect(matchedResponse.statusCode).toEqual(302);
+    expect(matchedResponse.body).toEqual({ the: 'other' });
 
     const unmatched = get('/other-things', undefined, undefined, { something: 'not this' });
-    expect(unmatched.statusCode).toEqual(404);
-    expect(unmatched.body).toEqual({});
+    const unmatchedResponse = unmatched.getResponse('/other-things', { something: 'not this' });
+    expect(unmatchedResponse.statusCode).toEqual(404);
+    expect(unmatchedResponse.body).toEqual({});
   });
 
   it('loads multiple scenarios', () => {
@@ -84,26 +88,34 @@ describe('Loading stubs from an initialiser file', () => {
     );
 
     const dude1 = get('/dude/1');
-    expect(dude1.statusCode).toEqual(200);
-    expect(dude1.body).toEqual({ hey: 'other' });
+    const dude1Response = dude1.getResponse('/dude/1', {});
+    expect(dude1Response.statusCode).toEqual(200);
+    expect(dude1Response.body).toEqual({ hey: 'other' });
 
     const dude3 = get('/dude/3');
-    expect(dude3.statusCode).toEqual(200);
-    expect(dude3.body).toEqual({ hey: 'some' });
+    const dude3Response = dude3.getResponse('/dude/3', {});
+    expect(dude3Response.statusCode).toEqual(200);
+    expect(dude3Response.body).toEqual({ hey: 'some' });
 
     const yesBananas = get('/other/yes');
-    expect(yesBananas.statusCode).toEqual(200);
-    expect(yesBananas.body).toEqual({});
+    const yesBananasResponse = yesBananas.getResponse('/other/yes', {});
+    expect(yesBananasResponse.statusCode).toEqual(200);
+    expect(yesBananasResponse.body).toEqual({});
 
     const noBananas = get('/other/no');
-    expect(noBananas.statusCode).toEqual(404);
-    expect(noBananas.body).toEqual({ hey: 'no bananas' });
+    const noBananasResponse = noBananas.getResponse('/other/no', {});
+    expect(noBananasResponse.statusCode).toEqual(404);
+    expect(noBananasResponse.body).toEqual({ hey: 'no bananas' });
 
     const other = get('/other-things', undefined, undefined, {
       something: 'ok',
       irrelevant: 'yes'
     });
-    expect(other.statusCode).toEqual(302);
-    expect(other.body).toEqual({ the: 'other' });
+    const otherResponse = other.getResponse('/other-things', {
+      something: 'ok',
+      irrelevant: 'yes'
+    });
+    expect(otherResponse.statusCode).toEqual(302);
+    expect(otherResponse.body).toEqual({ the: 'other' });
   });
 });

@@ -37,17 +37,10 @@ function Stub(requestMatcher, response, contract) {
     addInteraction() {
       this.interactions = this.interactions + 1;
     },
-    async respond(res) {
+    getResponse() {
       this.addInteraction();
 
-      if (this.response.delay !== undefined) {
-        await delay(this.response.delay);
-      }
-
-      return res
-        .set('Content-Type', this.response.contentType)
-        .status(this.response.statusCode)
-        .send(this.response.body);
+      return this.response;
     }
   };
 

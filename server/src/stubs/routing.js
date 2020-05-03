@@ -30,7 +30,8 @@ async function middleware(req, res, next) {
 
     const matchedStub = stubs.get(originalUrl, method, headers, body);
     if (matchedStub) {
-      return await matchedStub.respond(res);
+      const response = matchedStub.getResponse();
+      return await response.respond(res);
     } else {
       logger.debug(`No stubs matched request ${req.originalUrl}`);
       return next();

@@ -11,19 +11,18 @@ const router = require('../router')({
 
 const logger = createLogger('scenarios');
 
-function middleware(req, res, next) {
+async function middleware(req, res, next) {
+  const { originalUrl, method, headers, body } = req;
   try {
-    const url = req.originalUrl;
-    const method = req.method;
-
-    const response = scenarios.get(url, method, req.headers, req.body);
-    if (response) {
-      return res.status(response.statusCode).send(response.body);
+    const scenario = scenarios.get(originalUrl, method, headers, body);
+    if (scenario) {
+      const response = scenario.getResponse(originalUrl, body);
+      return await response.respond(res);
     } else {
       return next();
     }
   } catch (e) {
-    logger.error(`An error occurred trying to get scenarios for ${req.originalUrl}`);
+    logger.error(`An error occurred trying to get scenarios for ${req.originalUrl}`, e);
     return next();
   }
 }

@@ -16,6 +16,8 @@ function contentType(type) {
   }
 }
 
+const sleep = (ms) => new Promise((res) => setTimeout(res, ms));
+
 function Response(response) {
   const type = _.get(response, 'type', 'json');
   const body = _.get(response, 'body', type === 'json' ? {} : '');
@@ -25,7 +27,22 @@ function Response(response) {
     body,
     contentType: contentType(type),
     statusCode,
-    delay
+    delay,
+
+    async respond(res) {
+      if (this.delay !== undefined) {
+        await sleep(this.delay);
+      }
+
+      return res.set('Content-Type', this.contentType).status(this.statusCode).send(this.body);
+    },
+    toJson() {
+      return {
+        body: this.body,
+        contentType: this.contentType,
+        statusCode: this.statusCode
+      };
+    }
   };
 }
 

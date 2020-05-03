@@ -295,7 +295,9 @@ describe('Configuring scenarios', () => {
         },
         outcomes: [],
         defaultResponse: {
-          response: { body: { hey: 'you' }, statusCode: 200 }
+          body: { hey: 'you' },
+          statusCode: 200,
+          contentType: 'application/json'
         }
       },
       {
@@ -315,7 +317,9 @@ describe('Configuring scenarios', () => {
           }
         ],
         defaultResponse: {
-          response: { body: {}, statusCode: 404 }
+          body: {},
+          statusCode: 404,
+          contentType: 'application/json'
         }
       },
       {
@@ -338,7 +342,9 @@ describe('Configuring scenarios', () => {
           }
         ],
         defaultResponse: {
-          response: { body: {}, statusCode: 404 }
+          body: {},
+          statusCode: 404,
+          contentType: 'application/json'
         }
       }
     ]);
@@ -373,7 +379,9 @@ describe('Configuring scenarios', () => {
         },
         outcomes: [],
         defaultResponse: {
-          response: { body: { hey: 'updated' }, statusCode: 200 }
+          body: { hey: 'updated' },
+          statusCode: 200,
+          contentType: 'application/json'
         }
       }
     ]);

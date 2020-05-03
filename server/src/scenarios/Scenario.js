@@ -2,54 +2,49 @@ const _ = require('lodash');
 
 const { createLogger } = require('../logger');
 
+const { Response } = require('../response/Response');
 const { RequestMatcher } = require('../matching/RequestMatcher');
 const Outcome = require('./Outcome');
 
 const logger = createLogger('scenarios');
 
-const Scenario = (requestMatcher, defaultResponse, outcomes) => ({
-  requestMatcher,
-  defaultResponse,
-  outcomes,
+const Scenario = (requestMatcher, defaultResponse, outcomes) => {
+  return {
+    requestMatcher,
+    defaultResponse,
+    outcomes,
 
-  matches(url, method, headers, body) {
-    return this.requestMatcher.matches({ url, method, headers, body });
-  },
-  getResponseFor(url, body) {
-    logger.debug(`Finding matching scenario for ${url} ${body}`);
-    const matchedMapFromUrl = this.requestMatcher.urlMatcher.getMatchedMap(url);
-    if (matchedMapFromUrl) {
-      const matchedOutcome = this.outcomes.find((outcome) =>
-        outcome.matchesMaps(matchedMapFromUrl)
-      );
+    matches(url, method, headers, body) {
+      return this.requestMatcher.matches({ url, method, headers, body });
+    },
+    getResponse(url, body) {
+      logger.debug(`Finding matching outcome for ${url} ${body}`);
+      const outcome = this.findMatchingOutcome(url, body);
 
-      return matchedOutcome ? matchedOutcome.toResponse() : this.defaultResponse.response;
-    } else {
-      const matchedOutcome = this.outcomes.find((outcome) => outcome.matchesBody(body));
-
-      return matchedOutcome ? matchedOutcome.toResponse() : this.defaultResponse.response;
+      if (outcome !== undefined) return outcome.response;
+      else return this.defaultResponse;
+    },
+    findMatchingOutcome(url, body) {
+      const matchedMapFromUrl = this.requestMatcher.urlMatcher.getMatchedMap(url);
+      return matchedMapFromUrl
+        ? this.outcomes.find((outcome) => outcome.matchesMaps(matchedMapFromUrl))
+        : this.outcomes.find((outcome) => outcome.matchesBody(body));
+    },
+    toJson() {
+      return {
+        requestMatcher: this.requestMatcher.toJson(),
+        outcomes: this.outcomes.map((outcome) => outcome.toJson()),
+        defaultResponse: this.defaultResponse
+      };
     }
-  },
-  toJson() {
-    return {
-      requestMatcher: this.requestMatcher.toJson(),
-      outcomes: this.outcomes.map((outcome) => outcome.toJson()),
-      defaultResponse: this.defaultResponse
-    };
-  }
-});
+  };
+};
 
 function ScenarioFrom(requestMatcher, defaults, outcomes) {
-  const defaultResponse = {
-    statusCode: 200,
-    body: {},
-    ...defaults
-  };
-
   return Scenario(
     RequestMatcher(requestMatcher),
-    defaults,
-    outcomes.map((outcome) => Outcome(outcome, defaultResponse))
+    Response(defaults.response),
+    outcomes.map((outcome) => Outcome(outcome))
   );
 }
 

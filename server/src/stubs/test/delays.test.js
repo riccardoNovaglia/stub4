@@ -26,12 +26,9 @@ describe('Delaying stubs responses', () => {
       }
     });
 
-    const before = new Date();
-    const response = await call(app).get('/delayed');
-    const after = new Date();
-    const millisDiff = after.getTime() - before.getTime();
-    expect(millisDiff).toBeGreaterThan(1000);
+    const { response, timeTaken } = await timed(() => call(app).get('/delayed'));
 
+    expect(timeTaken).toBeGreaterThan(1000);
     expect(response.status).toEqual(200);
   });
 
@@ -45,12 +42,19 @@ describe('Delaying stubs responses', () => {
       }
     });
 
-    const before = new Date();
-    const response = await call(app).get('/not-delayed');
-    const after = new Date();
-    const millisDiff = after.getTime() - before.getTime();
-    expect(millisDiff).toBeGreaterThan(0);
-    expect(millisDiff).toBeLessThan(50); // this should comfortably be the case...
+    const { response, timeTaken } = await timed(() => call(app).get('/not-delayed'));
+
+    expect(timeTaken).toBeGreaterThan(0);
+    expect(timeTaken).toBeLessThan(50); // this should comfortably be the case...
     expect(response.status).toEqual(200);
   });
 });
+
+async function timed(fn) {
+  const before = new Date();
+  const response = await fn();
+  const after = new Date();
+  const diff = after.getTime() - before.getTime();
+
+  return { response, timeTaken: diff };
+}
