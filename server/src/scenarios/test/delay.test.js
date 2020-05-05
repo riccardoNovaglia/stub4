@@ -7,7 +7,7 @@ const { stubFor, setPort } = require('@stub4/client');
 const { GET } = require('@stub4/client/src/RequestMatcher');
 const { containsScenarios } = require('@stub4/client/src/ScenariosResponse');
 
-describe('Delaying stubs responses', () => {
+describe('Delaying scenarios responses', () => {
   let server;
   setPort(9021);
   beforeAll((done) => {
@@ -45,6 +45,21 @@ describe('Delaying stubs responses', () => {
     expect(slowTime).toBeGreaterThan(1000);
     expect(slowResponse.status).toEqual(200);
     expect(slowResponse.body).toEqual({ msg: 'slow' });
+  });
+
+  it('delays the default response', async () => {
+    await stubFor(
+      GET('/timings/{id}'),
+      containsScenarios([], {
+        response: { body: { msg: 'not-so-slow' }, delay: 500 }
+      })
+    );
+
+    const { response, timeTaken } = await timed(() => call(app).get('/timings/any'));
+    expect(timeTaken).toBeGreaterThan(500);
+    expect(timeTaken).toBeLessThan(550);
+    expect(response.status).toEqual(200);
+    expect(response.body).toEqual({ msg: 'not-so-slow' });
   });
 });
 
