@@ -10,7 +10,7 @@ const { respondsWith } = require('@stub4/client/src/StubResponse');
 describe('Setting up stubs', () => {
   let server;
   setPort(9009);
-  beforeAll(done => {
+  beforeAll((done) => {
     server = app.listen(9009, done);
     enableDestroy(server);
   });
@@ -44,17 +44,15 @@ describe('Setting up stubs', () => {
     expect(proxiedResponse.status).toEqual(200);
     expect(proxiedResponse.data).toEqual([
       {
-        request: { url: '/john', method: 'POST' },
+        requestMatcher: { urlMatcher: { url: '/john' }, method: 'POST' },
         proxyUrl: 'http://localhost:9009/bananas'
       }
     ]);
   });
 
-  it('proxies over the body and content type of (POST) requests', async () => {
+  it.only('proxies over the body and content type of (POST) requests', async () => {
     await stubFor(
-      POST('/post-and-body')
-        .withBody({ id: '123' })
-        .withType('json'),
+      POST('/post-and-body').withBody({ id: '123' }).withType('json'),
       respondsWith(200, 'text', 'it worked!')
     );
 
@@ -67,21 +65,21 @@ describe('Setting up stubs', () => {
     expect(proxiedResponse.status).toEqual(200);
     expect(proxiedResponse.data).toEqual('it worked!');
 
-    expect(
+    await failsWithStatusCode(404, () =>
       axios.request({
         url: 'http://localhost:9009/to-be-proxied',
         method: 'GET',
         data: { id: '123' }
       })
-    ).rejects.toEqual(new Error('Request failed with status code 404'));
+    );
 
-    expect(
+    await failsWithStatusCode(404, () =>
       axios.request({
         url: 'http://localhost:9009/to-be-proxied',
         method: 'POST',
         data: { id: '321' }
       })
-    ).rejects.toEqual(new Error('Request failed with status code 404'));
+    );
   });
 
   it('proxies over the body and content type of (POST) requests (xml)', async () => {
@@ -103,7 +101,7 @@ describe('Setting up stubs', () => {
     expect(proxiedResponse.status).toEqual(200);
     expect(proxiedResponse.data).toEqual('it worked!');
 
-    expect(
+    await failsWithStatusCode(404, () =>
       axios.post(
         'http://localhost:9009/to-be-proxied',
         "<book author='J. K. Rowling'><title>Jerry Potter</title></book>",
@@ -111,6 +109,14 @@ describe('Setting up stubs', () => {
           headers: { 'Content-Type': 'text/xml' }
         }
       )
-    ).rejects.toEqual(new Error('Request failed with status code 404'));
+    );
   });
 });
+
+async function failsWithStatusCode(statusCode, callFn) {
+  try {
+    await callFn();
+  } catch (error) {
+    expect(error.response.status).toEqual(statusCode);
+  }
+}

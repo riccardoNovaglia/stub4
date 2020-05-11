@@ -1,10 +1,10 @@
-const proxy = require('./Proxys');
+const proxys = require('./Proxys');
 
 const { ProxyFromRequest } = require('./Proxy');
 const { createLogger } = require('../logger');
 
 const router = require('../router')({
-  items: proxy,
+  items: proxys,
   builderFn: ProxyFromRequest,
   names: { many: 'proxy', one: 'proxy' }
 });
@@ -12,12 +12,11 @@ const router = require('../router')({
 const logger = createLogger('proxy');
 
 async function middleware(req, res, next) {
+  const { originalUrl, method, headers, body, rawBody } = req;
   try {
-    const url = req.originalUrl;
-    const method = req.method;
-
-    const response = await proxy.get(url, method, req.body);
-    if (response) {
+    const proxy = await proxys.get(originalUrl, method, headers, body);
+    if (proxy) {
+      const response = await proxy.doProxy(method, headers, rawBody ? rawBody : body);
       return res.status(response.status).send(response.data);
     } else {
       return next();

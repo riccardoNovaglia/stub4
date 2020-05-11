@@ -30,7 +30,7 @@ const NoopMatcher = () => ({
   matches: () => true,
   equals: (otherMatcher) => typeof otherMatcher === 'NoopMatcher',
   pretty: () => '[]',
-  toJson: () => []
+  toJson: () => undefined
 });
 
 module.exports = { HeadersMatcher };

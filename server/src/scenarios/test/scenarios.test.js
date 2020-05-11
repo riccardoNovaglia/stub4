@@ -290,8 +290,7 @@ describe('Configuring scenarios', () => {
             variableNames: ['id'],
             regex: '/\\/some\\/(.*)/g'
           },
-          method: 'POST',
-          headersMatcher: []
+          method: 'POST'
         },
         outcomes: [],
         defaultResponse: {
@@ -307,8 +306,7 @@ describe('Configuring scenarios', () => {
             variableNames: ['bananas', 'more'],
             regex: '/\\/some-other\\/(.*)\\/(.*)/g'
           },
-          method: 'POST',
-          headersMatcher: []
+          method: 'POST'
         },
         outcomes: [
           {
@@ -332,8 +330,7 @@ describe('Configuring scenarios', () => {
             keys: ['customerId'],
             type: 'json'
           },
-          method: 'POST',
-          headersMatcher: []
+          method: 'POST'
         },
         outcomes: [
           {
@@ -374,8 +371,7 @@ describe('Configuring scenarios', () => {
             variableNames: ['id'],
             regex: '/\\/some\\/(.*)/g'
           },
-          method: 'POST',
-          headersMatcher: []
+          method: 'POST'
         },
         outcomes: [],
         defaultResponse: {

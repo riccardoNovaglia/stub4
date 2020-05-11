@@ -10,24 +10,13 @@ function add(proxy) {
   proxys.push(proxy);
 }
 
-async function get(url, method, body) {
+function get(url, method, headers, body) {
   logger.debug(`Trying to get proxy for ${url}`);
-  const proxy = proxys.find(proxy => proxy.request.url === url && proxy.request.method === method);
-  if (!proxy) return undefined;
-
-  logger.debug(`Proxying request to ${proxy.request.method} ${proxy.proxyUrl}`);
-  const response = await axios.request({
-    url: proxy.proxyUrl,
-    method: proxy.request.method,
-    data: body
-  });
-  logger.debug(`Received response from proxy'd url: ${response}`);
-
-  return response;
+  return proxys.find((proxy) => proxy.matches(url, method, headers, body));
 }
 
 function all() {
-  return proxys;
+  return proxys.map((proxy) => proxy.toJson());
 }
 
 function clear() {
