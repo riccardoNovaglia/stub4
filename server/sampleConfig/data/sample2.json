@@ -24,9 +24,12 @@
   ],
   "proxy": [
     {
-      "requestMatcher": { "url": "/to-be-proxied" },
-      "method": "GET",
-      "destination": { "url": "http://localhost:9090/to-be-proxied-to" }
+      "requestMatcher": { "url": "/to-be-proxied", "method": "GET" },
+      "proxy": { "destination": { "url": "http://localhost:9090/to-be-proxied-to" } }
+    },
+    {
+      "requestMatcher": { "url": "/to-be-proxied-slowly", "method": "GET" },
+      "proxy": { "destination": { "url": "http://localhost:9090/to-be-proxied-to" }, "delay": 1000 }
     }
   ],
   "stubs": [

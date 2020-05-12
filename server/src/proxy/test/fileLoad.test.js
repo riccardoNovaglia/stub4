@@ -8,7 +8,7 @@ describe('Loading proxy from an initialiser file', () => {
     add(
       ProxyFromFile({
         requestMatcher: { url: '/some-url' },
-        destination: { url: '/something' }
+        proxy: { destination: { url: '/something' } }
       })
     );
 
@@ -23,13 +23,13 @@ describe('Loading proxy from an initialiser file', () => {
     add(
       ProxyFromFile({
         requestMatcher: { url: '/bananas/v21' },
-        destination: { url: '/patatas/v22' }
+        proxy: { destination: { url: '/patatas/v22' } }
       })
     );
     add(
       ProxyFromFile({
         requestMatcher: { url: '/beans', method: 'POST' },
-        destination: { url: '/peas' }
+        proxy: { destination: { url: '/peas' } }
       })
     );
 

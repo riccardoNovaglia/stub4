@@ -7,7 +7,7 @@ const { GET, POST } = require('@stub4/client/src/RequestMatcher');
 const { proxyTo } = require('@stub4/client/src/Proxy');
 const { respondsWith } = require('@stub4/client/src/StubResponse');
 
-describe('Setting up stubs', () => {
+describe('Setting up a proxy', () => {
   let server;
   setPort(9009);
   beforeAll((done) => {
@@ -50,7 +50,7 @@ describe('Setting up stubs', () => {
     ]);
   });
 
-  it.only('proxies over the body and content type of (POST) requests', async () => {
+  it('proxies over the body and content type of (POST) requests', async () => {
     await stubFor(
       POST('/post-and-body').withBody({ id: '123' }).withType('json'),
       respondsWith(200, 'text', 'it worked!')

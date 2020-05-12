@@ -7,12 +7,19 @@ const { RequestMatcher } = require('../matching/RequestMatcher');
 
 const logger = createLogger('proxy');
 
-function Proxy(requestMatcher, proxyUrl) {
+const sleep = (ms) => new Promise((res) => setTimeout(res, ms));
+
+function Proxy(requestMatcher, proxy) {
+  const {
+    destination: { url: proxyUrl },
+    delay
+  } = proxy;
   if (!proxyUrl) throw new Error('A url to proxy to must be provided!');
 
   return {
-    proxyUrl,
     requestMatcher,
+    proxyUrl,
+    delay,
     matches(url, method, headers, body) {
       return this.requestMatcher.matches({ url, method, headers, body });
     },
@@ -24,33 +31,43 @@ function Proxy(requestMatcher, proxyUrl) {
         headers,
         data: body
       });
-      logger.debug(`Received response from proxy'd url: ${response}`);
+      logger.debug(`Received response from proxy'd url: ${this.responseSummary(response)}`);
+
+      if (this.delay) {
+        logger.debug(`This proxy has a delay set, sleeping for ${this.delay}ms`);
+        await sleep(this.delay);
+      }
+
       return response;
     },
     pretty() {
-      return `${this.requestMatcher.methodMatcher.pretty()} ${this.requestMatcher.urlMatcher.pretty()} -> ${proxyUrl}`;
+      const prettyMethod = this.requestMatcher.methodMatcher.pretty();
+      const prettyUrl = this.requestMatcher.urlMatcher.pretty();
+      const delayIfAny = this.delay ? `(+ ${this.delay}ms delay)` : '';
+      return `${prettyMethod} ${prettyUrl} -> ${proxyUrl} ${delayIfAny}`;
     },
     toJson() {
       return {
         requestMatcher: this.requestMatcher.toJson(),
         proxyUrl
       };
+    },
+    responseSummary(response) {
+      return `${response.status} - ${JSON.stringify(response.data)}`;
     }
   };
 }
 
 function ProxyFromRequest(req) {
-  const requestMatcher = RequestMatcher(req.body.requestMatcher);
-  const proxyUrl = _.get(req.body, 'proxy.destination.url');
+  const { requestMatcher, proxy } = req.body;
 
-  return Proxy(requestMatcher, proxyUrl);
+  return Proxy(RequestMatcher(requestMatcher), proxy);
 }
 
 function ProxyFromFile(proxyDef) {
-  const requestMatcher = RequestMatcher(proxyDef.requestMatcher);
-  const proxyUrl = _.get(proxyDef, 'destination.url');
+  const { requestMatcher, proxy } = proxyDef;
 
-  return Proxy(requestMatcher, proxyUrl);
+  return Proxy(RequestMatcher(requestMatcher), proxy);
 }
 
 module.exports = { ProxyFromRequest, ProxyFromFile, Proxy };
