@@ -1,4 +1,7 @@
 {
   "stubsPort": 9090,
-  "defaultsFiles": ["sampleConfig/sample.json", "sampleConfig/data/*"]
+  "defaultsFiles": ["sampleConfig/sample.json", "sampleConfig/data/*"],
+  "logging": {
+    "baseLevel": "info"
+  }
 }

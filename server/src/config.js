@@ -22,10 +22,15 @@ function readProvidedConfig() {
   if (process.env.NODE_ENV !== 'test' && process.argv[2]) {
     const configFile = process.argv[2];
     const parsed = JSON.parse(fs.readFileSync(configFile, { encoding: 'utf8' }).toString());
+    const mergedLogging = {
+      ...config.logging,
+      ...parsed.logging
+    };
 
     config = {
       ...config,
-      ...parsed
+      ...parsed,
+      logging: mergedLogging
     };
   }
 }
