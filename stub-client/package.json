@@ -1,6 +1,6 @@
 {
   "name": "@stub4/client",
-  "version": "0.0.10",
+  "version": "0.0.12",
   "description": "Client to programmatically setup stubs and more",
   "main": "src/index.js",
   "author": "Riccardo <stub4js+npm@gmail.com>",
@@ -9,11 +9,11 @@
     "publishPackage": "npm publish --access public"
   },
   "dependencies": {
-    "axios": "^0.19.2",
-    "lodash": "^4.17.15"
+    "axios": "0.19.2",
+    "lodash": "4.17.15"
   },
   "devDependencies": {
-    "jest": "25.4.0"
+    "jest": "26.0.1"
   },
   "license": "ISC",
   "files": [

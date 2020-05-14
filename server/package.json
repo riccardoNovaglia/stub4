@@ -23,28 +23,28 @@
   },
   "homepage": "https://github.com/riccardoNovaglia/stub4#readme",
   "dependencies": {
-    "axios": "^0.19.2",
-    "body-parser": "^1.19.0",
-    "cors": "^2.8.5",
-    "express": "^4.17.1",
-    "express-xml-bodyparser": "^0.3.0",
-    "glob": "^7.1.6",
-    "lodash": "^4.17.15",
-    "server-destroy": "^1.0.1",
+    "axios": "0.19.2",
+    "body-parser": "1.19.0",
+    "cors": "2.8.5",
+    "express": "4.17.1",
+    "express-xml-bodyparser": "0.3.0",
+    "glob": "7.1.6",
+    "lodash": "4.17.15",
+    "server-destroy": "1.0.1",
     "winston": "3.2.1",
-    "xml-js": "^1.6.11",
-    "xmldom": "^0.3.0",
-    "xpath": "^0.0.27"
-  },
-  "peerDependencies": {
-    "@pact-foundation/pact": "9.9.x"
+    "xml-js": "1.6.11",
+    "xmldom": "0.3.0",
+    "xpath": "0.0.27"
   },
   "devDependencies": {
-    "@pact-foundation/pact": "9.9.12",
-    "@stub4/client": "0.0.10",
-    "jest": "25.4.0",
+    "@pact-foundation/pact": "9.10.0",
+    "@stub4/client": "0.0.12",
+    "jest": "26.0.1",
     "nodemon": "2.0.3",
-    "supertest": "^4.0.2"
+    "supertest": "4.0.2"
+  },
+  "peerDependencies": {
+    "@pact-foundation/pact": "9.10.x"
   },
   "jest": {
     "watchPathIgnorePatterns": [
