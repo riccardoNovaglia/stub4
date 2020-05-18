@@ -1,22 +1,15 @@
-const call = require('supertest');
-const axios = require('axios');
-const enableDestroy = require('server-destroy');
-
-const app = require('../../app');
+const stub4 = require('../../index');
+const { TestClient, setup } = require('../../testClient/TestClient');
 
 const { stubFor, setPort } = require('@stub4/client');
 const { GET, POST, url } = require('@stub4/client/src/RequestMatcher');
 const { containsScenarios } = require('@stub4/client/src/ScenariosResponse');
 
 describe('Configuring scenarios', () => {
-  let server;
-  setPort(9019);
-  beforeAll((done) => {
-    server = app.listen(9019, done);
-    enableDestroy(server);
-  });
-  afterAll(() => server.destroy());
-  beforeEach(async () => await axios.delete('http://localhost:9019/scenarios'));
+  const testClient = TestClient();
+  beforeAll(() => setup(stub4, setPort, testClient));
+  afterEach(() => stub4.clearAll());
+  afterAll(() => stub4.shutdown());
 
   describe('url matching', () => {
     it('creates a scenario, with default response body and specific overrides', async () => {
@@ -34,19 +27,19 @@ describe('Configuring scenarios', () => {
         )
       );
 
-      const dude1 = await call(app).get('/dude/1');
+      const dude1 = await testClient.get('/dude/1');
       expect(dude1.status).toEqual(200);
       expect(dude1.body).toEqual({ hey: 'dude number 1!' });
 
-      const dude2 = await call(app).get('/dude/2');
+      const dude2 = await testClient.get('/dude/2');
       expect(dude2.status).toEqual(200);
       expect(dude2.body).toEqual({ hey: 'dude number 2!' });
 
-      const dude3 = await call(app).get('/dude/3');
+      const dude3 = await testClient.get('/dude/3');
       expect(dude3.status).toEqual(200);
       expect(dude3.body).toEqual({ hey: 'default dude!' });
 
-      const answer = await call(app).get('/dude/42');
+      const answer = await testClient.get('/dude/42');
       expect(answer.status).toEqual(200);
       expect(answer.body).toEqual({ hey: 'the answer' });
     });
@@ -66,19 +59,19 @@ describe('Configuring scenarios', () => {
         )
       );
 
-      const statuses51 = await call(app).get('/statuses/51');
+      const statuses51 = await testClient.get('/statuses/51');
       expect(statuses51.status).toEqual(201);
       expect(statuses51.body).toEqual({});
 
-      const statuses29 = await call(app).get('/statuses/29');
+      const statuses29 = await testClient.get('/statuses/29');
       expect(statuses29.status).toEqual(303);
       expect(statuses29.body).toEqual({});
 
-      const answer = await call(app).get('/statuses/42');
+      const answer = await testClient.get('/statuses/42');
       expect(answer.status).toEqual(404);
       expect(answer.body).toEqual({});
 
-      const defaultResponse = await call(app).get('/statuses/123321');
+      const defaultResponse = await testClient.get('/statuses/123321');
       expect(defaultResponse.status).toEqual(200);
       expect(defaultResponse.body).toEqual({});
     });
@@ -97,15 +90,15 @@ describe('Configuring scenarios', () => {
         )
       );
 
-      const yes = await call(app).get('/things?stuff=yes');
+      const yes = await testClient.get('/things?stuff=yes');
       expect(yes.status).toEqual(200);
       expect(yes.body).toEqual({ some: 'thing' });
 
-      const no = await call(app).get('/things?stuff=no');
+      const no = await testClient.get('/things?stuff=no');
       expect(no.status).toEqual(404);
       expect(no.body).toEqual({});
 
-      const other = await call(app).get('/things?stuff=other');
+      const other = await testClient.get('/things?stuff=other');
       expect(other.status).toEqual(404);
       expect(other.body).toEqual({});
     });
@@ -130,19 +123,19 @@ describe('Configuring scenarios', () => {
         )
       );
 
-      const yes = await call(app).get('/many?things=yes&other-things=yes');
+      const yes = await testClient.get('/many?things=yes&other-things=yes');
       expect(yes.status).toEqual(200);
       expect(yes.body).toEqual({ gots: 'alls' });
 
-      const some = await call(app).get('/many?things=yes&other-things=no');
+      const some = await testClient.get('/many?things=yes&other-things=no');
       expect(some.status).toEqual(200);
       expect(some.body).toEqual({ gots: 'just some' });
 
-      const notEnough = await call(app).get('/many?things=no&other-things=yes');
+      const notEnough = await testClient.get('/many?things=no&other-things=yes');
       expect(notEnough.status).toEqual(404);
       expect(notEnough.body).toEqual({ gots: 'not enough' });
 
-      const none = await call(app).get('/many?things=no&other-things=no');
+      const none = await testClient.get('/many?things=no&other-things=no');
       expect(none.status).toEqual(404);
       expect(none.body).toEqual({ gots: 'not enough' });
     });
@@ -164,15 +157,15 @@ describe('Configuring scenarios', () => {
         )
       );
 
-      const dude1 = await call(app).post('/dude').send({ id: 1 });
+      const dude1 = await testClient.post('/dude', { id: 1 });
       expect(dude1.status).toEqual(200);
       expect(dude1.body).toEqual({ hey: 'dude number 1!' });
 
-      const dude2 = await call(app).post('/dude').send({ id: 2 });
+      const dude2 = await testClient.post('/dude', { id: 2 });
       expect(dude2.status).toEqual(200);
       expect(dude2.body).toEqual({ hey: 'dude number 2!' });
 
-      const dudeDef = await call(app).post('/dude').send({ id: 444 });
+      const dudeDef = await testClient.post('/dude', { id: 444 });
       expect(dudeDef.status).toEqual(200);
       expect(dudeDef.body).toEqual({ hey: 'default dude!' });
     });
@@ -191,15 +184,15 @@ describe('Configuring scenarios', () => {
         )
       );
 
-      const bananas = await call(app).post('/bananas').send({ id: 1, bananas: 'yes' });
+      const bananas = await testClient.post('/bananas', { id: 1, bananas: 'yes' });
       expect(bananas.status).toEqual(200);
       expect(bananas.body).toEqual({ hey: 'dude 1, bananas!' });
 
-      const nobananas = await call(app).post('/bananas').send({ id: 1, bananas: 'no' });
+      const nobananas = await testClient.post('/bananas', { id: 1, bananas: 'no' });
       expect(nobananas.status).toEqual(200);
       expect(nobananas.body).toEqual({ hey: 'dude 1, no bananas!' });
 
-      const dudeDef = await call(app).post('/bananas').send({ id: 444, bananas: 'whatever' });
+      const dudeDef = await testClient.post('/bananas', { id: 444, bananas: 'whatever' });
       expect(dudeDef.status).toEqual(200);
       expect(dudeDef.body).toEqual({ hey: 'whatever' });
     });
@@ -218,10 +211,10 @@ describe('Configuring scenarios', () => {
         })
       );
 
-      const dude = await call(app).post('/dude').send({ id: 1 });
+      const dude = await testClient.post('/dude', { id: 1 });
       expect(dude.body).toEqual({ hey: 'dude' });
 
-      const bananas = await call(app).post('/bananas').send({ id: 1 });
+      const bananas = await testClient.post('/bananas', { id: 1 });
       expect(bananas.body).toEqual({ hey: 'bananas' });
     });
   });
@@ -234,13 +227,13 @@ describe('Configuring scenarios', () => {
       })
     );
 
-    const some = await call(app).get('/some/1');
+    const some = await testClient.get('/some/1');
     expect(some.status).toEqual(200);
     expect(some.body).toEqual({ hey: 'you' });
 
-    await axios.delete('http://localhost:9019/scenarios');
+    stub4.clearAll();
 
-    const someCleared = await call(app).get('/some/1');
+    const someCleared = await testClient.get('/some/1');
     expect(someCleared.status).toEqual(404);
   });
 
@@ -280,7 +273,7 @@ describe('Configuring scenarios', () => {
       )
     );
 
-    const allScenarios = await call(app).get('/scenarios');
+    const allScenarios = await testClient.get('/scenarios');
     expect(allScenarios.status).toEqual(200);
     expect(allScenarios.body).toEqual([
       {
@@ -361,7 +354,7 @@ describe('Configuring scenarios', () => {
       })
     );
 
-    const scenario = await call(app).get('/scenarios');
+    const scenario = await testClient.get('/scenarios');
     expect(scenario.status).toEqual(200);
     expect(scenario.body).toEqual([
       {

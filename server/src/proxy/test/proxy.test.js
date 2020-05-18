@@ -1,122 +1,89 @@
-const axios = require('axios');
-const enableDestroy = require('server-destroy');
-const app = require('../../app');
+const stub4 = require('../../index');
+const { TestClient, setup } = require('../../testClient/TestClient');
 
 const { stubFor, setPort } = require('@stub4/client');
 const { GET, POST } = require('@stub4/client/src/RequestMatcher');
 const { proxyTo } = require('@stub4/client/src/Proxy');
 const { respondsWith } = require('@stub4/client/src/StubResponse');
 
-describe('Setting up a proxy', () => {
-  let server;
-  setPort(9009);
-  beforeAll((done) => {
-    server = app.listen(9009, done);
-    enableDestroy(server);
-  });
-  afterAll(() => server.destroy());
-  afterEach(async () => await axios.delete('http://localhost:9009/proxy'));
+const testClient = TestClient();
+beforeAll(() => setup(stub4, setPort, testClient));
+afterEach(() => stub4.clearAll());
+afterAll(() => stub4.shutdown());
+const stub4Host = () => `http://localhost:${stub4.listeningPort()}`;
 
-  it('proxies requests to other endpoints, within the same app', async () => {
-    await stubFor(GET('/bananas'), respondsWith(200, 'text', 'it worked!'));
+it('proxies requests to other endpoints, within the same app', async () => {
+  await stubFor(GET('/bananas'), respondsWith(200, 'text', 'it worked!'));
 
-    await stubFor(GET('/john'), proxyTo('http://localhost:9009/bananas'));
+  await stubFor(GET('/john'), proxyTo(`${stub4Host()}/bananas`));
 
-    const proxiedResponse = await axios.get('http://localhost:9009/john');
-    expect(proxiedResponse.status).toEqual(200);
-    expect(proxiedResponse.data).toEqual('it worked!');
-  });
-
-  it('proxies requests to other endpoints, with the right method', async () => {
-    await stubFor(POST('/stuff'), respondsWith(200, 'text', 'it worked!'));
-
-    await stubFor(POST('/things'), proxyTo('http://localhost:9009/stuff'));
-
-    const proxiedResponse = await axios.post('http://localhost:9009/things');
-    expect(proxiedResponse.status).toEqual(200);
-    expect(proxiedResponse.data).toEqual('it worked!');
-  });
-
-  it('returns all created proxies', async () => {
-    await stubFor(POST('/john'), proxyTo('http://localhost:9009/bananas'));
-
-    const proxiedResponse = await axios.get('http://localhost:9009/proxy');
-    expect(proxiedResponse.status).toEqual(200);
-    expect(proxiedResponse.data).toEqual([
-      {
-        requestMatcher: { urlMatcher: { url: '/john' }, method: 'POST' },
-        proxyUrl: 'http://localhost:9009/bananas'
-      }
-    ]);
-  });
-
-  it('proxies over the body and content type of (POST) requests', async () => {
-    await stubFor(
-      POST('/post-and-body').withBody({ id: '123' }).withType('json'),
-      respondsWith(200, 'text', 'it worked!')
-    );
-
-    await stubFor(POST('/to-be-proxied'), proxyTo('http://localhost:9009/post-and-body'));
-    const proxiedResponse = await axios.request({
-      url: 'http://localhost:9009/to-be-proxied',
-      method: 'POST',
-      data: { id: '123' }
-    });
-    expect(proxiedResponse.status).toEqual(200);
-    expect(proxiedResponse.data).toEqual('it worked!');
-
-    await failsWithStatusCode(404, () =>
-      axios.request({
-        url: 'http://localhost:9009/to-be-proxied',
-        method: 'GET',
-        data: { id: '123' }
-      })
-    );
-
-    await failsWithStatusCode(404, () =>
-      axios.request({
-        url: 'http://localhost:9009/to-be-proxied',
-        method: 'POST',
-        data: { id: '321' }
-      })
-    );
-  });
-
-  it('proxies over the body and content type of (POST) requests (xml)', async () => {
-    await stubFor(
-      POST('/post-and-body')
-        .withBody([{ path: 'string(//title)', value: 'Harry Potter' }])
-        .withType('xml'),
-      respondsWith(200, 'text', 'it worked!')
-    );
-
-    await stubFor(POST('/to-be-proxied'), proxyTo('http://localhost:9009/post-and-body'));
-    const proxiedResponse = await axios.post(
-      'http://localhost:9009/to-be-proxied',
-      "<book author='J. K. Rowling'><title>Harry Potter</title></book>",
-      {
-        headers: { 'Content-Type': 'text/xml' }
-      }
-    );
-    expect(proxiedResponse.status).toEqual(200);
-    expect(proxiedResponse.data).toEqual('it worked!');
-
-    await failsWithStatusCode(404, () =>
-      axios.post(
-        'http://localhost:9009/to-be-proxied',
-        "<book author='J. K. Rowling'><title>Jerry Potter</title></book>",
-        {
-          headers: { 'Content-Type': 'text/xml' }
-        }
-      )
-    );
-  });
+  const proxiedResponse = await testClient.get('/john');
+  expect(proxiedResponse.status).toEqual(200);
+  expect(proxiedResponse.data).toEqual('it worked!');
 });
 
-async function failsWithStatusCode(statusCode, callFn) {
-  try {
-    await callFn();
-  } catch (error) {
-    expect(error.response.status).toEqual(statusCode);
-  }
-}
+it('proxies requests to other endpoints, with the right method', async () => {
+  await stubFor(POST('/stuff'), respondsWith(200, 'text', 'it worked!'));
+
+  await stubFor(POST('/things'), proxyTo(`${stub4Host()}/stuff`));
+
+  const proxiedResponse = await testClient.post('/things');
+  expect(proxiedResponse.status).toEqual(200);
+  expect(proxiedResponse.data).toEqual('it worked!');
+});
+
+it('returns all created proxies', async () => {
+  await stubFor(POST('/john'), proxyTo(`${stub4Host()}/bananas`));
+
+  const proxiedResponse = await testClient.get('/proxy');
+  expect(proxiedResponse.status).toEqual(200);
+  expect(proxiedResponse.data).toEqual([
+    {
+      requestMatcher: { urlMatcher: { url: '/john' }, method: 'POST' },
+      proxyUrl: `${stub4Host()}/bananas`
+    }
+  ]);
+});
+
+it('proxies over the body and content type of (POST) requests', async () => {
+  await stubFor(
+    POST('/post-and-body').withBody({ id: '123' }).withType('json'),
+    respondsWith(200, 'text', 'it worked!')
+  );
+
+  await stubFor(POST('/to-be-proxied'), proxyTo(`${stub4Host()}/post-and-body`));
+
+  const proxiedResponse = await testClient.post('/to-be-proxied', { id: '123' });
+  expect(proxiedResponse.status).toEqual(200);
+  expect(proxiedResponse.data).toEqual('it worked!');
+
+  const wrongMethod = await testClient.get('/to-be-proxied');
+  expect(wrongMethod.status).toEqual(404);
+
+  const wrongBody = await testClient.post('/to-be-proxied', { id: '321' });
+  expect(wrongBody.status).toEqual(404);
+});
+
+it('proxies over the body and content type of (POST) requests (xml)', async () => {
+  await stubFor(
+    POST('/post-and-body')
+      .withBody([{ path: 'string(//title)', value: 'Harry Potter' }])
+      .withType('xml'),
+    respondsWith(200, 'text', 'it worked!')
+  );
+
+  await stubFor(POST('/to-be-proxied'), proxyTo(`${stub4Host()}/post-and-body`));
+  const proxiedResponse = await testClient.post(
+    '/to-be-proxied',
+    "<book author='J. K. Rowling'><title>Harry Potter</title></book>",
+    { 'Content-Type': 'text/xml' }
+  );
+  expect(proxiedResponse.status).toEqual(200);
+  expect(proxiedResponse.data).toEqual('it worked!');
+
+  const wrongBody = await testClient.post(
+    '/to-be-proxied',
+    "<book author='J. K. Rowling'><title>Jerry Potter</title></book>"
+  );
+  expect(wrongBody.status).toEqual(404);
+});
