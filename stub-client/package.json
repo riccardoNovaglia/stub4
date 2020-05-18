@@ -1,6 +1,6 @@
 {
   "name": "@stub4/client",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "Client to programmatically setup stubs and more",
   "main": "src/index.js",
   "author": "Riccardo <stub4js+npm@gmail.com>",

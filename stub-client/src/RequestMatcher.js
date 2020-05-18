@@ -14,6 +14,11 @@ class RequestMatcher {
     this.bodyMatcher = bodyMatcher;
     return this;
   }
+  withXmlBodyMatch(xmlMatch) {
+    this.type = 'xml';
+    this.bodyMatcher = xmlMatch;
+    return this;
+  }
   withType(type) {
     this.type = type;
     return this;
