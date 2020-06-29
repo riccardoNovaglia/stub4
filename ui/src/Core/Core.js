@@ -66,6 +66,7 @@ const useClients = () => {
     fetchPort();
   });
 
+  // TODO: these gotta go. Should just setPort above, and then use stubFor(matcher, response)
   return {
     stubClient: new Stub4.StubClient(port),
     crudClient: new Stub4.CrudClient(port),

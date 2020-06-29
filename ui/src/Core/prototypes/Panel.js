@@ -20,18 +20,30 @@ export function Panel({ itemsLifecycle, presentation, children }) {
     fetch(setItems);
   }, [fetch, setItems]);
 
-  const onEdit = item => {
+  const onEdit = (item) => {
+    // TODO: use path instead?
+    // Add /new?itemId even so that we can re-fetch instead of setting state?
+    // or /edit?itemId
     setEditedItem(item);
     setEditing(true);
   };
 
+  const createNew = () => {
+    // TODO: use path instead?
+    // Add /new
+    setEditedItem(null);
+    setCreating(true);
+  };
+
   const onClose = () => {
+    // TODO: use path instead? Remove /new
     setCreating(false);
     setEditing(false);
   };
 
   const onSaved = async () => {
     await fetch(setItems);
+    // TODO: use path instead? Remove /new
     setCreating(false);
     setEditing(false);
     setSelected(null);
@@ -40,11 +52,6 @@ export function Panel({ itemsLifecycle, presentation, children }) {
   const onClear = async () => {
     await clear();
     await fetch(setItems);
-  };
-
-  const createNew = () => {
-    setEditedItem(null);
-    setCreating(true);
   };
 
   return (

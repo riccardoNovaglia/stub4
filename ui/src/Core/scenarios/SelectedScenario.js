@@ -16,7 +16,7 @@ export function SelectedScenario({ selected, setStarter }) {
           </div>
         ))}
         <p>Default</p>
-        <p>{JSON.stringify(selected.defaultResponse.response)}</p>
+        <p>{JSON.stringify(selected.defaultResponse)}</p>
       </div>
     </>
   );

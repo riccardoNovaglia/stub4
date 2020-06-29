@@ -1,16 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import './Stub.scss';
 
-export function SelectedStub({ selected, client, onEdit }) {
-  const [interactions, setInteractions] = useState();
-  const url = selected.requestMatcher.urlMatcher.url;
+export function SelectedStub({ selected, onEdit }) {
+  // TODO: add interactions back in
+  // const [interactions, setInteractions] = useState();
+  // const url = selected.requestMatcher.urlMatcher.url;
 
-  useEffect(() => {
-    client.fetchInteractions(url, setInteractions);
-    const interval = setInterval(() => client.fetchInteractions(url, setInteractions), 1000);
-    return () => clearInterval(interval);
-  }, [url, interactions, client]);
+  // useEffect(() => {
+  // client.fetchInteractions(url, setInteractions);
+  // const interval = setInterval(() => client.fetchInteractions(url, setInteractions), 1000);
+  // return () => clearInterval(interval);
+  // }, [url, interactions, client]);
 
   return (
     <>
@@ -28,12 +29,12 @@ export function SelectedStub({ selected, client, onEdit }) {
             <i className="material-icons">code</i>Edit
           </button>
         </div>
-        <Interactions interactions={interactions} />
+        {/* <Interactions interactions={0} /> */}
       </div>
     </>
   );
 }
 
-function Interactions({ interactions }) {
-  return <>{interactions && <div className="callCount">Called {interactions} times</div>}</>;
-}
+// function Interactions({ interactions }) {
+//   return <>{interactions && <div className="callCount">Called {interactions} times</div>}</>;
+// }

@@ -65,7 +65,7 @@ export function BodyMatcher({ bodyMatcher, setBodyMatcher }) {
         type="checkbox"
         className="bodyMatchCheckbox"
         checked={withBodyMatch}
-        onChange={event => {
+        onChange={(event) => {
           setWithBodyMatch(event.target.checked);
         }}
       />
@@ -79,7 +79,7 @@ export function BodyMatcher({ bodyMatcher, setBodyMatcher }) {
             <select
               id="bodyType"
               value={bodyMatcher?.type}
-              onChange={event =>
+              onChange={(event) =>
                 setBodyMatcher({
                   ...bodyMatcher,
                   type: event.target.value
@@ -98,7 +98,7 @@ export function BodyMatcher({ bodyMatcher, setBodyMatcher }) {
             <textarea
               id="bodyMatch"
               value={bodyMatcher?.body}
-              onChange={event =>
+              onChange={(event) =>
                 setBodyMatcher({
                   ...bodyMatcher,
                   body: event.target.value

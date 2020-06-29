@@ -6,7 +6,7 @@ export function SelectedProxy({ selected, onEdit }) {
   return (
     <>
       <div className="selectedProxy">
-        <div>{selected.request.url}</div>
+        <div>{selected.requestMatcher.urlMatcher.url}</div>
         <div>↓</div>
         <div>{selected.proxyUrl}</div>
         <button className="newButton" onClick={() => onEdit(selected)}>

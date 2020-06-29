@@ -1,39 +1,45 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { SaveButton } from '../prototypes/SaveButton';
-import { RequestMatcher } from '../prototypes/RequestMatcher';
-import { useObject, updatableItem, handle } from '../prototypes/NewItemManagement';
+import { RequestMatcherV2 } from '../prototypes/RequestMatcherV2';
+import { useObject, updatableItem } from '../prototypes/NewItemManagement';
+
+import { stubFor } from '@stub4/client';
 
 export function NewProxy({ onClose, onSaved, editedItem, client }) {
   const defaults = {
-    request: { url: '' },
+    requestMatcher: { urlMatcher: { url: '' } },
     proxyUrl: '',
     ...editedItem
   };
 
   const proxy = updatableItem({
-    ...useObject('url', defaults.request.url),
+    ...useObject('url', defaults.requestMatcher.urlMatcher.url),
     ...useObject('proxyUrl', defaults.proxyUrl)
   });
 
+  const [requestMatcher, setRequestMatcher] = useState(defaults.requestMatcher);
+  const [proxyDef, setProxyDef] = useState({ proxyUrl: defaults.proxyUrl });
+
   async function onSave() {
     await client.proxyRequests(proxy.url.value, proxy.proxyUrl.value);
+    await stubFor(requestMatcher, { proxy: proxyDef });
     onSaved();
   }
 
   return (
-    <div onKeyDown={e => e.keyCode === 27 && onClose()}>
-      {/* TODO: this needs to become a FullRequestMatcher */}
-      <RequestMatcher item={proxy} />
+    <div onKeyDown={(e) => e.keyCode === 27 && onClose()}>
+      <RequestMatcherV2 requestMatcher={requestMatcher} setRequestMatcher={setRequestMatcher} />
 
       <div>
+        <h3>Proxy to</h3>
         <label className="itemLabel" htmlFor="url">
           PROXY URL
         </label>
         <input
           id="url"
           type="text"
-          onChange={handle(proxy)(proxy.proxyUrl.set, 'proxyUrl')}
-          value={proxy.proxyUrl.value}
+          onChange={(event) => setProxyDef({ proxyUrl: event.target.value })}
+          value={proxyDef.proxyUrl}
         />
       </div>
 
