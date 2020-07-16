@@ -1,6 +1,6 @@
 {
   "name": "@stub4/client",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "description": "Client to programmatically setup stubs and more",
   "main": "src/index.js",
   "author": "Riccardo <stub4js+npm@gmail.com>",
@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "axios": "0.19.2",
-    "lodash": "4.17.15"
+    "lodash": "4.17.19"
   },
   "devDependencies": {
     "jest": "26.0.1"

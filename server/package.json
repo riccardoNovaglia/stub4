@@ -29,7 +29,7 @@
     "express": "4.17.1",
     "express-xml-bodyparser": "0.3.0",
     "glob": "7.1.6",
-    "lodash": "4.17.15",
+    "lodash": "4.17.19",
     "server-destroy": "1.0.1",
     "winston": "3.2.1",
     "xml-js": "1.6.11",
@@ -37,14 +37,14 @@
     "xpath": "0.0.27"
   },
   "devDependencies": {
-    "@pact-foundation/pact": "9.10.0",
-    "@stub4/client": "0.0.13",
+    "@pact-foundation/pact": "9.11.0",
+    "@stub4/client": "0.0.14",
     "jest": "26.0.1",
-    "nodemon": "2.0.3",
+    "nodemon": "2.0.4",
     "supertest": "4.0.2"
   },
   "peerDependencies": {
-    "@pact-foundation/pact": "9.10.x"
+    "@pact-foundation/pact": "9.11.x"
   },
   "jest": {
     "watchPathIgnorePatterns": [
