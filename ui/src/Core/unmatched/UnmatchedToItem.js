@@ -21,7 +21,7 @@ export function UnmatchedToItem({ clients, selected, setSelected, setTab }) {
   if (!selected) return null;
 
   return (
-    <div onKeyDown={e => e.keyCode === 27 && onClose()}>
+    <div onKeyDown={(e) => e.keyCode === 27 && onClose()}>
       <NewItemModal itemName={tab} onClose={onClose}>
         <>
           <Tabs tab={tab} setCurrentTab={setCurrentTab} />

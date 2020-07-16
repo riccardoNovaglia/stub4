@@ -17,10 +17,10 @@ const { createLogger } = require('./logger');
 const logger = createLogger('load');
 
 function loadDefaultsFiles(defaultsFiles) {
-  defaultsFiles.forEach(defaultsFile => {
+  defaultsFiles.forEach((defaultsFile) => {
     if (defaultsFile.includes('*')) {
-      glob(defaultsFile, {}, function(_er, files) {
-        files.forEach(filename => loadFromFile(filename));
+      glob(defaultsFile, {}, function (_er, files) {
+        files.forEach((filename) => loadFromFile(filename));
       });
     } else {
       loadFromFile(defaultsFile);
@@ -40,7 +40,7 @@ function loadFromFile(filename) {
 function load(content, buildFn, addFn, name) {
   if (!content) return;
 
-  content.forEach(item => {
+  content.forEach((item) => {
     try {
       logger.debug(`Loading ${name} ${JSON.stringify(item)}`);
       const builtItem = buildFn(item);

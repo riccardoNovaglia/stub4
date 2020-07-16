@@ -21,7 +21,7 @@ function MethodMatcher(method) {
 const NoopMatcher = () => ({
   method: '*',
   matches: () => true,
-  equals: otherMatcher => typeof otherMatcher === 'NoopMatcher',
+  equals: (otherMatcher) => typeof otherMatcher === 'NoopMatcher',
   pretty: () => '*',
   toJson: () => '*'
 });

@@ -18,7 +18,7 @@ export default function ItemsList({
   return (
     <div className={styles.listClass}>
       {_.isEmpty(items) && <p className="noResultsMsg">None created yet</p>}
-      {items.map(item => (
+      {items.map((item) => (
         <div
           key={itemKey(item)}
           className={className(selected, item)}

@@ -8,7 +8,7 @@ import { NewStub } from './NewStub';
 import './Stub.scss';
 
 export function Stubs({ client }) {
-  const fetch = async set => await client.fetchStubs(set);
+  const fetch = async (set) => await client.fetchStubs(set);
   const clear = async () => await client.clearStubs();
 
   return (

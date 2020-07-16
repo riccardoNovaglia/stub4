@@ -9,11 +9,11 @@ export function CrudsList({ items, selected, setSelected }) {
       selected={selected}
       setSelected={setSelected}
       styles={{ itemClass: 'crudDef', listClass: 'crudsList' }}
-      itemKey={item => `${item.url}-item`}
+      itemKey={(item) => `${item.url}-item`}
       selectionMatch={(selected, current) => selected.url === current.url}
     >
       {{
-        item: item => <CrudListItem item={item} />
+        item: (item) => <CrudListItem item={item} />
       }}
     </ItemsList>
   );

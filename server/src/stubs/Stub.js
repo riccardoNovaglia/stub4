@@ -6,8 +6,6 @@ const { createLogger } = require('../logger');
 
 const logger = createLogger('stubs');
 
-const delay = (ms) => new Promise((res) => setTimeout(res, ms));
-
 function Stub(requestMatcher, response, contract) {
   const data = { response, contract, requestMatcher, interactions: 0 };
 

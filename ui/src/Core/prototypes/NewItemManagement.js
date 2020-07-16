@@ -23,16 +23,16 @@ export function updatableItem(data) {
 }
 
 export function handle(item) {
-  return function(setFn, key) {
-    return function(event) {
+  return function (setFn, key) {
+    return function (event) {
       item.updateFromEvent(setFn, key, event);
     };
   };
 }
 
 export function handleValue(item) {
-  return function(setFn, key) {
-    return function(value) {
+  return function (setFn, key) {
+    return function (value) {
       item.updateFromValue(setFn, key, value);
     };
   };

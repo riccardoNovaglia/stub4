@@ -14,7 +14,7 @@ function Index({ children }) {
 
 function DocsLink({ path, label }) {
   const { pathname } = useLocation();
-  const linkClassName = to => (pathname.startsWith(to) ? 'selectedDocsLink' : 'docsLink');
+  const linkClassName = (to) => (pathname.startsWith(to) ? 'selectedDocsLink' : 'docsLink');
 
   return (
     <li className="indexListItem" key={path}>

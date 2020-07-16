@@ -43,7 +43,10 @@ it('creates a crud patch on post', () => {
 
 it('loads multiple cruds', () => {
   const aBanana = { bananaId: '1', status: 'ripe' };
-  const things = [{ id: '1', status: 'ripe' }, { id: '2', status: 'not ripe' }];
+  const things = [
+    { id: '1', status: 'ripe' },
+    { id: '2', status: 'not ripe' }
+  ];
 
   add(
     CrudFromFile({

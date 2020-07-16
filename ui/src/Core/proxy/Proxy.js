@@ -7,7 +7,7 @@ import { SelectedProxy } from './SelectedProxy';
 import { Panel } from '../prototypes/Panel';
 
 export function Proxy({ client }) {
-  const fetch = set => {
+  const fetch = (set) => {
     client.fetchProxy(set);
   };
 
@@ -15,7 +15,7 @@ export function Proxy({ client }) {
     await client.clearProxy();
   };
 
-  const save = async proxy => {
+  const save = async (proxy) => {
     await client.proxyRequests(proxy.url.value, proxy.proxyUrl.value);
   };
 

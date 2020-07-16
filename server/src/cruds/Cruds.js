@@ -11,7 +11,7 @@ function add(crud) {
 }
 
 function get(url, method, body) {
-  const maybeCrud = cruds.find(crud => crud.matches(url));
+  const maybeCrud = cruds.find((crud) => crud.matches(url));
   if (!maybeCrud) return undefined;
 
   switch (method) {
@@ -30,7 +30,7 @@ function get(url, method, body) {
 }
 
 function all() {
-  return cruds.map(crud => crud.simple());
+  return cruds.map((crud) => crud.simple());
 }
 
 function clear() {

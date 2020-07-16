@@ -17,9 +17,7 @@ describe.skip('Pact contracts generation for stubs', () => {
       .post('/stubs')
       .send({ requestMatcher: { url: '/john' } });
 
-    const response = await request(app)
-      .post('/generate-pact')
-      .send({ consumer: 'some-consumer' });
+    const response = await request(app).post('/generate-pact').send({ consumer: 'some-consumer' });
     expect(response.statusCode).toEqual(200);
 
     expect(() =>
@@ -35,9 +33,7 @@ describe.skip('Pact contracts generation for stubs', () => {
       .post('/stubs')
       .send({ requestMatcher: { url: '/john' }, contract: { state, uponReceiving, providerName } });
 
-    const response = await request(app)
-      .post('/generate-pact')
-      .send({ consumer: 'some-consumer' });
+    const response = await request(app).post('/generate-pact').send({ consumer: 'some-consumer' });
     expect(response.statusCode).toEqual(200);
 
     const pact = JSON.parse(
@@ -63,9 +59,7 @@ describe.skip('Pact contracts generation for stubs', () => {
       .post('/stubs')
       .send({ requestMatcher: { url: '/some-other-url' } });
 
-    const response = await request(app)
-      .post('/generate-pact')
-      .send({ consumer: 'some-consumer' });
+    const response = await request(app).post('/generate-pact').send({ consumer: 'some-consumer' });
     expect(response.statusCode).toEqual(200);
 
     const pact = JSON.parse(
@@ -88,9 +82,7 @@ describe.skip('Pact contracts generation for stubs', () => {
         contract: { state, uponReceiving, providerName }
       });
 
-    const response = await request(app)
-      .post('/generate-pact')
-      .send({ consumer: 'some-consumer' });
+    const response = await request(app).post('/generate-pact').send({ consumer: 'some-consumer' });
     expect(response.statusCode).toEqual(200);
 
     const pact = JSON.parse(
@@ -114,9 +106,7 @@ describe.skip('Pact contracts generation for stubs', () => {
         contract: { state, uponReceiving, providerName }
       });
 
-    const response = await request(app)
-      .post('/generate-pact')
-      .send({ consumer: 'some-consumer' });
+    const response = await request(app).post('/generate-pact').send({ consumer: 'some-consumer' });
     expect(response.statusCode).toEqual(200);
 
     const pact = JSON.parse(
@@ -143,9 +133,7 @@ describe.skip('Pact contracts generation for stubs', () => {
         contract: { state, uponReceiving, providerName }
       });
 
-    const response = await request(app)
-      .post('/generate-pact')
-      .send({ consumer: 'some-consumer' });
+    const response = await request(app).post('/generate-pact').send({ consumer: 'some-consumer' });
     expect(response.statusCode).toEqual(200);
 
     const pact = JSON.parse(
@@ -175,9 +163,7 @@ describe.skip('Pact contracts generation for stubs', () => {
         contract: { state, uponReceiving, providerName }
       });
 
-    const response = await request(app)
-      .post('/generate-pact')
-      .send({ consumer: 'some-consumer' });
+    const response = await request(app).post('/generate-pact').send({ consumer: 'some-consumer' });
     expect(response.statusCode).toEqual(200);
 
     const pact = JSON.parse(
@@ -219,9 +205,7 @@ describe.skip('Pact contracts generation for stubs', () => {
         },
         contract: { state: state2, uponReceiving: uponReceiving2, providerName }
       });
-    const response = await request(app)
-      .post('/generate-pact')
-      .send({ consumer: 'some-consumer' });
+    const response = await request(app).post('/generate-pact').send({ consumer: 'some-consumer' });
     expect(response.statusCode).toEqual(200);
 
     const pact = JSON.parse(
@@ -370,7 +354,7 @@ function aPactWithStructure(
 }
 
 function aPactWithMultipleInteractions(theInteractions, providerName) {
-  const interactions = theInteractions.map(interaction => ({
+  const interactions = theInteractions.map((interaction) => ({
     description: interaction.uponReceiving,
     providerState: interaction.state,
     request: {

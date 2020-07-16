@@ -7,7 +7,7 @@ import { NewCrud } from './NewCrud';
 import { Panel } from '../prototypes/Panel';
 
 export function Cruds({ client }) {
-  const fetch = set => client.fetchCruds(set);
+  const fetch = (set) => client.fetchCruds(set);
   const clear = async () => await client.clearCruds();
 
   return (

@@ -61,7 +61,7 @@ function DB(meta) {
     items: [],
     get(id) {
       logger.debug(`Trying to get item from crud with id ${id} - ${JSON.stringify(this.items)}`);
-      return this.items.find(item => this.idFrom(item).toString() === id.toString());
+      return this.items.find((item) => this.idFrom(item).toString() === id.toString());
     },
     upsert(item) {
       const maybeAlreadyExisting = this.get(this.idFrom(item));
@@ -119,7 +119,7 @@ function CrudFromFile(item) {
   const url = item.requestMatcher.url;
   const idAlias = getIdAlias(item);
   const crud = Crud(url, idAlias, getPatchOnPost(item));
-  item.data.forEach(dataItem => crud.push(dataItem));
+  item.data.forEach((dataItem) => crud.push(dataItem));
   return crud;
 }
 

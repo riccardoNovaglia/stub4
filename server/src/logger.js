@@ -16,7 +16,7 @@ const typeLabelFormat = printf(({ level, message, label, stack }) => {
 });
 
 const toFilter = config.logging.toIgnore;
-const filterByConfig = format(info => {
+const filterByConfig = format((info) => {
   if (toFilter.includes(info.label)) {
     return false;
   }

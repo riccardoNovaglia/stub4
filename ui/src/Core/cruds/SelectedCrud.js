@@ -27,7 +27,7 @@ function Contents({ crudUrl, client }) {
   }, [data]);
 
   async function saveData() {
-    await JSON.parse(crudContents).map(item => client.saveCrudData(crudUrl, item));
+    await JSON.parse(crudContents).map((item) => client.saveCrudData(crudUrl, item));
     setEditing(false);
   }
 
@@ -49,7 +49,7 @@ function Contents({ crudUrl, client }) {
             cols="90"
             rows="30"
             value={crudContents}
-            onChange={e => setCrudContents(e.target.value)}
+            onChange={(e) => setCrudContents(e.target.value)}
             className="crudContentsEdit"
           />
         </div>

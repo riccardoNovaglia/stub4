@@ -30,7 +30,7 @@ export function NewCrud({ onClose, onSaved, editedItem }) {
   }
 
   return (
-    <div onKeyDown={e => e.keyCode === 27 && onClose()}>
+    <div onKeyDown={(e) => e.keyCode === 27 && onClose()}>
       <RequestMatcher item={crud} />
 
       <div>
@@ -52,7 +52,7 @@ export function NewCrud({ onClose, onSaved, editedItem }) {
         id="patchOnPostCheckbox"
         type="checkbox"
         className="bodyMatchCheckbox"
-        onChange={event => crud.patchOnPost.set(event.target.checked)}
+        onChange={(event) => crud.patchOnPost.set(event.target.checked)}
         checked={crud.patchOnPost.value}
       />
 
