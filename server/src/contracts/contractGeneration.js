@@ -11,12 +11,12 @@ const pactServerPort = pactConfig.serverPort;
 const logger = createLogger('contracts');
 
 async function generateContracts({ consumer }) {
-  const stubsWithContracts = stubs.all().filter(stub => !!stub.contract);
-  const providers = new Set(stubsWithContracts.map(stub => stub.contract.providerName));
+  const stubsWithContracts = stubs.all().filter((stub) => !!stub.contract);
+  const providers = new Set(stubsWithContracts.map((stub) => stub.contract.providerName));
   for (const provider of providers) {
     try {
       const relevantStubs = stubsWithContracts.filter(
-        stub => stub.contract.providerName === provider
+        (stub) => stub.contract.providerName === provider
       );
       logger.info(`${relevantStubs.length} stubs with contracts setup found. Generating...`);
       await generateContract(consumer, provider, relevantStubs);
@@ -43,7 +43,7 @@ async function generateContract(consumer, provider, providerStubs) {
   await pact.setup();
 
   try {
-    const interactions = providerStubs.map(stub => addInteraction(pact, stub));
+    const interactions = providerStubs.map((stub) => addInteraction(pact, stub));
     await Promise.all(interactions);
 
     await pact.verify();
@@ -61,7 +61,7 @@ async function addInteraction(pact, stub) {
     uponReceiving: stub.contract.uponReceiving,
     withRequest: {
       method: stub.method,
-      path: stub.urlMatcher.url
+      path: stub.url
     },
     willRespondWith: {
       status: stub.response.statusCode,
@@ -69,7 +69,7 @@ async function addInteraction(pact, stub) {
       body: stub.response.body
     }
   });
-  return callStub(pactServerPort, stub.urlMatcher.url, stub.method);
+  return callStub(pactServerPort, stub.url, stub.method);
 }
 
 async function callStub(port, url, method) {

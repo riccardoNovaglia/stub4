@@ -13,10 +13,10 @@ describe('Loading proxy from an initialiser file', () => {
     );
 
     const proxy = get('/some-url', 'GET', [], {});
-
-    expect(proxy.requestMatcher.urlMatcher.url).toEqual('/some-url');
-    expect(proxy.requestMatcher.methodMatcher.method).toEqual('*');
-    expect(proxy.proxyUrl).toEqual('/something');
+    const { requestMatcher, proxyUrl } = proxy.toJson();
+    expect(requestMatcher.url).toEqual('/some-url');
+    expect(requestMatcher.method).toEqual('*');
+    expect(proxyUrl).toEqual('/something');
   });
 
   it('loads multiple proxy', async () => {
@@ -35,14 +35,14 @@ describe('Loading proxy from an initialiser file', () => {
 
     const bananas = get('/bananas/v21', 'GET', [], {});
 
-    expect(bananas.requestMatcher.urlMatcher.url).toEqual('/bananas/v21');
-    expect(bananas.requestMatcher.methodMatcher.method).toEqual('*');
+    expect(bananas.requestMatcher.toJson().url).toEqual('/bananas/v21');
+    expect(bananas.requestMatcher.toJson().method).toEqual('*');
     expect(bananas.proxyUrl).toEqual('/patatas/v22');
 
     const beans = get('/beans', 'POST', [], {});
 
-    expect(beans.requestMatcher.urlMatcher.url).toEqual('/beans');
-    expect(beans.requestMatcher.methodMatcher.method).toEqual('POST');
+    expect(beans.requestMatcher.toJson().url).toEqual('/beans');
+    expect(beans.requestMatcher.toJson().method).toEqual('POST');
     expect(beans.proxyUrl).toEqual('/peas');
   });
 });

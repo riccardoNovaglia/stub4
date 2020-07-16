@@ -10,7 +10,7 @@
   ],
   "scenarios": [
     {
-      "requestMatcher": { "url": "/with-body", "body": { "bodyMatch": { "customerId": "*" } } },
+      "requestMatcher": { "url": "/with-body", "body": { "value": { "customerId": "*" } } },
       "outcomes": [
         {
           "match": { "customerId": "1" },

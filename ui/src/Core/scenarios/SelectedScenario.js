@@ -7,7 +7,7 @@ export function SelectedScenario({ selected, setStarter }) {
   return (
     <>
       <div className="selectedScenario">
-        <div className="url">{selected.requestMatcher.urlMatcher.url}</div>
+        <div className="url">{selected.requestMatcher.url}</div>
         {selected.outcomes.map((outcome) => (
           <div>
             <span className="variableNames">{JSON.stringify(omit(outcome, 'response'))}</span>

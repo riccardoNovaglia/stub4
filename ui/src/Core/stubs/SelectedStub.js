@@ -5,7 +5,7 @@ import './Stub.scss';
 export function SelectedStub({ selected, onEdit }) {
   // TODO: add interactions back in
   // const [interactions, setInteractions] = useState();
-  // const url = selected.requestMatcher.urlMatcher.url;
+  // const url = selected.requestMatcher.url;
 
   // useEffect(() => {
   // client.fetchInteractions(url, setInteractions);
@@ -19,7 +19,7 @@ export function SelectedStub({ selected, onEdit }) {
         <div className={`method ${selected.requestMatcher.method?.toLowerCase()}`}>
           {selected.requestMatcher.method}
         </div>
-        <div className="url">{selected.requestMatcher.urlMatcher.url}</div>
+        <div className="url">{selected.requestMatcher.url}</div>
         <div className="url">{JSON.stringify(selected.bodyMatcher)}</div>
         <div className="contentType">{selected.response.contentType}</div>
         <div className="responseBody">

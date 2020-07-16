@@ -8,31 +8,33 @@ import { MethodMatcher } from './MethodMatcher';
 export function RequestMatcherV2({ requestMatcher, setRequestMatcher }) {
   return (
     <div className="requestMatching">
-      <h3>Request Matching</h3>
-      <div>
-        <UrlMatcher
-          urlMatcher={requestMatcher.urlMatcher}
-          onChange={(urlMatcher) => setRequestMatcher({ ...requestMatcher, urlMatcher })}
-        />
-      </div>
-      <div>
-        <MethodMatcher
-          methodMatcher={requestMatcher.methodMatcher}
-          onChange={(methodMatcher) => setRequestMatcher({ ...requestMatcher, methodMatcher })}
-        />
-      </div>
-      <div>
-        <HeadersMatcher
-          headersMatcher={requestMatcher.headersMatcher}
-          onChange={(headersMatcher) => setRequestMatcher({ ...requestMatcher, headersMatcher })}
-        />
-      </div>
-      <div>
-        <BodyMatcher
-          bodyMatcher={requestMatcher.bodyMatcher}
-          onChange={(bodyMatcher) => setRequestMatcher({ ...requestMatcher, bodyMatcher })}
-        />
-      </div>
+      <label htmlFor="requestDefinitionForm">Request Matching</label>
+      <form id="requestDefinitionForm" onSubmit={(event) => event.preventDefault()}>
+        <div>
+          <UrlMatcher
+            urlMatcher={requestMatcher.url}
+            onChange={(url) => setRequestMatcher({ ...requestMatcher, url })}
+          />
+        </div>
+        <div>
+          <MethodMatcher
+            methodMatcher={requestMatcher.method}
+            onChange={(method) => setRequestMatcher({ ...requestMatcher, method })}
+          />
+        </div>
+        <div>
+          <HeadersMatcher
+            headersMatcher={requestMatcher.headers}
+            onChange={(headers) => setRequestMatcher({ ...requestMatcher, headers })}
+          />
+        </div>
+        <div>
+          <BodyMatcher
+            bodyMatcher={requestMatcher.body}
+            onChange={(body) => setRequestMatcher({ ...requestMatcher, body })}
+          />
+        </div>
+      </form>
     </div>
   );
 }

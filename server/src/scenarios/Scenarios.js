@@ -6,7 +6,7 @@ const scenarios = [];
 
 function add(scenario) {
   logger.info(
-    `Adding new scenario for ${scenario.requestMatcher.urlMatcher.url} with ${scenario.outcomes.length} outcomes`
+    `Adding new scenario for ${scenario.requestMatcher.url} with ${scenario.outcomes.length} outcomes`
   );
   const existingScenario = scenarios.find((existing) =>
     existing.requestMatcher.equals(scenario.requestMatcher)

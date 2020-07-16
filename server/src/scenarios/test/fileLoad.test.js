@@ -31,7 +31,7 @@ describe('Loading stubs from an initialiser file', () => {
       ScenarioFromFile({
         requestMatcher: {
           url: '/other-things',
-          body: { bodyMatch: { something: '*' } }
+          body: { value: { something: '*' } }
         },
         outcomes: [
           { match: { something: 'ok' }, response: { body: { the: 'other' }, statusCode: 302 } }
@@ -76,7 +76,7 @@ describe('Loading stubs from an initialiser file', () => {
       ScenarioFromFile({
         requestMatcher: {
           url: '/other-things',
-          body: { bodyMatch: { something: '*' } }
+          body: { value: { something: '*' } }
         },
         outcomes: [
           { match: { something: 'ok' }, response: { body: { the: 'other' }, statusCode: 302 } }

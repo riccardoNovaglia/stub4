@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, waitFor, fireEvent } from '@testing-library/react';
+import { render, screen, waitFor, fireEvent, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { when, resetAllWhenMocks } from 'jest-when';
 
@@ -19,22 +19,21 @@ beforeEach(() => {
 it('renders with a few default values', async () => {
   renderNewStub();
 
-  expect(screen.getByLabelText('URL').value).toEqual('');
-  expect(screen.getByLabelText('METHOD').value).toEqual('GET');
-  expect(screen.getByLabelText('Body matching').checked).toEqual(false);
+  expect(screen.getByLabelText(/URL/i).value).toEqual('');
+  expect(screen.getByLabelText(/METHOD MATCHER/i).checked).toEqual(false);
+  expect(screen.getByLabelText(/HEADERS MATCHER/i).checked).toEqual(false);
+  expect(screen.getByLabelText(/BODY MATCHER/i).checked).toEqual(false);
 
-  expect(screen.getByLabelText('STATUS').value).toEqual('200');
-  expect(screen.getByLabelText('TYPE').value).toEqual('application/json');
-  expect(screen.getByLabelText('BODY').value).toEqual('{}');
+  expect(screen.getByLabelText(/STATUS/i).value).toEqual('200');
+  expect(screen.getByLabelText(/TYPE/i).value).toEqual('application/json');
+  expect(screen.getByLabelText(/BODY$/i).value).toEqual('{}');
 });
 
 it('calls stub4 with the right parameters given the default values', async () => {
   when(mockedStub4)
     .expectCalledWith({
       requestMatcher: {
-        url: '',
-        method: 'GET',
-        bodyMatcher: { body: undefined, type: undefined }
+        url: ''
       },
       response: {
         body: '{}',
@@ -55,8 +54,7 @@ it('allows changing values and calls stub4 correspondingly', async () => {
     .expectCalledWith({
       requestMatcher: {
         url: '/some-url',
-        method: 'POST',
-        bodyMatcher: { body: undefined, type: undefined }
+        method: 'POST'
       },
       response: {
         body: 'this is the body',
@@ -67,44 +65,17 @@ it('allows changing values and calls stub4 correspondingly', async () => {
     .mockResolvedValue();
   const { theStubWasSavedSuccessfully } = renderNewStub();
 
-  await userEvent.type(screen.getByLabelText('URL'), 'some-url');
-  userEvent.selectOptions(screen.getByLabelText('METHOD'), 'POST');
+  await userEvent.type(screen.getByLabelText(/URL/i), 'some-url');
+  userEvent.click(screen.getByLabelText(/METHOD MATCHER/i));
+  userEvent.selectOptions(screen.getByLabelText(/METHOD$/i), 'POST');
 
-  await clearInput(screen.getByLabelText('STATUS'));
-  await userEvent.type(screen.getByLabelText('STATUS'), '321');
-  await clearInput(screen.getByLabelText('BODY'));
-  await userEvent.type(screen.getByLabelText('BODY'), 'this is the body');
-  userEvent.selectOptions(screen.getByLabelText('TYPE'), 'application/json');
+  await clearInput(screen.getByLabelText(/STATUS/i));
+  await userEvent.type(screen.getByLabelText(/STATUS/i), '321');
+  await clearInput(screen.getByLabelText(/BODY$/i));
+  await userEvent.type(screen.getByLabelText(/BODY$/i), 'this is the body');
+  userEvent.selectOptions(screen.getByLabelText(/TYPE/i), 'application/json');
 
-  userEvent.click(screen.getByText('Save'));
-
-  await waitFor(() => expect(theStubWasSavedSuccessfully()));
-});
-
-it('allows updating the body matcher once it is selected', async () => {
-  when(mockedStub4)
-    .expectCalledWith({
-      requestMatcher: {
-        url: '/with-body',
-        method: 'POST',
-        bodyMatcher: { body: { id: '321' }, type: 'json' }
-      },
-      response: {
-        body: '{}',
-        statusCode: 200,
-        type: 'application/json'
-      }
-    })
-    .mockResolvedValue();
-  const { theStubWasSavedSuccessfully } = renderNewStub();
-
-  await userEvent.type(screen.getByLabelText('URL'), 'with-body');
-  userEvent.selectOptions(screen.getByLabelText('METHOD'), 'POST');
-  userEvent.click(screen.getByLabelText('Body matching'));
-
-  await userEvent.type(screen.getByLabelText('BODY MATCHER'), '{"id": "321"}');
-
-  userEvent.click(screen.getByText('Save'));
+  userEvent.click(screen.getByText(/Save/i));
 
   await waitFor(() => expect(theStubWasSavedSuccessfully()));
 });
@@ -115,57 +86,25 @@ it('picks values from an edited stub overwriting the defaults', async () => {
       requestMatcher: {
         url: '/some-random-url',
         method: 'POST',
-        bodyMatcher: { body: undefined, type: undefined }
+        body: { value: 'something', type: 'xml' }
       },
       response: {
-        body: 'some-value that was setup',
         statusCode: 543,
-        type: 'application/json'
+        type: 'application/json',
+        body: 'some-value that was setup'
       }
     })
     .mockResolvedValue();
   const { theStubWasSavedSuccessfully } = renderNewStub({
     requestMatcher: {
-      urlMatcher: { url: '/some-random-url' },
-      method: 'POST'
+      url: '/some-random-url',
+      method: 'POST',
+      body: { value: 'something', type: 'xml' }
     },
     response: {
       statusCode: 543,
-      contentType: 'application/json',
+      type: 'application/json',
       body: 'some-value that was setup'
-    }
-  });
-
-  userEvent.click(screen.getByText('Save'));
-
-  await waitFor(() => expect(theStubWasSavedSuccessfully()));
-});
-
-it('includes the body matching if present', async () => {
-  when(mockedStub4)
-    .expectCalledWith({
-      requestMatcher: {
-        url: '/with-body',
-        method: 'GET',
-        bodyMatcher: { body: { id: '321' }, type: 'xml' }
-      },
-      response: {
-        body: '{}',
-        statusCode: 200,
-        type: 'text'
-      }
-    })
-    .mockResolvedValue();
-  const { theStubWasSavedSuccessfully } = renderNewStub({
-    requestMatcher: {
-      urlMatcher: { url: '/with-body' },
-      bodyMatcher: { body: { id: '321' }, type: 'xml' },
-      method: 'GET'
-    },
-    response: {
-      statusCode: 200,
-      contentType: 'text',
-      body: '{}'
     }
   });
 
@@ -177,44 +116,26 @@ it('includes the body matching if present', async () => {
 it('sets the value from the edited stub in the form', async () => {
   renderNewStub({
     requestMatcher: {
-      urlMatcher: { url: '/some-random-url' },
-      method: 'POST'
+      url: '/some-random-url',
+      method: 'POST',
+      body: { value: 'something', type: 'json' }
     },
     response: {
       statusCode: 543,
-      contentType: 'application/json',
+      type: 'application/json',
       body: 'some-value that was setup'
     }
   });
 
-  expect(screen.getByLabelText('URL').value).toEqual('/some-random-url');
-  expect(screen.getByLabelText('METHOD').value).toEqual('POST');
-  expect(screen.getByLabelText('Body matching').checked).toEqual(false);
+  const requestMatcherForm = screen.getByLabelText(/request matching/i);
+  expect(within(requestMatcherForm).getByLabelText(/URL/i).value).toEqual('/some-random-url');
+  expect(within(requestMatcherForm).getByLabelText(/METHOD$/i).value).toEqual('POST');
+  expect(within(requestMatcherForm).getByLabelText(/MATCH$/i).value).toEqual('something');
 
-  expect(screen.getByLabelText('STATUS').value).toEqual('543');
-  expect(screen.getByLabelText('TYPE').value).toEqual('application/json');
-  expect(screen.getByLabelText('BODY').value).toEqual('some-value that was setup');
-});
-
-it('sets the value from the edited stub in the form, including the body matcher if present', async () => {
-  renderNewStub({
-    requestMatcher: {
-      urlMatcher: { url: '/body-match' },
-      method: 'POST',
-      bodyMatcher: { body: { id: 321 }, keys: ['id'], type: 'json' }
-    },
-    response: {
-      body: { mgs: 'User 321 created' },
-      contentType: 'application/json',
-      statusCode: 200
-    }
-  });
-
-  expect(screen.getByLabelText('URL').value).toEqual('/body-match');
-  expect(screen.getByLabelText('BODY').value).toEqual('{"mgs":"User 321 created"}');
-  expect(screen.getByLabelText('Body matching').checked).toEqual(true);
-  expect(screen.getByLabelText('BODY TYPE').value).toEqual('json');
-  expect(screen.getByLabelText('BODY MATCHER').value).toEqual('{"id":321}');
+  const responseForm = screen.getByLabelText(/response/i);
+  expect(within(responseForm).getByLabelText(/STATUS/i).value).toEqual('543');
+  expect(within(responseForm).getByLabelText(/TYPE/i).value).toEqual('application/json');
+  expect(within(responseForm).getByLabelText(/BODY/i).value).toEqual('some-value that was setup');
 });
 
 function renderNewStub(editedItem = noEditedItem) {

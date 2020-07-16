@@ -9,9 +9,9 @@ export function ProxyList({ items, selected, setSelected }) {
       selected={selected}
       setSelected={setSelected}
       styles={{ itemClass: 'proxyDef', listClass: 'proxyList' }}
-      itemKey={(item) => `${item.requestMatcher.urlMatcher.url}-item`}
+      itemKey={(item) => `${item.requestMatcher.url}-item`}
       selectionMatch={(selected, current) =>
-        selected.requestMatcher.urlMatcher.url === current.requestMatcher.urlMatcher.url
+        selected.requestMatcher.url === current.requestMatcher.url
       }
     >
       {{
@@ -24,7 +24,7 @@ export function ProxyList({ items, selected, setSelected }) {
 function ProxyListItem({ item }) {
   return (
     <p>
-      <span className="url">{item.requestMatcher.urlMatcher.url}</span>
+      <span className="url">{item.requestMatcher.url}</span>
       <span>→</span>
       <span className="proxyUrl">{item.proxyUrl}</span>
     </p>

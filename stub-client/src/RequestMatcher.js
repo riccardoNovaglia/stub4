@@ -2,7 +2,7 @@ class RequestMatcher {
   constructor(url) {
     this.url = url;
     this.method = 'GET';
-    this.bodyMatcher = null;
+    this.bodyMatcherValue = null;
     this.type = 'json';
   }
 
@@ -11,12 +11,12 @@ class RequestMatcher {
     return this;
   }
   withBody(bodyMatcher) {
-    this.bodyMatcher = bodyMatcher;
+    this.bodyMatcherValue = bodyMatcher;
     return this;
   }
   withXmlBodyMatch(xmlMatch) {
     this.type = 'xml';
-    this.bodyMatcher = xmlMatch;
+    this.bodyMatcherValue = xmlMatch;
     return this;
   }
   withType(type) {
@@ -26,7 +26,9 @@ class RequestMatcher {
 
   toJson() {
     // TODO: is there a better way?
-    const body = this.bodyMatcher ? { bodyMatch: this.bodyMatcher, type: this.type } : undefined;
+    const body = this.bodyMatcherValue
+      ? { value: this.bodyMatcherValue, type: this.type }
+      : undefined;
 
     return {
       url: this.url,

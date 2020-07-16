@@ -6,11 +6,11 @@ const { createLogger } = require('../logger');
 
 const logger = createLogger('match');
 
-function RequestMatcher(matchDefinition) {
-  const urlMatcher = UrlMatcher(matchDefinition.url);
-  const bodyMatcher = BodyMatcher(matchDefinition.body);
-  const methodMatcher = MethodMatcher(matchDefinition.method);
-  const headersMatcher = HeadersMatcher(matchDefinition.headers);
+function RequestMatcher(requestMatcher) {
+  const urlMatcher = UrlMatcher(requestMatcher.url);
+  const bodyMatcher = BodyMatcher(requestMatcher.body);
+  const methodMatcher = MethodMatcher(requestMatcher.method);
+  const headersMatcher = HeadersMatcher(requestMatcher.headers);
 
   return {
     urlMatcher,
@@ -43,10 +43,10 @@ function RequestMatcher(matchDefinition) {
     },
     toJson() {
       return {
-        urlMatcher: this.urlMatcher.toJson(),
+        ...this.urlMatcher.toJson(),
         method: this.methodMatcher.toJson(),
-        bodyMatcher: this.bodyMatcher.toJson(),
-        headersMatcher: this.headersMatcher.toJson()
+        body: this.bodyMatcher.toJson(),
+        headers: this.headersMatcher.toJson()
       };
     }
   };

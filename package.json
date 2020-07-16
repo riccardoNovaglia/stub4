@@ -20,7 +20,8 @@
     "publish": "./scripts/build.sh && cd publish && npm publish --access public",
     "publish:only": "cd publish && npm publish --access public",
     "build": "./scripts/build.sh",
-    "deployDocs": "./scripts/deployDocs.sh"
+    "deployDocs": "./scripts/deployDocs.sh",
+    "pretty:all": "prettier --write server; prettier --write ui; prettier --write stub-client;"
   },
   "author": "Riccardo <stub4js+npm@gmail.com>",
   "dependencies": {},

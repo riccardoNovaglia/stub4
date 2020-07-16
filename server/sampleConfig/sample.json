@@ -8,7 +8,7 @@
       "requestMatcher": {
         "method": "POST",
         "url": "/body-match",
-        "body": { "bodyMatch": { "id": 321 } }
+        "body": { "value": { "id": 321 } }
       },
       "response": { "body": { "mgs": "User 321 created" }, "type": "json" }
     },
@@ -17,7 +17,7 @@
         "method": "POST",
         "url": "/body-match-xml",
         "body": {
-          "bodyMatch": [{ "path": "string(//author)", "value": "somebody" }],
+          "value": [{ "path": "string(//author)", "value": "somebody" }],
           "type": "xml"
         }
       },
@@ -28,7 +28,10 @@
     {
       "requestMatcher": { "url": "/some-crud-url" },
       "idAlias": "customerId",
-      "data": [{ "customerId": 1, "some": "content" }, { "customerId": 3, "some": "stuff" }]
+      "data": [
+        { "customerId": 1, "some": "content" },
+        { "customerId": 3, "some": "stuff" }
+      ]
     }
   ],
   "scenarios": [

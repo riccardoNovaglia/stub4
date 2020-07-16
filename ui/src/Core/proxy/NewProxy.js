@@ -13,7 +13,7 @@ export function NewProxy({ onClose, onSaved, editedItem, client }) {
   };
 
   const proxy = updatableItem({
-    ...useObject('url', defaults.requestMatcher.urlMatcher.url),
+    ...useObject('url', defaults.requestMatcher.url),
     ...useObject('proxyUrl', defaults.proxyUrl)
   });
 

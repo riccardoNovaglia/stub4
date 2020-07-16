@@ -11,12 +11,12 @@ it('starts blank when given a blank matcher', () => {
 it('sets the url on the url matcher when typed', async () => {
   const { getLatestState } = renderRequestMatcher();
   await userEvent.type(screen.getByLabelText(/url/i), '/something');
-  expect(getLatestState()).toEqual({ urlMatcher: { url: '/something' } });
+  expect(getLatestState()).toEqual({ url: '/something' });
 });
 
 it('starts with the given url', async () => {
   renderRequestMatcher({
-    urlMatcher: { url: '/pre-set' }
+    url: '/pre-set'
   });
   expect(screen.getByLabelText(/url/i).value).toEqual('/pre-set');
 });
@@ -28,8 +28,8 @@ it('shows the method matcher checkbox unchecked when the method matcher is not d
 
 it('shows the method matcher checkbox checked and the method if defined', () => {
   renderRequestMatcher({
-    urlMatcher: { url: '' },
-    methodMatcher: 'PATCH'
+    url: '',
+    method: 'PATCH'
   });
   expect(screen.getByLabelText(/method matcher/i).checked).toBe(true);
   expect(screen.getByText(/patch/i).selected).toBe(true);
@@ -44,8 +44,8 @@ it('shows the header matchers checkbox unchecked when the headers matcher is not
 
 it('shows the headers matcher checkbox checked and the headers key/values if defined', () => {
   renderRequestMatcher({
-    urlMatcher: { url: '' },
-    headersMatcher: { 'some-key': 'some-value' }
+    url: '',
+    headers: { 'some-key': 'some-value' }
   });
   expect(screen.getByLabelText(/name/i).value).toEqual('some-key');
   expect(screen.getByLabelText(/value/i).value).toEqual('some-value');
@@ -59,8 +59,8 @@ it('starts with a button to add a body matcher when given an blank one', () => {
 
 it('starts with the given body matcher configured if one is given', () => {
   renderRequestMatcher({
-    urlMatcher: { url: '' },
-    bodyMatcher: { type: 'json', body: 'any text' }
+    url: '',
+    body: { type: 'json', value: 'any text' }
   });
   expect(screen.getByLabelText(/body matcher/i).checked).toBe(true);
   expect(screen.getByText(/json/i).selected).toBe(true);
@@ -70,7 +70,7 @@ it('starts with the given body matcher configured if one is given', () => {
 });
 
 const blankRequestMatcher = {
-  urlMatcher: { url: '' }
+  url: ''
 };
 
 function renderRequestMatcher(initialState = blankRequestMatcher) {

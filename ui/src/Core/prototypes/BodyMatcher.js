@@ -22,7 +22,7 @@ export function BodyMatcher({ bodyMatcher, onChange }) {
             event.target.checked
               ? {
                   type: 'json',
-                  body: ''
+                  value: ''
                 }
               : undefined
           );
@@ -61,11 +61,11 @@ function BodyMatcherDetails({ bodyMatcher, onChange }) {
         </label>
         <textarea
           id="bodyMatch"
-          value={bodyMatcher?.body}
+          value={toStringIfObject(bodyMatcher?.value)}
           onChange={(event) =>
             onChange({
               ...bodyMatcher,
-              body: event.target.value
+              value: toJsonIfObject(event.target.value)
             })
           }
           rows="5"
@@ -79,4 +79,16 @@ function BodyMatcherDetails({ bodyMatcher, onChange }) {
 
 function empty(item) {
   return item === undefined || Object.keys(item).length === 0;
+}
+
+function toStringIfObject(body) {
+  return typeof body === 'object' ? JSON.stringify(body) : body;
+}
+
+function toJsonIfObject(body) {
+  try {
+    return JSON.parse(body);
+  } catch (e) {
+    return body;
+  }
 }

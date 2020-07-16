@@ -278,6 +278,7 @@ describe('Configuring scenarios', () => {
     expect(allScenarios.body).toEqual([
       {
         requestMatcher: {
+          url: '/some/{id}',
           urlMatcher: {
             url: '/some/{id}',
             variableNames: ['id'],
@@ -294,6 +295,7 @@ describe('Configuring scenarios', () => {
       },
       {
         requestMatcher: {
+          url: '/some-other/{bananas}/{more}',
           urlMatcher: {
             url: '/some-other/{bananas}/{more}',
             variableNames: ['bananas', 'more'],
@@ -315,11 +317,9 @@ describe('Configuring scenarios', () => {
       },
       {
         requestMatcher: {
-          urlMatcher: {
-            url: '/with-body'
-          },
-          bodyMatcher: {
-            body: { customerId: '*' },
+          url: '/with-body',
+          body: {
+            value: { customerId: '*' },
             keys: ['customerId'],
             type: 'json'
           },
@@ -359,6 +359,7 @@ describe('Configuring scenarios', () => {
     expect(scenario.body).toEqual([
       {
         requestMatcher: {
+          url: '/some/{id}',
           urlMatcher: {
             url: '/some/{id}',
             variableNames: ['id'],

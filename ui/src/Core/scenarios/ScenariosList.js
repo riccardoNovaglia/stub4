@@ -9,9 +9,9 @@ export function ScenariosList({ items, selected, setSelected }) {
       selected={selected}
       setSelected={setSelected}
       styles={{ itemClass: 'scenario', listClass: 'scenariosList' }}
-      itemKey={(item) => `${item.requestMatcher.urlMatcher.url}-item`}
+      itemKey={(item) => `${item.requestMatcher.url}-item`}
       selectionMatch={(selected, current) =>
-        selected.requestMatcher.urlMatcher.url === current.requestMatcher.urlMatcher.url
+        selected.requestMatcher.url === current.requestMatcher.url
       }
     >
       {{
@@ -24,8 +24,8 @@ export function ScenariosList({ items, selected, setSelected }) {
 function ScenarioListItem({ item }) {
   return (
     <p>
-      <span className="url">{item.requestMatcher.urlMatcher.url}</span>
-      <span className="variableNames">{item.requestMatcher.urlMatcher.variableNames}</span>
+      <span className="url">{item.requestMatcher.url}</span>
+      <span className="variableNames">{item.requestMatcher?.urlMatcher?.variableNames}</span>
       <span>→</span>
       <span className="outcomesLength">
         {item.outcomes.length} outcome{item.outcomes.length > 1 ? 's' : ''}

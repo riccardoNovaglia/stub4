@@ -8,7 +8,7 @@ import { Panel } from '../prototypes/Panel';
 import './Scenarios.scss';
 
 export function Scenarios({ client }) {
-  const fetch = set => {
+  const fetch = (set) => {
     client.fetchScenarios(set);
   };
 
@@ -16,7 +16,7 @@ export function Scenarios({ client }) {
     await client.clearScenarios();
   };
 
-  const save = async scenario => {
+  const save = async (scenario) => {
     console.log('TODO!', scenario);
   };
 
@@ -27,7 +27,7 @@ export function Scenarios({ client }) {
       client={client}
     >
       {{
-        preview: selected => <SelectedScenario selected={selected} client={client} />,
+        preview: (selected) => <SelectedScenario selected={selected} client={client} />,
         list: (items, selected, setSelected) => (
           <ScenariosList items={items} selected={selected} setSelected={setSelected} />
         ),

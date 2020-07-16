@@ -39,21 +39,15 @@ function UrlMatcher(url) {
     toJson() {
       return {
         url: this.url,
-        regex: this.regex.toString(),
-        variableNames: this.variableNames
+        urlMatcher: {
+          url: this.url,
+          regex: this.regex.toString(),
+          variableNames: this.variableNames
+        }
       };
     }
   };
 }
-
-const NoopMatcher = {
-  url: '',
-  matches: () => true,
-  getMatchedMap: () => undefined,
-  equals: (otherMatcher) => typeof otherMatcher === 'NoopMatcher',
-  pretty: () => '*',
-  toJson: () => undefined
-};
 
 const SimpleMatcher = (url) => {
   return {

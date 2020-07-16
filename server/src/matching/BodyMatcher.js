@@ -9,24 +9,24 @@ const { createLogger } = require('../logger');
 
 const logger = createLogger('bodyM');
 
-function BodyMatcher(body) {
-  if (_.isEmpty(body)) return NoopMatcher;
-  if (_.get(body, 'type') === 'xml') return XMLMatcher(body.bodyMatch);
+function BodyMatcher(bodyMatcher) {
+  if (_.isEmpty(bodyMatcher)) return NoopMatcher;
+  if (_.get(bodyMatcher, 'type') === 'xml') return XMLMatcher(bodyMatcher.value);
 
-  const keys = Object.keys(body.bodyMatch);
+  const keys = Object.keys(bodyMatcher.value);
 
   return {
-    body: body.bodyMatch,
+    value: bodyMatcher.value,
     keys,
     matches(body) {
       if (_.isEmpty(body)) return false;
 
-      return keys.every((k) => this.body[k] === '*' || body[k] === this.body[k]);
+      return keys.every((k) => this.value[k] === '*' || body[k] === this.value[k]);
     },
-    pretty: () => JSON.stringify(body.bodyMatch),
+    pretty: () => JSON.stringify(this.value),
     toJson() {
       return {
-        body: this.body,
+        value: this.value,
         keys: this.keys,
         type: 'json'
       };
@@ -36,12 +36,12 @@ function BodyMatcher(body) {
 
 const XMLMatcher = (body) => {
   return {
-    body,
+    value: body,
     matches(body) {
       const xml = builder.buildObject(body);
       const doc = new dom().parseFromString(xml);
 
-      return this.body.every(({ path, value }) => {
+      return this.value.every(({ path, value }) => {
         const selectedValue = xpath.select(path, doc);
         logger.debug(
           `Using path '${JSON.stringify(path)}' 
@@ -53,10 +53,10 @@ const XMLMatcher = (body) => {
         return selectedValue === value;
       });
     },
-    pretty: () => JSON.stringify(body),
+    pretty: () => JSON.stringify(this.value),
     toJson() {
       return {
-        body: this.body,
+        value: this.value,
         type: 'xml'
       };
     }

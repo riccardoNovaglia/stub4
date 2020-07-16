@@ -9,20 +9,20 @@ export function StubsList({ items, selected, setSelected }) {
       selected={selected}
       setSelected={setSelected}
       styles={{ itemClass: 'stub', listClass: 'stubsList' }}
-      itemKey={item => `${item.requestMatcher.urlMatcher.url}-item`}
+      itemKey={(item) => `${item.requestMatcher.url}-item`}
       selectionMatch={(selected, current) =>
-        selected.requestMatcher.urlMatcher.url === current.requestMatcher.urlMatcher.url
+        selected.requestMatcher.url === current.requestMatcher.url
       }
     >
       {{
-        item: item => <StubListItem item={item} />
+        item: (item) => <StubListItem item={item} />
       }}
     </ItemsList>
   );
 }
 
 function StubListItem({ item }) {
-  const methodClassName = method =>
+  const methodClassName = (method) =>
     method === '*' || method === undefined ? 'any' : method.toLowerCase();
 
   return (
@@ -30,7 +30,7 @@ function StubListItem({ item }) {
       <span className={`method ${methodClassName(item.requestMatcher.method)}`}>
         {item.requestMatcher.method}
       </span>{' '}
-      <span className="url">{item.requestMatcher.urlMatcher.url}</span>
+      <span className="url">{item.requestMatcher.url}</span>
       <span>→</span>
       <span className="contentType">{item.response.contentType}</span>
     </p>
