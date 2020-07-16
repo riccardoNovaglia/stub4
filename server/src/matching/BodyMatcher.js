@@ -23,7 +23,9 @@ function BodyMatcher(bodyMatcher) {
 
       return keys.every((k) => this.value[k] === '*' || body[k] === this.value[k]);
     },
-    pretty: () => JSON.stringify(this.value),
+    pretty() {
+      return JSON.stringify(this.value);
+    },
     toJson() {
       return {
         value: this.value,
@@ -53,7 +55,9 @@ const XMLMatcher = (body) => {
         return selectedValue === value;
       });
     },
-    pretty: () => JSON.stringify(this.value),
+    pretty() {
+      return JSON.stringify(this.value);
+    },
     toJson() {
       return {
         value: this.value,

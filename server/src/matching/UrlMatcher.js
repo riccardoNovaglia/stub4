@@ -32,7 +32,9 @@ function UrlMatcher(url) {
       const zipped = variableNames.map((elem, index) => ({ [elem]: capturedGroups[index] }));
       return zipped;
     },
-    equals: (otherMatcher) => otherMatcher.url === url,
+    equals(otherMatcher) {
+      return otherMatcher.url === this.url;
+    },
     pretty() {
       return regex.toString();
     },
