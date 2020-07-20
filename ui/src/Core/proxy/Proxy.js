@@ -4,7 +4,7 @@ import { ProxyList } from './ProxyList';
 import { NewProxy } from './NewProxy';
 import { SelectedProxy } from './SelectedProxy';
 
-import { Panel } from '../prototypes/Panel';
+import { Panel } from '../prototypes/stubsComponents/Panel';
 
 export function Proxy({ client }) {
   const fetch = (set) => {

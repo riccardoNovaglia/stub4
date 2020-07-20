@@ -40,7 +40,7 @@ it('returns all created proxies', async () => {
   expect(proxiedResponse.data).toEqual([
     {
       requestMatcher: { url: '/john', method: 'POST' },
-      proxyUrl: `${stub4Host()}/bananas`
+      proxy: { destinationUrl: `${stub4Host()}/bananas` }
     }
   ]);
 });

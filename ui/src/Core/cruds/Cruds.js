@@ -4,7 +4,7 @@ import { CrudsList } from './CrudsList';
 import { SelectedCrud } from './SelectedCrud';
 import { NewCrud } from './NewCrud';
 
-import { Panel } from '../prototypes/Panel';
+import { Panel } from '../prototypes/stubsComponents/Panel';
 
 export function Cruds({ client }) {
   const fetch = (set) => client.fetchCruds(set);

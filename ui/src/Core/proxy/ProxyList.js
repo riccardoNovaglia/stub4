@@ -1,6 +1,6 @@
 import React from 'react';
 
-import ItemsList from '../prototypes/ItemsList';
+import ItemsList from '../prototypes/stubsComponents/ItemsList';
 
 export function ProxyList({ items, selected, setSelected }) {
   return (
@@ -25,8 +25,8 @@ function ProxyListItem({ item }) {
   return (
     <p>
       <span className="url">{item.requestMatcher.url}</span>
-      <span>→</span>
-      <span className="proxyUrl">{item.proxyUrl}</span>
+      <span>→ </span>
+      <span className="proxyUrl">{item.proxy.destinationUrl}</span>
     </p>
   );
 }

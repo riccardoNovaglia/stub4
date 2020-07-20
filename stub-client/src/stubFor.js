@@ -16,6 +16,8 @@ async function stubFor(requestMatcher, response) {
         return await ax.post('/stubs', requestMatcher);
       case has(requestMatcher, 'crud'):
         return await ax.post('/cruds', requestMatcher);
+      case has(requestMatcher, 'proxy'):
+        return await ax.post('/proxy', requestMatcher);
       default:
         console.log('not done yet');
         break;

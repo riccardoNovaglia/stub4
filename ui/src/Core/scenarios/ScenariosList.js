@@ -1,6 +1,6 @@
 import React from 'react';
 
-import ItemsList from '../prototypes/ItemsList';
+import ItemsList from '../prototypes/stubsComponents/ItemsList';
 
 export function ScenariosList({ items, selected, setSelected }) {
   return (

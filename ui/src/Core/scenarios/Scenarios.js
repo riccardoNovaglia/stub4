@@ -3,7 +3,7 @@ import React from 'react';
 import { ScenariosList } from './ScenariosList';
 import { SelectedScenario } from './SelectedScenario';
 
-import { Panel } from '../prototypes/Panel';
+import { Panel } from '../prototypes/stubsComponents/Panel';
 
 import './Scenarios.scss';
 

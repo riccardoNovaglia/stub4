@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { RequestMatcherV2 } from '../prototypes/RequestMatcherV2';
-import { SaveButton } from '../prototypes/SaveButton';
+import { RequestMatcher } from '../prototypes/matching/RequestMatcher';
+import { SaveButton } from '../prototypes/stubsComponents/SaveButton';
 
 const { stubFor } = require('@stub4/client');
 
@@ -33,7 +33,7 @@ export function NewStub({ onClose, onSaved, editedItem }) {
 
   return (
     <div onKeyDown={(e) => e.keyCode === 27 && onClose()}>
-      <RequestMatcherV2 requestMatcher={requestMatcher} setRequestMatcher={setRequestMatcher} />
+      <RequestMatcher requestMatcher={requestMatcher} setRequestMatcher={setRequestMatcher} />
 
       <br />
       <label htmlFor="responseDefinitionForm">Response: </label>

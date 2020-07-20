@@ -1,37 +1,32 @@
-import React from 'react';
-import { SaveButton } from '../prototypes/SaveButton';
-import { RequestMatcher } from '../prototypes/RequestMatcher';
-import { useObject, updatableItem, handle } from '../prototypes/NewItemManagement';
+import React, { useState } from 'react';
+import { SaveButton } from '../prototypes/stubsComponents/SaveButton';
+import { UrlMatcher } from '../prototypes/matching/UrlMatcher';
 
 const { stubFor } = require('@stub4/client');
 
+const defaults = {
+  requestMatcher: { url: '' },
+  crud: { idAlias: '', patchOnPost: false }
+};
 export function NewCrud({ onClose, onSaved, editedItem }) {
-  const defaults = {
-    requestMatcher: { url: '' },
-    crud: { idAlias: '', patchOnPost: false },
-    ...editedItem
-  };
+  const [urlMatcher, setUrlMatcher] = useState({
+    ...defaults.requestMatcher,
+    ...editedItem?.requestMatcher
+  });
 
-  const crud = updatableItem({
-    ...useObject('url', defaults.requestMatcher.url),
-    ...useObject('idAlias', defaults.crud.idAlias),
-    ...useObject('patchOnPost', defaults.crud.patchOnPost)
+  const [crud, setCrud] = useState({
+    ...defaults.crud,
+    ...editedItem?.crud
   });
 
   async function onSave() {
-    await stubFor({
-      requestMatcher: { url: crud.url.value },
-      crud: {
-        idAlias: crud.idAlias.value,
-        patchOnPost: crud.patchOnPost.value
-      }
-    });
+    await stubFor({ requestMatcher: { url: urlMatcher.url }, crud });
     onSaved();
   }
 
   return (
     <div onKeyDown={(e) => e.keyCode === 27 && onClose()}>
-      <RequestMatcher item={crud} />
+      <UrlMatcher urlMatcher={urlMatcher.url} onChange={(url) => setUrlMatcher({ url })} />
 
       <div>
         <label className="itemLabel" htmlFor="idAlias">
@@ -40,8 +35,8 @@ export function NewCrud({ onClose, onSaved, editedItem }) {
         <input
           id="idAlias"
           type="text"
-          onChange={handle(crud)(crud.idAlias.set, 'idAlias')}
-          value={crud.idAlias.value}
+          onChange={(event) => setCrud({ ...crud, idAlias: event.target.value })}
+          value={crud.idAlias}
         />
       </div>
 
@@ -52,8 +47,8 @@ export function NewCrud({ onClose, onSaved, editedItem }) {
         id="patchOnPostCheckbox"
         type="checkbox"
         className="bodyMatchCheckbox"
-        onChange={(event) => crud.patchOnPost.set(event.target.checked)}
-        checked={crud.patchOnPost.value}
+        onChange={(event) => setCrud({ ...crud, patchOnPost: event.target.checked })}
+        checked={crud.patchOnPost}
       />
 
       <SaveButton onSave={onSave} />

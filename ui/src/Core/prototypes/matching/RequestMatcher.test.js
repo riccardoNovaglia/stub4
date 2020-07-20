@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { render, screen, getNodeText } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { RequestMatcherV2 } from './RequestMatcherV2';
+import { RequestMatcher } from './RequestMatcher';
 
 it('starts blank when given a blank matcher', () => {
   renderRequestMatcher();
@@ -93,7 +93,7 @@ function RequestMatcherTester({ setLatestState, initialState }) {
   const [requestMatcher, setRequestMatcher] = useState(initialState);
 
   return (
-    <RequestMatcherV2
+    <RequestMatcher
       requestMatcher={requestMatcher}
       setRequestMatcher={(latestRequestMatcher) => {
         setRequestMatcher(latestRequestMatcher);

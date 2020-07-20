@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import Tabs from '../navigation/Tabs';
-import { NewItemModal } from '../prototypes/NewItemModal';
+import { NewItemModal } from '../prototypes/stubsComponents/NewItemModal';
 import { NewStub } from '../stubs/NewStub';
 import { NewCrud } from '../cruds/NewCrud';
 import { NewProxy } from '../proxy/NewProxy';

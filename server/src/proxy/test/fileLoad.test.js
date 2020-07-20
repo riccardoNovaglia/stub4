@@ -8,41 +8,43 @@ describe('Loading proxy from an initialiser file', () => {
     add(
       ProxyFromFile({
         requestMatcher: { url: '/some-url' },
-        proxy: { destination: { url: '/something' } }
+        proxy: { destinationUrl: '/something' }
       })
     );
 
-    const proxy = get('/some-url', 'GET', [], {});
-    const { requestMatcher, proxyUrl } = proxy.toJson();
+    const item = get('/some-url', 'GET', [], {});
+    const { requestMatcher, proxy } = item.toJson();
     expect(requestMatcher.url).toEqual('/some-url');
     expect(requestMatcher.method).toEqual('*');
-    expect(proxyUrl).toEqual('/something');
+    expect(proxy.destinationUrl).toEqual('/something');
   });
 
   it('loads multiple proxy', async () => {
     add(
       ProxyFromFile({
         requestMatcher: { url: '/bananas/v21' },
-        proxy: { destination: { url: '/patatas/v22' } }
+        proxy: { destinationUrl: '/patatas/v22' }
       })
     );
     add(
       ProxyFromFile({
         requestMatcher: { url: '/beans', method: 'POST' },
-        proxy: { destination: { url: '/peas' } }
+        proxy: { destinationUrl: '/peas' }
       })
     );
 
     const bananas = get('/bananas/v21', 'GET', [], {});
 
-    expect(bananas.requestMatcher.toJson().url).toEqual('/bananas/v21');
-    expect(bananas.requestMatcher.toJson().method).toEqual('*');
-    expect(bananas.proxyUrl).toEqual('/patatas/v22');
+    const { requestMatcher: r1, proxy: p1 } = bananas.toJson();
+    expect(r1.url).toEqual('/bananas/v21');
+    expect(r1.method).toEqual('*');
+    expect(p1).toEqual({ destinationUrl: '/patatas/v22' });
 
     const beans = get('/beans', 'POST', [], {});
 
-    expect(beans.requestMatcher.toJson().url).toEqual('/beans');
-    expect(beans.requestMatcher.toJson().method).toEqual('POST');
-    expect(beans.proxyUrl).toEqual('/peas');
+    const { requestMatcher: r2, proxy: p2 } = beans.toJson();
+    expect(r2.url).toEqual('/beans');
+    expect(r2.method).toEqual('POST');
+    expect(p2).toEqual({ destinationUrl: '/peas' });
   });
 });

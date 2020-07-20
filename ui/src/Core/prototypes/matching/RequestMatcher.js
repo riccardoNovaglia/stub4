@@ -1,11 +1,11 @@
 import React from 'react';
 
-import { UrlMatcher } from '../prototypes/Url';
+import { UrlMatcher } from './UrlMatcher';
 import { HeadersMatcher } from './HeadersMatcher';
 import { BodyMatcher } from './BodyMatcher';
 import { MethodMatcher } from './MethodMatcher';
 
-export function RequestMatcherV2({ requestMatcher, setRequestMatcher }) {
+export function RequestMatcher({ requestMatcher, setRequestMatcher }) {
   return (
     <div className="requestMatching">
       <label htmlFor="requestDefinitionForm">Request Matching</label>

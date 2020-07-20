@@ -6,7 +6,7 @@ function proxyTo(url) {
       return this;
     },
     toJson() {
-      return { proxy: { destination: { url }, delay: this.delay } };
+      return { proxy: { destinationUrl: url, delay: this.delay } };
     }
   };
 }

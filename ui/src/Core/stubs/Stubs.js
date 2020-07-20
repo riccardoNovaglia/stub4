@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Panel } from '../prototypes/Panel';
+import { Panel } from '../prototypes/stubsComponents/Panel';
 import { StubsList } from './StubsList';
 import { SelectedStub } from './SelectedStub';
 import { NewStub } from './NewStub';

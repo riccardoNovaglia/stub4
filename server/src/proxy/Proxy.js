@@ -10,23 +10,20 @@ const logger = createLogger('proxy');
 const sleep = (ms) => new Promise((res) => setTimeout(res, ms));
 
 function Proxy(requestMatcher, proxy) {
-  const {
-    destination: { url: proxyUrl },
-    delay
-  } = proxy;
-  if (!proxyUrl) throw new Error('A url to proxy to must be provided!');
+  const { destinationUrl, delay } = proxy;
+  if (!destinationUrl) throw new Error('A url to proxy to must be provided!');
 
   return {
     requestMatcher,
-    proxyUrl,
+    destinationUrl,
     delay,
     matches(url, method, headers, body) {
       return this.requestMatcher.matches({ url, method, headers, body });
     },
     async doProxy(method, headers, body) {
-      logger.debug(`Proxying request to ${method} ${this.proxyUrl}`);
+      logger.debug(`Proxying request to ${method} ${this.destinationUrl}`);
       const response = await axios.request({
-        url: this.proxyUrl,
+        url: this.destinationUrl,
         method,
         headers,
         data: body
@@ -44,12 +41,12 @@ function Proxy(requestMatcher, proxy) {
       const prettyMethod = this.requestMatcher.methodMatcher.pretty();
       const prettyUrl = this.requestMatcher.urlMatcher.pretty();
       const delayIfAny = this.delay ? `(+ ${this.delay}ms delay)` : '';
-      return `${prettyMethod} ${prettyUrl} -> ${proxyUrl} ${delayIfAny}`;
+      return `${prettyMethod} ${prettyUrl} -> ${destinationUrl} ${delayIfAny}`;
     },
     toJson() {
       return {
         requestMatcher: this.requestMatcher.toJson(),
-        proxyUrl
+        proxy: { destinationUrl }
       };
     },
     responseSummary(response) {

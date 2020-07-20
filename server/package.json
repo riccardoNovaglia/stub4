@@ -38,7 +38,7 @@
   },
   "devDependencies": {
     "@pact-foundation/pact": "9.11.0",
-    "@stub4/client": "0.0.14",
+    "@stub4/client": "0.0.15",
     "jest": "26.0.1",
     "nodemon": "2.0.4",
     "supertest": "4.0.2"

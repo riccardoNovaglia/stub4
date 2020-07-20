@@ -1,45 +1,42 @@
 import React, { useState } from 'react';
-import { SaveButton } from '../prototypes/SaveButton';
-import { RequestMatcherV2 } from '../prototypes/RequestMatcherV2';
-import { useObject, updatableItem } from '../prototypes/NewItemManagement';
+import { SaveButton } from '../prototypes/stubsComponents/SaveButton';
+import { RequestMatcher } from '../prototypes/matching/RequestMatcher';
 
 import { stubFor } from '@stub4/client';
 
-export function NewProxy({ onClose, onSaved, editedItem, client }) {
-  const defaults = {
-    requestMatcher: { urlMatcher: { url: '' } },
-    proxyUrl: '',
-    ...editedItem
-  };
-
-  const proxy = updatableItem({
-    ...useObject('url', defaults.requestMatcher.url),
-    ...useObject('proxyUrl', defaults.proxyUrl)
+const defaults = {
+  requestMatcher: { url: '' },
+  proxy: { destinationUrl: '' }
+};
+export function NewProxy({ onClose, onSaved, editedItem }) {
+  const [requestMatcher, setRequestMatcher] = useState({
+    ...defaults.requestMatcher,
+    ...editedItem?.requestMatcher
+  });
+  const [proxy, setProxyDef] = useState({
+    ...defaults.proxy,
+    ...editedItem?.proxy
   });
 
-  const [requestMatcher, setRequestMatcher] = useState(defaults.requestMatcher);
-  const [proxyDef, setProxyDef] = useState({ proxyUrl: defaults.proxyUrl });
-
   async function onSave() {
-    await client.proxyRequests(proxy.url.value, proxy.proxyUrl.value);
-    await stubFor(requestMatcher, { proxy: proxyDef });
+    await stubFor({ requestMatcher, proxy });
     onSaved();
   }
 
   return (
     <div onKeyDown={(e) => e.keyCode === 27 && onClose()}>
-      <RequestMatcherV2 requestMatcher={requestMatcher} setRequestMatcher={setRequestMatcher} />
+      <RequestMatcher requestMatcher={requestMatcher} setRequestMatcher={setRequestMatcher} />
 
       <div>
         <h3>Proxy to</h3>
-        <label className="itemLabel" htmlFor="url">
+        <label className="itemLabel" htmlFor="destinationUrl">
           PROXY URL
         </label>
         <input
-          id="url"
+          id="destinationUrl"
           type="text"
-          onChange={(event) => setProxyDef({ proxyUrl: event.target.value })}
-          value={proxyDef.proxyUrl}
+          onChange={(event) => setProxyDef({ ...proxy, destinationUrl: event.target.value })}
+          value={proxy.destinationUrl}
         />
       </div>
 
