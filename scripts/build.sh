@@ -2,10 +2,10 @@
 
 rm -rf publish
 
-mkdir publish
+mkdir -p publish/dist/stub4
 
 cd ui && npm run build && cd ..
-cp -r ui/build/ publish/dist
+cp -r ui/build/ publish/dist/stub4
 
 cd server && npm install --prod-only && cd ..
 cp -r server/src/ publish/lib
