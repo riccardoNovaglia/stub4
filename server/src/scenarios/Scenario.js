@@ -60,4 +60,9 @@ function ScenarioFromFile(fromFile) {
   return ScenarioFrom(fromFile.requestMatcher, fromFile.default, fromFile.outcomes);
 }
 
-module.exports = { Scenario, ScenarioFromRequest, ScenarioFromFile };
+function ScenarioFromJs(item) {
+  const { default: defaults, outcomes } = item.scenarios;
+  return ScenarioFrom(item.requestMatcher, defaults, outcomes);
+}
+
+module.exports = { Scenario, ScenarioFromRequest, ScenarioFromFile, ScenarioFromJs };

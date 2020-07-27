@@ -2,9 +2,9 @@
 const app = require('./app');
 const ui = require('./ui');
 const config = require('./config');
-const defaultsLoader = require('./defaultsLoader');
+const fileLoader = require('./loading/fileLoader');
 
-defaultsLoader.loadDefaultsFiles(config.defaultsFiles);
+fileLoader.loadDefaultsFiles(config.defaultsFiles);
 
 app.listen(config.stubsPort, () => {
   console.log(`Stubs started on ${config.stubsPort}`);

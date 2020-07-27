@@ -1,19 +1,19 @@
 const fs = require('fs');
 const glob = require('glob');
 
-const stubs = require('./stubs/Stubs');
-const { StubFromFile } = require('./stubs/Stub');
+const stubs = require('../stubs/Stubs');
+const { StubFromFile } = require('../stubs/Stub');
 
-const scenarios = require('./scenarios/Scenarios');
-const { ScenarioFromFile } = require('./scenarios/Scenario');
+const scenarios = require('../scenarios/Scenarios');
+const { ScenarioFromFile } = require('../scenarios/Scenario');
 
-const cruds = require('./cruds/Cruds');
-const { CrudFromFile } = require('./cruds/Crud');
+const cruds = require('../cruds/Cruds');
+const { CrudFromFile } = require('../cruds/Crud');
 
-const proxy = require('./proxy/Proxys');
-const { ProxyFromFile } = require('./proxy/Proxy');
+const proxy = require('../proxy/Proxys');
+const { ProxyFromFile } = require('../proxy/Proxy');
 
-const { createLogger } = require('./logger');
+const { createLogger } = require('../logger');
 const logger = createLogger('load');
 
 function loadDefaultsFiles(defaultsFiles) {

@@ -67,4 +67,10 @@ function ProxyFromFile(proxyDef) {
   return Proxy(RequestMatcher(requestMatcher), proxy);
 }
 
-module.exports = { ProxyFromRequest, ProxyFromFile, Proxy };
+function ProxyFromJs(proxyDef) {
+  const { requestMatcher, proxy } = proxyDef;
+
+  return Proxy(RequestMatcher(requestMatcher), proxy);
+}
+
+module.exports = { ProxyFromRequest, ProxyFromFile, ProxyFromJs, Proxy };

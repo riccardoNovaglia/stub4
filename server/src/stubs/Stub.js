@@ -57,4 +57,10 @@ function StubFromFile(stubDef) {
   return Stub(RequestMatcher(requestMatcher), Response(response), contract);
 }
 
-module.exports = { Stub, StubFromRequest, StubFromFile };
+function StubFromJs(stubDef) {
+  const { requestMatcher, response, contract } = stubDef;
+
+  return Stub(RequestMatcher(requestMatcher), Response(response), contract);
+}
+
+module.exports = { Stub, StubFromRequest, StubFromFile, StubFromJs };

@@ -109,12 +109,14 @@ function getPatchOnPost(source) {
   return _.get(source, 'patchOnPost', 'false');
 }
 
+// TODO: sort out this mess
 function crudFromRequest(req) {
   const url = req.body.requestMatcher.url;
   const idAlias = getIdAlias(req.body.crud);
   return Crud(url, idAlias, getPatchOnPost(req.body));
 }
 
+// TODO: and this mess
 function CrudFromFile(item) {
   const url = item.requestMatcher.url;
   const idAlias = getIdAlias(item);
@@ -123,4 +125,13 @@ function CrudFromFile(item) {
   return crud;
 }
 
-module.exports = { Crud, crudFromRequest, CrudFromFile };
+function CrudFromJs(item) {
+  const {
+    requestMatcher: { url },
+    crud: { idAlias = 'id', patchOnPost = false, data = [] }
+  } = item;
+
+  return Crud(url, idAlias, patchOnPost);
+}
+
+module.exports = { Crud, crudFromRequest, CrudFromFile, CrudFromJs };

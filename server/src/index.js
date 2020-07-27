@@ -1,4 +1,5 @@
 const enableDestroy = require('server-destroy');
+const jsLoader = require('./loading/jsLoader');
 let runPort = 0;
 let server;
 
@@ -20,17 +21,13 @@ function startup(maybeConfig) {
   return { listeningPort: runPort };
 }
 
-function getProvidedConfig(maybeConfig) {
-  if (maybeConfig === undefined) {
-    return {
-      listeningPort: 0,
-      logLevel: 'off'
-    };
-  }
+function getProvidedConfig(maybeConfig = {}) {
+  const port = maybeConfig.port ? maybeConfig.port : 0;
+  const logLevel = maybeConfig.logLevel ? maybeConfig.logLevel : 'off';
 
   return {
-    listeningPort: maybeConfig.port === undefined ? 0 : port,
-    logLevel: maybeConfig.logLevel === undefined ? 'off' : maybeConfig.logLevel
+    listeningPort: port,
+    logLevel: logLevel
   };
 }
 
@@ -64,9 +61,14 @@ ${x}`;
   return server.address().port;
 }
 
+function addItems(items) {
+  jsLoader.add(items);
+}
+
 module.exports = {
   startup,
   shutdown,
-  listeningPort,
-  clearAll
+  addItems,
+  clearAll,
+  listeningPort
 };
