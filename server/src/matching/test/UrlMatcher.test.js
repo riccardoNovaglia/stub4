@@ -92,5 +92,24 @@ describe('A class to match urls to scenarios', () => {
       expect(matcher.matches('/some-url')).toEqual(true);
       expect(matcher.matches('/some-other-url')).toEqual(false);
     });
+
+    it('works with url encoded variables', () => {
+      const matcher = UrlMatcher('/some-url?variable[0]=thing');
+
+      expect(matcher.matches('/some-url?variable[0]=thing')).toEqual(true);
+      expect(matcher.matches('/some-url?variable%5B0%5D=thing')).toEqual(true);
+      expect(matcher.matches('/some-url?variable%5B1%5D=thing')).toEqual(false);
+      expect(matcher.matches('/some-url?variable%5B0%5D=bananas')).toEqual(false);
+    });
+
+    it('works with multiple url encoded variables', () => {
+      const matcher = UrlMatcher('/some-url?variable[0]=thing&variable[1]=other');
+
+      expect(matcher.matches('/some-url?variable[0]=thing&variable[1]=other')).toEqual(true);
+      expect(matcher.matches('/some-url?variable%5B0%5D=thing')).toEqual(false);
+      expect(matcher.matches('/some-url?variable%5B0%5D=thing&variable%5B1%5D=other')).toEqual(
+        true
+      );
+    });
   });
 });

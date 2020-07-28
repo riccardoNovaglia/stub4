@@ -53,12 +53,22 @@ function UrlMatcher(url) {
 
 const SimpleMatcher = (url) => {
   return {
-    url,
-    matches: (urlToMatch) => urlToMatch === url,
-    getMatchedMap: () => undefined,
-    equals: (otherMatcher) => otherMatcher.url === url,
-    pretty: () => url,
-    toJson: () => ({ url })
+    url: decodeURI(url),
+    matches(urlToMatch) {
+      return this.url === decodeURI(urlToMatch);
+    },
+    getMatchedMap() {
+      return undefined;
+    },
+    equals(otherMatcher) {
+      return otherMatcher.url === this.url;
+    },
+    pretty() {
+      return this.url;
+    },
+    toJson() {
+      return { url: this.url };
+    }
   };
 };
 
