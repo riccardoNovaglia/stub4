@@ -7,7 +7,7 @@
   "scripts": {
     "test": "npm run test:dev",
     "test:dev": "UI_PORT=8081 STUBS_PORT=9090 jest --watchAll --runInBand",
-    "test:ci": "UI_PORT=8081 STUBS_PORT=9090 CI=true jest --runInBand",
+    "test:ci": "npm install && concurrently -s first -k -n \"Stub4,Tests\" -c \"cyan,green\" \"npm run stub4 stub4config.json;\" \"UI_PORT=8081 STUBS_PORT=9090 jest\"",
     "test:accept": "UI_PORT=80 STUBS_PORT=8080 jest --runInBand",
     "taiko": "taiko",
     "stub4": "stub4",
@@ -20,6 +20,7 @@
     "@stub4/client": "0.0.15",
     "@stub4/stub4": "0.0.23",
     "axios": "0.19.2",
+    "concurrently": "^5.2.0",
     "jest": "26.0.1",
     "nodemon": "2.0.3",
     "taiko": "1.0.10"
