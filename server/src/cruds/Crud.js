@@ -130,8 +130,9 @@ function CrudFromJs(item) {
     requestMatcher: { url },
     crud: { idAlias = 'id', patchOnPost = false, data = [] }
   } = item;
-
-  return Crud(url, idAlias, patchOnPost);
+  const crud = Crud(url, idAlias, patchOnPost);
+  data.forEach((dataItem) => crud.push(dataItem));
+  return crud;
 }
 
 module.exports = { Crud, crudFromRequest, CrudFromFile, CrudFromJs };
