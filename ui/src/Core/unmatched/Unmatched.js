@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { UnmatchedList } from './UnmatchedList';
 import { UnmatchedToItem } from './UnmatchedToItem';
 
-export function Unmatched({ client, clients, setTab }) {
+export function Unmatched({ client, clients, setTab, children }) {
   const [unmatched, setUnmatched] = useState([]);
   const [selected, setSelected] = useState();
 
@@ -19,9 +19,10 @@ export function Unmatched({ client, clients, setTab }) {
   // };
 
   return (
-    <div className="panel unmatched">
+    <div className="panel">
       <h1>
         Unmatched requests<i className="material-icons">call_missed</i>
+        {children}
       </h1>
       {/* <button className="clearBtn" onClick={() => clear()}>
         <i className="material-icons">clear_all</i>Clear

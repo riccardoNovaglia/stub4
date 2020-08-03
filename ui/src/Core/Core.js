@@ -16,6 +16,7 @@ import './Core.scss';
 
 function Core({ children }) {
   const clients = useClients();
+  const [unmatched, setUnmatched] = useState(false);
 
   return (
     <>
@@ -25,26 +26,41 @@ function Core({ children }) {
         {children}
       </div>
       <div className="App">
-        <div className="stubsAndCruds">
+        <div className="tabs">
           <Tabs />
-          <Switch>
-            <Route path="/stub4/stubs">
-              <Stubs client={clients.stubClient} />
-            </Route>
-            <Route path="/stub4/scenarios">
-              <Scenarios client={clients.scenariosClient} />
-            </Route>
-            <Route path="/stub4/cruds">
-              <Cruds client={clients.crudClient} />
-            </Route>
-            <Route path="/stub4/proxy">
-              <Proxy client={clients.proxyClient} />
-            </Route>
-            <Redirect to="/stub4/stubs" />
-          </Switch>
+          {!unmatched && (
+            <button className="showUnmatched" onClick={() => setUnmatched(true)}>
+              Show unmatched
+            </button>
+          )}
         </div>
-        <div className="unmatchedBody">
-          <Unmatched client={clients.unmatchedClient} clients={clients} />
+        <div className="stubsAndUnmatched">
+          <div className="stubs">
+            <Switch>
+              <Route path="/stub4/stubs">
+                <Stubs client={clients.stubClient} />
+              </Route>
+              <Route path="/stub4/scenarios">
+                <Scenarios client={clients.scenariosClient} />
+              </Route>
+              <Route path="/stub4/cruds">
+                <Cruds client={clients.crudClient} />
+              </Route>
+              <Route path="/stub4/proxy">
+                <Proxy client={clients.proxyClient} />
+              </Route>
+              <Redirect to="/stub4/stubs" />
+            </Switch>
+          </div>
+          {unmatched && (
+            <div className="unmatchedBody">
+              <Unmatched client={clients.unmatchedClient} clients={clients}>
+                <button className="hideUnmatched" onClick={() => setUnmatched(false)}>
+                  Hide
+                </button>
+              </Unmatched>
+            </div>
+          )}
         </div>
       </div>
     </>
@@ -67,6 +83,7 @@ const useClients = () => {
   });
 
   // TODO: these gotta go. Should just setPort above, and then use stubFor(matcher, response)
+  // TWIST! How to list things and get existing? Need getStubs/getStub/clear type methods?
   return {
     stubClient: new Stub4.StubClient(port),
     crudClient: new Stub4.CrudClient(port),

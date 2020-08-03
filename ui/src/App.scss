@@ -1,19 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Maven+Pro&display=swap');
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons&display=swap');
 
-.App {
-  display: flex;
-  justify-content: space-between;
-  padding-top: 20px;
-}
-
-.header {
-  .welcome {
-    color: rgba(255, 255, 255, 0.685);
-    display: inline;
-  }
-}
-
 .helpAndBackButton {
   background-color: #4494df;
   border: none;
@@ -25,6 +12,7 @@
   border-radius: 2px;
   float: right;
   min-width: 155px;
+  margin: 1em 0;
 }
 
 .helpButton {

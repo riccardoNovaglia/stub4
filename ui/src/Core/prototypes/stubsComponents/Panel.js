@@ -75,7 +75,6 @@ export function Panel({ itemsLifecycle, presentation, children }) {
           </NewItemModal>
         )}
       </div>
-      <i className="material-icons resizer">height</i>
     </div>
   );
 }

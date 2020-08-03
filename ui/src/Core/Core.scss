@@ -1,15 +1,51 @@
-.unmatchedBody {
-  flex: 3;
-  min-width: 475px;
+.App {
+  padding-top: 20px;
 }
 
-.stubsAndCruds {
-  width: 700px;
+.header {
+  .welcome {
+    color: rgba(255, 255, 255, 0.685);
+    display: inline-block;
+  }
+}
+.tabs {
+  display: flex;
+  justify-content: space-between;
+}
+
+.stubsAndUnmatched {
+  display: flex;
+}
+
+.stubs {
+  flex: 3;
   min-width: 1000px;
-  margin-right: 20px;
-  resize: horizontal;
   overflow: hidden;
-  display: inline-block;
+}
+
+.unmatchedBody {
+  flex: 2;
+  margin-left: 20px;
+}
+
+.unmatchControl {
+  background-color: #76899a;
+  border: none;
+  color: black;
+  padding: 5px 10px;
+  text-align: center;
+  font-weight: bold;
+  border-radius: 2px;
+  height: 30px;
+}
+
+.showUnmatched {
+  @extend .unmatchControl;
+}
+
+.hideUnmatched {
+  @extend .unmatchControl;
+  float: right;
 }
 
 .panelControlBtn {
