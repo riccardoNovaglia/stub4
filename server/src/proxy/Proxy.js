@@ -1,5 +1,6 @@
 const axios = require('axios');
 const _ = require('lodash');
+const { v4: uuid } = require('uuid');
 
 const { createLogger } = require('../logger');
 
@@ -14,6 +15,7 @@ function Proxy(requestMatcher, proxy) {
   if (!destinationUrl) throw new Error('A url to proxy to must be provided!');
 
   return {
+    id: uuid(),
     requestMatcher,
     destinationUrl,
     delay,
@@ -45,6 +47,7 @@ function Proxy(requestMatcher, proxy) {
     },
     toJson() {
       return {
+        id: this.id,
         requestMatcher: this.requestMatcher.toJson(),
         proxy: { destinationUrl }
       };

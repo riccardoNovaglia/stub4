@@ -1,4 +1,6 @@
 const _ = require('lodash');
+const { v4: uuid } = require('uuid');
+
 const { createLogger } = require('../logger');
 
 const logger = createLogger('crud ');
@@ -12,6 +14,7 @@ function Crud(url, idAlias, patchOnPost) {
 
   return {
     ...data,
+    id: uuid(),
     matches(url) {
       // TODO: make this into specific request/url matcher
       const matches = url.includes(this.url);
@@ -47,10 +50,14 @@ function Crud(url, idAlias, patchOnPost) {
       return `'${url} - ${idAlias} - ${patchOnPost ? "patchOnPost:true'" : "'"}`;
     },
     prettyJson() {
-      return JSON.stringify({ url: this.url, meta: this.meta, items: this.db.items }, null, 2);
+      return JSON.stringify(
+        { id: this.id, url: this.url, meta: this.meta, items: this.db.items },
+        null,
+        2
+      );
     },
     simple() {
-      return { url: this.url, idAlias: this.meta.idAlias };
+      return { id: this.id, url: this.url, idAlias: this.meta.idAlias };
     }
   };
 }

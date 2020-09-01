@@ -1,4 +1,5 @@
 const _ = require('lodash');
+const { v4: uuid } = require('uuid');
 
 const { RequestMatcher } = require('../matching/RequestMatcher');
 const { Response } = require('../response/Response');
@@ -11,6 +12,7 @@ function Stub(requestMatcher, response, contract) {
 
   const stub = {
     ...data,
+    id: uuid(),
     matches(url, method, headers, body) {
       logger.silly(`${this.pretty()} attempting to match ${method} ${url} ${JSON.stringify(body)}`);
       const matched = this.requestMatcher.matches({ url, method, headers, body });
@@ -28,6 +30,7 @@ function Stub(requestMatcher, response, contract) {
     },
     toJson() {
       return {
+        id: this.id,
         requestMatcher: this.requestMatcher.toJson(),
         response: this.response
       };

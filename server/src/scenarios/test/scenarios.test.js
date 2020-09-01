@@ -5,6 +5,10 @@ const { stubFor, setPort } = require('@stub4/client');
 const { GET, POST, url } = require('@stub4/client/src/RequestMatcher');
 const { containsScenarios } = require('@stub4/client/src/ScenariosResponse');
 
+jest.mock('uuid', () => ({
+  v4: () => 'some-id'
+}));
+
 describe('Configuring scenarios', () => {
   const testClient = TestClient();
   beforeAll(() => setup(stub4, setPort, testClient));
@@ -277,6 +281,7 @@ describe('Configuring scenarios', () => {
     expect(allScenarios.status).toEqual(200);
     expect(allScenarios.body).toEqual([
       {
+        id: 'some-id',
         requestMatcher: {
           url: '/some/{id}',
           urlMatcher: {
@@ -294,6 +299,7 @@ describe('Configuring scenarios', () => {
         }
       },
       {
+        id: 'some-id',
         requestMatcher: {
           url: '/some-other/{bananas}/{more}',
           urlMatcher: {
@@ -316,6 +322,7 @@ describe('Configuring scenarios', () => {
         }
       },
       {
+        id: 'some-id',
         requestMatcher: {
           url: '/with-body',
           body: {
@@ -358,6 +365,7 @@ describe('Configuring scenarios', () => {
     expect(scenario.status).toEqual(200);
     expect(scenario.body).toEqual([
       {
+        id: 'some-id',
         requestMatcher: {
           url: '/some/{id}',
           urlMatcher: {

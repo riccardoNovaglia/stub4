@@ -6,6 +6,10 @@ const { GET, POST } = require('@stub4/client/src/RequestMatcher');
 const { proxyTo } = require('@stub4/client/src/Proxy');
 const { respondsWith } = require('@stub4/client/src/StubResponse');
 
+jest.mock('uuid', () => ({
+  v4: () => 'some-id'
+}));
+
 const testClient = TestClient();
 beforeAll(() => setup(stub4, setPort, testClient));
 afterEach(() => stub4.clearAll());
@@ -39,6 +43,7 @@ it('returns all created proxies', async () => {
   expect(proxiedResponse.status).toEqual(200);
   expect(proxiedResponse.data).toEqual([
     {
+      id: 'some-id',
       requestMatcher: { url: '/john', method: 'POST' },
       proxy: { destinationUrl: `${stub4Host()}/bananas` }
     }

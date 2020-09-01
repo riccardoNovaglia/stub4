@@ -5,6 +5,10 @@ const { stubFor, setPort } = require('@stub4/client');
 const { url } = require('@stub4/client/src/RequestMatcher');
 const { containsCrud } = require('@stub4/client/src/Crud');
 
+jest.mock('uuid', () => ({
+  v4: () => 'some-id'
+}));
+
 const testClient = TestClient();
 beforeAll(() => setup(stub4, setPort, testClient));
 afterEach(() => stub4.clearAll());
@@ -18,8 +22,8 @@ describe('Create crud-like endpoints', () => {
     const response = await testClient.get('/cruds');
     expect(response.status).toEqual(200);
     expect(response.body).toEqual([
-      { url: '/some-url', idAlias: 'id' },
-      { url: '/some-other-one', idAlias: 'thingId' }
+      { id: 'some-id', url: '/some-url', idAlias: 'id' },
+      { id: 'some-id', url: '/some-other-one', idAlias: 'thingId' }
     ]);
   });
 

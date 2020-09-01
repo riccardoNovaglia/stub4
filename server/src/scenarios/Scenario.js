@@ -1,4 +1,5 @@
 const _ = require('lodash');
+const { v4: uuid } = require('uuid');
 
 const { createLogger } = require('../logger');
 
@@ -10,6 +11,7 @@ const logger = createLogger('scenarios');
 
 const Scenario = (requestMatcher, defaultResponse, outcomes) => {
   return {
+    id: uuid(),
     requestMatcher,
     defaultResponse,
     outcomes,
@@ -32,6 +34,7 @@ const Scenario = (requestMatcher, defaultResponse, outcomes) => {
     },
     toJson() {
       return {
+        id: this.id,
         requestMatcher: this.requestMatcher.toJson(),
         outcomes: this.outcomes.map((outcome) => outcome.toJson()),
         defaultResponse: this.defaultResponse
