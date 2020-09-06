@@ -6,10 +6,8 @@ const fileLoader = require('./loading/fileLoader');
 
 fileLoader.loadDefaultsFiles(config.defaultsFiles);
 
-app.listen(config.stubsPort, () => {
-  console.log(`Stubs started on ${config.stubsPort}`);
-});
+const stubsPort = app.start(config.stubsPort);
+console.log(`Stubs started on ${stubsPort}`);
 
-ui.listen(config.uiPort, () => {
-  console.log(`UI started on ${config.uiPort} - http://localhost:${config.uiPort}`);
-});
+const uiPort = ui.start(config.uiPort, config.stubsPort);
+console.log(`UI started on ${uiPort} - http://localhost:${uiPort}`);

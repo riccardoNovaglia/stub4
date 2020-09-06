@@ -1,27 +1,18 @@
 {
   "name": "@stub4/stub4",
-  "version": "0.0.27",
+  "version": "0.0.28",
   "description": "We'll see",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/riccardoNovaglia/stub4.git"
-  },
   "main": "./lib/index.js",
-  "author": "Riccardo <stub4js+npm@gmail.com>",
-  "license": "ISC",
+  "bin": {
+    "stub4": "./lib/cli.js"
+  },
   "scripts": {
     "test": "jest --watch src --testPathIgnorePatterns slow",
     "test:ci": "CI=true jest",
     "start": "nodemon src/cli.js --ignore generatedTestPacts --ignore logs",
+    "localStartSample": "nodemon src/localStartSample.js --ignore generatedTestPacts --ignore logs",
     "link-client": "cd ../stub-client && npm link && cd ../server && npm link @stub4/client"
   },
-  "bin": {
-    "stub4": "./lib/cli.js"
-  },
-  "bugs": {
-    "url": "https://github.com/riccardoNovaglia/stub4/issues"
-  },
-  "homepage": "https://github.com/riccardoNovaglia/stub4#readme",
   "dependencies": {
     "axios": "0.19.2",
     "body-parser": "1.19.0",
@@ -54,5 +45,15 @@
     "setupFilesAfterEnv": [
       "./src/setupTests.js"
     ]
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/riccardoNovaglia/stub4.git"
+  },
+  "author": "Riccardo <stub4js+npm@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/riccardoNovaglia/stub4/issues"
+  },
+  "homepage": "https://github.com/riccardoNovaglia/stub4#readme"
 }
