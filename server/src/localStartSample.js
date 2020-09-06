@@ -8,4 +8,5 @@ stub4.addItems([
   }
 ]);
 
-stub4.startup({ ui: true, logLevel: 'info' });
+stub4.startup({ logLevel: 'info' });
+stub4.startUi({ port: 8081 });

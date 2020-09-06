@@ -1,38 +1,34 @@
 const jsLoader = require('./loading/jsLoader');
 const app = require('./app');
 const uiServer = require('./ui');
+
+let logger = null;
 let stubsListeningPort = null;
 
-function startup(maybeConfig) {
-  const { listeningPort, logLevel, ui } = getProvidedConfig(maybeConfig);
-
+function startup({ listeningPort = 0, logLevel = 'off' } = { listeningPort: 0, logLevel: 'off' }) {
   const config = require('./config');
   config.logging.baseLevel = logLevel;
-
   const { createLogger } = require('./logger');
-  const logger = createLogger('stub4');
+  logger = createLogger('stub4');
 
   stubsListeningPort = app.start(listeningPort);
   logger.info(`Stub4 started on port ${stubsListeningPort}`);
 
-  if (ui) {
-    const uiPort = uiServer.start(8081, stubsListeningPort);
-    logger.info(`UI started on ${uiPort} - http://localhost:${uiPort}`);
-  }
-
   return { listeningPort: stubsListeningPort };
 }
 
-function getProvidedConfig(maybeConfig = {}) {
-  const port = maybeConfig.port ? maybeConfig.port : 0;
-  const logLevel = maybeConfig.logLevel ? maybeConfig.logLevel : 'off';
-  const ui = maybeConfig.ui ? maybeConfig.ui : false;
-
-  return {
-    listeningPort: port,
-    logLevel,
-    ui
-  };
+function startUi(
+  { port = 0, stubsPort = stubsListeningPort } = { port: 0, stubsPort: stubsListeningPort }
+) {
+  if (stubsPort === null) {
+    throw (
+      "You're going to need to start the stubs server before you start the UI.\n" +
+      'You should first run `stub4.startup()`'
+    );
+  }
+  const uiPort = uiServer.start(port, stubsPort);
+  logger.info(`UI started on ${uiPort} - http://localhost:${uiPort}`);
+  logger.debug(`UI will speak with stubs at port ${stubsPort}`);
 }
 
 function shutdown() {
@@ -72,6 +68,7 @@ function addItems(items) {
 
 module.exports = {
   startup,
+  startUi,
   shutdown,
   addItems,
   clearAll,
