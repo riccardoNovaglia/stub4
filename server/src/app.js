@@ -9,9 +9,8 @@ const scenarios = require('./scenarios/routing');
 const cruds = require('./cruds/routing');
 const proxy = require('./proxy/routing');
 const unmatched = require('./unmatched/routing');
-const { generateContracts } = require('./contracts/contractGeneration');
-
-const { log } = require('./logger');
+const interactions = require('./interactions/routing');
+const contracts = require('./contracts/routing');
 
 const app = express();
 
@@ -21,25 +20,14 @@ app.use(bodyParser.json());
 app.use(xmlparser());
 app.use(cors());
 
+// maybe these should go under /stub4, or /_stub4, something specific
 app.use('/stubs', stubs.router);
-
 app.use('/scenarios', scenarios.router);
-
 app.use('/cruds', cruds.router);
-
 app.use('/proxy', proxy.router);
-
 app.use(unmatched.router);
-
-app.post('/generate-pact', async (req, res) => {
-  try {
-    // should this publish too? or return them?
-    await generateContracts({ consumer: req.body.consumer });
-  } catch (e) {
-    log('whops', e);
-  }
-  return res.end();
-});
+app.use(interactions.router);
+app.use(contracts.router);
 
 app.all(
   '*',

@@ -9,14 +9,23 @@ import { Cruds } from './cruds/Cruds';
 import { Scenarios } from './scenarios/Scenarios';
 import { Proxy } from './proxy/Proxy';
 import { Unmatched } from './unmatched/Unmatched';
+// import { Interactions } from './interactions/Interactions';
 
 import Tabs from './navigation/Tabs';
 
 import './Core.scss';
 
 function Core({ children }) {
-  const clients = useClients();
+  const { clients, pending } = useClients();
   const [unmatched, setUnmatched] = useState(false);
+
+  if (pending) {
+    return (
+      <div className="header">
+        <h1 className="welcome">Just a second...</h1>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -61,6 +70,13 @@ function Core({ children }) {
               </Unmatched>
             </div>
           )}
+          {/* <div className="unmatchedBody">
+            <Interactions>
+              <button className="hideUnmatched" onClick={() => setUnmatched(false)}>
+                Hide
+              </button>
+            </Interactions>
+          </div> */}
         </div>
       </div>
     </>
@@ -69,7 +85,7 @@ function Core({ children }) {
 
 const useClients = () => {
   const [port, setPort] = useState(8080);
-  setStubClientPort(8080);
+  const [pending, setPending] = useState(true);
 
   useEffect(() => {
     const fetchPort = async () => {
@@ -77,6 +93,7 @@ const useClients = () => {
       const response = await ax.get('/stubs-port');
       setPort(response.data.port);
       setStubClientPort(response.data.port);
+      setPending(false);
     };
 
     fetchPort();
@@ -85,12 +102,15 @@ const useClients = () => {
   // TODO: these gotta go. Should just setPort above, and then use stubFor(matcher, response)
   // TWIST! How to list things and get existing? Need getStubs/getStub/clear type methods?
   return {
-    stubClient: new Stub4.StubClient(port),
-    crudClient: new Stub4.CrudClient(port),
-    scenariosClient: new Stub4.ScenariosClient(port),
-    proxyClient: new Stub4.ProxyClient(port),
-    unmatchedClient: new Stub4.UnmatchedClient(port),
-    contractClient: new Stub4.ContractsClient(port)
+    pending,
+    clients: {
+      stubClient: new Stub4.StubClient(port),
+      crudClient: new Stub4.CrudClient(port),
+      scenariosClient: new Stub4.ScenariosClient(port),
+      proxyClient: new Stub4.ProxyClient(port),
+      unmatchedClient: new Stub4.UnmatchedClient(port),
+      contractClient: new Stub4.ContractsClient(port)
+    }
   };
 };
 

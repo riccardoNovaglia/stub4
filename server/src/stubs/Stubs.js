@@ -29,6 +29,10 @@ function getInteraction(url) {
   return interactions.find((interaction) => interaction.url === url);
 }
 
+function getById(id) {
+  return stubs.find((stub) => stub.id === id);
+}
+
 function all() {
   return stubs.map((stub) => stub.toJson());
 }
@@ -54,6 +58,7 @@ module.exports = {
   all,
   clear,
   get,
+  getById,
   countUp,
   count
 };

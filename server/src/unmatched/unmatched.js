@@ -1,6 +1,8 @@
+const { addUnmatched } = require('../interactions/interactions');
 let unmatched = [];
 
-const addUnmatch = (url, method) => {
+const addUnmatch = (url, method, headers, body) => {
+  addUnmatched({ url, method, headers, body });
   if (requestAlreadyExists(url, method)) {
     unmatched.forEach(
       ({ url: prevUnmatechedUrl, method: prevUnmatchedMethod, called: prevCallCount }, index) => {

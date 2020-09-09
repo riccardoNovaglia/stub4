@@ -20,7 +20,16 @@ router.get('/count', (req, res) => {
 
     return res.send({ count });
   } else {
-    return res.status(404);
+    return res.sendStatus(404);
+  }
+});
+
+router.get('/:id', (req, res) => {
+  const stub = stubs.getById(req.params.id);
+  if (stub) {
+    return res.send(stub.toJson());
+  } else {
+    res.sendStatus(404);
   }
 });
 

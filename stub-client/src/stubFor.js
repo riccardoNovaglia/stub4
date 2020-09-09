@@ -1,10 +1,16 @@
 const { has } = require('lodash');
 const { getAxios } = require('./axios');
 
-let ax = getAxios(8080);
+let stubsPort = 8080;
+let ax = getAxios(stubsPort);
 
 function setPort(port) {
-  ax = getAxios(port);
+  stubsPort = port;
+  ax = getAxios(stubsPort);
+}
+
+function getPort() {
+  return stubsPort;
 }
 
 // TODO: filter undefined properties?
@@ -40,4 +46,4 @@ function getSetupEndopoint(response) {
   return '/stubs';
 }
 
-module.exports = { stubFor, setPort };
+module.exports = { stubFor, setPort, getPort, ax, stubsPort };

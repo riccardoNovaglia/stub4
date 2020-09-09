@@ -4,6 +4,7 @@ const { v4: uuid } = require('uuid');
 const { RequestMatcher } = require('../matching/RequestMatcher');
 const { Response } = require('../response/Response');
 const { createLogger } = require('../logger');
+const interactions = require('../interactions/interactions');
 
 const logger = createLogger('stubs');
 
@@ -40,6 +41,7 @@ function Stub(requestMatcher, response, contract) {
     },
     getResponse() {
       this.addInteraction();
+      interactions.addInteraction({ ...this.toJson(), type: 'stubs' });
 
       return this.response;
     }
