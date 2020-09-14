@@ -23,7 +23,7 @@ export default function Tabs() {
         to="/stub4/cruds"
         className={location.pathname === '/stub4/cruds' ? 'selectedTab' : 'tab'}
       >
-        Cruds <i className="material-icons">swap_horiz</i>
+        Cruds <i className="material-icons">storefront</i>
       </Link>
       <Link
         to="/stub4/proxy"

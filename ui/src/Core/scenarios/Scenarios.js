@@ -23,7 +23,7 @@ export function Scenarios({ client }) {
   return (
     <Panel
       itemsLifecycle={{ fetch, clear, save }}
-      presentation={{ label: 'Scenarios', icon: 'import_export', className: 'scenarios' }}
+      presentation={{ label: 'Scenarios', icon: 'filter_list', className: 'scenarios' }}
       client={client}
     >
       {{

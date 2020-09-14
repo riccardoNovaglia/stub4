@@ -13,7 +13,7 @@ export function Cruds({ client }) {
   return (
     <Panel
       itemsLifecycle={{ fetch, clear }}
-      presentation={{ label: 'Cruds', icon: 'swap_horiz', className: 'cruds' }}
+      presentation={{ label: 'Cruds', icon: 'storefront', className: 'cruds' }}
       client={client}
     >
       {{
