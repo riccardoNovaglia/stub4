@@ -8,8 +8,7 @@ import { Stubs } from './stubs/Stubs';
 import { Cruds } from './cruds/Cruds';
 import { Scenarios } from './scenarios/Scenarios';
 import { Proxy } from './proxy/Proxy';
-import { Unmatched } from './unmatched/Unmatched';
-// import { Interactions } from './interactions/Interactions';
+import { Interactions } from './interactions/Interactions';
 
 import Tabs from './navigation/Tabs';
 
@@ -17,7 +16,7 @@ import './Core.scss';
 
 function Core({ children }) {
   const { clients, pending } = useClients();
-  const [unmatched, setUnmatched] = useState(false);
+  const [interactions, setInteractions] = useState(true);
 
   if (pending) {
     return (
@@ -37,13 +36,15 @@ function Core({ children }) {
       <div className="App">
         <div className="tabs">
           <Tabs />
-          {!unmatched && (
-            <button className="showUnmatched" onClick={() => setUnmatched(true)}>
-              Show unmatched
-            </button>
-          )}
+          <div>
+            {!interactions && (
+              <button className="showSidePanel" onClick={() => setInteractions(true)}>
+                Show interactions
+              </button>
+            )}
+          </div>
         </div>
-        <div className="stubsAndUnmatched">
+        <div className="panels">
           <div className="stubs">
             <Switch>
               <Route path="/stub4/stubs">
@@ -61,22 +62,15 @@ function Core({ children }) {
               <Redirect to="/stub4/stubs" />
             </Switch>
           </div>
-          {unmatched && (
-            <div className="unmatchedBody">
-              <Unmatched client={clients.unmatchedClient} clients={clients}>
-                <button className="hideUnmatched" onClick={() => setUnmatched(false)}>
+          {interactions && (
+            <div className="sidePanel">
+              <Interactions>
+                <button className="hideSidePanel" onClick={() => setInteractions(false)}>
                   Hide
                 </button>
-              </Unmatched>
+              </Interactions>
             </div>
           )}
-          {/* <div className="unmatchedBody">
-            <Interactions>
-              <button className="hideUnmatched" onClick={() => setUnmatched(false)}>
-                Hide
-              </button>
-            </Interactions>
-          </div> */}
         </div>
       </div>
     </>
@@ -108,7 +102,6 @@ const useClients = () => {
       crudClient: new Stub4.CrudClient(port),
       scenariosClient: new Stub4.ScenariosClient(port),
       proxyClient: new Stub4.ProxyClient(port),
-      unmatchedClient: new Stub4.UnmatchedClient(port),
       contractClient: new Stub4.ContractsClient(port)
     }
   };

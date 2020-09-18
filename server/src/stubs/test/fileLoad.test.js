@@ -1,6 +1,10 @@
 const { clear, get, add } = require('../Stubs');
 const { StubFromFile } = require('../Stub');
 
+jest.mock('uuid', () => ({
+  v4: () => 'some-id'
+}));
+
 describe('Loading stubs from an initialiser file', () => {
   afterEach(clear);
 
@@ -13,7 +17,8 @@ describe('Loading stubs from an initialiser file', () => {
     );
 
     const item = get('/some-url', 'GET', undefined);
-    const { requestMatcher, response } = item.toJson();
+    const { id, requestMatcher, response } = item.toJson();
+    expect(id).toEqual('some-id');
     expect(requestMatcher.url).toEqual('/some-url');
     expect(requestMatcher.method).toEqual('GET');
     expect(response.toJson()).toEqual({
@@ -55,6 +60,7 @@ describe('Loading stubs from an initialiser file', () => {
     );
     add(
       StubFromFile({
+        id: 'this-one-is-not-random',
         requestMatcher: { url: '/another' },
         response: { body: `some else`, type: 'json' }
       })
@@ -68,6 +74,7 @@ describe('Loading stubs from an initialiser file', () => {
       statusCode: 200
     });
     const another = get('/another', 'GET');
+    expect(another.id).toEqual('this-one-is-not-random');
     expect(another.requestMatcher.toJson().url).toEqual('/another');
     expect(another.response.toJson()).toEqual({
       body: `some else`,

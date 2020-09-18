@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory, useLocation } from 'react-router-dom';
 
-import { NewItemModal } from './NewItemModal';
+import { NewItemModal } from './ItemModal';
 
 import './Panel.scss';
 
-export function Panel({ itemsLifecycle, presentation, children }) {
+export function Panel({ itemsLifecycle, presentation, children, pathBased = false }) {
+  const history = useHistory();
+  const location = useLocation();
+
   const [items, setItems] = useState([]);
   const [selected, setSelected] = useState();
 
@@ -17,22 +21,27 @@ export function Panel({ itemsLifecycle, presentation, children }) {
   const { label, icon, className } = presentation;
 
   useEffect(() => {
-    fetch(setItems);
-  }, [fetch, setItems]);
+    if (!location.pathname.includes('/edit') && !location.pathname.includes('/new')) {
+      fetch(setItems);
+    }
+  }, [fetch, setItems, location]);
 
   const onEdit = (item) => {
-    // TODO: use path instead?
-    // Add /new?itemId even so that we can re-fetch instead of setting state?
-    // or /edit?itemId
-    setEditedItem(item);
-    setEditing(true);
+    if (item?.id !== undefined) {
+      history.push(`/stub4/${label}/edit/${item.id}`.toLowerCase());
+    } else {
+      setEditedItem(item);
+      setEditing(true);
+    }
   };
 
   const createNew = () => {
-    // TODO: use path instead?
-    // Add /new
-    setEditedItem(null);
-    setCreating(true);
+    if (pathBased) {
+      history.push(`/stub4/${label}/new`.toLowerCase());
+    } else {
+      setEditedItem(null);
+      setCreating(true);
+    }
   };
 
   const onClose = () => {

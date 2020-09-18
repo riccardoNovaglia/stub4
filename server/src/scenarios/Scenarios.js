@@ -30,6 +30,31 @@ function get(url, method, headers, body) {
   return matchedScenario;
 }
 
+function getById(id) {
+  return scenarios.find((scenario) => scenario.id === id);
+}
+
+function updateById(id, newScenario) {
+  const scenarioIndex = scenarios.findIndex((scenario) => scenario.id === id);
+  if (scenarioIndex !== -1) {
+    scenarios[scenarioIndex] = newScenario;
+    logger.silly(`Scenario ${id} successfully updated`);
+    return scenarios[scenarioIndex];
+  } else {
+    logger.warn(`Attempted to update scenario with id ${id}, but couldn't find it!`);
+    return undefined;
+  }
+}
+
+function deleteById(id) {
+  const scenarioIndex = scenarios.findIndex((scenario) => scenario.id === id);
+  if (scenarioIndex !== -1) {
+    scenarios.splice(scenarioIndex, 1);
+  } else {
+    logger.warn(`Attempted to delete scenario with id ${id}, but couldn't find it!`);
+  }
+}
+
 function all() {
   return scenarios.slice().map((scenario) => scenario.toJson());
 }
@@ -42,5 +67,8 @@ module.exports = {
   add,
   all,
   clear,
-  get
+  get,
+  getById,
+  updateById,
+  deleteById
 };

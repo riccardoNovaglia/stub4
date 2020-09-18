@@ -38,7 +38,7 @@ export function Interactions({ children }) {
   return (
     <div className="panel">
       <h1>
-        Interactions<i className="material-icons">call_missed</i>
+        Interactions<i className="material-icons">swap_horiz</i>
         {children}
       </h1>
       <InteractionsList interactions={interactions} />

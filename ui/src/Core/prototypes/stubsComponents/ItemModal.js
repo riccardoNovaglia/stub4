@@ -2,12 +2,20 @@ import React from 'react';
 
 import './New.scss';
 
-export function NewItemModal({ itemName, onClose, children }) {
+export function NewItemModal(props) {
+  return <Modal title={`Create new ${props.itemName}`} {...props} />;
+}
+
+export function ItemModal(props) {
+  return <Modal title={`A ${props.itemName}`} {...props} />;
+}
+
+function Modal({ title, onClose, children }) {
   return (
     <>
       <div className="new" onKeyDown={(e) => e.keyCode === 27 && onClose()}>
         <h1 className="newItemTitle">
-          Create new {itemName}
+          {title}
           <button className="closeButton" onClick={onClose}>
             <i className="material-icons">clear</i>Close
           </button>

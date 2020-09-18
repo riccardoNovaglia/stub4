@@ -16,6 +16,51 @@ afterEach(() => stub4.clearAll());
 afterAll(() => stub4.shutdown());
 const stub4Host = () => `http://localhost:${stub4.listeningPort()}`;
 
+describe('basic setup', () => {
+  it('returns the built proxy on creation', async () => {
+    const proxy = await stubFor(POST('/john'), proxyTo(`${stub4Host()}/bananas`));
+    expect(proxy).toEqual({
+      id: 'some-id',
+      requestMatcher: { url: '/john', method: 'POST' },
+      proxy: { destinationUrl: `${stub4Host()}/bananas` }
+    });
+  });
+
+  it('returns the build proxy when queried by id', async () => {
+    const proxy = await stubFor(POST('/stuff'), proxyTo(`/things`));
+    const gotProxy = await testClient.get(`/proxy/${proxy.id}`);
+    expect(gotProxy.data).toEqual({
+      id: 'some-id',
+      requestMatcher: { url: '/stuff', method: 'POST' },
+      proxy: { destinationUrl: `/things` }
+    });
+    expect(gotProxy.data).toEqual(proxy);
+  });
+
+  it('updates the proxy when posted with id', async () => {
+    const proxy = await stubFor(POST('/john'), proxyTo(`${stub4Host()}/bananas`));
+    const updated = await stubFor({
+      ...proxy,
+      proxy: { destinationUrl: 'http://another/destination' }
+    });
+    const returnedById = await testClient.get(`/proxy/${proxy.id}`);
+    expect(updated).toEqual({
+      id: 'some-id',
+      requestMatcher: { url: '/john', method: 'POST' },
+      proxy: { destinationUrl: 'http://another/destination' }
+    });
+    expect(returnedById.data).toEqual(updated);
+  });
+
+  it('deletes the proxy by id', async () => {
+    await stubFor(GET('/bananas'), respondsWith(200, 'text', 'it worked!'));
+    const proxy = await stubFor(GET('/john'), proxyTo(`${stub4Host()}/bananas`));
+    await testClient.delete(`/proxy/${proxy.id}`);
+    const proxiedResponse = await testClient.get('/john');
+    expect(proxiedResponse.status).toEqual(404);
+  });
+});
+
 it('proxies requests to other endpoints, within the same app', async () => {
   await stubFor(GET('/bananas'), respondsWith(200, 'text', 'it worked!'));
 

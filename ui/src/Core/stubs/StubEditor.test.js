@@ -4,7 +4,8 @@ import userEvent from '@testing-library/user-event';
 import { when, resetAllWhenMocks } from 'jest-when';
 
 import { stubFor as mockedStub4 } from '@stub4/client';
-import { NewStub } from './NewStub';
+import { StubEditor } from './StubEditor';
+import { renderWithRouter } from '../../setupTests';
 
 const onClose = jest.fn();
 const onSaved = jest.fn();
@@ -17,7 +18,7 @@ beforeEach(() => {
 });
 
 it('renders with a few default values', async () => {
-  renderNewStub();
+  renderStubEditor();
 
   expect(screen.getByLabelText(/URL/i).value).toEqual('');
   expect(screen.getByLabelText(/METHOD MATCHER/i).checked).toEqual(false);
@@ -42,7 +43,7 @@ it('calls stub4 with the right parameters given the default values', async () =>
       }
     })
     .mockResolvedValue();
-  const { theStubWasSavedSuccessfully } = renderNewStub();
+  const { theStubWasSavedSuccessfully } = renderStubEditor();
 
   userEvent.click(screen.getByText('Save'));
 
@@ -63,7 +64,7 @@ it('allows changing values and calls stub4 correspondingly', async () => {
       }
     })
     .mockResolvedValue();
-  const { theStubWasSavedSuccessfully } = renderNewStub();
+  const { theStubWasSavedSuccessfully } = renderStubEditor();
 
   await userEvent.type(screen.getByLabelText(/URL/i), 'some-url');
   userEvent.click(screen.getByLabelText(/METHOD MATCHER/i));
@@ -95,7 +96,7 @@ it('picks values from an edited stub overwriting the defaults', async () => {
       }
     })
     .mockResolvedValue();
-  const { theStubWasSavedSuccessfully } = renderNewStub({
+  const { theStubWasSavedSuccessfully } = renderStubEditor({
     requestMatcher: {
       url: '/some-random-url',
       method: 'POST',
@@ -114,7 +115,7 @@ it('picks values from an edited stub overwriting the defaults', async () => {
 });
 
 it('sets the value from the edited stub in the form', async () => {
-  renderNewStub({
+  renderStubEditor({
     requestMatcher: {
       url: '/some-random-url',
       method: 'POST',
@@ -138,8 +139,10 @@ it('sets the value from the edited stub in the form', async () => {
   expect(within(responseForm).getByLabelText(/BODY/i).value).toEqual('some-value that was setup');
 });
 
-function renderNewStub(editedItem = noEditedItem) {
-  const container = render(<NewStub onClose={onClose} onSaved={onSaved} editedItem={editedItem} />);
+function renderStubEditor(editedItem = noEditedItem) {
+  const container = renderWithRouter(
+    <StubEditor onClose={onClose} onSaved={onSaved} editedItem={editedItem} />
+  );
   return {
     ...container,
     theStubWasSavedSuccessfully() {

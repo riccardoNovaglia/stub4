@@ -8,6 +8,7 @@ const interactions = [];
 const logger = createLogger('stubs');
 
 function add(stub) {
+  // TODO: see about using id instead?
   const existingStub = stubs.find((existing) => existing.equals(stub));
   if (existingStub) removeExisting(existingStub);
 
@@ -31,6 +32,27 @@ function getInteraction(url) {
 
 function getById(id) {
   return stubs.find((stub) => stub.id === id);
+}
+
+function updateById(id, newStub) {
+  const stubIndex = stubs.findIndex((stub) => stub.id === id);
+  if (stubIndex !== -1) {
+    stubs[stubIndex] = newStub;
+    logger.silly(`Stub ${id} successfully updated`);
+    return stubs[stubIndex];
+  } else {
+    logger.warn(`Attempted to update stub with id ${id}, but couldn't find it!`);
+    return undefined;
+  }
+}
+
+function deleteById(id) {
+  const stubIndex = stubs.findIndex((stub) => stub.id === id);
+  if (stubIndex !== -1) {
+    stubs.splice(stubIndex, 1);
+  } else {
+    logger.warn(`Attempted to delete stub with id ${id}, but couldn't find it!`);
+  }
 }
 
 function all() {
@@ -59,6 +81,8 @@ module.exports = {
   clear,
   get,
   getById,
+  updateById,
+  deleteById,
   countUp,
   count
 };

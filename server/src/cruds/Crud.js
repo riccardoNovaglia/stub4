@@ -58,6 +58,13 @@ function Crud(url, idAlias, patchOnPost) {
     },
     simple() {
       return { id: this.id, url: this.url, idAlias: this.meta.idAlias };
+    },
+    toJson() {
+      return {
+        id: this.id,
+        requestMatcher: { url: this.url },
+        crud: { meta: this.meta, items: this.db.items }
+      };
     }
   };
 }

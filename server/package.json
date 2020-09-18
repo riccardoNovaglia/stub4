@@ -1,6 +1,6 @@
 {
   "name": "@stub4/stub4",
-  "version": "0.0.28",
+  "version": "0.0.29",
   "description": "We'll see",
   "main": "./lib/index.js",
   "bin": {
@@ -14,25 +14,25 @@
     "link-client": "cd ../stub-client && npm link && cd ../server && npm link @stub4/client"
   },
   "dependencies": {
-    "axios": "0.19.2",
+    "axios": "0.20.0",
     "body-parser": "1.19.0",
     "cors": "2.8.5",
     "express": "4.17.1",
     "express-xml-bodyparser": "0.3.0",
     "glob": "7.1.6",
-    "lodash": "4.17.19",
+    "lodash": "4.17.20",
     "server-destroy": "1.0.1",
-    "uuid": "^8.3.0",
-    "winston": "3.2.1",
-    "ws": "^7.3.1",
+    "uuid": "8.3.0",
+    "winston": "3.3.3",
+    "ws": "7.3.1",
     "xml-js": "1.6.11",
     "xmldom": "0.3.0",
-    "xpath": "0.0.27"
+    "xpath": "0.0.29"
   },
   "devDependencies": {
     "@pact-foundation/pact": "9.11.0",
-    "@stub4/client": "0.0.15",
-    "jest": "26.0.1",
+    "@stub4/client": "0.0.19",
+    "jest": "26.4.2",
     "nodemon": "2.0.4",
     "supertest": "4.0.2"
   },

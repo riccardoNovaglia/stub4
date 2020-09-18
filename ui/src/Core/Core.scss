@@ -13,7 +13,7 @@
   justify-content: space-between;
 }
 
-.stubsAndUnmatched {
+.panels {
   display: flex;
 }
 
@@ -23,28 +23,29 @@
   overflow: hidden;
 }
 
-.unmatchedBody {
+.sidePanel {
   flex: 2;
   margin-left: 20px;
 }
 
-.unmatchControl {
+.sidePanelControl {
   background-color: #76899a;
   border: none;
   color: black;
   padding: 5px 10px;
+  margin: 0px 5px;
   text-align: center;
   font-weight: bold;
   border-radius: 2px;
   height: 30px;
 }
 
-.showUnmatched {
-  @extend .unmatchControl;
+.showSidePanel {
+  @extend .sidePanelControl;
 }
 
-.hideUnmatched {
-  @extend .unmatchControl;
+.hideSidePanel {
+  @extend .sidePanelControl;
   float: right;
 }
 

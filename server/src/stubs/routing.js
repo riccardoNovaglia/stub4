@@ -11,28 +11,6 @@ const router = require('../router')({
   names: { many: 'stubs', one: 'stub' }
 });
 
-router.get('/count', (req, res) => {
-  const url = req.body.url;
-
-  const matchedStub = stubs.get(url, undefined, undefined, undefined);
-  if (matchedStub) {
-    const count = matchedStub.interactions;
-
-    return res.send({ count });
-  } else {
-    return res.sendStatus(404);
-  }
-});
-
-router.get('/:id', (req, res) => {
-  const stub = stubs.getById(req.params.id);
-  if (stub) {
-    return res.send(stub.toJson());
-  } else {
-    res.sendStatus(404);
-  }
-});
-
 async function middleware(req, res, next) {
   try {
     const { originalUrl, method, headers, body } = req;

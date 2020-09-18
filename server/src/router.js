@@ -19,7 +19,7 @@ module.exports = ({ items, builderFn, names, extra }) => {
       const item = builderFn(req);
 
       items.add(item);
-      return res.end();
+      return res.json(item.toJson());
     } catch (e) {
       logger.error(`An error occurred creating a ${names.one}: `, e);
       return res.sendStatus(500);
@@ -30,6 +30,30 @@ module.exports = ({ items, builderFn, names, extra }) => {
     logger.info(`Clearing all ${names.many}`);
     items.clear();
     return res.end();
+  });
+
+  router.get('/:id', (req, res) => {
+    const item = items.getById(req.params.id);
+    if (item) {
+      return res.json(item.toJson());
+    } else {
+      return res.sendStatus(404);
+    }
+  });
+
+  router.post('/:id', (req, res) => {
+    const item = items.updateById(req.params.id, builderFn(req));
+    if (item) {
+      return res.json(item.toJson());
+    } else {
+      return res.sendStatus(404);
+    }
+  });
+
+  router.delete('/:id', (req, res) => {
+    logger.debug(`Trying to delete item by id ${req.params.id}`);
+    items.deleteById(req.params.id);
+    return res.sendStatus(200);
   });
 
   return router;

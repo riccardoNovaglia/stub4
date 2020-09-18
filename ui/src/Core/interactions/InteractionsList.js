@@ -1,15 +1,16 @@
 import _ from 'lodash';
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 
 export function InteractionsList({ interactions }) {
   return (
     <>
       <div className="interactionsList">
-        {_.isEmpty(interactions) && <p className="noResultsMsg">No Interactions yet</p>}
+        {_.isEmpty(interactions) && <p className="noInteractions">No Interactions yet</p>}
         {interactions.map((interaction, index) => (
-          <div key={`${index}-unmatch`} className="unmatch">
-            <InteractionsListItem interaction={interaction} />
-          </div>
+          <span key={`${index}-interaction`}>
+            <InteractionsListItem interaction={interaction} index={index} />
+          </span>
         ))}
       </div>
     </>
@@ -30,21 +31,39 @@ function InteractionsListItem({ interaction }) {
 }
 
 function Matched({ item }) {
-  const { requestMatcher } = item;
+  const { id, requestMatcher } = item;
+  const history = useHistory();
+  const destination = `/stub4/stubs/edit/${id}`;
   return (
-    <p>
+    <a
+      className="interactionLink"
+      href={destination}
+      onClick={(e) => {
+        e.preventDefault();
+        history.push(destination);
+      }}
+    >
       <i className="material-icons md-36 green">check</i>
       {requestMatcher.method} {requestMatcher.url}
-    </p>
+    </a>
   );
 }
 
 function Unmatched({ requestDetails }) {
   const { url, method, headers, body } = requestDetails;
+  const history = useHistory();
+  const destination = '/stub4/stubs/new';
   return (
-    <p>
+    <a
+      className="interactionLink"
+      href={destination}
+      onClick={(e) => {
+        e.preventDefault();
+        history.push(destination);
+      }}
+    >
       <i className="material-icons md-36 red">close</i>
       {method} {url} {JSON.stringify(headers)} {JSON.stringify(body)}
-    </p>
+    </a>
   );
 }

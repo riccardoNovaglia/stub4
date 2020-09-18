@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useRouteMatch } from 'react-router-dom';
 import { RequestMatcher } from '../prototypes/matching/RequestMatcher';
 import { SaveButton } from '../prototypes/stubsComponents/SaveButton';
 
@@ -13,7 +14,8 @@ const defaults = {
   }
 };
 
-export function NewStub({ onClose, onSaved, editedItem }) {
+export function StubEditor({ onClose, onSaved, editedItem }) {
+  const routeMatch = useRouteMatch();
   const [requestMatcher, setRequestMatcher] = useState({
     ...defaults.requestMatcher,
     ...editedItem?.requestMatcher
@@ -25,6 +27,7 @@ export function NewStub({ onClose, onSaved, editedItem }) {
 
   async function onSave() {
     await stubFor({
+      id: routeMatch?.params?.id,
       requestMatcher,
       response
     });
@@ -87,6 +90,7 @@ export function NewStub({ onClose, onSaved, editedItem }) {
       </form>
 
       <SaveButton onSave={onSave} />
+      {/* TODO: add delete */}
     </div>
   );
 }

@@ -223,64 +223,15 @@ describe('Configuring scenarios', () => {
     });
   });
 
-  it('clears scenarios on demand', async () => {
-    await stubFor(
-      url('/some/{id}'),
-      containsScenarios([], {
-        response: { body: { hey: 'you' }, statusCode: 200 }
-      })
-    );
-
-    const some = await testClient.get('/some/1');
-    expect(some.status).toEqual(200);
-    expect(some.body).toEqual({ hey: 'you' });
-
-    stub4.clearAll();
-
-    const someCleared = await testClient.get('/some/1');
-    expect(someCleared.status).toEqual(404);
-  });
-
-  it('returns all scenarios', async () => {
-    await stubFor(
-      POST('/some/{id}'),
-      containsScenarios([], {
-        response: { body: { hey: 'you' }, statusCode: 200 }
-      })
-    );
-    await stubFor(
-      POST('/some-other/{bananas}/{more}'),
-      containsScenarios(
-        [
-          {
-            match: { bananas: '1' },
-            response: { body: {}, statusCode: 200 }
-          }
-        ],
-        {
-          response: { body: {}, statusCode: 404 }
-        }
-      )
-    );
-    await stubFor(
-      POST('/with-body').withBody({ customerId: '*' }),
-      containsScenarios(
-        [
-          {
-            match: { customerId: '1' },
-            response: { body: { name: 'jimbo' }, statusCode: 200 }
-          }
-        ],
-        {
-          response: { body: {}, statusCode: 404 }
-        }
-      )
-    );
-
-    const allScenarios = await testClient.get('/scenarios');
-    expect(allScenarios.status).toEqual(200);
-    expect(allScenarios.body).toEqual([
-      {
+  describe('basic setup', () => {
+    it('returns the built scenario', async () => {
+      const scenario = await stubFor(
+        url('/some/{id}'),
+        containsScenarios([], {
+          response: { body: { hey: 'you' }, statusCode: 200 }
+        })
+      );
+      expect(scenario).toEqual({
         id: 'some-id',
         requestMatcher: {
           url: '/some/{id}',
@@ -289,99 +240,221 @@ describe('Configuring scenarios', () => {
             variableNames: ['id'],
             regex: '/\\/some\\/(.*)/g'
           },
-          method: 'POST'
+          method: '*'
         },
-        outcomes: [],
-        defaultResponse: {
-          body: { hey: 'you' },
-          statusCode: 200,
-          contentType: 'application/json'
+        scenarios: {
+          outcomes: [],
+          defaultResponse: {
+            body: { hey: 'you' },
+            statusCode: 200,
+            contentType: 'application/json'
+          }
         }
-      },
-      {
-        id: 'some-id',
-        requestMatcher: {
-          url: '/some-other/{bananas}/{more}',
-          urlMatcher: {
+      });
+    });
+
+    it('deletes one scenario using its id', async () => {
+      const scenario = await stubFor(
+        url('/some/{id}'),
+        containsScenarios([], {
+          response: { body: { hey: 'you' }, statusCode: 200 }
+        })
+      );
+      const deleteResponse = await testClient.delete(`/scenarios/${scenario.id}`);
+      expect(deleteResponse.status).toEqual(200);
+      const response = await testClient.get('/some/value');
+      expect(response.status).toEqual(404);
+    });
+
+    it('clears scenarios on demand', async () => {
+      await stubFor(
+        url('/some/{id}'),
+        containsScenarios([], {
+          response: { body: { hey: 'you' }, statusCode: 200 }
+        })
+      );
+
+      const some = await testClient.get('/some/1');
+      expect(some.status).toEqual(200);
+      expect(some.body).toEqual({ hey: 'you' });
+
+      stub4.clearAll();
+
+      const someCleared = await testClient.get('/some/1');
+      expect(someCleared.status).toEqual(404);
+    });
+
+    it('returns all scenarios', async () => {
+      await stubFor(
+        POST('/some/{id}'),
+        containsScenarios([], {
+          response: { body: { hey: 'you' }, statusCode: 200 }
+        })
+      );
+      await stubFor(
+        POST('/some-other/{bananas}/{more}'),
+        containsScenarios(
+          [
+            {
+              match: { bananas: '1' },
+              response: { body: {}, statusCode: 200 }
+            }
+          ],
+          {
+            response: { body: {}, statusCode: 404 }
+          }
+        )
+      );
+      await stubFor(
+        POST('/with-body').withBody({ customerId: '*' }),
+        containsScenarios(
+          [
+            {
+              match: { customerId: '1' },
+              response: { body: { name: 'jimbo' }, statusCode: 200 }
+            }
+          ],
+          {
+            response: { body: {}, statusCode: 404 }
+          }
+        )
+      );
+
+      const allScenarios = await testClient.get('/scenarios');
+      expect(allScenarios.status).toEqual(200);
+      expect(allScenarios.body).toEqual([
+        {
+          id: 'some-id',
+          requestMatcher: {
+            url: '/some/{id}',
+            urlMatcher: {
+              url: '/some/{id}',
+              variableNames: ['id'],
+              regex: '/\\/some\\/(.*)/g'
+            },
+            method: 'POST'
+          },
+          scenarios: {
+            outcomes: [],
+            defaultResponse: {
+              body: { hey: 'you' },
+              statusCode: 200,
+              contentType: 'application/json'
+            }
+          }
+        },
+        {
+          id: 'some-id',
+          requestMatcher: {
             url: '/some-other/{bananas}/{more}',
-            variableNames: ['bananas', 'more'],
-            regex: '/\\/some-other\\/(.*)\\/(.*)/g'
+            urlMatcher: {
+              url: '/some-other/{bananas}/{more}',
+              variableNames: ['bananas', 'more'],
+              regex: '/\\/some-other\\/(.*)\\/(.*)/g'
+            },
+            method: 'POST'
           },
-          method: 'POST'
-        },
-        outcomes: [
-          {
-            match: { bananas: '1' },
-            response: { body: {}, statusCode: 200 }
+          scenarios: {
+            outcomes: [
+              {
+                match: { bananas: '1' },
+                response: { body: {}, statusCode: 200 }
+              }
+            ],
+            defaultResponse: {
+              body: {},
+              statusCode: 404,
+              contentType: 'application/json'
+            }
           }
-        ],
-        defaultResponse: {
-          body: {},
-          statusCode: 404,
-          contentType: 'application/json'
-        }
-      },
-      {
-        id: 'some-id',
-        requestMatcher: {
-          url: '/with-body',
-          body: {
-            value: { customerId: '*' },
-            keys: ['customerId'],
-            type: 'json'
+        },
+        {
+          id: 'some-id',
+          requestMatcher: {
+            url: '/with-body',
+            body: {
+              value: { customerId: '*' },
+              keys: ['customerId'],
+              type: 'json'
+            },
+            method: 'POST'
           },
-          method: 'POST'
-        },
-        outcomes: [
-          {
-            match: { customerId: '1' },
-            response: { body: { name: 'jimbo' }, statusCode: 200 }
+          scenarios: {
+            outcomes: [
+              {
+                match: { customerId: '1' },
+                response: { body: { name: 'jimbo' }, statusCode: 200 }
+              }
+            ],
+            defaultResponse: {
+              body: {},
+              statusCode: 404,
+              contentType: 'application/json'
+            }
           }
-        ],
-        defaultResponse: {
-          body: {},
-          statusCode: 404,
-          contentType: 'application/json'
         }
-      }
-    ]);
-  });
+      ]);
+    });
 
-  it('updates when the same url is used to setup a new scenario', async () => {
-    await stubFor(
-      POST('/some/{id}'),
-      containsScenarios([], {
-        response: { body: { hey: 'initial' }, statusCode: 200 }
-      })
-    );
-    await stubFor(
-      POST('/some/{id}'),
-      containsScenarios([], {
-        response: { body: { hey: 'updated' }, statusCode: 200 }
-      })
-    );
+    it('updates posting a scenario with the same id', async () => {
+      const scenario = await stubFor(
+        GET('/some/{id}'),
+        containsScenarios([], {
+          response: { body: { hey: 'initial' }, statusCode: 200 }
+        })
+      );
+      await stubFor({
+        ...scenario,
+        scenarios: {
+          ...scenario.scenarios,
+          default: {
+            response: { body: { hey: 'updated' }, statusCode: 200, contentType: 'application/json' }
+          }
+        }
+      });
+      const response = await testClient.get('/some/test');
+      expect(response.status).toEqual(200);
+      expect(response.body).toEqual({ hey: 'updated' });
+    });
 
-    const scenario = await testClient.get('/scenarios');
-    expect(scenario.status).toEqual(200);
-    expect(scenario.body).toEqual([
-      {
-        id: 'some-id',
-        requestMatcher: {
-          url: '/some/{id}',
-          urlMatcher: {
+    it('updates when the same url is used to setup a new scenario', async () => {
+      await stubFor(
+        POST('/some/{id}'),
+        containsScenarios([], {
+          response: { body: { hey: 'initial' }, statusCode: 200 }
+        })
+      );
+      await stubFor(
+        POST('/some/{id}'),
+        containsScenarios([], {
+          response: { body: { hey: 'updated' }, statusCode: 200 }
+        })
+      );
+
+      const scenario = await testClient.get('/scenarios');
+      expect(scenario.status).toEqual(200);
+      expect(scenario.body).toEqual([
+        {
+          id: 'some-id',
+          requestMatcher: {
             url: '/some/{id}',
-            variableNames: ['id'],
-            regex: '/\\/some\\/(.*)/g'
+            urlMatcher: {
+              url: '/some/{id}',
+              variableNames: ['id'],
+              regex: '/\\/some\\/(.*)/g'
+            },
+            method: 'POST'
           },
-          method: 'POST'
-        },
-        outcomes: [],
-        defaultResponse: {
-          body: { hey: 'updated' },
-          statusCode: 200,
-          contentType: 'application/json'
+          scenarios: {
+            outcomes: [],
+            defaultResponse: {
+              body: { hey: 'updated' },
+              statusCode: 200,
+              contentType: 'application/json'
+            }
+          }
         }
-      }
-    ]);
+      ]);
+    });
   });
 });

@@ -1,4 +1,3 @@
-const { has } = require('lodash');
 const { getAxios } = require('./axios');
 
 let stubsPort = 8080;
@@ -14,16 +13,19 @@ function getPort() {
 }
 
 // TODO: filter undefined properties?
+// TODO: this is getting terrible...
 async function stubFor(requestMatcher, response) {
   // all-in-one
   if (response === undefined) {
     switch (true) {
       case has(requestMatcher, 'response'):
-        return await ax.post('/stubs', requestMatcher);
+        return await post(urlFor(requestMatcher, 'stubs'), requestMatcher);
       case has(requestMatcher, 'crud'):
-        return await ax.post('/cruds', requestMatcher);
+        return await post(urlFor(requestMatcher, 'cruds'), requestMatcher);
       case has(requestMatcher, 'proxy'):
-        return await ax.post('/proxy', requestMatcher);
+        return await post(urlFor(requestMatcher, 'proxy'), requestMatcher);
+      case has(requestMatcher, 'scenarios'):
+        return await post(urlFor(requestMatcher, 'scenarios'), requestMatcher);
       default:
         console.log('not done yet');
         break;
@@ -32,10 +34,30 @@ async function stubFor(requestMatcher, response) {
 
   const endpoint = getSetupEndopoint(response.toJson());
 
-  await ax.post(endpoint, {
+  return await post(endpoint, {
     requestMatcher: requestMatcher.toJson(),
     ...response.toJson()
   });
+}
+
+function urlFor(requestMatcher, itemType) {
+  const idIfPresent = requestMatcher && requestMatcher.id !== undefined ? requestMatcher.id : '';
+  return `/${itemType}/${idIfPresent}`;
+}
+
+function has(item, key) {
+  return item && item[key] !== undefined;
+}
+
+async function post(url, data) {
+  try {
+    const response = await ax.post(url, data);
+    return response.data;
+  } catch (e) {
+    throw new Error(
+      `An error occurred building stub: \n${e.message} \n${e.response && e.response.data}`
+    );
+  }
 }
 
 function getSetupEndopoint(response) {

@@ -5,13 +5,14 @@ const { ProxyClient } = require('./ProxyClient');
 const { ContractsClient } = require('./ContractsClient');
 const { UnmatchedClient } = require('./UnmatchedClient');
 const interactions = require('./interactions');
+const stubs = require('./stubs');
 
 const { stubFor, setPort } = require('./stubFor');
 
-const stubs = { StubClient, Stub, get, post };
+const stubsItems = { StubClient, Stub, get, post, stubs };
 
 module.exports = {
-  ...stubs,
+  ...stubsItems,
   ...interactions,
   ScenariosClient,
   ProxyClient,

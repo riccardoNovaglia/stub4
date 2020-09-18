@@ -9,9 +9,9 @@ const Outcome = require('./Outcome');
 
 const logger = createLogger('scenarios');
 
-const Scenario = (requestMatcher, defaultResponse, outcomes) => {
+const Scenario = ({ id = uuid(), requestMatcher, defaultResponse, outcomes }) => {
   return {
-    id: uuid(),
+    id,
     requestMatcher,
     defaultResponse,
     outcomes,
@@ -36,23 +36,27 @@ const Scenario = (requestMatcher, defaultResponse, outcomes) => {
       return {
         id: this.id,
         requestMatcher: this.requestMatcher.toJson(),
-        outcomes: this.outcomes.map((outcome) => outcome.toJson()),
-        defaultResponse: this.defaultResponse
+        scenarios: {
+          outcomes: this.outcomes.map((outcome) => outcome.toJson()),
+          defaultResponse: this.defaultResponse
+        }
       };
     }
   };
 };
 
-function ScenarioFrom(requestMatcher, defaults, outcomes) {
-  return Scenario(
-    RequestMatcher(requestMatcher),
-    Response(defaults.response),
-    outcomes.map((outcome) => Outcome(outcome))
-  );
+function ScenarioFrom(id, requestMatcher, defaults, outcomes) {
+  return Scenario({
+    id,
+    requestMatcher: RequestMatcher(requestMatcher),
+    defaultResponse: Response(defaults.response),
+    outcomes: outcomes.map((outcome) => Outcome(outcome))
+  });
 }
 
 function ScenarioFromRequest(req) {
   return ScenarioFrom(
+    req.body.id,
     req.body.requestMatcher,
     req.body.scenarios.default,
     req.body.scenarios.outcomes
@@ -60,12 +64,12 @@ function ScenarioFromRequest(req) {
 }
 
 function ScenarioFromFile(fromFile) {
-  return ScenarioFrom(fromFile.requestMatcher, fromFile.default, fromFile.outcomes);
+  return ScenarioFrom(fromFile.id, fromFile.requestMatcher, fromFile.default, fromFile.outcomes);
 }
 
 function ScenarioFromJs(item) {
   const { default: defaults, outcomes } = item.scenarios;
-  return ScenarioFrom(item.requestMatcher, defaults, outcomes);
+  return ScenarioFrom(item.id, item.requestMatcher, defaults, outcomes);
 }
 
 module.exports = { Scenario, ScenarioFromRequest, ScenarioFromFile, ScenarioFromJs };

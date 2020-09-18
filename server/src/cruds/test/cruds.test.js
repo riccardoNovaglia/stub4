@@ -35,6 +35,48 @@ describe('Create crud-like endpoints', () => {
     const response = await testClient.get('/some-url/1');
     expect(response.status).toEqual(404);
   });
+
+  it('returns the built crud on creation', async () => {
+    const crud = await stubFor(url('/things'), containsCrud());
+    expect(crud).toEqual({
+      id: 'some-id',
+      requestMatcher: { url: '/things' },
+      crud: { meta: { idAlias: 'id' }, items: [] }
+    });
+  });
+
+  it('returns the build crud when queried by id', async () => {
+    const crud = await stubFor(url('/stuff'), containsCrud());
+    const gotCrud = await testClient.get(`/cruds/${crud.id}`);
+    expect(gotCrud.data).toEqual({
+      id: 'some-id',
+      requestMatcher: { url: '/stuff' },
+      crud: { meta: { idAlias: 'id' }, items: [] }
+    });
+    expect(gotCrud.data).toEqual(crud);
+  });
+
+  it('updates the crud when posted with id', async () => {
+    const crud = await stubFor(url('/things'), containsCrud());
+    const updated = await stubFor({
+      ...crud,
+      requestMatcher: { url: '/other-stuff' }
+    });
+    expect(updated).toEqual({
+      id: 'some-id',
+      requestMatcher: { url: '/other-stuff' },
+      crud: { meta: { idAlias: 'id' }, items: [] }
+    });
+  });
+
+  it('deletes the crud by id', async () => {
+    const crud = await stubFor(url('/bananas'), containsCrud());
+    const response = await testClient.post('/bananas', { id: '1', some: 'thing' });
+    expect(response.status).toEqual(200);
+    await testClient.delete(`/cruds/${crud.id}`);
+    const deleted = await testClient.post('/bananas', { id: '1', some: 'thing' });
+    expect(deleted.status).toEqual(404);
+  });
 });
 
 describe('Once the crud is created', () => {

@@ -8,12 +8,12 @@ const interactions = require('../interactions/interactions');
 
 const logger = createLogger('stubs');
 
-function Stub(requestMatcher, response, contract) {
+function Stub({ id = uuid(), requestMatcher, response, contract }) {
   const data = { response, contract, requestMatcher, interactions: 0 };
 
   const stub = {
     ...data,
-    id: uuid(),
+    id,
     matches(url, method, headers, body) {
       logger.silly(`${this.pretty()} attempting to match ${method} ${url} ${JSON.stringify(body)}`);
       const matched = this.requestMatcher.matches({ url, method, headers, body });
@@ -27,6 +27,8 @@ function Stub(requestMatcher, response, contract) {
       return JSON.stringify(data, null, 2);
     },
     equals(otherStub) {
+      // TODO: can probably start using id? Not infallible tho isn't it?
+      // Maybe there should be an 'equal' and an 'equivalent' to say it's not the same, but matches the same
       return this.requestMatcher.equals(otherStub.requestMatcher);
     },
     toJson() {
@@ -51,21 +53,36 @@ function Stub(requestMatcher, response, contract) {
 }
 
 function StubFromRequest(req) {
-  const { requestMatcher, response, contract } = req.body;
+  const { id, requestMatcher, response, contract } = req.body;
 
-  return Stub(RequestMatcher(requestMatcher), Response(response), contract);
+  return Stub({
+    id,
+    requestMatcher: RequestMatcher(requestMatcher),
+    response: Response(response),
+    contract
+  });
 }
 
 function StubFromFile(stubDef) {
-  const { requestMatcher, response, contract } = stubDef;
+  const { id, requestMatcher, response, contract } = stubDef;
 
-  return Stub(RequestMatcher(requestMatcher), Response(response), contract);
+  return Stub({
+    id,
+    requestMatcher: RequestMatcher(requestMatcher),
+    response: Response(response),
+    contract
+  });
 }
 
 function StubFromJs(stubDef) {
-  const { requestMatcher, response, contract } = stubDef;
+  const { id, requestMatcher, response, contract } = stubDef;
 
-  return Stub(RequestMatcher(requestMatcher), Response(response), contract);
+  return Stub({
+    id,
+    requestMatcher: RequestMatcher(requestMatcher),
+    response: Response(response),
+    contract
+  });
 }
 
 module.exports = { Stub, StubFromRequest, StubFromFile, StubFromJs };
