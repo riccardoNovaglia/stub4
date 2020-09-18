@@ -3,7 +3,6 @@ const { ScenariosClient } = require('./ScenariosClient');
 const { CrudClient } = require('./CrudClient');
 const { ProxyClient } = require('./ProxyClient');
 const { ContractsClient } = require('./ContractsClient');
-const { UnmatchedClient } = require('./UnmatchedClient');
 const interactions = require('./interactions');
 const stubs = require('./stubs');
 
@@ -18,7 +17,6 @@ module.exports = {
   ProxyClient,
   CrudClient,
   ContractsClient,
-  UnmatchedClient,
   stubFor,
   setPort
 };

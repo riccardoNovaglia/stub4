@@ -8,7 +8,6 @@ const stubs = require('./stubs/routing');
 const scenarios = require('./scenarios/routing');
 const cruds = require('./cruds/routing');
 const proxy = require('./proxy/routing');
-const unmatched = require('./unmatched/routing');
 const interactions = require('./interactions/routing');
 const contracts = require('./contracts/routing');
 
@@ -25,7 +24,6 @@ app.use('/stubs', stubs.router);
 app.use('/scenarios', scenarios.router);
 app.use('/cruds', cruds.router);
 app.use('/proxy', proxy.router);
-app.use(unmatched.router);
 app.use(interactions.router);
 app.use(contracts.router);
 
@@ -35,7 +33,7 @@ app.all(
   scenarios.middleware,
   cruds.middleware,
   proxy.middleware,
-  unmatched.middleware
+  interactions.middleware
 );
 
 function start(port) {
