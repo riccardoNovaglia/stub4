@@ -29,6 +29,37 @@ function Crud(url, idAlias, patchOnPost) {
       const id = idFromUrl(url);
       return this.db.get(id);
     },
+    getResponse(url, method, body, res) {
+      switch (method) {
+        case 'GET': {
+          if (this.mightHaveIdFor(url)) {
+            const item = this.getItem(url);
+            if (item !== undefined) {
+              return res.json(item);
+            } else {
+              res.sendStatus(404);
+            }
+            return res.json(item);
+          } else {
+            return res.json(this.allItems());
+          }
+        }
+        case 'POST': {
+          this.push(body);
+          return res.end();
+        }
+        case 'PATCH': {
+          this.patch(body);
+          return res.end();
+        }
+        case 'DELETE': {
+          this.delete(url);
+          return res.end();
+        }
+        default:
+          break;
+      }
+    },
     push(item) {
       return patchOnPost ? this.db.patch(item) : this.db.upsert(item);
     },

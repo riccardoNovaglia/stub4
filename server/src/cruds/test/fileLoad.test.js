@@ -13,8 +13,8 @@ it('creates a crud with some data', () => {
     })
   );
 
-  const item = get('/some-url/1', 'GET');
-  expect(item).toEqual(someItem);
+  const crud = get('/some-url/1');
+  expect(crud.toJson().crud.items).toEqual([someItem]);
 });
 
 it('creates a crud with some data and custom id alias', () => {
@@ -29,7 +29,9 @@ it('creates a crud with some data and custom id alias', () => {
   );
 
   const item = get('/bananas/v21/1', 'GET');
-  expect(item).toEqual(someItem);
+  const { crud } = item.toJson();
+  expect(crud.meta.idAlias).toEqual('bananaId');
+  expect(crud.items).toEqual([someItem]);
 });
 
 it('creates a crud patch on post', () => {
@@ -62,6 +64,8 @@ it('loads multiple cruds', () => {
     })
   );
 
-  expect(get('/bananas/v21/1', 'GET')).toEqual(aBanana);
-  expect(get('/other-url', 'GET')).toEqual(things);
+  const bananas = get('/bananas/v21/1', 'GET');
+  expect(bananas.toJson().crud.items).toEqual([aBanana]);
+  const other = get('/other-url', 'GET');
+  expect(other.toJson().crud.items).toEqual(things);
 });

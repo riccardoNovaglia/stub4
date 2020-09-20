@@ -1,7 +1,8 @@
+const { createLogger } = require('../logger');
+const interactions = require('../interactions/interactions');
 const proxys = require('./Proxys');
 
 const { ProxyFromRequest } = require('./Proxy');
-const { createLogger } = require('../logger');
 
 const router = require('../router')({
   items: proxys,
@@ -16,6 +17,7 @@ async function middleware(req, res, next) {
   try {
     const proxy = await proxys.get(originalUrl, method, headers, body);
     if (proxy) {
+      interactions.addInteraction({ ...proxy.toJson(), type: 'proxy' });
       const response = await proxy.doProxy(method, headers, rawBody ? rawBody : body);
       return res.status(response.status).send(response.data);
     } else {

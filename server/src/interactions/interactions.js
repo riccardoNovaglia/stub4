@@ -12,7 +12,8 @@ function addInteraction(item) {
   websocket.send(matchedInteraction);
 }
 
-function addUnmatched(requestDetails) {
+function addUnmatched(url, method, headers, body) {
+  const requestDetails = { url, method, headers, body };
   const unmatchedInteraction = { matched: false, requestDetails };
   interactions.push(unmatchedInteraction);
   logger.debug(`Unmatched ${JSON.stringify(requestDetails)} added to recorded`);

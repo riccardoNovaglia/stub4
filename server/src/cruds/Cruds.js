@@ -10,23 +10,8 @@ function add(crud) {
   cruds.push(crud);
 }
 
-function get(url, method, body) {
-  const maybeCrud = cruds.find((crud) => crud.matches(url));
-  if (!maybeCrud) return undefined;
-
-  switch (method) {
-    case 'GET':
-      if (maybeCrud.mightHaveIdFor(url)) return maybeCrud.getItem(url);
-      else return maybeCrud.allItems();
-    case 'POST':
-      return maybeCrud.push(body);
-    case 'PATCH':
-      return maybeCrud.patch(body);
-    case 'DELETE':
-      return maybeCrud.delete(url);
-    default:
-      break;
-  }
+function get(url) {
+  return cruds.find((crud) => crud.matches(url));
 }
 
 function getById(id) {

@@ -1,4 +1,5 @@
 const { createLogger } = require('../logger');
+const interactions = require('../interactions/interactions');
 
 const logger = createLogger('cruds');
 
@@ -14,16 +15,17 @@ const router = require('../router')({
 function middleware(req, res, next) {
   try {
     logger.debug(`Trying to find crud for ${req.originalUrl} ${req.method}`);
-    const crud = cruds.get(req.originalUrl, req.method, req.body);
+    const crud = cruds.get(req.originalUrl);
     if (crud) {
-      logger.debug(`Crud found matching request. Returning json: ${JSON.stringify(crud)}`);
-      return res.json(crud);
+      logger.debug(`Crud found matching request`);
+      interactions.addInteraction({ ...crud.toJson(), type: 'cruds' });
+      return crud.getResponse(req.originalUrl, req.method, req.body, res);
     } else {
       logger.debug('No crud found matching request. Continuing');
       return next();
     }
   } catch (e) {
-    logger.error('The request is not a crud: ', e);
+    logger.error('An error occurred trying to respond from crud: ', e);
     return next();
   }
 }

@@ -1,7 +1,6 @@
 const WebSocket = require('ws');
 
 const { createLogger } = require('../logger');
-const { cli } = require('winston/lib/winston/config');
 const logger = createLogger('interactionsWebsocket');
 
 let websocketServer = null;
@@ -31,10 +30,12 @@ function startWebsocket() {
 function send(item) {
   try {
     if (socket === null) {
-      logger.silly('No websocket connected yet, skipping');
+      logger.debug('No websocket connected yet, skipping');
       return;
     }
-    socket.send(JSON.stringify(item));
+    const payload = JSON.stringify(item);
+    logger.debug(`Sending ${payload} through websocket`);
+    socket.send(payload);
   } catch (e) {
     logger.debug(`An error occurred trying to send interaction. ${e}`, e);
   }

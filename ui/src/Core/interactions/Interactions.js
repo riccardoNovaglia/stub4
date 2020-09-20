@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { InteractionsList } from './InteractionsList';
 
@@ -7,33 +7,21 @@ import { getInteractions } from '@stub4/client';
 import './Interactions.scss';
 
 export function Interactions({ children }) {
-  const [websocketPort, setWebsocketPort] = useState(-1);
-  const [interactions, setInteractions] = useState([]);
-
-  function startSocket(port, onInteraction) {
-    const client = new WebSocket(`ws://localhost:${port}/interactions`);
-    client.onmessage = (message) => {
-      const parsedItem = JSON.parse(message.data);
-      onInteraction(parsedItem);
-    };
-  }
-  const websocketCallback = useCallback(startSocket, []);
+  const [socket, setSocket] = useState(null);
+  const [previousInteractions, setPreviousInteractions] = useState([]);
 
   useEffect(() => {
     async function fetchInteractions() {
       const response = await getInteractions();
-      const { interactions: allInteractions, websocketPort } = response.data;
-      setInteractions(allInteractions);
-      setWebsocketPort(websocketPort);
+      const { interactions: previousInteractions, websocketPort } = response.data;
+      setPreviousInteractions(previousInteractions);
+      const socket = new WebSocket(`ws://localhost:${websocketPort}/interactions`);
+      setSocket(socket);
     }
-    fetchInteractions();
-  }, [setInteractions, setWebsocketPort]);
-
-  useEffect(() => {
-    if (websocketPort === -1) return;
-
-    startSocket(websocketPort, (interaction) => setInteractions([...interactions, interaction]));
-  }, [websocketPort, websocketCallback, interactions, setInteractions]);
+    if (socket === null) {
+      fetchInteractions();
+    }
+  }, [socket]);
 
   return (
     <div className="panel">
@@ -41,7 +29,22 @@ export function Interactions({ children }) {
         Interactions<i className="material-icons">swap_horiz</i>
         {children}
       </h1>
-      <InteractionsList interactions={interactions} />
+      {socket ? (
+        <RealTimeInteractions socket={socket} previousInteractions={previousInteractions} />
+      ) : (
+        'Just a second'
+      )}
     </div>
   );
+}
+
+function RealTimeInteractions({ socket, previousInteractions }) {
+  const [interactions, setInteractions] = useState([...previousInteractions]);
+
+  socket.onmessage = (message) => {
+    const parsedItem = JSON.parse(message.data);
+    setInteractions([...interactions, parsedItem]);
+  };
+
+  return <InteractionsList interactions={interactions} />;
 }

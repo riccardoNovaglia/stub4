@@ -1,4 +1,5 @@
 const { createLogger } = require('../logger');
+const interactions = require('../interactions/interactions');
 const stubs = require('./Stubs');
 
 const logger = createLogger('stubs');
@@ -17,6 +18,7 @@ async function middleware(req, res, next) {
 
     const matchedStub = stubs.get(originalUrl, method, headers, body);
     if (matchedStub) {
+      interactions.addInteraction({ ...matchedStub.toJson(), type: 'stubs' });
       const response = matchedStub.getResponse();
       return await response.respond(res);
     } else {

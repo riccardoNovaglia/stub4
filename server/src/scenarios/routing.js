@@ -1,4 +1,5 @@
 const { createLogger } = require('../logger');
+const interactions = require('../interactions/interactions');
 const scenarios = require('./Scenarios');
 
 const { ScenarioFromRequest } = require('./Scenario');
@@ -16,6 +17,7 @@ async function middleware(req, res, next) {
   try {
     const scenario = scenarios.get(originalUrl, method, headers, body);
     if (scenario) {
+      interactions.addInteraction({ ...scenario.toJson(), type: 'scenarios' });
       const response = scenario.getResponse(originalUrl, body);
       return await response.respond(res);
     } else {
