@@ -7,6 +7,13 @@ async function getInteractions() {
   return await ax.get('/interactions');
 }
 
+async function clearInteractions() {
+  const stubsPort = getPort();
+  let ax = getAxios(stubsPort);
+  return await ax.delete('/interactions');
+}
+
 module.exports = {
-  getInteractions
+  getInteractions,
+  clearInteractions
 };

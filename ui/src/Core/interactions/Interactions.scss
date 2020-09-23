@@ -3,6 +3,21 @@
   overflow-y: auto;
 }
 
+.clearInteractions {
+  float: right;
+  background-color: #76899a;
+  border: none;
+  color: black;
+  padding: 5px 10px;
+  margin: 0px 5px;
+  text-align: center;
+  font-weight: bold;
+  border-radius: 2px;
+  height: 30px;
+
+  background-color: #d52e2e;
+}
+
 .interaction {
   padding: 15px 15px;
   border-bottom: 1px solid rgb(185, 184, 184);

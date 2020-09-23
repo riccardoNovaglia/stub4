@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import { InteractionsList } from './InteractionsList';
 
-import { getInteractions } from '@stub4/client';
+import { getInteractions, clearInteractions } from '@stub4/client';
 
 import './Interactions.scss';
 
@@ -23,11 +23,19 @@ export function Interactions({ children }) {
     }
   }, [socket]);
 
+  async function clear() {
+    await clearInteractions();
+    setPreviousInteractions([]);
+  }
+
   return (
     <div className="panel">
       <h1>
         Interactions<i className="material-icons">swap_horiz</i>
         {children}
+        <button className="clearInteractions" onClick={clear}>
+          <i className="material-icons">clear_all</i>Clear
+        </button>
       </h1>
       {socket ? (
         <RealTimeInteractions socket={socket} previousInteractions={previousInteractions} />
@@ -39,7 +47,11 @@ export function Interactions({ children }) {
 }
 
 function RealTimeInteractions({ socket, previousInteractions }) {
-  const [interactions, setInteractions] = useState([...previousInteractions]);
+  const [interactions, setInteractions] = useState(previousInteractions);
+
+  useEffect(() => {
+    setInteractions(previousInteractions);
+  }, [previousInteractions]);
 
   socket.onmessage = (message) => {
     const parsedItem = JSON.parse(message.data);

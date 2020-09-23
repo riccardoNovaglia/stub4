@@ -24,8 +24,13 @@ function getInteractions() {
   return interactions;
 }
 
+function clear() {
+  interactions.length = 0;
+}
+
 module.exports = {
   addInteraction,
   addUnmatched,
-  getInteractions
+  getInteractions,
+  clear
 };

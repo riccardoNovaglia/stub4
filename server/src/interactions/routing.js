@@ -13,6 +13,11 @@ router.get('/interactions', (_, res) => {
   res.send({ interactions: interactions.getInteractions(), websocketPort });
 });
 
+router.delete('/interactions', (_, res) => {
+  interactions.clear();
+  res.end();
+});
+
 function middleware(req, _, next) {
   interactions.addUnmatched(req.originalUrl, req.method, req.headers, req.body);
   logger.info(
