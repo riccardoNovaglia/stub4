@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useRouteMatch } from 'react-router-dom';
 import { SaveButton } from '../prototypes/stubsComponents/SaveButton';
 import { RequestMatcher } from '../prototypes/matching/RequestMatcher';
 
@@ -8,7 +9,8 @@ const defaults = {
   requestMatcher: { url: '' },
   proxy: { destinationUrl: '' }
 };
-export function NewProxy({ onClose, onSaved, editedItem }) {
+export function ProxyEditor({ onClose, onSaved, editedItem }) {
+  const routeMatch = useRouteMatch();
   const [requestMatcher, setRequestMatcher] = useState({
     ...defaults.requestMatcher,
     ...editedItem?.requestMatcher
@@ -19,7 +21,7 @@ export function NewProxy({ onClose, onSaved, editedItem }) {
   });
 
   async function onSave() {
-    await stubFor({ requestMatcher, proxy });
+    await stubFor({ id: routeMatch?.params?.id, requestMatcher, proxy });
     onSaved();
   }
 

@@ -7,7 +7,7 @@ import Stub4, { setPort as setStubClientPort } from '@stub4/client';
 import { Stubs } from './stubs/Stubs';
 import { Cruds } from './cruds/Cruds';
 import { Scenarios } from './scenarios/Scenarios';
-import { Proxy } from './proxy/Proxy';
+import { Proxy } from './proxy/Proxys';
 import { Interactions } from './interactions/Interactions';
 
 import Tabs from './navigation/Tabs';

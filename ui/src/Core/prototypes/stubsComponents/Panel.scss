@@ -1,6 +1,5 @@
 .panel {
   width: 100%;
-  height: 700px;
   position: relative;
   pointer-events: none;
   color: #fff;
@@ -8,15 +7,6 @@
 
   & > * {
     pointer-events: auto;
-  }
-
-  .resizer {
-    position: absolute;
-    bottom: 0;
-    right: 0px;
-    transform: rotate(90deg);
-    pointer-events: none;
-    font-size: 1em;
   }
 
   h1 {

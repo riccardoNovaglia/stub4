@@ -31,9 +31,9 @@ function InteractionsListItem({ interaction }) {
 }
 
 function Matched({ item }) {
-  const { id, requestMatcher } = item;
+  const { id, requestMatcher, type } = item;
   const history = useHistory();
-  const destination = `/stub4/stubs/edit/${id}`;
+  const destination = `/stub4/${type.toLowerCase()}/edit/${id}`;
   return (
     <a
       className="interactionLink"

@@ -28,7 +28,7 @@ function ScenarioListItem({ item }) {
       <span className="variableNames">{item.requestMatcher?.urlMatcher?.variableNames}</span>
       <span>→</span>
       <span className="outcomesLength">
-        {item.outcomes.length} outcome{item.outcomes.length > 1 ? 's' : ''}
+        {item.scenarios.outcomes.length} outcome{item.scenarios.outcomes.length > 1 ? 's' : ''}
       </span>
     </p>
   );

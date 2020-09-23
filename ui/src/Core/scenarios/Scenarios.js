@@ -1,44 +1,42 @@
 import React from 'react';
-
-import { ScenariosList } from './ScenariosList';
-import { SelectedScenario } from './SelectedScenario';
+import { Route, useHistory } from 'react-router-dom';
 
 import { Panel } from '../prototypes/stubsComponents/Panel';
-
+import { ScenariosList } from './ScenariosList';
+import { EditScenario, NewScenario } from './Scenario';
 import './Scenarios.scss';
 
 export function Scenarios({ client }) {
-  const fetch = (set) => {
-    client.fetchScenarios(set);
-  };
+  const history = useHistory();
+  // TODO: last place to remove the client!
+  const fetch = async (set) => await client.fetchScenarios(set);
+  const clear = async () => await client.clearScenarios();
 
-  const clear = async () => {
-    await client.clearScenarios();
-  };
-
-  const save = async (scenario) => {
-    console.log('TODO!', scenario);
-  };
+  const onSelect = (item) => history.push(`/stub4/scenarios/edit/${item.id}`);
 
   return (
-    <Panel
-      itemsLifecycle={{ fetch, clear, save }}
-      presentation={{ label: 'Scenarios', icon: 'filter_list', className: 'scenarios' }}
-      client={client}
-    >
-      {{
-        preview: (selected) => <SelectedScenario selected={selected} client={client} />,
-        list: (items, selected, setSelected) => (
-          <ScenariosList items={items} selected={selected} setSelected={setSelected} />
-        ),
-        create: (onClose, setNewItem, edited) => (
-          <NewScenario onClose={onClose} setNewItem={setNewItem} edited={edited} />
-        )
-      }}
-    </Panel>
+    <>
+      <Route path="/stub4/scenarios/edit/:id">
+        <EditScenario />
+      </Route>
+      <Route path="/stub4/scenarios/new">
+        <NewScenario />
+      </Route>
+      <Route>
+        <Panel
+          itemsLifecycle={{ fetch, clear }}
+          presentation={{ label: 'Scenarios', icon: 'import_export', className: 'scenarios' }}
+          pathBased={true}
+        >
+          {{
+            list: (items, _) => (
+              <ScenariosList items={items} selected={null} setSelected={onSelect} />
+            ),
+            preview: (_) => <></>,
+            create: (_) => <></>
+          }}
+        </Panel>
+      </Route>
+    </>
   );
-}
-
-function NewScenario() {
-  return <p>Not yet!</p>;
 }

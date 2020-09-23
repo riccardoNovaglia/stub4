@@ -4,6 +4,8 @@
 .proxyList,
 .crudsList {
   width: 100%;
+  height: 700px;
+  overflow-y: auto;
 
   .noResultsMsg {
     text-align: center;

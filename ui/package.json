@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
-    "@stub4/client": "0.0.19",
+    "@stub4/client": "0.0.20",
     "axios": "0.20.0",
     "sass": "1.26.10",
     "react": "16.13.1",

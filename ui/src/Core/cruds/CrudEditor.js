@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useRouteMatch } from 'react-router-dom';
 import { SaveButton } from '../prototypes/stubsComponents/SaveButton';
 import { UrlMatcher } from '../prototypes/matching/UrlMatcher';
 
@@ -8,7 +9,8 @@ const defaults = {
   requestMatcher: { url: '' },
   crud: { idAlias: '', patchOnPost: false }
 };
-export function NewCrud({ onClose, onSaved, editedItem }) {
+export function CrudEditor({ onClose, onSaved, editedItem }) {
+  const routeMatch = useRouteMatch();
   const [urlMatcher, setUrlMatcher] = useState({
     ...defaults.requestMatcher,
     ...editedItem?.requestMatcher
@@ -20,7 +22,11 @@ export function NewCrud({ onClose, onSaved, editedItem }) {
   });
 
   async function onSave() {
-    await stubFor({ requestMatcher: { url: urlMatcher.url }, crud });
+    await stubFor({
+      id: routeMatch?.params?.id,
+      requestMatcher: { url: urlMatcher.url },
+      crud
+    });
     onSaved();
   }
 
