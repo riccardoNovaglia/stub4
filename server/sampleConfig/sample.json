@@ -27,11 +27,13 @@
   "cruds": [
     {
       "requestMatcher": { "url": "/some-crud-url" },
-      "idAlias": "customerId",
-      "data": [
-        { "customerId": 1, "some": "content" },
-        { "customerId": 3, "some": "stuff" }
-      ]
+      "crud": {
+        "idAlias": "customerId",
+        "items": [
+          { "customerId": 1, "some": "content" },
+          { "customerId": 3, "some": "stuff" }
+        ]
+      }
     }
   ],
   "scenarios": [

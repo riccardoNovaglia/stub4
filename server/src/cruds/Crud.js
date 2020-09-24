@@ -5,8 +5,8 @@ const { createLogger } = require('../logger');
 
 const logger = createLogger('crud ');
 
-function Crud(url, idAlias, patchOnPost) {
-  const data = { url, meta: { idAlias }, db: DB({ idAlias }), patchOnPost };
+function Crud({ id = uuid(), url, idAlias, db, patchOnPost }) {
+  const data = { url, meta: { idAlias }, db, patchOnPost };
 
   function idFromUrl(urlToParse) {
     return urlToParse.split('/').pop();
@@ -14,7 +14,7 @@ function Crud(url, idAlias, patchOnPost) {
 
   return {
     ...data,
-    id: uuid(),
+    id,
     matches(url) {
       // TODO: make this into specific request/url matcher
       const matches = url.includes(this.url);
@@ -100,10 +100,10 @@ function Crud(url, idAlias, patchOnPost) {
   };
 }
 
-function DB(meta) {
+function DB(meta, items = []) {
   return {
     meta,
-    items: [],
+    items,
     get(id) {
       logger.debug(`Trying to get item from crud with id ${id} - ${JSON.stringify(this.items)}`);
       return this.items.find((item) => this.idFrom(item).toString() === id.toString());
@@ -156,28 +156,32 @@ function getPatchOnPost(source) {
 
 // TODO: sort out this mess
 function crudFromRequest(req) {
+  const id = req.body.id;
   const url = req.body.requestMatcher.url;
+  const items = req.body.crud.items;
   const idAlias = getIdAlias(req.body.crud);
-  return Crud(url, idAlias, getPatchOnPost(req.body));
+  const db = DB({ idAlias }, items);
+  return Crud({ id, url, db, idAlias, patchOnPost: getPatchOnPost(req.body) });
 }
 
 // TODO: and this mess
 function CrudFromFile(item) {
+  const id = item.id;
   const url = item.requestMatcher.url;
+  const items = item.crud.items;
   const idAlias = getIdAlias(item);
-  const crud = Crud(url, idAlias, getPatchOnPost(item));
-  item.data.forEach((dataItem) => crud.push(dataItem));
-  return crud;
+  const db = DB({ idAlias }, items);
+  return Crud({ id, url, db, idAlias, patchOnPost: getPatchOnPost(item) });
 }
 
 function CrudFromJs(item) {
   const {
+    id,
     requestMatcher: { url },
-    crud: { idAlias = 'id', patchOnPost = false, data = [] }
+    crud: { idAlias = 'id', patchOnPost = false, items }
   } = item;
-  const crud = Crud(url, idAlias, patchOnPost);
-  data.forEach((dataItem) => crud.push(dataItem));
-  return crud;
+  const db = DB({ idAlias }, items);
+  return Crud({ id, url, db, idAlias, patchOnPost });
 }
 
 module.exports = { Crud, crudFromRequest, CrudFromFile, CrudFromJs };

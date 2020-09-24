@@ -7,7 +7,7 @@ const { stubFor } = require('@stub4/client');
 
 const defaults = {
   requestMatcher: { url: '' },
-  crud: { idAlias: '', patchOnPost: false }
+  crud: { idAlias: '', patchOnPost: false, items: [] }
 };
 export function CrudEditor({ onClose, onSaved, editedItem }) {
   const routeMatch = useRouteMatch();
@@ -57,7 +57,37 @@ export function CrudEditor({ onClose, onSaved, editedItem }) {
         checked={crud.patchOnPost}
       />
 
+      <div>
+        <label className="itemLabel" htmlFor="contents">
+          Contents
+        </label>
+        <textarea
+          id="contents"
+          value={toStringIfObject(crud?.items)}
+          onChange={(event) =>
+            setCrud({
+              ...crud,
+              items: toJsonIfObject(event.target.value)
+            })
+          }
+          rows="35"
+          cols="33"
+          className="contents"
+        />
+      </div>
       <SaveButton onSave={onSave} />
     </div>
   );
+}
+
+function toStringIfObject(body) {
+  return typeof body === 'object' ? JSON.stringify(body, null, 2) : body;
+}
+
+function toJsonIfObject(body) {
+  try {
+    return JSON.parse(body);
+  } catch (e) {
+    return body;
+  }
 }

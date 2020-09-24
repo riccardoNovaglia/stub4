@@ -2,10 +2,12 @@
   "cruds": [
     {
       "requestMatcher": { "url": "/some-other" },
-      "data": [
-        { "id": 1, "some": "content" },
-        { "id": 3, "some": "stuff" }
-      ]
+      "crud": {
+        "data": [
+          { "id": 1, "some": "content" },
+          { "id": 3, "some": "stuff" }
+        ]
+      }
     }
   ],
   "scenarios": [
