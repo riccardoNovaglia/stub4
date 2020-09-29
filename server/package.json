@@ -1,6 +1,6 @@
 {
   "name": "@stub4/stub4",
-  "version": "0.0.30",
+  "version": "0.0.31",
   "description": "We'll see",
   "main": "./lib/index.js",
   "bin": {

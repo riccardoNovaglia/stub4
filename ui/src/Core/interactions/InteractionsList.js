@@ -1,69 +1,95 @@
-import _ from 'lodash';
-import React from 'react';
-import { useHistory } from 'react-router-dom';
+import { isEmpty, isEqual } from 'lodash';
+import React, { useState } from 'react';
+import { Matched, Unmatched } from './InteractionItems';
 
 export function InteractionsList({ interactions }) {
+  const [group, setGroup] = useState(false);
   return (
     <>
+      <div className="interactionsFilterBlock">
+        <button className="groupInteractions" onClick={() => setGroup(!group)}>
+          Group <i className="material-icons">filter_alt</i>
+        </button>
+      </div>
       <div className="interactionsList">
-        {_.isEmpty(interactions) && <p className="noInteractions">No Interactions yet</p>}
-        {interactions.map((interaction, index) => (
-          <span key={`${index}-interaction`}>
-            <InteractionsListItem interaction={interaction} index={index} />
-          </span>
-        ))}
+        {isEmpty(interactions) && <p className="noInteractions">No Interactions yet</p>}
+        {group ? (
+          <GroupedInteractions interactions={interactions} />
+        ) : (
+          <AllInteractions interactions={interactions} />
+        )}
       </div>
     </>
   );
 }
 
-function InteractionsListItem({ interaction }) {
-  const { matched } = interaction;
+function AllInteractions({ interactions }) {
   return (
-    <div className="interaction">
-      {matched ? (
-        <Matched item={interaction.item} />
-      ) : (
-        <Unmatched requestDetails={interaction.requestDetails} />
-      )}
-    </div>
+    <>
+      {interactions.map((interaction, index) => (
+        <div className="interaction" key={`${index}-interaction`}>
+          {interaction.matched ? (
+            <Matched item={interaction.item} />
+          ) : (
+            <Unmatched requestDetails={interaction.requestDetails} />
+          )}
+        </div>
+      ))}
+    </>
   );
 }
 
-function Matched({ item }) {
-  const { id, requestMatcher, type } = item;
-  const history = useHistory();
-  const destination = `/stub4/${type.toLowerCase()}/edit/${id}`;
+function GroupedInteractions({ interactions }) {
+  const groupedMatched = groupMatched(
+    interactions.filter((interaction) => interaction.matched === true)
+  );
+  const groupedUnmatched = groupUnmatched(
+    interactions.filter((interaction) => interaction.matched === false)
+  );
+
   return (
-    <a
-      className="interactionLink"
-      href={destination}
-      onClick={(e) => {
-        e.preventDefault();
-        history.push(destination);
-      }}
-    >
-      <i className="material-icons md-36 green">check</i>
-      {requestMatcher.method} {requestMatcher.url}
-    </a>
+    <>
+      {groupedMatched.map((group, index) => (
+        <div className="interaction" key={`${index}-interaction`}>
+          <Matched item={group.item} count={group.count} />
+        </div>
+      ))}
+      {groupedUnmatched.map((group, index) => (
+        <div className="interaction" key={`${index}-interaction`}>
+          <Unmatched requestDetails={group.requestDetails} count={group.count} />
+        </div>
+      ))}
+    </>
   );
 }
 
-function Unmatched({ requestDetails }) {
-  const { url, method, headers, body } = requestDetails;
-  const history = useHistory();
-  const destination = '/stub4/stubs/new';
-  return (
-    <a
-      className="interactionLink"
-      href={destination}
-      onClick={(e) => {
-        e.preventDefault();
-        history.push(destination);
-      }}
-    >
-      <i className="material-icons md-36 red">close</i>
-      {method} {url} {JSON.stringify(headers)} {JSON.stringify(body)}
-    </a>
-  );
+function groupMatched(matchedInteractions) {
+  return matchedInteractions.reduce((previous, current) => {
+    const group = previous.find((group) => group.id === current?.item?.id);
+    if (group) {
+      group.count += 1;
+    } else {
+      previous.push({
+        count: 1,
+        id: current?.item?.id,
+        item: current.item
+      });
+    }
+    return previous;
+  }, []);
+}
+
+function groupUnmatched(unmatchedInteractions) {
+  return unmatchedInteractions.reduce((previous, current) => {
+    const group = previous.find((group) => isEqual(group.requestDetails, current?.requestDetails));
+    if (group) {
+      group.count += 1;
+    } else {
+      previous.push({
+        count: 1,
+        requestDetails: current.requestDetails
+      });
+    }
+    return previous;
+  }, []);
 }

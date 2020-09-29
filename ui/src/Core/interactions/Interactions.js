@@ -34,7 +34,7 @@ export function Interactions({ children }) {
         Interactions<i className="material-icons">swap_horiz</i>
         {children}
         <button className="clearInteractions" onClick={clear}>
-          <i className="material-icons">clear_all</i>Clear
+          <i className="material-icons">clear_all</i> Clear
         </button>
       </h1>
       {socket ? (
