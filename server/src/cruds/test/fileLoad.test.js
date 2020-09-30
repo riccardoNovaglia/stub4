@@ -9,7 +9,7 @@ it('creates a crud with some data', () => {
   add(
     CrudFromFile({
       requestMatcher: { url: '/some-url' },
-      data: [someItem]
+      crud: { items: [someItem] }
     })
   );
 
@@ -23,8 +23,7 @@ it('creates a crud with some data and custom id alias', () => {
   add(
     CrudFromFile({
       requestMatcher: { url: '/bananas/v21' },
-      idAlias: 'bananaId',
-      data: [someItem]
+      crud: { idAlias: 'bananaId', items: [someItem] }
     })
   );
 
@@ -37,8 +36,7 @@ it('creates a crud with some data and custom id alias', () => {
 it('creates a crud patch on post', () => {
   const crud = CrudFromFile({
     requestMatcher: { url: '/bananas/v21' },
-    data: [],
-    patchOnPost: true
+    crud: { items: [], patchOnPost: true }
   });
   expect(crud.patchOnPost).toBeTruthy();
 });
@@ -53,14 +51,13 @@ it('loads multiple cruds', () => {
   add(
     CrudFromFile({
       requestMatcher: { url: '/bananas/v21' },
-      idAlias: 'bananaId',
-      data: [aBanana]
+      crud: { idAlias: 'bananaId', items: [aBanana] }
     })
   );
   add(
     CrudFromFile({
       requestMatcher: { url: '/other-url' },
-      data: things
+      crud: { items: things }
     })
   );
 

@@ -169,7 +169,7 @@ function CrudFromFile(item) {
   const id = item.id;
   const url = item.requestMatcher.url;
   const items = item.crud.items;
-  const idAlias = getIdAlias(item);
+  const idAlias = getIdAlias(item.crud);
   const db = DB({ idAlias }, items);
   return Crud({ id, url, db, idAlias, patchOnPost: getPatchOnPost(item) });
 }
