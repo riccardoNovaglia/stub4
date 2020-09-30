@@ -13,7 +13,7 @@ describe('Setting up a proxy with delay', () => {
   afterAll(() => stub4.shutdown());
 
   it('proxies requests to other endpoint, and adds a delay to the response', async () => {
-    const stub4Host = `http://localhost:${stub4.listeningPort()}`;
+    const stub4Host = `http://localhost:${stub4.stubsPort()}`;
     await stubFor(GET('/bananas'), respondsWith(200, 'text', 'it worked!'));
     await stubFor(GET('/john'), proxyTo(`${stub4Host}/bananas`).delayedBy(500));
 

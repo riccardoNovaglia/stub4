@@ -63,9 +63,9 @@ async function timed(fn) {
 }
 
 function setup(stub4, setPort, testClient, log = false) {
-  const { listeningPort } = stub4.startup(log ? { logLevel: 'debug' } : {});
-  setPort(listeningPort);
-  testClient.setPort(listeningPort);
+  const { port } = stub4.startup(log ? { logLevel: 'debug' } : {});
+  setPort(port);
+  testClient.setPort(port);
 }
 
 module.exports = {

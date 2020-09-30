@@ -8,9 +8,9 @@ const { TestClient } = require('./TestClient');
 
 const testClient = TestClient();
 beforeAll(() => {
-  const { listeningPort } = stub4.startup();
-  setPort(listeningPort);
-  testClient.setPort(listeningPort);
+  const { port } = stub4.startup();
+  setPort(port);
+  testClient.setPort(port);
 });
 
 afterEach(() => stub4.clearAll());

@@ -3,24 +3,22 @@ const app = require('./app');
 const uiServer = require('./ui');
 
 let logger = null;
-let stubsListeningPort = null;
+let theStubsPort = null;
 
-function startup({ listeningPort = 0, logLevel = 'off' } = { listeningPort: 0, logLevel: 'off' }) {
+function startup({ port = 0, logLevel = 'off' } = { port: 0, logLevel: 'off' }) {
   const config = require('./config');
   config.logging.baseLevel = logLevel;
   const { createLogger } = require('./logger');
   logger = createLogger('stub4');
 
-  stubsListeningPort = app.start(listeningPort);
-  logger.info(`Stub4 started on port ${stubsListeningPort}`);
+  theStubsPort = app.start(port);
+  logger.info(`Stub4 started on port ${theStubsPort}`);
 
-  return { listeningPort: stubsListeningPort };
+  return { port: theStubsPort };
 }
 
-function startUi(
-  { port = 0, stubsPort = stubsListeningPort } = { port: 0, stubsPort: stubsListeningPort }
-) {
-  if (stubsPort === null) {
+function startUi({ port = 0, stubsPort = theStubsPort } = { port: 0, stubsPort: theStubsPort }) {
+  if (theStubsPort === null) {
     throw (
       "You're going to need to start the stubs server before you start the UI.\n" +
       'You should first run `stub4.startup()`'
@@ -50,16 +48,16 @@ function clearAll() {
   proxy.clear();
 }
 
-function listeningPort() {
-  if (stubsListeningPort === null) {
-    const x = 'const stub4Host = () => `http://localhost:${stub4.listeningPort()}`;';
+function stubsPort() {
+  if (theStubsPort === null) {
+    const x = 'const stub4Host = () => `http://localhost:${stub4.port()}`;';
     throw `Stub4 has not started yet, you can't get its port!
 (this line doesn't get printed in some versions of jest, just ignore it.....)
 If you're trying to setup its port in tests, you might need to put your assignment in a "before" or right in your test.
 Another option is to make the assignment into a function:
 ${x}`;
   }
-  return stubsListeningPort;
+  return theStubsPort;
 }
 
 function addItems(items) {
@@ -72,5 +70,5 @@ module.exports = {
   shutdown,
   addItems,
   clearAll,
-  listeningPort
+  stubsPort
 };

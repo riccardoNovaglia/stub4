@@ -29,7 +29,7 @@ describe('uses before each and after each to start and stop stub4', () => {
   afterAll(() => stub4.shutdown());
 
   test('creates a stub', async () => {
-    const port = stub4.listeningPort();
+    const port = stub4.stubsPort();
     await stubFor(request('/a-new-stub'), respondsWith(200));
 
     const stubbedResponse = await axios.get(`http://localhost:${port}/a-new-stub`);
@@ -38,7 +38,7 @@ describe('uses before each and after each to start and stop stub4', () => {
   });
 
   test('creates a crud', async () => {
-    const port = stub4.listeningPort();
+    const port = stub4.stubsPort();
     const crudPath = '/some-crud';
     const crudUrl = `http://localhost:${port}${crudPath}`;
 
@@ -52,7 +52,7 @@ describe('uses before each and after each to start and stop stub4', () => {
   });
 
   test('creates a scenario', async () => {
-    const port = stub4.listeningPort();
+    const port = stub4.stubsPort();
     const scenarioUrl = `http://localhost:${port}`;
 
     await stubFor(
@@ -82,7 +82,7 @@ describe('uses before each and after each to start and stop stub4', () => {
   });
 
   test('creates a proxy', async () => {
-    const port = stub4.listeningPort();
+    const port = stub4.stubsPort();
 
     await stubFor(GET('/bananas'), respondsWith(200, 'json', { msg: 'it worked!' }));
 

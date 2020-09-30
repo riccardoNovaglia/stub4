@@ -55,7 +55,7 @@ describe('adding items via js in order to have dynamic fields', () => {
   });
 
   it('allows adding proxy', async () => {
-    const stub4Host = () => `http://localhost:${stub4.listeningPort()}`;
+    const stub4Host = () => `http://localhost:${stub4.stubsPort()}`;
     stub4.addItems([
       {
         requestMatcher: { url: '/with-date' },

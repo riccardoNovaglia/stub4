@@ -14,7 +14,7 @@ const testClient = TestClient();
 beforeAll(() => setup(stub4, setPort, testClient));
 afterEach(() => stub4.clearAll());
 afterAll(() => stub4.shutdown());
-const stub4Host = () => `http://localhost:${stub4.listeningPort()}`;
+const stub4Host = () => `http://localhost:${stub4.stubsPort()}`;
 
 describe('basic setup', () => {
   it('returns the built proxy on creation', async () => {
