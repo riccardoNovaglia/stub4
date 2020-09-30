@@ -1,10 +1,41 @@
+const { takeWhile } = require('lodash');
+
 function UrlMatcher(url) {
   if (!url) throw new Error('A request matcher url must be provided!');
 
+  const trimmedUrl = url.trim();
+
+  if (trimmedUrl.includes('*')) return StarMatcher(trimmedUrl);
+
+  if (trimmedUrl.includes('{') && trimmedUrl.includes('}')) return VariableMatcher(trimmedUrl);
+
+  return SimpleMatcher(trimmedUrl);
+}
+
+const SimpleMatcher = (url) => {
+  return {
+    url: decodeURI(url),
+    matches(urlToMatch) {
+      return this.url === decodeURI(urlToMatch);
+    },
+    getMatchedMap() {
+      return undefined;
+    },
+    equals(otherMatcher) {
+      return otherMatcher.url === this.url;
+    },
+    pretty() {
+      return this.url;
+    },
+    toJson() {
+      return { url: this.url };
+    }
+  };
+};
+
+const VariableMatcher = (url) => {
   const findVariablesInCurlies = /\{([^}]+)\}/g;
   const capturedGroups = url.match(findVariablesInCurlies);
-  if (!capturedGroups) return SimpleMatcher(url.trim());
-
   const variableNames = capturedGroups.map((group) => group.replace('{', '').replace('}', ''));
 
   var regexedUrl = url;
@@ -49,14 +80,54 @@ function UrlMatcher(url) {
       };
     }
   };
+};
+
+function StarMatcher(url) {
+  function findStartMatcher(url) {
+    const urlToFind = url.replace('*', '');
+    if (url.endsWith('*')) return StartMatcher(urlToFind);
+    if (url.startsWith('*')) return EndMatcher(urlToFind);
+    return MiddleMatcher(url);
+  }
+  const matcher = findStartMatcher(url);
+  return {
+    ...BaseStar(url),
+    ...matcher
+  };
 }
 
-const SimpleMatcher = (url) => {
+function StartMatcher(urlToFind) {
+  return {
+    urlToFind,
+    matches(urlToMatch) {
+      return urlToMatch.startsWith(this.urlToFind);
+    }
+  };
+}
+
+function EndMatcher(urlToFind) {
+  return {
+    urlToFind,
+    matches(urlToMatch) {
+      return urlToMatch.endsWith(this.urlToFind);
+    }
+  };
+}
+
+function MiddleMatcher(url) {
+  const [start, end] = url.split('*');
+  return {
+    start,
+    end,
+    matches(urlToMatch) {
+      return urlToMatch.startsWith(this.start) && urlToMatch.endsWith(this.end);
+    }
+  };
+}
+
+function BaseStar(url) {
   return {
     url: decodeURI(url),
-    matches(urlToMatch) {
-      return this.url === decodeURI(urlToMatch);
-    },
     getMatchedMap() {
       return undefined;
     },
@@ -70,6 +141,6 @@ const SimpleMatcher = (url) => {
       return { url: this.url };
     }
   };
-};
+}
 
 module.exports = { UrlMatcher };

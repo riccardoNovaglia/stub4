@@ -112,4 +112,64 @@ describe('A class to match urls to scenarios', () => {
       );
     });
   });
+
+  describe('starts-with and ends-with and in-the-middle', () => {
+    const startCases = [
+      ['/the-start', true],
+      ['/the-start-and-something', true],
+      ['/the-start/and-url-path', true],
+      ['/the-start?and=query', true],
+      ['/the-start?and=query1&query=2', true],
+      ['/something-before/the-start', false],
+      ['/different', false],
+      ['/the-tart', false],
+      ['/the-star', false]
+    ];
+
+    it.each(startCases)(
+      'matches all urls with a given start when ended with a * - %p',
+      (urlToMatch, shouldMatch) => {
+        const matcher = UrlMatcher('/the-start*');
+
+        expect(matcher.matches(urlToMatch)).toEqual(shouldMatch);
+      }
+    );
+
+    const endCases = [
+      ['/the-end', true],
+      ['/something-and/the-end', true],
+      ['/something-and/another/the-end', true],
+      ['/query?is-it=valid/the-end', true], // is this even a valid url?
+      ['/different/completely', false],
+      ['/the-nd', false],
+      ['/the-en', false]
+    ];
+
+    it.each(endCases)(
+      'matches all urls with a given end when started with a * - %p',
+      (urlToMatch, shouldMatch) => {
+        const matcher = UrlMatcher('*/the-end');
+
+        expect(matcher.matches(urlToMatch)).toEqual(shouldMatch);
+      }
+    );
+
+    const middleCases = [
+      ['/the-start/the-end', true],
+      ['/the-start/something-and/the-end', true],
+      ['/the-start/something-and/another/the-end', true],
+      ['/the-start/query?is-it=valid/the-end', true], // is this even a valid url?
+      ['/different/completely/entirely', false],
+      ['/the-start/different-end', false],
+      ['/different-start/the-end', false]
+    ];
+    it.each(middleCases)(
+      "matches all urls with a given start and end when there's a * in the middle - %p",
+      (urlToMatch, shouldMatch) => {
+        const matcher = UrlMatcher('/the-start/*/the-end');
+
+        expect(matcher.matches(urlToMatch)).toEqual(shouldMatch);
+      }
+    );
+  });
 });
