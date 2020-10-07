@@ -7,13 +7,16 @@ const { createLogger } = require('../logger');
 
 const logger = createLogger('stubs');
 
-function Stub({ id = uuid(), requestMatcher, response, contract }) {
-  const data = { response, contract, requestMatcher, interactions: 0 };
+function Stub({ id = uuid(), enabled = true, requestMatcher, response, contract }) {
+  const data = { response, contract, requestMatcher };
 
   const stub = {
     ...data,
     id,
+    enabled,
     matches(url, method, headers, body) {
+      if (!this.enabled) return false;
+
       logger.silly(`${this.pretty()} attempting to match ${method} ${url} ${JSON.stringify(body)}`);
       const matched = this.requestMatcher.matches({ url, method, headers, body });
       matched && logger.debug(`${this.pretty()} is a match`);
@@ -33,17 +36,17 @@ function Stub({ id = uuid(), requestMatcher, response, contract }) {
     toJson() {
       return {
         id: this.id,
+        enabled: this.enabled,
         requestMatcher: this.requestMatcher.toJson(),
         response: this.response
       };
     },
-    addInteraction() {
-      this.interactions = this.interactions + 1;
-    },
     getResponse() {
-      this.addInteraction();
-
       return this.response;
+    },
+    setEnabled(enabled) {
+      this.enabled = enabled;
+      return this.enabled;
     }
   };
 
@@ -51,32 +54,23 @@ function Stub({ id = uuid(), requestMatcher, response, contract }) {
 }
 
 function StubFromRequest(req) {
-  const { id, requestMatcher, response, contract } = req.body;
-
-  return Stub({
-    id,
-    requestMatcher: RequestMatcher(requestMatcher),
-    response: Response(response),
-    contract
-  });
+  return StubFromItem(req.body);
 }
 
 function StubFromFile(stubDef) {
-  const { id, requestMatcher, response, contract } = stubDef;
-
-  return Stub({
-    id,
-    requestMatcher: RequestMatcher(requestMatcher),
-    response: Response(response),
-    contract
-  });
+  return StubFromItem(stubDef);
 }
 
 function StubFromJs(stubDef) {
-  const { id, requestMatcher, response, contract } = stubDef;
+  return StubFromItem(stubDef);
+}
+
+function StubFromItem(item) {
+  const { id, enabled, requestMatcher, response, contract } = item;
 
   return Stub({
     id,
+    enabled,
     requestMatcher: RequestMatcher(requestMatcher),
     response: Response(response),
     contract

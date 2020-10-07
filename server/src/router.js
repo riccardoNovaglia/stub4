@@ -56,5 +56,19 @@ module.exports = ({ items, builderFn, names, extra }) => {
     return res.sendStatus(200);
   });
 
+  router.post('/:id/enabled', (req, res) => {
+    try {
+      const nowEnabled = items.setEnabled(req.params.id, req.body.enabled);
+      if (nowEnabled !== undefined) {
+        return res.json({ nowEnabled });
+      } else {
+        logger.debug(`Tried to set ${req.params.id} enabled status, but item couldn't be found`);
+        return res.sendStatus(404);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  });
+
   return router;
 };

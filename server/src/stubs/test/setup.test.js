@@ -1,7 +1,7 @@
 const stub4 = require('../../index');
 const { TestClient, setup } = require('../../testClient/TestClient');
 
-const { stubFor, setPort } = require('@stub4/client');
+const { stubFor, setPort, stubs } = require('@stub4/client');
 const { GET } = require('@stub4/client/src/RequestMatcher');
 const { respondsWith } = require('@stub4/client/src/StubResponse');
 
@@ -25,6 +25,7 @@ describe('Stub creation basics', () => {
     const response = await stubFor(GET('/some-stub'), respondsWith(200));
     expect(response).toEqual({
       id: 'some-id',
+      enabled: true,
       requestMatcher: { url: '/some-stub', method: 'GET' },
       response: { body: {}, contentType: 'application/json', statusCode: 200 }
     });
@@ -58,5 +59,19 @@ describe('Stub creation basics', () => {
 
     const response = await testClient.get('/to-be-overridden');
     expect(response.body).toEqual('something else!');
+  });
+
+  it('can enable and disable a stub by id', async () => {
+    const stub = await stubFor(GET('/some-stub'), respondsWith(200));
+    const res = await testClient.get('/some-stub');
+    expect(res.status).toEqual(200);
+
+    await stubs.setEnabled(stub, false);
+    const res2 = await testClient.get('/some-stub');
+    expect(res2.status).toEqual(404);
+
+    await stubs.setEnabled(stub, true);
+    const res3 = await testClient.get('/some-stub');
+    expect(res3.status).toEqual(200);
   });
 });

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import './New.scss';
+import './Editor.scss';
 
 export function NewItemModal(props) {
   return <Modal title={`Create new ${props.itemName}`} {...props} />;

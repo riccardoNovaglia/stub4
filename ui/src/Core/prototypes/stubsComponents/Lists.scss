@@ -124,3 +124,8 @@
 .unmatch:hover .stubUnmatchedBtn {
   right: 20px;
 }
+
+.disabled {
+  text-decoration: line-through;
+  color: #bbbbbb;
+}

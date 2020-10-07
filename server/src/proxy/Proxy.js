@@ -10,16 +10,18 @@ const logger = createLogger('proxy');
 
 const sleep = (ms) => new Promise((res) => setTimeout(res, ms));
 
-function Proxy(requestMatcher, proxy) {
+function Proxy({ id = uuid(), enabled = true, requestMatcher, proxy }) {
   const { destinationUrl, delay } = proxy;
   if (!destinationUrl) throw new Error('A url to proxy to must be provided!');
 
   return {
-    id: uuid(),
+    id,
+    enabled,
     requestMatcher,
     destinationUrl,
     delay,
     matches(url, method, headers, body) {
+      if (!this.enabled) return false;
       return this.requestMatcher.matches({ url, method, headers, body });
     },
     async doProxy(method, headers, body) {
@@ -48,32 +50,37 @@ function Proxy(requestMatcher, proxy) {
     toJson() {
       return {
         id: this.id,
+        enabled: this.enabled,
         requestMatcher: this.requestMatcher.toJson(),
         proxy: { destinationUrl }
       };
     },
     responseSummary(response) {
       return `${response.status} - ${JSON.stringify(response.data)}`;
+    },
+    setEnabled(enabled) {
+      this.enabled = enabled;
+      return this.enabled;
     }
   };
 }
 
 function ProxyFromRequest(req) {
-  const { requestMatcher, proxy } = req.body;
+  const { id, enabled, requestMatcher, proxy } = req.body;
 
-  return Proxy(RequestMatcher(requestMatcher), proxy);
+  return Proxy({ id, enabled, requestMatcher: RequestMatcher(requestMatcher), proxy });
 }
 
 function ProxyFromFile(proxyDef) {
-  const { requestMatcher, proxy } = proxyDef;
+  const { id, enabled, requestMatcher, proxy } = proxyDef;
 
-  return Proxy(RequestMatcher(requestMatcher), proxy);
+  return Proxy({ id, enabled, requestMatcher: RequestMatcher(requestMatcher), proxy });
 }
 
 function ProxyFromJs(proxyDef) {
-  const { requestMatcher, proxy } = proxyDef;
+  const { id, enabled, requestMatcher, proxy } = proxyDef;
 
-  return Proxy(RequestMatcher(requestMatcher), proxy);
+  return Proxy({ id, enabled, requestMatcher: RequestMatcher(requestMatcher), proxy });
 }
 
 module.exports = { ProxyFromRequest, ProxyFromFile, ProxyFromJs, Proxy };

@@ -3,7 +3,6 @@ const _ = require('lodash');
 const { createLogger } = require('../logger');
 
 const stubs = [];
-const interactions = [];
 
 const logger = createLogger('stubs');
 
@@ -24,10 +23,6 @@ function removeExisting(stub) {
 
 function get(url, method, headers, body) {
   return stubs.find((stub) => stub.matches(url, method, headers, body));
-}
-
-function getInteraction(url) {
-  return interactions.find((interaction) => interaction.url === url);
 }
 
 function getById(id) {
@@ -55,24 +50,22 @@ function deleteById(id) {
   }
 }
 
+function setEnabled(id, enabled) {
+  const item = getById(id);
+  if (item) {
+    return item.setEnabled(enabled);
+  } else {
+    return undefined;
+  }
+}
+
 function all() {
   return stubs.map((stub) => stub.toJson());
 }
 
 function clear() {
   stubs.length = 0;
-  interactions.length = 0;
   logger.info('All stubs cleared');
-}
-
-function count(url) {
-  const interaction = getInteraction(url);
-  return _.get(interaction, 'count', 0);
-}
-
-function countUp(url) {
-  const interaction = getInteraction(url);
-  interaction ? (interaction.count += 1) : interactions.push({ url, count: 1 });
 }
 
 module.exports = {
@@ -83,6 +76,5 @@ module.exports = {
   getById,
   updateById,
   deleteById,
-  countUp,
-  count
+  setEnabled
 };

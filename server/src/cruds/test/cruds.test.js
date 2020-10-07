@@ -1,7 +1,7 @@
 const stub4 = require('../../index');
 const { TestClient, setup } = require('../../testClient/TestClient');
 
-const { stubFor, setPort } = require('@stub4/client');
+const { stubFor, setPort, cruds } = require('@stub4/client');
 const { url } = require('@stub4/client/src/RequestMatcher');
 const { containsCrud } = require('@stub4/client/src/Crud');
 
@@ -40,6 +40,7 @@ describe('Create crud-like endpoints', () => {
     const crud = await stubFor(url('/things'), containsCrud());
     expect(crud).toEqual({
       id: 'some-id',
+      enabled: true,
       requestMatcher: { url: '/things' },
       crud: { meta: { idAlias: 'id' }, items: [] }
     });
@@ -50,6 +51,7 @@ describe('Create crud-like endpoints', () => {
     const gotCrud = await testClient.get(`/cruds/${crud.id}`);
     expect(gotCrud.data).toEqual({
       id: 'some-id',
+      enabled: true,
       requestMatcher: { url: '/stuff' },
       crud: { meta: { idAlias: 'id' }, items: [] }
     });
@@ -64,6 +66,7 @@ describe('Create crud-like endpoints', () => {
     });
     expect(updated).toEqual({
       id: 'some-id',
+      enabled: true,
       requestMatcher: { url: '/other-stuff' },
       crud: { meta: { idAlias: 'id' }, items: [] }
     });
@@ -76,6 +79,20 @@ describe('Create crud-like endpoints', () => {
     await testClient.delete(`/cruds/${crud.id}`);
     const deleted = await testClient.post('/bananas', { id: '1', some: 'thing' });
     expect(deleted.status).toEqual(404);
+  });
+
+  it('enables and disables a crud by id', async () => {
+    const crud = await stubFor(url('/bananas'), containsCrud());
+    const response = await testClient.post('/bananas', { id: '1', some: 'thing' });
+    expect(response.status).toEqual(200);
+
+    await cruds.setEnabled(crud, false);
+    const disabled = await testClient.post('/bananas', { id: '1', some: 'thing' });
+    expect(disabled.status).toEqual(404);
+
+    await cruds.setEnabled(crud, true);
+    const enabled = await testClient.post('/bananas', { id: '1', some: 'thing' });
+    expect(enabled.status).toEqual(200);
   });
 });
 

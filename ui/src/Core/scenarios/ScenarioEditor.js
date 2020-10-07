@@ -1,36 +1,51 @@
 import React, { useState } from 'react';
-// import { useRouteMatch } from 'react-router-dom';
 import { RequestMatcher } from '../prototypes/matching/RequestMatcher';
-// import { SaveButton } from '../prototypes/scenariosComponents/SaveButton';
+import { EnableDisableButton } from '../prototypes/stubsComponents/EnableDisableButton';
 
-// const { stubFor } = require('@stub4/client');
+const { scenarios } = require('@stub4/client');
 
 const defaults = {
   requestMatcher: { url: '' }
 };
 
 export function ScenarioEditor({ onClose, editedItem }) {
-  // const routeMatch = useRouteMatch();
+  const id = editedItem?.id;
+  const [enabled, setEnabled] = useState(editedItem?.enabled ?? true);
   const [requestMatcher, setRequestMatcher] = useState({
     ...defaults.requestMatcher,
     ...editedItem?.requestMatcher
   });
 
-  // async function onSave() {}
+  async function onSave() {}
 
   return (
-    <div onKeyDown={(e) => e.keyCode === 27 && onClose()}>
-      <RequestMatcher requestMatcher={requestMatcher} setRequestMatcher={setRequestMatcher} />
+    <form
+      onKeyDown={(e) => e.keyCode === 27 && onClose()}
+      className={!enabled ? 'disabledEditor' : ''}
+      onSubmit={(event) => {
+        event.preventDefault();
+        onSave();
+      }}
+    >
+      <EnableDisableButton
+        id={id}
+        enabled={enabled}
+        setEnabled={setEnabled}
+        toggleFunction={scenarios.setEnabled}
+      />
+      <fieldset className="editorFieldset" disabled={!enabled}>
+        <RequestMatcher requestMatcher={requestMatcher} setRequestMatcher={setRequestMatcher} />
 
-      <br />
+        <br />
 
-      <p>Bear with... work in progress.. but here's the definition?</p>
+        <p>Bear with... work in progress.. but here's the definition?</p>
 
-      <pre>{JSON.stringify(editedItem?.scenarios, null, 2)}</pre>
+        <textarea rows={30} cols={60} value={JSON.stringify(editedItem?.scenarios, null, 2)} />
 
-      {/* <SaveButton onSave={onSave} /> */}
-      {/* TODO: add delete */}
-    </div>
+        {/* <SaveButton onSave={onSave} /> */}
+        {/* TODO: add delete */}
+      </fieldset>
+    </form>
   );
 }
 

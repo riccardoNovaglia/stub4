@@ -4,13 +4,13 @@ import userEvent from '@testing-library/user-event';
 import { when, resetAllWhenMocks } from 'jest-when';
 
 import { stubFor as mockedStub4 } from '@stub4/client';
-import { NewCrud } from './NewCrud';
+import { CrudEditor } from './CrudEditor';
 
 const onClose = jest.fn();
 const onSaved = jest.fn();
 const noEditedItem = undefined;
 
-jest.mock('@stub4/client', () => ({ stubFor: jest.fn() }));
+jest.mock('@stub4/client', () => ({ stubFor: jest.fn(), cruds: { setEnabled: jest.fn() } }));
 beforeEach(() => {
   jest.resetAllMocks();
   resetAllWhenMocks();
@@ -26,10 +26,12 @@ it('renders with a few default values', async () => {
 it('calls crud4 with the right parameters given the default values', async () => {
   when(mockedStub4)
     .expectCalledWith({
+      id: undefined,
       requestMatcher: { url: '' },
       crud: {
         idAlias: '',
-        patchOnPost: false
+        patchOnPost: false,
+        items: []
       }
     })
     .mockResolvedValue();
@@ -43,12 +45,14 @@ it('calls crud4 with the right parameters given the default values', async () =>
 it('allows changing values and calls crud4 correspondingly', async () => {
   when(mockedStub4)
     .expectCalledWith({
+      id: undefined,
       requestMatcher: {
         url: '/some-url'
       },
       crud: {
         idAlias: 'a-new-id',
-        patchOnPost: true
+        patchOnPost: true,
+        items: []
       }
     })
     .mockResolvedValue();
@@ -66,18 +70,21 @@ it('allows changing values and calls crud4 correspondingly', async () => {
 it('picks values from an edited crud overwriting the defaults', async () => {
   when(mockedStub4)
     .expectCalledWith({
+      id: 'some-id',
       requestMatcher: {
         url: '/some-random-url'
       },
       crud: {
         idAlias: 'some-alias',
-        patchOnPost: false
+        patchOnPost: false,
+        items: [{ an: 'item' }]
       }
     })
     .mockResolvedValue();
   const { theCrudWasSavedSuccessfully } = renderNewCrud({
+    id: 'some-id',
     requestMatcher: { url: '/some-random-url' },
-    crud: { idAlias: 'some-alias', patchOnPost: false }
+    crud: { idAlias: 'some-alias', patchOnPost: false, items: [{ an: 'item' }] }
   });
 
   userEvent.click(screen.getByText('Save'));
@@ -97,7 +104,9 @@ it('sets the value from the edited crud in the form', async () => {
 });
 
 function renderNewCrud(editedItem = noEditedItem) {
-  const container = render(<NewCrud onClose={onClose} onSaved={onSaved} editedItem={editedItem} />);
+  const container = render(
+    <CrudEditor onClose={onClose} onSaved={onSaved} editedItem={editedItem} />
+  );
   return {
     ...container,
     theCrudWasSavedSuccessfully() {

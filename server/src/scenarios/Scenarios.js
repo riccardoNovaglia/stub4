@@ -55,6 +55,15 @@ function deleteById(id) {
   }
 }
 
+function setEnabled(id, enabled) {
+  const item = getById(id);
+  if (item) {
+    return item.setEnabled(enabled);
+  } else {
+    return undefined;
+  }
+}
+
 function all() {
   return scenarios.slice().map((scenario) => scenario.toJson());
 }
@@ -70,5 +79,6 @@ module.exports = {
   get,
   getById,
   updateById,
-  deleteById
+  deleteById,
+  setEnabled
 };

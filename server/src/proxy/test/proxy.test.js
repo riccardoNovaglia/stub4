@@ -1,7 +1,7 @@
 const stub4 = require('../../index');
 const { TestClient, setup } = require('../../testClient/TestClient');
 
-const { stubFor, setPort } = require('@stub4/client');
+const { stubFor, setPort, proxy: proxys } = require('@stub4/client');
 const { GET, POST } = require('@stub4/client/src/RequestMatcher');
 const { proxyTo } = require('@stub4/client/src/Proxy');
 const { respondsWith } = require('@stub4/client/src/StubResponse');
@@ -21,6 +21,7 @@ describe('basic setup', () => {
     const proxy = await stubFor(POST('/john'), proxyTo(`${stub4Host()}/bananas`));
     expect(proxy).toEqual({
       id: 'some-id',
+      enabled: true,
       requestMatcher: { url: '/john', method: 'POST' },
       proxy: { destinationUrl: `${stub4Host()}/bananas` }
     });
@@ -31,6 +32,7 @@ describe('basic setup', () => {
     const gotProxy = await testClient.get(`/proxy/${proxy.id}`);
     expect(gotProxy.data).toEqual({
       id: 'some-id',
+      enabled: true,
       requestMatcher: { url: '/stuff', method: 'POST' },
       proxy: { destinationUrl: `/things` }
     });
@@ -46,6 +48,7 @@ describe('basic setup', () => {
     const returnedById = await testClient.get(`/proxy/${proxy.id}`);
     expect(updated).toEqual({
       id: 'some-id',
+      enabled: true,
       requestMatcher: { url: '/john', method: 'POST' },
       proxy: { destinationUrl: 'http://another/destination' }
     });
@@ -58,6 +61,22 @@ describe('basic setup', () => {
     await testClient.delete(`/proxy/${proxy.id}`);
     const proxiedResponse = await testClient.get('/john');
     expect(proxiedResponse.status).toEqual(404);
+  });
+
+  it('can be enabled and disabled', async () => {
+    await stubFor(GET('/a-stub'), respondsWith(200));
+    const proxy = await stubFor(GET('/a-proxy'), proxyTo(`${stub4Host()}/a-stub`));
+
+    const res = await testClient.get('/a-proxy');
+    expect(res.status).toEqual(200);
+
+    await proxys.setEnabled(proxy, false);
+    const res2 = await testClient.get('/a-proxy');
+    expect(res2.status).toEqual(404);
+
+    await proxys.setEnabled(proxy, true);
+    const res3 = await testClient.get('/a-proxy');
+    expect(res3.status).toEqual(200);
   });
 });
 
@@ -89,6 +108,7 @@ it('returns all created proxies', async () => {
   expect(proxiedResponse.data).toEqual([
     {
       id: 'some-id',
+      enabled: true,
       requestMatcher: { url: '/john', method: 'POST' },
       proxy: { destinationUrl: `${stub4Host()}/bananas` }
     }

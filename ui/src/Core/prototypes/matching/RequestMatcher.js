@@ -5,11 +5,13 @@ import { HeadersMatcher } from './HeadersMatcher';
 import { BodyMatcher } from './BodyMatcher';
 import { MethodMatcher } from './MethodMatcher';
 
+import './RequestMatcher.scss';
+
 export function RequestMatcher({ requestMatcher, setRequestMatcher }) {
   return (
     <div className="requestMatching">
-      <label htmlFor="requestDefinitionForm">Request Matching</label>
-      <form id="requestDefinitionForm" onSubmit={(event) => event.preventDefault()}>
+      <label htmlFor="requestDefinition">Request Matching</label>
+      <fieldset id="requestDefinition" className="requestDefinition">
         <div>
           <UrlMatcher
             urlMatcher={requestMatcher.url}
@@ -34,7 +36,7 @@ export function RequestMatcher({ requestMatcher, setRequestMatcher }) {
             onChange={(body) => setRequestMatcher({ ...requestMatcher, body })}
           />
         </div>
-      </form>
+      </fieldset>
     </div>
   );
 }

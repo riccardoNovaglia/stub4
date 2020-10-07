@@ -1,7 +1,7 @@
 const stub4 = require('../../index');
 const { TestClient, setup } = require('../../testClient/TestClient');
 
-const { stubFor, setPort } = require('@stub4/client');
+const { stubFor, setPort, scenarios } = require('@stub4/client');
 const { GET, POST, url } = require('@stub4/client/src/RequestMatcher');
 const { containsScenarios } = require('@stub4/client/src/ScenariosResponse');
 
@@ -455,6 +455,26 @@ describe('Configuring scenarios', () => {
           }
         }
       ]);
+    });
+
+    it.only('can enable and disable a scenario by id', async () => {
+      const scenario = await stubFor(
+        GET('/something/{irrelevant}'),
+        containsScenarios([], {
+          response: { statusCode: 200 }
+        })
+      );
+
+      const res = await testClient.get('/something/bla');
+      expect(res.status).toEqual(200);
+
+      await scenarios.setEnabled(scenario, false);
+      const res2 = await testClient.get('/something/bla');
+      expect(res2.status).toEqual(404);
+
+      await scenarios.setEnabled(scenario, true);
+      const res3 = await testClient.get('/something/bla');
+      expect(res3.status).toEqual(200);
     });
   });
 });

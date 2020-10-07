@@ -5,7 +5,7 @@ const { createLogger } = require('../logger');
 
 const logger = createLogger('crud ');
 
-function Crud({ id = uuid(), url, idAlias, db, patchOnPost }) {
+function Crud({ id = uuid(), enabled = true, url, idAlias, db, patchOnPost }) {
   const data = { url, meta: { idAlias }, db, patchOnPost };
 
   function idFromUrl(urlToParse) {
@@ -15,7 +15,9 @@ function Crud({ id = uuid(), url, idAlias, db, patchOnPost }) {
   return {
     ...data,
     id,
+    enabled,
     matches(url) {
+      if (!this.enabled) return false;
       // TODO: make this into specific request/url matcher
       const matches = url.includes(this.url);
       logger.silly(`${this.pretty()} ${matches ? 'does' : "doesn't"} match ${url}`);
@@ -88,14 +90,19 @@ function Crud({ id = uuid(), url, idAlias, db, patchOnPost }) {
       );
     },
     simple() {
-      return { id: this.id, url: this.url, idAlias: this.meta.idAlias };
+      return { id: this.id, enabled: this.enabled, url: this.url, idAlias: this.meta.idAlias };
     },
     toJson() {
       return {
         id: this.id,
+        enabled: this.enabled,
         requestMatcher: { url: this.url },
         crud: { meta: this.meta, items: this.db.items }
       };
+    },
+    setEnabled(enabled) {
+      this.enabled = enabled;
+      return this.enabled;
     }
   };
 }
@@ -145,43 +152,27 @@ function DB(meta, items = []) {
   };
 }
 
-function getIdAlias(source) {
-  const alias = _.get(source, 'idAlias', 'id');
-  return _.isEmpty(alias) ? 'id' : alias;
-}
-
-function getPatchOnPost(source) {
-  return _.get(source, 'patchOnPost', 'false');
-}
-
-// TODO: sort out this mess
 function crudFromRequest(req) {
-  const id = req.body.id;
-  const url = req.body.requestMatcher.url;
-  const items = req.body.crud.items;
-  const idAlias = getIdAlias(req.body.crud);
-  const db = DB({ idAlias }, items);
-  return Crud({ id, url, db, idAlias, patchOnPost: getPatchOnPost(req.body) });
+  return CrudFromItem(req.body);
 }
 
-// TODO: and this mess
 function CrudFromFile(item) {
-  const id = item.id;
-  const url = item.requestMatcher.url;
-  const items = item.crud.items;
-  const idAlias = getIdAlias(item.crud);
-  const db = DB({ idAlias }, items);
-  return Crud({ id, url, db, idAlias, patchOnPost: getPatchOnPost(item) });
+  return CrudFromItem(item);
 }
 
 function CrudFromJs(item) {
+  return CrudFromItem(item);
+}
+
+function CrudFromItem(item) {
   const {
     id,
+    enabled,
     requestMatcher: { url },
     crud: { idAlias = 'id', patchOnPost = false, items }
   } = item;
   const db = DB({ idAlias }, items);
-  return Crud({ id, url, db, idAlias, patchOnPost });
+  return Crud({ id, enabled, url, db, idAlias, patchOnPost });
 }
 
 module.exports = { Crud, crudFromRequest, CrudFromFile, CrudFromJs };

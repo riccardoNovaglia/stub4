@@ -1,9 +1,13 @@
-.requestMatching {
-  .bodyMatcherLabel {
-    font-weight: bold;
-  }
+.requestDefinition {
+  border: none;
+  padding: 10px 0;
+  margin: 10px 0 0 0;
+}
 
-  .bodyMatchCheckbox {
-    width: 50px;
-  }
+.bodyMatcherLabel {
+  font-weight: bold;
+}
+
+.bodyMatchCheckbox {
+  width: 50px;
 }

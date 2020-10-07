@@ -3,13 +3,13 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
-    "@stub4/client": "0.0.21",
+    "@stub4/client": "0.0.22",
     "axios": "0.20.0",
-    "sass": "1.26.10",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-router-dom": "5.2.0",
-    "react-scripts": "3.4.3"
+    "react-scripts": "3.4.3",
+    "sass": "1.26.10"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.8.0",

@@ -11,7 +11,7 @@ const onClose = jest.fn();
 const onSaved = jest.fn();
 const noEditedItem = undefined;
 
-jest.mock('@stub4/client', () => ({ stubFor: jest.fn() }));
+jest.mock('@stub4/client', () => ({ stubFor: jest.fn(), stubs: { setEnabled: jest.fn() } }));
 beforeEach(() => {
   jest.resetAllMocks();
   resetAllWhenMocks();

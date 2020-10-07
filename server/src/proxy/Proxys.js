@@ -40,6 +40,15 @@ function deleteById(id) {
   }
 }
 
+function setEnabled(id, enabled) {
+  const item = getById(id);
+  if (item) {
+    return item.setEnabled(enabled);
+  } else {
+    return undefined;
+  }
+}
+
 function all() {
   return proxys.map((proxy) => proxy.toJson());
 }
@@ -54,6 +63,7 @@ module.exports = {
   getById,
   updateById,
   deleteById,
+  setEnabled,
   all,
   clear
 };

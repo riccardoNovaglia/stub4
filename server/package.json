@@ -1,6 +1,6 @@
 {
   "name": "@stub4/stub4",
-  "version": "0.0.32",
+  "version": "0.0.33",
   "description": "We'll see",
   "main": "./lib/index.js",
   "bin": {
@@ -31,7 +31,7 @@
   },
   "devDependencies": {
     "@pact-foundation/pact": "9.11.0",
-    "@stub4/client": "0.0.21",
+    "@stub4/client": "0.0.22",
     "jest": "26.4.2",
     "nodemon": "2.0.4",
     "supertest": "4.0.2"
