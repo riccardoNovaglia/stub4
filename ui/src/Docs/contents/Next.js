@@ -11,7 +11,6 @@ function Next() {
         next:
       </p>
       <ul>
-        <li>Delays - Allow you to simulate a slow system, by delaying responses</li>
         <li>
           Codegen - A button on the UI that allows you to export a manually created stub to config
         </li>

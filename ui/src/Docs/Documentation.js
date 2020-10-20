@@ -6,7 +6,7 @@ import { Contents } from './Contents';
 
 import { Motivation } from './contents/Motivation';
 import { What } from './contents/What';
-import { How, Stubs, Cruds, Scenarios, Proxy, Config } from './contents/How';
+import { How, Stubs, Cruds, Scenarios, Proxy, Config, RequestMatcher } from './contents/How';
 import { Next } from './contents/Next';
 
 import './Documentation.scss';
@@ -23,12 +23,13 @@ function Documentation({ children }) {
         <div className="column">
           <Index>
             <DocsLink label="Motivation" path={'/stub4/docs/why'} />
-            <DocsLink label="How it works" path={'/stub4/docs/what'} />
+            <DocsLink label="What is it" path={'/stub4/docs/what'} />
             <DocsLink label="How to use it" path={'/stub4/docs/how'} />
             <DocsSubLink label="How to create a stub" path={'/stub4/docs/how/stubs'} />
             <DocsSubLink label="How to create a crud" path={'/stub4/docs/how/cruds'} />
             <DocsSubLink label="How to create scenarios" path={'/stub4/docs/how/scenarios'} />
             <DocsSubLink label="How to create a proxy" path={'/stub4/docs/how/proxy'} />
+            <DocsSubLink label="Matching requests" path={'/stub4/docs/how/requestMatcher'} />
             <DocsSubLink label="How to configure Stub4" path={'/stub4/docs/how/config'} />
 
             <DocsLink label="Next" path={'/stub4/docs/next'} />
@@ -40,6 +41,7 @@ function Documentation({ children }) {
             <Route path={'/stub4/docs/what'} component={What} />
 
             <Route path={'/stub4/docs/how/config'} component={Config} />
+            <Route path={'/stub4/docs/how/requestMatcher'} component={RequestMatcher} />
             <Route path={'/stub4/docs/how/stubs'} component={Stubs} />
             <Route path={'/stub4/docs/how/cruds'} component={Cruds} />
             <Route path={'/stub4/docs/how/scenarios'} component={Scenarios} />

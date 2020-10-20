@@ -5,7 +5,11 @@ function What() {
   return (
     <>
       <SectionTitle title="What" />
-      <p>Stub4 offers a few tools to simulate systems</p>
+      <p>
+        Stub4 is a programmable stub server. You can configure it at start, via its http API, or via
+        its web interface. <br />
+        It comes with a few built-in types of stubbings
+      </p>
       <h3>Stubs</h3>
       <p>
         The most straighgtforward tool Stub4 offers to simulate a real system is a{' '}

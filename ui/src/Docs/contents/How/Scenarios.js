@@ -46,10 +46,10 @@ function RequestMatching() {
     <>
       <h3>Request Matching</h3>
       <p>
-        The only part you need in a crud request matcher is the <InlineCode>url</InlineCode>. This
-        can be an exact match of your requests' url if you want to match on the request body, or you
-        can include variable names in <InlineCode>{'{}'}</InlineCode> and reference them in outcomes
-        to match the correct one.
+        The key part of a scenario request matcher is the <InlineCode>url</InlineCode>. This can be
+        an exact match of your requests' url if you want to match on the request body, or you can
+        include variable names in <InlineCode>{'{}'}</InlineCode> and reference them in outcomes to
+        match the correct one.
         <br />
         For example, given this url <InlineCode>{'/some-url/{variableName}'}</InlineCode>, and these
         outcomes
