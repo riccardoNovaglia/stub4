@@ -1,7 +1,7 @@
 {
   "name": "@stub4/stub4",
   "version": "0.0.34",
-  "description": "We'll see",
+  "description": "A stub HTTP server for the whole team",
   "main": "./lib/index.js",
   "bin": {
     "stub4": "./lib/cli.js"
@@ -56,5 +56,15 @@
   "bugs": {
     "url": "https://github.com/riccardoNovaglia/stub4/issues"
   },
+  "keywords": [
+    "http",
+    "api",
+    "server",
+    "stub",
+    "stubbing",
+    "mock",
+    "mocking",
+    "prototype"
+  ],
   "homepage": "https://github.com/riccardoNovaglia/stub4#readme"
 }

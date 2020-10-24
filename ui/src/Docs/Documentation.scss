@@ -1,25 +1,24 @@
-.docsBody {
-  color: rgba(255, 255, 255, 0.774);
-}
-
-.docsTitle {
-  margin-top: 0;
+.Docs {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .docsContent {
+  color: rgba(255, 255, 255, 0.774);
   display: flex;
+  flex: 2;
 }
 
 .column {
   flex: 1;
   padding: 20px;
   background-color: #3a3939;
-  min-height: 600px;
 }
 
 .centerColumn {
-  @extend .column;
   flex: 2;
+  padding: 20px;
   background-color: #1e1e1e;
   border-left: 1px solid white;
 }

@@ -13,12 +13,8 @@ import './Documentation.scss';
 
 function Documentation({ children }) {
   return (
-    <div className="docsBody">
-      <div>
-        {children}
-        <h1 className="docsTitle">Welcome to the Docs!</h1>
-      </div>
-
+    <div className="Docs">
+      {children}
       <div className="docsContent">
         <div className="column">
           <Index>

@@ -1,49 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Maven+Pro&display=swap');
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons&display=swap');
 
-.helpAndBackButton {
-  background-color: #4494df;
-  border: none;
-  color: black;
-  padding: 15px 0;
-  font-size: 14px;
-  text-align: center;
-  font-weight: bold;
-  border-radius: 2px;
-  float: right;
-  min-width: 155px;
-  margin: 1em 0;
-}
-
-.helpButton {
-  @extend .helpAndBackButton;
-}
-
-.backToStub4Button {
-  @extend .helpAndBackButton;
-}
-
-.material-icons {
-  font-family: 'Material Icons';
-  font-weight: normal;
-  font-style: normal;
-  font-size: 16px;
-  display: inline-block;
-  line-height: 16px;
-  text-transform: none;
-  letter-spacing: normal;
-  word-wrap: normal;
-  white-space: nowrap;
-  direction: ltr;
-  vertical-align: middle;
-
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
-  -moz-osx-font-smoothing: grayscale;
-  font-feature-settings: 'liga';
-  padding-right: 5px;
-}
-
 html {
   box-sizing: border-box;
 }
@@ -55,11 +12,15 @@ html {
 }
 
 body {
-  margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
     'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  padding: 30px;
-  background-color: #1e1e1e;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
 }

@@ -1,6 +1,6 @@
 # STUB4
 
-Prototype, test, explore
+A stub HTTP server for the whole team.
 
 ## Installing
 

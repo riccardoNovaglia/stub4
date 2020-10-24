@@ -20,60 +20,54 @@ function Core({ children }) {
 
   if (pending) {
     return (
-      <div className="header">
-        <h1 className="welcome">Just a second...</h1>
-      </div>
+      <>
+        {children}
+        <h2 className="loading">Just a second</h2>
+      </>
     );
   }
 
   return (
-    <>
-      <div className="header">
-        <h1 className="welcome">Welcome to Stub4!</h1>
-        {/* <Contracts /> TODO: add back, but possibly better. Or at least toggle */}
-        {children}
-      </div>
-      <div className="App">
-        <div className="tabs">
-          <Tabs />
-          <div>
-            {!interactions && (
-              <button className="showSidePanel" onClick={() => setInteractions(true)}>
-                Show interactions
-              </button>
-            )}
-          </div>
-        </div>
-        <div className="panels">
-          <div className="stubs">
-            <Switch>
-              <Route path="/stub4/stubs">
-                <Stubs client={clients.stubClient} />
-              </Route>
-              <Route path="/stub4/scenarios">
-                <Scenarios client={clients.scenariosClient} />
-              </Route>
-              <Route path="/stub4/cruds">
-                <Cruds client={clients.crudClient} />
-              </Route>
-              <Route path="/stub4/proxy">
-                <Proxy client={clients.proxyClient} />
-              </Route>
-              <Redirect to="/stub4/stubs" />
-            </Switch>
-          </div>
-          {interactions && (
-            <div className="sidePanel">
-              <Interactions>
-                <button className="hideSidePanel" onClick={() => setInteractions(false)}>
-                  Hide
-                </button>
-              </Interactions>
-            </div>
+    <div className="Core">
+      {children}
+      <div className="tabs">
+        <Tabs>
+          {!interactions && (
+            <button className="showSidePanel" onClick={() => setInteractions(true)}>
+              Show interactions
+            </button>
           )}
-        </div>
+        </Tabs>
       </div>
-    </>
+      <div className="panels">
+        <div className="stubs">
+          <Switch>
+            <Route path="/stub4/stubs">
+              <Stubs client={clients.stubClient} />
+            </Route>
+            <Route path="/stub4/scenarios">
+              <Scenarios client={clients.scenariosClient} />
+            </Route>
+            <Route path="/stub4/cruds">
+              <Cruds client={clients.crudClient} />
+            </Route>
+            <Route path="/stub4/proxy">
+              <Proxy client={clients.proxyClient} />
+            </Route>
+            <Redirect to="/stub4/stubs" />
+          </Switch>
+        </div>
+        {interactions && (
+          <div className="sidePanel">
+            <Interactions>
+              <button className="hideSidePanel" onClick={() => setInteractions(false)}>
+                Hide
+              </button>
+            </Interactions>
+          </div>
+        )}
+      </div>
+    </div>
   );
 }
 

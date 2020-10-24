@@ -1,6 +1,25 @@
+.sidePanelControl {
+  background-color: #76899a;
+  border: none;
+  color: black;
+  padding: 5px 10px;
+  text-align: center;
+  font-weight: bold;
+  border-radius: 2px;
+  height: 30px;
+}
+
+.showSidePanel {
+  @extend .sidePanelControl;
+}
+
+.hideSidePanel {
+  @extend .sidePanelControl;
+  float: right;
+}
+
 .interactionsList {
-  height: 700px;
-  overflow-y: auto;
+  padding: 0 10px;
 }
 
 .clearInteractions {
@@ -21,7 +40,7 @@
   display: flex;
   flex-direction: row-reverse;
   border-bottom: 1px solid white;
-  padding: 5px;
+  padding: 5px 20px;
 }
 
 .groupInteractions {

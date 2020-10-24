@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 
 import './Index.scss';
 
-function Index({ children }) {
+export function Index({ children }) {
   return (
     <>
       <h2 className="indexTitle">Index</h2>
@@ -12,7 +12,7 @@ function Index({ children }) {
   );
 }
 
-function DocsLink({ path, label }) {
+export function DocsLink({ path, label }) {
   const { pathname } = useLocation();
   const linkClassName = (to) => (pathname.startsWith(to) ? 'selectedDocsLink' : 'docsLink');
 
@@ -25,7 +25,7 @@ function DocsLink({ path, label }) {
   );
 }
 
-function DocsSubLink({ path, label }) {
+export function DocsSubLink({ path, label }) {
   const pathBits = path.split('/');
   pathBits.pop();
   const parent = pathBits.join('/');
@@ -43,5 +43,3 @@ function DocsSubLink({ path, label }) {
     )
   );
 }
-
-export { Index, DocsLink, DocsSubLink };
