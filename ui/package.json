@@ -28,7 +28,7 @@
     "unlink-client": "npm install",
     "setupDocs": "mv src/App.js src/App.backup.js && mv src/App.docs.js src/App.js",
     "restoreApp": "mv src/App.js src/App.docs.js && mv src/App.backup.js src/App.js",
-    "predeploy": "npm run build",
+    "predeploy": "../scripts/gh-pages-build.sh",
     "deploy": "gh-pages -d build"
   },
   "homepage": "https://riccardonovaglia.github.io/stub4",
