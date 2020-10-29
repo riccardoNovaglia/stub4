@@ -10,17 +10,14 @@ Using npm:
 
 ## Getting started
 
-There's a few of ways you can setup Stub4:
+There's a coupe of ways to setup Stub4: programmatically via javascript, and using json configuration files.
 
-- set it up programmatically in javascript
-- configure it with json configuration files
-
-In the first two cases, you can define its ports, log level, and more. If not defined, Stub4 will pick available ports and log them as it starts. You can add stubbings as you start it, or you can always add more later via its API or web interface.
+In both cases, you can define its ports, log level, and more. If not otherwise configured, Stub4 will pick available ports and log them as it starts. You can add stubbings as you start it, or you can always add more later via its API or web interface.
 
 ### Starting Stub4 with javascript
 
-Simply create a javascript file wherever convenient, import Stub4, and assign it to some value.  
-With it, you can now add stubs and more, start its server and its interface.
+Create a javascript in your project, import Stub4, and assign it to some value.  
+With it, you can now add stubs and more, start its server and its UI.
 
 ```
 const stub4 = require('@stub4/stub4');
@@ -43,7 +40,7 @@ info  [stub4]: UI started on 8081 - http://localhost:8081
 
 ### Starting Stub4 and configuring it with JSON
 
-You can setup Stub4 using simply JSON files. After installation, you can add a script to your package.json to start Stub4. Starting it accepts a single argument which is its JSON configuration. (You can also not pass anything to it, and it will pick up some sensible defaults)
+You also can setup Stub4 using JSON files. Add a script to your package.json to start Stub4, and pass as its first parameter the path to your configuration file. In it you can configure its ports, and logging, and point to at files tha contain your stubbings. These will be pickedup up as Stub4 starts. You can always add more later via its API and UI.
 
 ```
 In your package.json
