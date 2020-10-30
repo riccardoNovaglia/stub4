@@ -14,9 +14,12 @@ There's a coupe of ways to setup Stub4: programmatically via javascript, and usi
 
 In both cases, you can define its ports, log level, and more. If not otherwise configured, Stub4 will pick available ports and log them as it starts. You can add stubbings as you start it, or you can always add more later via its API or web interface.
 
+Once you start its web interface, you'll find in it the documentation for the version you downloaded.  
+The latest documentation can be found [at the repo's github page](https://riccardonovaglia.github.io/stub4).
+
 ### Starting Stub4 with javascript
 
-Create a javascript in your project, import Stub4, and assign it to some value.  
+Create a javascript file in your project, import Stub4, and assign it to some value.  
 With it, you can now add stubs and more, start its server and its UI.
 
 ```
