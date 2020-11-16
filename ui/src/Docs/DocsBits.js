@@ -24,3 +24,11 @@ export function Link({ to, children }) {
     </RouterLink>
   );
 }
+
+export function ExternalLink({ to, children }) {
+  return (
+    <a href={to} target="_blank" className="externalLink" rel="noopener noreferrer">
+      {children}
+    </a>
+  );
+}

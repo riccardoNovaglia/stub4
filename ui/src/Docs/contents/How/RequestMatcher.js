@@ -31,7 +31,7 @@ export function RequestMatcher() {
         <a href="https://developer.mozilla.org/en-US/docs/Web/XPath" className="linkToOtherDocs">
           xPath
         </a>{' '}
-        expressions that will be executed agains the request body received. Their output is then
+        expressions that will be executed against the request body received. Their output is then
         compared to the value provided.
         <br />
         Here's an example:{' '}
@@ -62,3 +62,5 @@ export function RequestMatcherMoreInfoLink() {
     </>
   );
 }
+
+export const requestMatcherPath = '/stub4/docs/how/requestMatcher';

@@ -29,25 +29,23 @@ function StubResponseDefinition() {
   return (
     <>
       <h3>Response definition</h3>
-      <p>
-        A stub response definition can contain:
-        <ul>
-          <li>
-            <InlineCode>statusCode</InlineCode> - defaults to <InlineCode>200</InlineCode>
-          </li>
-          <li>
-            <InlineCode>type</InlineCode> - defaults to <InlineCode>application/json</InlineCode>
-          </li>
-          <li>
-            <InlineCode>body</InlineCode> - defaults to <InlineCode>{'{}'}</InlineCode>
-          </li>
-          <li>
-            <InlineCode>delay</InlineCode> - defaults to <InlineCode>0</InlineCode>. Defined in
-            milliseconds
-          </li>
-        </ul>
-        Here's an example:
-      </p>
+      <p>A stub response definition can contain:</p>{' '}
+      <ul>
+        <li>
+          <InlineCode>statusCode</InlineCode> - defaults to <InlineCode>200</InlineCode>
+        </li>
+        <li>
+          <InlineCode>type</InlineCode> - defaults to <InlineCode>application/json</InlineCode>
+        </li>
+        <li>
+          <InlineCode>body</InlineCode> - defaults to <InlineCode>{'{}'}</InlineCode>
+        </li>
+        <li>
+          <InlineCode>delay</InlineCode> - defaults to <InlineCode>0</InlineCode>. Defined in
+          milliseconds
+        </li>
+      </ul>
+      <p>Here's an example:</p>
       <Code>
         {{
           statusCode: 201,
@@ -64,3 +62,4 @@ function StubResponseDefinition() {
     </>
   );
 }
+export const stubsPath = '/stub4/docs/how/stubs';

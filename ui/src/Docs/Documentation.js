@@ -4,10 +4,19 @@ import { Redirect, Route } from 'react-router-dom';
 import { Index, DocsLink, DocsSubLink } from './Index';
 import { Contents } from './Contents';
 
-import { Motivation } from './contents/Motivation';
-import { What } from './contents/What';
-import { How, Stubs, Cruds, Scenarios, Proxy, Config, RequestMatcher } from './contents/How';
-import { Next } from './contents/Next';
+import { Motivation, motivationPath } from './contents/Motivation';
+import { Features, featuresPath } from './contents/Features';
+import { Concepts, conceptsPath } from './contents/Concepts';
+import { How, howPath } from './contents/How';
+import { Next, nextPath } from './contents/Next';
+
+import { Starting, startingPath } from './contents/How/Starting';
+import { RequestMatcher, requestMatcherPath } from './contents/How/RequestMatcher';
+import { Stubs, stubsPath } from './contents/How/Stubs';
+import { Cruds, crudsPath } from './contents/How/Cruds';
+import { Scenarios, scenariosPath } from './contents/How/Scenarios';
+import { Proxy, proxyPath } from './contents/How/Proxy';
+import { Config, configPath } from './contents/How/Config';
 
 import './Documentation.scss';
 
@@ -18,34 +27,38 @@ function Documentation({ children }) {
       <div className="docsContent">
         <div className="column">
           <Index>
-            <DocsLink label="Motivation" path={'/stub4/docs/why'} />
-            <DocsLink label="What is it" path={'/stub4/docs/what'} />
-            <DocsLink label="How to use it" path={'/stub4/docs/how'} />
-            <DocsSubLink label="How to create a stub" path={'/stub4/docs/how/stubs'} />
-            <DocsSubLink label="How to create a crud" path={'/stub4/docs/how/cruds'} />
-            <DocsSubLink label="How to create scenarios" path={'/stub4/docs/how/scenarios'} />
-            <DocsSubLink label="How to create a proxy" path={'/stub4/docs/how/proxy'} />
-            <DocsSubLink label="Matching requests" path={'/stub4/docs/how/requestMatcher'} />
-            <DocsSubLink label="How to configure Stub4" path={'/stub4/docs/how/config'} />
+            <DocsLink label="Motivation" path={motivationPath} />
+            <DocsLink label="Features" path={featuresPath} />
+            <DocsLink label="Concepts" path={conceptsPath} />
+            <DocsLink label="How to use it" path={howPath} />
+            <DocsSubLink label="How to start Stub4" path={startingPath} />
+            <DocsSubLink label="How to create a stub" path={stubsPath} />
+            <DocsSubLink label="How to create a crud" path={crudsPath} />
+            <DocsSubLink label="How to create scenarios" path={scenariosPath} />
+            <DocsSubLink label="How to create a proxy" path={proxyPath} />
+            <DocsSubLink label="Matching requests" path={requestMatcherPath} />
+            <DocsSubLink label="How to configure Stub4" path={configPath} />
 
-            <DocsLink label="Next" path={'/stub4/docs/next'} />
+            <DocsLink label="Next" path={nextPath} />
           </Index>
         </div>
         <div className="centerColumn">
           <Contents>
-            <Route path={'/stub4/docs/why'} component={Motivation} />
-            <Route path={'/stub4/docs/what'} component={What} />
+            <Route exact path={motivationPath} component={Motivation} />
+            <Route exact path={featuresPath} component={Features} />
+            <Route exact path={conceptsPath} component={Concepts} />
 
-            <Route path={'/stub4/docs/how/config'} component={Config} />
-            <Route path={'/stub4/docs/how/requestMatcher'} component={RequestMatcher} />
-            <Route path={'/stub4/docs/how/stubs'} component={Stubs} />
-            <Route path={'/stub4/docs/how/cruds'} component={Cruds} />
-            <Route path={'/stub4/docs/how/scenarios'} component={Scenarios} />
-            <Route path={'/stub4/docs/how/proxy'} component={Proxy} />
-            <Route path={'/stub4/docs/how'} component={How} />
+            <Route exact path={howPath} component={How} />
+            <Route path={requestMatcherPath} component={RequestMatcher} />
+            <Route path={stubsPath} component={Stubs} />
+            <Route path={startingPath} component={Starting} />
+            <Route path={crudsPath} component={Cruds} />
+            <Route path={scenariosPath} component={Scenarios} />
+            <Route path={proxyPath} component={Proxy} />
+            <Route path={configPath} component={Config} />
 
-            <Route path={'/stub4/docs/next'} component={Next} />
-            <Redirect to={'/stub4/docs/why'} />
+            <Route exact path={nextPath} component={Next} />
+            <Redirect to={motivationPath} />
           </Contents>
         </div>
       </div>

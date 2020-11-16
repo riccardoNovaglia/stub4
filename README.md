@@ -10,7 +10,7 @@ Using npm:
 
 ## Getting started
 
-There's a coupe of ways to setup Stub4: programmatically via javascript, and using json configuration files.
+There's a couple of ways to setup Stub4: programmatically via javascript, and using json configuration files.
 
 In both cases, you can define its ports, log level, and more. If not otherwise configured, Stub4 will pick available ports and log them as it starts. You can add stubbings as you start it, or you can always add more later via its API or web interface.
 

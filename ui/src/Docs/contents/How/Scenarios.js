@@ -1,21 +1,21 @@
 import React from 'react';
 import { Code, InlineCode, SectionTitle, CodeSnippet } from '../../DocsBits';
 
-function Scenarios() {
+export function Scenarios() {
   const scenarios = {
     requestMatcher: { url: '/greet/person/{name}' },
     outcomes: [
       { match: { name: 'jimmy' }, response: { body: { greeting: 'Hello from Jimmy' } } },
       { match: { name: 'janny' }, response: { body: { greeting: 'Hello from Janny' } } },
       {
-        match: { name: 'mistery' },
-        response: { body: { greeting: 'mistery guest not found' }, statusCode: 404 }
+        match: { name: 'mystery' },
+        response: { body: { greeting: 'mystery guest not found' }, statusCode: 404 }
       }
     ],
     default: {
       response: {
         body: { greeting: "You're going to need to provide a name", source: 'greetings' },
-        statusCode: 200
+        statusCode: 400
       }
     }
   };
@@ -24,9 +24,9 @@ function Scenarios() {
     <>
       <SectionTitle title="Scenarios" />
       <p>
-        Stubs are useful and convenient for mocking a single request-response setup, but often
+        Stubs are useful and convenient for stubbing a single request-response setup, but often
         you'll find yourself needing to setup slight variations of the same response, based on
-        slightly different request parameters. That's where scenarios become very useful. <br />
+        slightly different request parameters. That's where scenarios can be useful. <br />
         Setting up scenarios is made up of three parts: define how to match requests, define a
         default response if you need one, and then define as many outcomes as needed, based on the
         parameters of requests. <br />
@@ -69,9 +69,9 @@ function RequestMatching() {
       <p>
         You can also match on requests body; given this url <InlineCode>{'/some-url'}</InlineCode>,
         and the previous outcomes, requests with body which include{' '}
-        <InlineCode>{'{"varibleName": "option1"}'}</InlineCode> will get a{' '}
+        <InlineCode>{'{"variableName": "option1"}'}</InlineCode> will get a{' '}
         <InlineCode>200</InlineCode>, requests with body{' '}
-        <InlineCode>{'{"varibleName": "option2"}'}</InlineCode> will get{' '}
+        <InlineCode>{'{"variableName": "option2"}'}</InlineCode> will get{' '}
         <InlineCode>201</InlineCode>.
       </p>
     </>
@@ -98,4 +98,4 @@ function ResponseDefinition() {
   );
 }
 
-export { Scenarios };
+export const scenariosPath = '/stub4/docs/how/scenarios';

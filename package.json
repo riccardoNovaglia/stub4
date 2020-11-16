@@ -7,8 +7,9 @@
     "test:server": "cd server && npm run test:ci",
     "test:ui": "cd ui && npm run test:ci",
     "test:accept": "cd acceptance && npm run test:ci",
-    "start-ui": "cd ui && npm run start",
-    "start-server": "cd server && npm run start",
+    "start": "concurrently -n \"UI,Server\" -c \"cyan,green\" \"npm run start:ui\" \"npm run start:server sampleConfig/sampleConfig.json\"",
+    "start:ui": "cd ui && npm run start",
+    "start:server": "cd server && npm run start",
     "install:all": "npm install && npm run install:ui && npm run install:server && npm run install:client && npm run install:acceptance",
     "install:ui": "cd ui && npm install",
     "install:server": "cd server && npm install",
@@ -26,6 +27,7 @@
   "author": "Riccardo <stub4js+npm@gmail.com>",
   "dependencies": {},
   "devDependencies": {
+    "concurrently": "^5.3.0",
     "husky": "4.2.5",
     "prettier": "2.0.5",
     "pretty-quick": "2.0.1"

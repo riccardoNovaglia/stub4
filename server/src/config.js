@@ -13,8 +13,7 @@ let config = {
   },
   logging: {
     baseLevel: process.env.NODE_ENV === 'test' ? 'off' : 'info',
-    toIgnore: [],
-    specifics: []
+    toIgnore: []
   }
 };
 

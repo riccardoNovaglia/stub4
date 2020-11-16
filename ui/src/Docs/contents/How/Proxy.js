@@ -1,7 +1,7 @@
 import React from 'react';
 import { Code, InlineCode, SectionTitle } from '../../DocsBits';
 
-function Proxy() {
+export function Proxy() {
   const proxy = {
     requestMatcher: { url: '/some-url' },
     proxy: { destination: { url: '/some-other-url' } }
@@ -60,4 +60,4 @@ function ResponseDefinition() {
   );
 }
 
-export { Proxy };
+export const proxyPath = '/stub4/docs/how/proxy';

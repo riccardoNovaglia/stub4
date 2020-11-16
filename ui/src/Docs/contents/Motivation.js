@@ -1,25 +1,29 @@
 import React from 'react';
 import { SectionTitle } from '../DocsBits';
+import screenshot from './stub4.jpg';
 
-function Motivation() {
+export function Motivation() {
   return (
     <>
-      <SectionTitle title="Why" />
+      <SectionTitle title="Motivation" />
 
       <p>When building an app or website, tests are your best friends.</p>
-      <p>But sometimes, it's just useful to start the thing and see it working.</p>
+      <p>But sometimes, it's useful to just start the thing and see it working.</p>
       <p>
-        In these cases, you can either point your app at the real system you're integrating with and
-        hope for the best, or you can use Stub4 to simulate it.
+        Stub4 is an HTTP stub server that allows you to explore your app behaviour under a variety
+        of scenarios. You can use Stub4 to easily verify success and failure cases, fast and slow
+        systems, stateless and stateful interactions.
       </p>
       <p>
-        Stub4 allows you to explore your app's behaviour without connecting it to a real live
-        system, and because you have full control, verify what happens in situations that would be
-        hard to encounter in real life.
+        You can conveniently setup Stub4 programmatically via its HTTP API, via JSON config files,
+        programmatically through javascript, and via its web UI. You can easily start it as a
+        standalone process or during your tests. You can configure it while it's running via HTTP
+        requests, its javascript client, and its UI.
       </p>
-      <p>You can use if prototyping, testing, demonstrating, and more</p>
+      <p>Use it for prototyping, testing, demonstrating, and more.</p>
+      <img className="screenshot" src={screenshot} alt="A screenshot of the Stub4 Web UI" />
     </>
   );
 }
 
-export { Motivation };
+export const motivationPath = '/stub4/docs/motivation';

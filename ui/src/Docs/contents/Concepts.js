@@ -1,23 +1,33 @@
 import React from 'react';
-import { SectionTitle, Link } from '../DocsBits';
+import { SectionTitle, Link, ExternalLink } from '../DocsBits';
+import { stubsPath } from './How/Stubs';
+import { scenariosPath } from './How/Scenarios';
+import { crudsPath } from './How/Cruds';
+import { proxyPath } from './How/Proxy';
 
-function What() {
+export function Concepts() {
   return (
     <>
-      <SectionTitle title="What" />
+      <SectionTitle title="Concepts" />
       <p>
-        Stub4 is a programmable stub server. You can configure it at start, via its http API, or via
-        its web interface. <br />
-        It comes with a few built-in types of stubbings
+        Stub4 offers a few different types of stubbings, which give you all the tools you need to
+        setup your application. You might not need all, so pick whatever fits your requirements.
+        <br />
+        <span className="someday">
+          Some beautiful day, maybe, these different types of stubbings will be like plugins, and
+          you'll be able to pick and choose whatever you need. Want GraphQL stubbings without having
+          to set them up manually? Just import the right plugin! Someday... Want to get involved?{' '}
+          <ExternalLink to="mailto:stub4js@gmail.com">Let me know</ExternalLink>
+        </span>
       </p>
       <h3>Stubs</h3>
       <p>
-        The most straighgtforward tool Stub4 offers to simulate a real system is a{' '}
+        The most straightforward tool Stub4 offers to simulate a real system is a{' '}
         <span className="highlightedTerm">stub</span>. A stub is a simple request-response setup.
         Given a request matching some parameters, a pre-configured response is returned.
       </p>
       <p>
-        You can find how to create and use a stub <Link to="/stub4/docs/how/stubs">here</Link>
+        You can find how to create and use a stub <Link to={stubsPath}>here</Link>
       </p>
       <p>But that's not all.</p>
       <h3>Scenarios</h3>
@@ -30,18 +40,17 @@ function What() {
         outcome.
       </p>
       <p>
-        You can find how to create and use scenarios{' '}
-        <Link to="/stub4/docs/how/scenarios">here</Link>
+        You can find how to create and use scenarios <Link to={scenariosPath}>here</Link>
       </p>
       <h3>Cruds</h3>
       <p>
         Another common use case is to simulate straightforward CRUD (Create Read Update Delete)
         applications that follow REST conventions. For that you'll want to use a{' '}
-        <span className="highlightedTerm">crud</span>, which creates a small in-memory database that
-        you can add and remove things from via HTTP calls.
+        <span className="highlightedTerm">crud</span>, which creates an in-memory database that you
+        can add and remove things from via HTTP calls.
       </p>
       <p>
-        You can find how to create and use cruds <Link to="/stub4/docs/how/cruds">here</Link>
+        You can find how to create and use cruds <Link to={crudsPath}>here</Link>
       </p>
       <h3>Proxy</h3>
       <p>
@@ -54,10 +63,10 @@ function What() {
         specific cases.
       </p>
       <p>
-        You can find how to create and use a proxy <Link to="/stub4/docs/how/proxy">here</Link>
+        You can find how to create and use a proxy <Link to={proxyPath}>here</Link>
       </p>
     </>
   );
 }
 
-export { What };
+export const conceptsPath = '/stub4/docs/concepts';

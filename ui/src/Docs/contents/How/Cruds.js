@@ -1,7 +1,7 @@
 import React from 'react';
 import { Code, InlineCode, SectionTitle } from '../../DocsBits';
 
-function Cruds() {
+export function Cruds() {
   const crud = {
     requestMatcher: { url: '/some-url' },
     crud: { idAlias: 'personId', patchOnPost: true, data: [{ personId: 321, name: 'jimbo' }] }
@@ -85,8 +85,10 @@ function ResponseDefinition() {
         an id that already existed, instead of entirely overwriting the record, it will update the
         properties you have sent.
       </p>
+      <h4>Note</h4>
+      <p>Query parameters for searching and sorting are not yet supported, but will be soon.</p>
     </>
   );
 }
 
-export { Cruds };
+export const crudsPath = '/stub4/docs/how/cruds';

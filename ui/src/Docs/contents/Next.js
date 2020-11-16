@@ -1,7 +1,7 @@
 import React from 'react';
 import { SectionTitle } from '../DocsBits';
 
-function Next() {
+export function Next() {
   return (
     <>
       <SectionTitle title="Upcoming features" />
@@ -26,4 +26,5 @@ function Next() {
     </>
   );
 }
-export { Next };
+
+export const nextPath = '/stub4/docs/next';
