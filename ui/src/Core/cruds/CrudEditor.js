@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { EnableDisableButton } from '../prototypes/stubsComponents/EnableDisableButton';
-import { SaveButton } from '../prototypes/stubsComponents/SaveButton';
 import { UrlMatcher } from '../prototypes/matching/UrlMatcher';
+import { Editor } from '../prototypes/stubsComponents/Editor';
 
 const { stubFor, cruds } = require('@stub4/client');
 
@@ -27,69 +26,65 @@ export function CrudEditor({ onClose, onSaved, editedItem }) {
     onSaved();
   }
 
+  async function onDelete() {
+    await cruds.deleteById(id);
+    onClose();
+  }
+
   return (
-    <form
-      onKeyDown={(e) => e.keyCode === 27 && onClose()}
-      className={!enabled ? 'disabledEditor' : ''}
-      onSubmit={(event) => {
-        event.preventDefault();
-        onSave();
-      }}
+    <Editor
+      enabled={enabled}
+      setEnabled={setEnabled}
+      toggleEnable={cruds.setEnabled}
+      itemId={id}
+      onSave={onSave}
+      onDelete={onDelete}
+      onClose={onClose}
     >
-      <EnableDisableButton
-        id={editedItem?.id}
-        enabled={enabled}
-        setEnabled={setEnabled}
-        toggleFunction={cruds.setEnabled}
-      />
+      <UrlMatcher urlMatcher={urlMatcher.url} onChange={(url) => setUrlMatcher({ url })} />
 
-      <fieldset className="editorFieldset" disabled={!enabled}>
-        <UrlMatcher urlMatcher={urlMatcher.url} onChange={(url) => setUrlMatcher({ url })} />
-
-        <div>
-          <label className="itemLabel" htmlFor="idAlias">
-            ID ALIAS
-          </label>
-          <input
-            id="idAlias"
-            type="text"
-            onChange={(event) => setCrud({ ...crud, idAlias: event.target.value })}
-            value={crud.idAlias}
-          />
-        </div>
-
-        <label className="itemLabel" htmlFor="patchOnPostCheckbox">
-          PATCH ON POST
+      <div>
+        <label className="itemLabel" htmlFor="idAlias">
+          ID ALIAS
         </label>
         <input
-          id="patchOnPostCheckbox"
-          type="checkbox"
-          className="bodyMatchCheckbox"
-          onChange={(event) => setCrud({ ...crud, patchOnPost: event.target.checked })}
-          checked={crud.patchOnPost}
+          id="idAlias"
+          type="text"
+          onChange={(event) => setCrud({ ...crud, idAlias: event.target.value })}
+          value={crud.idAlias}
         />
+      </div>
 
-        <div>
-          <label className="itemLabel" htmlFor="contents">
-            Contents
-          </label>
-          <textarea
-            id="contents"
-            value={toStringIfObject(crud?.items)}
-            onChange={(event) =>
-              setCrud({
-                ...crud,
-                items: toJsonIfObject(event.target.value)
-              })
-            }
-            rows="35"
-            cols="33"
-            className="contents"
-          />
-        </div>
-        <SaveButton onSave={onSave} />
-      </fieldset>
-    </form>
+      <label className="itemLabel" htmlFor="patchOnPostCheckbox">
+        PATCH ON POST
+      </label>
+      <input
+        id="patchOnPostCheckbox"
+        type="checkbox"
+        className="bodyMatchCheckbox"
+        onChange={(event) => setCrud({ ...crud, patchOnPost: event.target.checked })}
+        checked={crud.patchOnPost}
+      />
+
+      <div>
+        <label className="itemLabel" htmlFor="contents">
+          Contents
+        </label>
+        <textarea
+          id="contents"
+          value={toStringIfObject(crud?.items)}
+          onChange={(event) =>
+            setCrud({
+              ...crud,
+              items: toJsonIfObject(event.target.value)
+            })
+          }
+          rows="35"
+          cols="33"
+          className="contents"
+        />
+      </div>
+    </Editor>
   );
 }
 

@@ -6,7 +6,7 @@ export function EnableDisableButton({ id, enabled, setEnabled, toggleFunction })
   if (id === undefined) return null;
 
   async function toggle() {
-    const { nowEnabled } = await toggleFunction({ id }, !enabled);
+    const { nowEnabled } = await toggleFunction(id, !enabled);
     setEnabled(nowEnabled);
   }
 

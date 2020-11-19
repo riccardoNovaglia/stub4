@@ -3,13 +3,13 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
-    "@stub4/client": "0.0.22",
-    "axios": "0.20.0",
+    "@stub4/client": "0.0.23",
+    "axios": "0.21.0",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-router-dom": "5.2.0",
     "react-scripts": "3.4.3",
-    "sass": "1.26.10"
+    "sass": "1.29.0"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.8.0",
@@ -17,7 +17,8 @@
     "@testing-library/user-event": "10.2.3",
     "gh-pages": "2.2.0",
     "jest-environment-jsdom-sixteen": "1.0.3",
-    "jest-when": "2.7.1"
+    "jest-when": "2.7.1",
+    "source-map-explorer": "^2.5.0"
   },
   "scripts": {
     "start": "PORT=8081 react-scripts start",
@@ -29,7 +30,8 @@
     "setupDocs": "mv src/App.js src/App.backup.js && mv src/App.docs.js src/App.js",
     "restoreApp": "mv src/App.js src/App.docs.js && mv src/App.backup.js src/App.js",
     "predeploy": "../scripts/gh-pages-build.sh",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d build",
+    "analyze": "source-map-explorer 'build/static/js/*.js'"
   },
   "homepage": "https://riccardonovaglia.github.io/stub4",
   "proxy": "http://localhost:80",

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { EnableDisableButton } from '../prototypes/stubsComponents/EnableDisableButton';
 import { RequestMatcher } from '../prototypes/matching/RequestMatcher';
-import { SaveButton } from '../prototypes/stubsComponents/SaveButton';
+import { Editor } from '../prototypes/stubsComponents/Editor';
 
 const { stubFor, stubs } = require('@stub4/client');
 
@@ -31,74 +30,69 @@ export function StubEditor({ onClose, onSaved, editedItem }) {
     onSaved();
   }
 
+  async function onDelete() {
+    await stubs.deleteById(id);
+    onClose();
+  }
+
   return (
-    <form
-      onKeyDown={(e) => e.keyCode === 27 && onClose()}
-      className={!enabled ? 'disabledEditor' : ''}
-      onSubmit={(event) => {
-        event.preventDefault();
-        onSave();
-      }}
+    <Editor
+      enabled={enabled}
+      setEnabled={setEnabled}
+      toggleEnable={stubs.setEnabled}
+      itemId={id}
+      onSave={onSave}
+      onDelete={onDelete}
+      onClose={onClose}
+      itemForPreview={{ requestMatcher, response }}
     >
-      <EnableDisableButton
-        id={editedItem?.id}
-        enabled={enabled}
-        setEnabled={setEnabled}
-        toggleFunction={stubs.setEnabled}
-      />
+      <RequestMatcher requestMatcher={requestMatcher} setRequestMatcher={setRequestMatcher} />
 
-      <fieldset className="editorFieldset" disabled={!enabled}>
-        <RequestMatcher requestMatcher={requestMatcher} setRequestMatcher={setRequestMatcher} />
+      <br />
+      <label htmlFor="responseDefinition">Response: </label>
+      <fieldset id="responseDefinition" className="responseDefinition">
+        <div>
+          <label className="itemLabel" htmlFor="status">
+            STATUS
+          </label>
+          <input
+            id="status"
+            type="text"
+            onChange={(event) => setResponse({ ...response, statusCode: event.target.value })}
+            value={response.statusCode}
+          />
+        </div>
 
-        <br />
-        <label htmlFor="responseDefinition">Response: </label>
-        <fieldset id="responseDefinition" className="responseDefinition">
-          <div>
-            <label className="itemLabel" htmlFor="status">
-              STATUS
-            </label>
-            <input
-              id="status"
-              type="text"
-              onChange={(event) => setResponse({ ...response, statusCode: event.target.value })}
-              value={response.statusCode}
-            />
-          </div>
+        <div>
+          <label className="itemLabel" htmlFor="type">
+            TYPE
+          </label>
+          <select
+            id="type"
+            value={response.type}
+            onChange={(event) => setResponse({ ...response, type: event.target.value })}
+          >
+            <option value="text/plain">text/plain</option>
+            <option value="application/json">application/json</option>
+            <option value="application/xml">application/xml</option>
+          </select>
+        </div>
 
-          <div>
-            <label className="itemLabel" htmlFor="type">
-              TYPE
-            </label>
-            <select
-              id="type"
-              value={response.type}
-              onChange={(event) => setResponse({ ...response, type: event.target.value })}
-            >
-              <option value="text/plain">text/plain</option>
-              <option value="application/json">application/json</option>
-              <option value="application/xml">application/xml</option>
-            </select>
-          </div>
-
-          <div>
-            <label className="itemLabel" htmlFor="body">
-              BODY
-            </label>
-            <textarea
-              id="body"
-              className="responseBody"
-              onChange={(event) => setResponse({ ...response, body: event.target.value })}
-              rows="5"
-              cols="33"
-              value={toStringIfObject(response.body)}
-            />
-          </div>
-        </fieldset>
-        <SaveButton onSave={onSave} />
-
-        {/* TODO: add delete */}
+        <div>
+          <label className="itemLabel" htmlFor="body">
+            BODY
+          </label>
+          <textarea
+            id="body"
+            className="responseBody"
+            onChange={(event) => setResponse({ ...response, body: event.target.value })}
+            rows="5"
+            cols="33"
+            value={toStringIfObject(response.body)}
+          />
+        </div>
       </fieldset>
-    </form>
+    </Editor>
   );
 }
 

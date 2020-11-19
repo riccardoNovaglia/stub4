@@ -69,8 +69,7 @@ select {
   text-align: center;
 }
 
-.saveButton {
-  background-color: #035597;
+.saveDeleteButtons {
   border: none;
   color: white;
   padding: 10px 32px;
@@ -84,6 +83,16 @@ select {
   &:disabled {
     opacity: 0.7;
   }
+}
+
+.saveButton {
+  background-color: #035597;
+  @extend .saveDeleteButtons;
+}
+
+.deleteButton {
+  background-color: #970303;
+  @extend .saveDeleteButtons;
 }
 
 .leadingSlash {

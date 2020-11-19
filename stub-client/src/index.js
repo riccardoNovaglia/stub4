@@ -4,14 +4,20 @@ const { CrudClient } = require('./CrudClient');
 const { ProxyClient } = require('./ProxyClient');
 const { ContractsClient } = require('./ContractsClient');
 const interactions = require('./interactions');
-const stubs = require('./stubs');
-const scenarios = require('./scenarios');
-const proxy = require('./proxys');
-const cruds = require('./cruds');
+const { stubbings } = require('./stubbings');
 
 const { stubFor, setPort } = require('./stubFor');
 
-const stubsItems = { StubClient, Stub, get, post, stubs, scenarios, proxy, cruds };
+const stubsItems = {
+  StubClient,
+  Stub,
+  get,
+  post,
+  stubs: stubbings('stubs'),
+  scenarios: stubbings('scenarios'),
+  proxy: stubbings('proxy'),
+  cruds: stubbings('cruds')
+};
 
 module.exports = {
   ...stubsItems,

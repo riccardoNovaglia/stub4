@@ -1,6 +1,5 @@
 ## next
 
-- better docs, with examples
 - definition to JSON/JS to allow saving to file
 - reset to files definitions (everything, especially for cruds)
 - "try" functionality. Send requests, verify responses, from UI
@@ -17,13 +16,13 @@
 ## someday
 
 - Pact?
-  - Make files desination configurable
+  - Make files destination configurable
   - How do we match each interactions to the correct provider? And created different providers when creating contracts? Does it need to be setup with each stub? Is this where I need the App/Downstream abstraction once to set this up?
   - Random port? Retry?
   - State/Upon receiving?
   - What do if the pact verification fails?
   - Use recorded interactions - replay against Pact provider to generate contract?
-- openapi wizard
+- openAPI wizard
 - observe proxy request/response as they happen
 
 ## defects
