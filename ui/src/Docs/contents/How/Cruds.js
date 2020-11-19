@@ -1,4 +1,3 @@
-import React from 'react';
 import { Code, InlineCode, SectionTitle } from '../../DocsBits';
 
 export function Cruds() {

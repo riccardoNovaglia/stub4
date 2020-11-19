@@ -1,4 +1,3 @@
-import React from 'react';
 import { SectionTitle } from '../DocsBits';
 
 export function Features() {

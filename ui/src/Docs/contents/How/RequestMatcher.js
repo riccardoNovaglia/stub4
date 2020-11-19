@@ -1,4 +1,3 @@
-import React from 'react';
 import { Code, InlineCode as IC, Link, SectionTitle } from '../../DocsBits';
 
 export function RequestMatcher() {

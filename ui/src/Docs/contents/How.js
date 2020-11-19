@@ -1,4 +1,3 @@
-import React from 'react';
 import { InlineCode, SectionTitle, Link } from '../DocsBits';
 import { configPath } from './How/Config';
 

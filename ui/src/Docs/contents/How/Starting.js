@@ -1,4 +1,3 @@
-import React from 'react';
 import { Code, InlineCode, SectionTitle, Link, CodeSnippet } from '../../DocsBits';
 
 export function Starting() {

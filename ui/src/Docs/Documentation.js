@@ -1,4 +1,3 @@
-import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
 
 import { Index, DocsLink, DocsSubLink } from './Index';

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 export function BodyMatcher({ bodyMatcher, onChange }) {
   const [bodyMatcherDefined, setBodyMatcherDefined] = useState(!empty(bodyMatcher));

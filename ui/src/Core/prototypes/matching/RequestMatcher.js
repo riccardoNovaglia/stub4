@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { UrlMatcher } from './UrlMatcher';
 import { HeadersMatcher } from './HeadersMatcher';
 import { BodyMatcher } from './BodyMatcher';

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { RequestMatcher } from '../prototypes/matching/RequestMatcher';
 
 import { stubFor, proxy as proxys } from '@stub4/client';

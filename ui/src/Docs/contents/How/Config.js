@@ -1,4 +1,3 @@
-import React from 'react';
 import { Code, CodeSnippet, InlineCode as IL, Link, SectionTitle } from '../../DocsBits';
 import { startingPath } from './Starting';
 

@@ -1,5 +1,3 @@
-import React from 'react';
-
 import './EnableDisableButton.scss';
 
 export function EnableDisableButton({ id, enabled, setEnabled, toggleFunction }) {

@@ -1,4 +1,3 @@
-import React from 'react';
 import { RequestMatcherMoreInfoLink } from './RequestMatcher';
 import { Code, InlineCode, SectionTitle } from '../../DocsBits';
 

@@ -1,5 +1,3 @@
-import React from 'react';
-
 export function UrlMatcher({ urlMatcher, onChange, label = 'URL', focus = true }) {
   function handleWithLeadingSlash(event) {
     const text = event.target.value[0] !== '/' ? `/${event.target.value}` : event.target.value;

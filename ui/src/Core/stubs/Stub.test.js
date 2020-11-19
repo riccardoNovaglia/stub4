@@ -1,4 +1,3 @@
-import React from 'react';
 import { Route } from 'react-router-dom';
 import { screen, waitFor } from '@testing-library/react';
 import { renderWithRouter } from '../../setupTests';

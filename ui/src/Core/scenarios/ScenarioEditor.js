@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { RequestMatcher } from '../prototypes/matching/RequestMatcher';
 import { EnableDisableButton } from '../prototypes/stubsComponents/EnableDisableButton';
 

@@ -1,5 +1,3 @@
-import React from 'react';
-
 import './Editor.scss';
 
 export function NewItemModal(props) {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { UrlMatcher } from '../prototypes/matching/UrlMatcher';
 import { Editor } from '../prototypes/stubsComponents/Editor';
 

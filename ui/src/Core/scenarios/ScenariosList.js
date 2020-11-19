@@ -1,5 +1,3 @@
-import React from 'react';
-
 import ItemsList from '../prototypes/stubsComponents/ItemsList';
 
 export function ScenariosList({ items, selected, setSelected }) {

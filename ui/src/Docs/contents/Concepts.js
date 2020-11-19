@@ -1,4 +1,3 @@
-import React from 'react';
 import { SectionTitle, Link, ExternalLink } from '../DocsBits';
 import { stubsPath } from './How/Stubs';
 import { scenariosPath } from './How/Scenarios';

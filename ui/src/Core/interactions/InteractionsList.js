@@ -1,5 +1,6 @@
-import { isEmpty, isEqual } from 'lodash';
-import React, { useState } from 'react';
+import isEqual from 'lodash.isequal';
+import isEmpty from 'lodash.isempty';
+import { useState } from 'react';
 import { Matched, Unmatched } from './InteractionItems';
 
 export function InteractionsList({ interactions }) {
