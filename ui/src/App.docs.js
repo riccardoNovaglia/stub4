@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 
 import { Header } from './Header';
-import { Documentation } from './Docs/Documentation';
+import Documentation from './Docs/Documentation';
 
 import './App.scss';
 

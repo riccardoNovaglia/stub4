@@ -19,6 +19,7 @@
     "@testing-library/user-event": "12.2.2",
     "gh-pages": "3.1.0",
     "jest-when": "3.0.1",
+    "serve": "11.3.2",
     "source-map-explorer": "2.5.0"
   },
   "scripts": {
@@ -32,10 +33,15 @@
     "restoreApp": "mv src/App.js src/App.docs.js && mv src/App.backup.js src/App.js",
     "predeploy": "../scripts/gh-pages-build.sh",
     "deploy": "gh-pages -d build",
-    "analyze": "source-map-explorer 'build/static/js/*.js'"
+    "analyze": "source-map-explorer 'build/static/js/*.js'",
+    "serve": "serve -s build",
+    "lint": "eslint ."
   },
   "homepage": "https://riccardonovaglia.github.io/stub4",
   "proxy": "http://localhost:80",
+  "eslintConfig": {
+    "extends": "react-app"
+  },
   "browserslist": {
     "production": [
       ">0.2%",

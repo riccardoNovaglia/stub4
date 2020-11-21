@@ -19,7 +19,7 @@ import { Config, configPath } from './contents/How/Config';
 
 import './Documentation.scss';
 
-function Documentation({ children }) {
+export default function Documentation({ children }) {
   return (
     <div className="Docs">
       {children}
@@ -64,5 +64,3 @@ function Documentation({ children }) {
     </div>
   );
 }
-
-export { Documentation };

@@ -14,7 +14,7 @@ import Tabs from './navigation/Tabs';
 
 import './Core.scss';
 
-function Core({ children }) {
+export default function Core({ children }) {
   const { clients, pending } = useClients();
   const [interactions, setInteractions] = useState(true);
 
@@ -100,5 +100,3 @@ const useClients = () => {
     }
   };
 };
-
-export { Core };
