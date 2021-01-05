@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@stub4/client": "0.0.23",
-    "axios": "0.21.0",
+    "axios": "0.21.1",
     "lodash.isempty": "^4.4.0",
     "lodash.isequal": "^4.5.0",
     "react": "17.0.1",
