@@ -8,7 +8,7 @@ import './RequestMatcher.scss';
 export function RequestMatcher({ requestMatcher, setRequestMatcher }) {
   return (
     <div className="requestMatching">
-      <label htmlFor="requestDefinition">Request Matching</label>
+      <h3>Request Matching</h3>
       <fieldset id="requestDefinition" className="requestDefinition">
         <div>
           <UrlMatcher

@@ -46,7 +46,6 @@ select {
   border: 1px solid #111;
   padding: 5px 10px;
   border-radius: 5px;
-  min-width: 100px;
   &:disabled {
     opacity: 0.7;
   }
@@ -65,17 +64,12 @@ select {
   color: #fff;
 }
 
-.buttonGroup {
-  text-align: center;
-}
-
 .saveDeleteButtons {
   border: none;
   color: white;
   padding: 10px 32px;
   text-align: center;
-  line-height: 0;
-  margin: 10px 0;
+  margin: 10px 10px 10px 0;
   font-weight: bold;
   font-size: 14px;
   border-radius: 2px;
@@ -86,13 +80,23 @@ select {
 }
 
 .saveButton {
-  background-color: #035597;
   @extend .saveDeleteButtons;
+  background-color: #035597;
 }
 
 .deleteButton {
-  background-color: #970303;
   @extend .saveDeleteButtons;
+  background-color: #970303;
+}
+
+.copyToClipboardButton {
+  @extend .saveDeleteButtons;
+  width: 200px;
+  background-color: #006b0e;
+}
+
+.copiedLabel {
+  display: inline;
 }
 
 .leadingSlash {

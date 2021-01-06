@@ -9,7 +9,7 @@ const defaults = {
   response: {
     statusCode: 200,
     body: '{}',
-    type: 'application/json'
+    contentType: 'application/json'
   }
 };
 
@@ -44,12 +44,12 @@ export function StubEditor({ onClose, onSaved, editedItem }) {
       onSave={onSave}
       onDelete={onDelete}
       onClose={onClose}
-      itemForPreview={{ requestMatcher, response }}
+      stubbingDefinition={{ requestMatcher, response }}
     >
       <RequestMatcher requestMatcher={requestMatcher} setRequestMatcher={setRequestMatcher} />
 
       <br />
-      <label htmlFor="responseDefinition">Response: </label>
+      <h3>Response: </h3>
       <fieldset id="responseDefinition" className="responseDefinition">
         <div>
           <label className="itemLabel" htmlFor="status">
@@ -64,13 +64,13 @@ export function StubEditor({ onClose, onSaved, editedItem }) {
         </div>
 
         <div>
-          <label className="itemLabel" htmlFor="type">
-            TYPE
+          <label className="itemLabel" htmlFor="contentType">
+            CONTENT TYPE
           </label>
           <select
-            id="type"
-            value={response.type}
-            onChange={(event) => setResponse({ ...response, type: event.target.value })}
+            id="contentType"
+            value={response.contentType}
+            onChange={(event) => setResponse({ ...response, contentType: event.target.value })}
           >
             <option value="text/plain">text/plain</option>
             <option value="application/json">application/json</option>
@@ -80,7 +80,7 @@ export function StubEditor({ onClose, onSaved, editedItem }) {
 
         <div>
           <label className="itemLabel" htmlFor="body">
-            BODY
+            RESPONSE BODY
           </label>
           <textarea
             id="body"

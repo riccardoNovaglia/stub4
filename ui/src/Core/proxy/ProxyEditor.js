@@ -39,6 +39,7 @@ export function ProxyEditor({ onClose, onSaved, editedItem }) {
       onSave={onSave}
       onDelete={onDelete}
       onClose={onClose}
+      stubbingDefinition={{ requestMatcher, proxy }}
     >
       <RequestMatcher requestMatcher={requestMatcher} setRequestMatcher={setRequestMatcher} />
 

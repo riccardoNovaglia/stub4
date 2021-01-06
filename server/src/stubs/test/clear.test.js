@@ -7,7 +7,7 @@ describe('Clearing and listing stubs', () => {
       .post('/stubs')
       .send({
         requestMatcher: { url: '/stuff' },
-        response: { body: `bods`, type: 'text' }
+        response: { body: `bods`, contentType: 'text/plain' }
       });
 
     const clearResponse = await request(app).delete('/stubs');
@@ -23,7 +23,7 @@ describe('Clearing and listing stubs', () => {
       .post('/stubs')
       .send({
         requestMatcher: { url: '/tubs' },
-        response: { body: `bods`, type: 'text' }
+        response: { body: `bods`, contentType: 'text/plain' }
       });
 
     const response = await request(app).get('/stubs');

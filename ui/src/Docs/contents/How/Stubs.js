@@ -4,7 +4,7 @@ import { Code, InlineCode, SectionTitle } from '../../DocsBits';
 export function Stubs() {
   const stub = {
     requestMatcher: { url: '/some-url' },
-    response: { body: { mgs: 'User 321 created' }, type: 'json' }
+    response: { body: { mgs: 'User 321 created' }, contentType: 'application/json' }
   };
 
   return (
@@ -34,7 +34,8 @@ function StubResponseDefinition() {
           <InlineCode>statusCode</InlineCode> - defaults to <InlineCode>200</InlineCode>
         </li>
         <li>
-          <InlineCode>type</InlineCode> - defaults to <InlineCode>application/json</InlineCode>
+          <InlineCode>contentType</InlineCode> - defaults to{' '}
+          <InlineCode>application/json</InlineCode>
         </li>
         <li>
           <InlineCode>body</InlineCode> - defaults to <InlineCode>{'{}'}</InlineCode>
@@ -48,7 +49,7 @@ function StubResponseDefinition() {
       <Code>
         {{
           statusCode: 201,
-          type: 'application/json',
+          contentType: 'application/json',
           body: { message: 'Item created successfully', itemId: '321' },
           delay: 1000
         }}

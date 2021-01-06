@@ -16,3 +16,9 @@ export function renderWithRouter(
     history
   };
 }
+
+beforeAll(() => {
+  navigator.clipboard = {
+    writeText: jest.fn()
+  };
+});

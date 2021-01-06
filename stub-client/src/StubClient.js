@@ -46,7 +46,7 @@ class Stub {
     this.method = method;
     this.bodyMatchType = undefined;
     this.bodyMatch = undefined;
-    this.type = 'json';
+    this.contentType = 'application/json';
     this.body = {};
     this.statusCode = 200;
   }
@@ -57,13 +57,13 @@ class Stub {
   }
 
   withXmlBodyMatch(xmlMatch) {
-    this.bodyMatchType = 'xml';
+    this.bodyMatchType = 'application/xml';
     this.bodyMatch = xmlMatch;
     return this;
   }
 
-  returns(type, body, statusCode = 200) {
-    this.type = type;
+  returns(contentType, body, statusCode = 200) {
+    this.contentType = contentType;
     this.body = body;
     this.statusCode = statusCode;
     return this;
@@ -90,7 +90,7 @@ class Stub {
 
   response() {
     return {
-      type: this.type,
+      contentType: this.contentType,
       body: this.body,
       statusCode: this.statusCode
     };

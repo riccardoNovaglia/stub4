@@ -5,7 +5,7 @@ import { EditStub } from './Stub';
 import { stubs as mockedStubs } from '@stub4/client';
 
 jest.mock('./StubEditor', () => ({
-  StubEditor: jest.fn(({ editedItem }) => <p>{JSON.stringify(editedItem)}</p>)
+  StubEditor: ({ editedItem }) => <p>{JSON.stringify(editedItem)}</p>
 }));
 jest.mock('@stub4/client', () => ({
   stubs: {

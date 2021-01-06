@@ -2,7 +2,7 @@
   "stubs": [
     {
       "requestMatcher": { "url": "/some-url", "method": "GET" },
-      "response": { "body": "this was setup", "type": "text" }
+      "response": { "body": "this was setup", "contentType": "text/plain" }
     },
     {
       "requestMatcher": {
@@ -10,7 +10,7 @@
         "url": "/body-match",
         "body": { "value": { "id": 321 } }
       },
-      "response": { "body": { "mgs": "User 321 created" }, "type": "json" }
+      "response": { "body": { "mgs": "User 321 created" }, "contentType": "application/json" }
     },
     {
       "requestMatcher": {
@@ -21,7 +21,7 @@
           "type": "xml"
         }
       },
-      "response": { "body": "<msg>OK</msg>", "type": "xml" }
+      "response": { "body": "<msg>OK</msg>", "contentType": "application/xml" }
     }
   ],
   "cruds": [

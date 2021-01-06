@@ -1,5 +1,6 @@
 import { EnableDisableButton } from './EnableDisableButton';
 import { SaveAndDeleteButtons } from './SaveAndDeleteButtons';
+import { CopyToClipboardButton } from './CopyToClipboard';
 
 export function Editor({
   enabled,
@@ -9,7 +10,7 @@ export function Editor({
   onSave,
   onDelete,
   onClose,
-  itemForPreview = null,
+  stubbingDefinition = null,
   children
 }) {
   return (
@@ -32,7 +33,7 @@ export function Editor({
         {children}
 
         <SaveAndDeleteButtons onSave={onSave} onDelete={onDelete} />
-        {/* {JSON.stringify(itemForPreview)} */}
+        {stubbingDefinition && <CopyToClipboardButton itemDefinition={stubbingDefinition} />}
       </fieldset>
     </form>
   );

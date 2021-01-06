@@ -3,7 +3,7 @@ class RequestMatcher {
     this.url = url;
     this.method = 'GET';
     this.bodyMatcherValue = null;
-    this.type = 'json';
+    this.contenType = 'application/json';
   }
 
   withMethod(method) {
@@ -15,19 +15,19 @@ class RequestMatcher {
     return this;
   }
   withXmlBodyMatch(xmlMatch) {
-    this.type = 'xml';
+    this.contenType = 'application/xml';
     this.bodyMatcherValue = xmlMatch;
     return this;
   }
   withType(type) {
-    this.type = type;
+    this.contenType = type;
     return this;
   }
 
   toJson() {
     // TODO: is there a better way?
     const body = this.bodyMatcherValue
-      ? { value: this.bodyMatcherValue, type: this.type }
+      ? { value: this.bodyMatcherValue, contenType: this.contenType }
       : undefined;
 
     return {

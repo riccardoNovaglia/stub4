@@ -19,7 +19,7 @@ function contentType(type) {
 const sleep = (ms) => new Promise((res) => setTimeout(res, ms));
 
 function Response(response) {
-  const type = _.get(response, 'type', 'json');
+  const type = _.get(response, 'contentType', 'json');
   const body = _.get(response, 'body', type === 'json' ? {} : '');
   const statusCode = _.get(response, 'statusCode', 200);
   const delay = _.get(response, 'delay', undefined);

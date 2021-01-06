@@ -68,7 +68,7 @@ stubbings.json
   "stubs": [
       {
         "requestMatcher": { "url": "/some-url", "method": "GET" },
-        "response": { "body": "hello there", "type": "text" }
+        "response": { "body": "hello there", "contentType": "text/plain" }
       }
   ]
 }

@@ -5,6 +5,7 @@ import { when, resetAllWhenMocks } from 'jest-when';
 import { stubFor as mockedStub4 } from '@stub4/client';
 import { StubEditor } from './StubEditor';
 import { renderWithRouter } from '../../setupTests';
+import { expectDefinitionToCopyToClipboard } from '../prototypes/stubsComponents/CopyToClipboard.test';
 
 const onClose = jest.fn();
 const onSaved = jest.fn();
@@ -25,7 +26,7 @@ it('renders with a few default values', async () => {
   expect(screen.getByLabelText(/BODY MATCHER/i).checked).toEqual(false);
 
   expect(screen.getByLabelText(/STATUS/i).value).toEqual('200');
-  expect(screen.getByLabelText(/TYPE/i).value).toEqual('application/json');
+  expect(screen.getByLabelText(/CONTENT TYPE/i).value).toEqual('application/json');
   expect(screen.getByLabelText(/BODY$/i).value).toEqual('{}');
 });
 
@@ -38,7 +39,7 @@ it('calls stub4 with the right parameters given the default values', async () =>
       response: {
         body: '{}',
         statusCode: 200,
-        type: 'application/json'
+        contentType: 'application/json'
       }
     })
     .mockResolvedValue();
@@ -59,21 +60,21 @@ it('allows changing values and calls stub4 correspondingly', async () => {
       response: {
         body: 'this is the body',
         statusCode: '321',
-        type: 'application/json'
+        contentType: 'application/json'
       }
     })
     .mockResolvedValue();
   const { theStubWasSavedSuccessfully } = renderStubEditor();
 
-  await userEvent.type(screen.getByLabelText(/URL/i), 'some-url');
+  userEvent.type(screen.getByLabelText(/URL/i), 'some-url');
   userEvent.click(screen.getByLabelText(/METHOD MATCHER/i));
   userEvent.selectOptions(screen.getByLabelText(/METHOD$/i), 'POST');
 
-  await clearInput(screen.getByLabelText(/STATUS/i));
-  await userEvent.type(screen.getByLabelText(/STATUS/i), '321');
-  await clearInput(screen.getByLabelText(/BODY$/i));
-  await userEvent.type(screen.getByLabelText(/BODY$/i), 'this is the body');
-  userEvent.selectOptions(screen.getByLabelText(/TYPE/i), 'application/json');
+  clearInput(screen.getByLabelText(/STATUS/i));
+  userEvent.type(screen.getByLabelText(/STATUS/i), '321');
+  clearInput(screen.getByLabelText(/BODY$/i));
+  userEvent.type(screen.getByLabelText(/BODY$/i), 'this is the body');
+  userEvent.selectOptions(screen.getByLabelText(/CONTENT TYPE/i), 'application/json');
 
   userEvent.click(screen.getByText(/Save/i));
 
@@ -90,7 +91,7 @@ it('picks values from an edited stub overwriting the defaults', async () => {
       },
       response: {
         statusCode: 543,
-        type: 'application/json',
+        contentType: 'application/json',
         body: 'some-value that was setup'
       }
     })
@@ -103,7 +104,7 @@ it('picks values from an edited stub overwriting the defaults', async () => {
     },
     response: {
       statusCode: 543,
-      type: 'application/json',
+      contentType: 'application/json',
       body: 'some-value that was setup'
     }
   });
@@ -122,20 +123,31 @@ it('sets the value from the edited stub in the form', async () => {
     },
     response: {
       statusCode: 543,
-      type: 'application/json',
+      contentType: 'application/json',
       body: 'some-value that was setup'
     }
   });
 
-  const requestMatcherForm = screen.getByLabelText(/request matching/i);
-  expect(within(requestMatcherForm).getByLabelText(/URL/i).value).toEqual('/some-random-url');
-  expect(within(requestMatcherForm).getByLabelText(/METHOD$/i).value).toEqual('POST');
-  expect(within(requestMatcherForm).getByLabelText(/MATCH$/i).value).toEqual('something');
+  expect(screen.getByLabelText(/URL/i).value).toEqual('/some-random-url');
+  expect(screen.getByLabelText(/METHOD$/i).value).toEqual('POST');
+  expect(screen.getByLabelText(/MATCH$/i).value).toEqual('something');
 
-  const responseForm = screen.getByLabelText(/response/i);
-  expect(within(responseForm).getByLabelText(/STATUS/i).value).toEqual('543');
-  expect(within(responseForm).getByLabelText(/TYPE/i).value).toEqual('application/json');
-  expect(within(responseForm).getByLabelText(/BODY/i).value).toEqual('some-value that was setup');
+  expect(screen.getByLabelText(/STATUS/i).value).toEqual('543');
+  expect(screen.getByLabelText(/CONTENT TYPE/i).value).toEqual('application/json');
+  expect(screen.getByLabelText(/RESPONSE BODY/i).value).toEqual('some-value that was setup');
+});
+
+it('copies the stub definition to clipboard', async () => {
+  const stubDef = {
+    requestMatcher: { url: '/some-url' },
+    response: { statusCode: 123, body: '{}', contentType: 'application/json' }
+  };
+
+  renderStubEditor(stubDef);
+
+  await expectDefinitionToCopyToClipboard(
+    '{"requestMatcher":{"url":"/some-url"},"response":{"statusCode":123,"body":"{}","contentType":"application/json"}}'
+  );
 });
 
 function renderStubEditor(editedItem = noEditedItem) {
@@ -151,6 +163,6 @@ function renderStubEditor(editedItem = noEditedItem) {
   };
 }
 
-async function clearInput(element) {
-  await fireEvent.change(element, { target: { value: '' } });
+function clearInput(element) {
+  fireEvent.change(element, { target: { value: '' } });
 }

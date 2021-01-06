@@ -1,7 +1,7 @@
-function respondsWith(statusCode, type = 'json', body = {}) {
+function respondsWith(statusCode, contentType = 'application/json', body = {}) {
   return {
     toJson() {
-      return { response: { statusCode, type, body } };
+      return { response: { statusCode, contentType, body } };
     }
   };
 }

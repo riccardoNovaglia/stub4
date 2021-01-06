@@ -1,6 +1,6 @@
 {
   "name": "@stub4/stub4",
-  "version": "0.0.35",
+  "version": "0.0.36",
   "description": "A stub HTTP server for the whole team",
   "main": "./lib/index.js",
   "bin": {
@@ -14,7 +14,7 @@
     "link-client": "cd ../stub-client && npm link && cd ../server && npm link @stub4/client"
   },
   "dependencies": {
-    "axios": "0.20.0",
+    "axios": "0.21.1",
     "body-parser": "1.19.0",
     "cors": "2.8.5",
     "express": "4.17.1",
@@ -31,7 +31,7 @@
   },
   "devDependencies": {
     "@pact-foundation/pact": "9.11.0",
-    "@stub4/client": "0.0.22",
+    "@stub4/client": "0.0.24",
     "jest": "26.4.2",
     "nodemon": "2.0.4",
     "supertest": "4.0.2"

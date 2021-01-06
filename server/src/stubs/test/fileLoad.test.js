@@ -12,7 +12,7 @@ describe('Loading stubs from an initialiser file', () => {
     add(
       StubFromFile({
         requestMatcher: { url: '/some-url', method: 'GET' },
-        response: { body: `this was setup`, type: 'text' }
+        response: { body: `this was setup`, contentType: 'text/plain' }
       })
     );
 
@@ -34,7 +34,7 @@ describe('Loading stubs from an initialiser file', () => {
     add(
       StubFromFile({
         requestMatcher: { url: '/whatever', method: 'PATCH' },
-        response: { body: { item: `whatever` }, type: 'json', statusCode: 123 },
+        response: { body: { item: `whatever` }, contentType: 'application/json', statusCode: 123 },
         contract: { state, uponReceiving }
       })
     );
@@ -55,14 +55,14 @@ describe('Loading stubs from an initialiser file', () => {
     add(
       StubFromFile({
         requestMatcher: { url: '/some-url' },
-        response: { body: `this was setup`, type: 'text' }
+        response: { body: `this was setup`, contentType: 'text/plain' }
       })
     );
     add(
       StubFromFile({
         id: 'this-one-is-not-random',
         requestMatcher: { url: '/another' },
-        response: { body: `some else`, type: 'json' }
+        response: { body: `some else`, contentType: 'application/json' }
       })
     );
 
