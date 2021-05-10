@@ -20,7 +20,7 @@
     "express": "4.17.1",
     "express-xml-bodyparser": "0.3.0",
     "glob": "7.1.6",
-    "lodash": "4.17.20",
+    "lodash": "4.17.21",
     "server-destroy": "1.0.1",
     "uuid": "8.3.0",
     "winston": "3.3.3",
